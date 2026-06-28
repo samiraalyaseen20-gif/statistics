@@ -365,143 +365,214 @@
 
                 <!-- Isometric SVG representation container with theme-responsive background transition -->
                 <div class="w-full rounded-2xl p-2 flex justify-center items-center overflow-hidden" style="background: var(--iso-chart-bg); transition: background 0.4s ease;">
-                    <svg viewBox="0 -200 560 620" class="w-full h-auto" style="overflow: visible;">
+                    <svg viewBox="0 -180 500 520" class="w-full h-auto" style="overflow: visible;">
+                        <defs>
+                            <!-- Step 1 Gradient -->
+                            <linearGradient id="grad-1" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" stop-color="var(--iso-color-1)" stop-opacity="var(--iso-opacity-base)" />
+                                <stop offset="100%" stop-color="var(--iso-color-1)" stop-opacity="var(--iso-opacity-top)" />
+                            </linearGradient>
+                            <!-- Step 2 Gradient -->
+                            <linearGradient id="grad-2" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" stop-color="var(--iso-color-2)" stop-opacity="var(--iso-opacity-base)" />
+                                <stop offset="100%" stop-color="var(--iso-color-2)" stop-opacity="var(--iso-opacity-top)" />
+                            </linearGradient>
+                            <!-- Step 3 Gradient -->
+                            <linearGradient id="grad-3" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" stop-color="var(--iso-color-3)" stop-opacity="var(--iso-opacity-base)" />
+                                <stop offset="100%" stop-color="var(--iso-color-3)" stop-opacity="var(--iso-opacity-top)" />
+                            </linearGradient>
+                            <!-- Step 4 Gradient -->
+                            <linearGradient id="grad-4" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" stop-color="var(--iso-color-4)" stop-opacity="var(--iso-opacity-base)" />
+                                <stop offset="100%" stop-color="var(--iso-color-4)" stop-opacity="var(--iso-opacity-top)" />
+                            </linearGradient>
+                            <!-- Step 5 Gradient -->
+                            <linearGradient id="grad-5" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" stop-color="var(--iso-color-5)" stop-opacity="var(--iso-opacity-base)" />
+                                <stop offset="100%" stop-color="var(--iso-color-5)" stop-opacity="var(--iso-opacity-top)" />
+                            </linearGradient>
+                            <!-- Step 6 Gradient -->
+                            <linearGradient id="grad-6" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" stop-color="var(--iso-color-6)" stop-opacity="var(--iso-opacity-base)" />
+                                <stop offset="100%" stop-color="var(--iso-color-6)" stop-opacity="var(--iso-opacity-top)" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- DRAW FROM BACK TO FRONT (Step 6 to Step 1) -->
+
                         <!-- Step 6 (Furthest / Tallest) -->
                         <g>
-                            <!-- Floor Ribbon -->
-                            <polygon points="383,175 423,195 483,225 443,205" class="iso-ribbon" fill="var(--iso-color-6)" />
-                            <!-- Left Face -->
-                            <polygon points="383,175 423,195 423,-115 383,-135" class="iso-face" fill="var(--iso-color-6)" />
-                            <!-- Right Face -->
-                            <polygon points="423,195 463,175 463,-135 423,-115" class="iso-face" fill="var(--iso-color-6)" />
-                            <!-- Right Shade Overlay -->
-                            <polygon points="423,195 463,175 463,-135 423,-115" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
-                            <!-- Top Face -->
-                            <polygon points="423,-155 383,-135 423,-115 463,-135" class="iso-face" fill="var(--iso-color-6)" />
-                            <!-- Top Highlight Overlay -->
-                            <polygon points="423,-155 383,-135 423,-115 463,-135" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
-                            <!-- Outlines -->
-                            <polygon points="383,175 423,195 463,175 463,-135 423,-155 383,-135" class="iso-outline" />
-                            <line x1="423" y1="195" x2="423" y2="-115" class="iso-outline" />
-                            <!-- Subtitle on Top (Centered perfectly with translate & local skew) -->
-                            <text transform="translate(423, -135) skewY(-20)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="10" font-weight="bold">95%</text>
-                            <!-- Label on Ribbon (Centered perfectly with translate & local skew) -->
-                            <text transform="translate(433, 200) skewY(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 06: الصيدلية</text>
+                            <!-- Floor Ribbon (Extends to bottom-left) -->
+                            <polygon points="343,175 395,145 326,185 274,215" class="iso-ribbon" fill="var(--iso-color-6)" />
+                            <!-- Base Glowing Rim -->
+                            <polygon points="395,145 343,175 353,169 405,139" stroke="var(--iso-base-stroke)" stroke-width="1.5" fill="none" class="iso-face" />
+                            <!-- Back Wireframe (Visible through glass) -->
+                            <line x1="353" y1="169" x2="353" y2="-106" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="353" y1="169" x2="343" y2="175" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="353" y1="169" x2="405" y2="139" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="353" y1="-106" x2="343" y2="-100" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="353" y1="-106" x2="405" y2="-136" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <!-- Front-Left Face (Wide Gradient Panel) -->
+                            <polygon points="395,145 343,175 343,-100 395,-130" fill="url(#grad-6)" class="iso-face" />
+                            <!-- Front-Right Face (Thin Panel + Shade Overlay) -->
+                            <polygon points="395,145 405,139 405,-136 395,-130" fill="url(#grad-6)" class="iso-face" />
+                            <polygon points="395,145 405,139 405,-136 395,-130" fill="#000000" opacity="0.15" class="iso-face pointer-events-none" />
+                            <!-- Top Face (Cap) -->
+                            <polygon points="395,-130 343,-100 353,-106 405,-136" fill="url(#grad-6)" class="iso-face" />
+                            <!-- Face Outlines -->
+                            <polygon points="395,145 343,175 343,-100 395,-130" class="iso-outline" />
+                            <polygon points="395,145 405,139 405,-136 395,-130" class="iso-outline" />
+                            <polygon points="395,-130 343,-100 353,-106 405,-136" class="iso-outline" />
+                            <!-- Subtitle on Top (Perfect rotation/skew inside top diamond) -->
+                            <text transform="translate(374, -118) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="8" font-weight="bold">SUBTITLE</text>
+                            <!-- Label on Ribbon (Centered and aligned bottom-left) -->
+                            <text transform="translate(335, 180) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 06: الصيدلية</text>
                         </g>
 
                         <!-- Step 5 -->
                         <g>
                             <!-- Floor Ribbon -->
-                            <polygon points="323,210 363,230 423,260 383,240" class="iso-ribbon" fill="var(--iso-color-5)" />
-                            <!-- Left Face -->
-                            <polygon points="323,210 363,230 363,-40 323,-60" class="iso-face" fill="var(--iso-color-5)" />
-                            <!-- Right Face -->
-                            <polygon points="363,230 403,210 403,-60 363,-40" class="iso-face" fill="var(--iso-color-5)" />
-                            <!-- Right Shade Overlay -->
-                            <polygon points="363,230 403,210 403,-60 363,-40" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <polygon points="304,198 356,168 287,208 235,238" class="iso-ribbon" fill="var(--iso-color-5)" />
+                            <!-- Base Glowing Rim -->
+                            <polygon points="356,168 304,198 314,192 366,162" stroke="var(--iso-base-stroke)" stroke-width="1.5" fill="none" class="iso-face" />
+                            <!-- Back Wireframe -->
+                            <line x1="314" y1="192" x2="314" y2="-48" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="314" y1="192" x2="304" y2="198" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="314" y1="192" x2="366" y2="162" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="314" y1="-48" x2="304" y2="-42" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="314" y1="-48" x2="366" y2="-78" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <!-- Front-Left Face -->
+                            <polygon points="356,168 304,198 304,-42 356,-72" fill="url(#grad-5)" class="iso-face" />
+                            <!-- Front-Right Face -->
+                            <polygon points="356,168 366,162 366,-78 356,-72" fill="url(#grad-5)" class="iso-face" />
+                            <polygon points="356,168 366,162 366,-78 356,-72" fill="#000000" opacity="0.15" class="iso-face pointer-events-none" />
                             <!-- Top Face -->
-                            <polygon points="363,-80 323,-60 363,-40 403,-60" class="iso-face" fill="var(--iso-color-5)" />
-                            <!-- Top Highlight Overlay -->
-                            <polygon points="363,-80 323,-60 363,-40 403,-60" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <polygon points="356,-72 304,-42 314,-48 366,-78" fill="url(#grad-5)" class="iso-face" />
                             <!-- Outlines -->
-                            <polygon points="323,210 363,230 403,210 403,-60 363,-80 323,-60" class="iso-outline" />
-                            <line x1="363" y1="230" x2="363" y2="-40" class="iso-outline" />
+                            <polygon points="356,168 304,198 304,-42 356,-72" class="iso-outline" />
+                            <polygon points="356,168 366,162 366,-78 356,-72" class="iso-outline" />
+                            <polygon points="356,-72 304,-42 314,-48 366,-78" class="iso-outline" />
                             <!-- Subtitle on Top -->
-                            <text transform="translate(363, -60) skewY(-20)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="10" font-weight="bold">50%</text>
+                            <text transform="translate(335, -60) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="8" font-weight="bold">SUBTITLE</text>
                             <!-- Label on Ribbon -->
-                            <text transform="translate(373, 235) skewY(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 05: المختبر</text>
+                            <text transform="translate(296, 203) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 05: المختبر</text>
                         </g>
 
                         <!-- Step 4 -->
                         <g>
                             <!-- Floor Ribbon -->
-                            <polygon points="262,245 302,265 362,295 322,275" class="iso-ribbon" fill="var(--iso-color-4)" />
-                            <!-- Left Face -->
-                            <polygon points="262,245 302,265 302,35 262,15" class="iso-face" fill="var(--iso-color-4)" />
-                            <!-- Right Face -->
-                            <polygon points="302,265 342,245 342,15 302,35" class="iso-face" fill="var(--iso-color-4)" />
-                            <!-- Right Shade Overlay -->
-                            <polygon points="302,265 342,245 342,15 302,35" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <polygon points="250,221 302,191 233,231 181,261" class="iso-ribbon" fill="var(--iso-color-4)" />
+                            <!-- Base Glowing Rim -->
+                            <polygon points="302,191 250,221 260,215 312,185" stroke="var(--iso-base-stroke)" stroke-width="1.5" fill="none" class="iso-face" />
+                            <!-- Back Wireframe -->
+                            <line x1="260" y1="215" x2="260" y2="-10" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="260" y1="215" x2="250" y2="221" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="260" y1="215" x2="312" y2="185" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="260" y1="-10" x2="250" y2="-4" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="260" y1="-10" x2="312" y2="-40" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <!-- Front-Left Face -->
+                            <polygon points="302,191 250,221 250,-4 302,-34" fill="url(#grad-4)" class="iso-face" />
+                            <!-- Front-Right Face -->
+                            <polygon points="302,191 312,185 312,-40 302,-34" fill="url(#grad-4)" class="iso-face" />
+                            <polygon points="302,191 312,185 312,-40 302,-34" fill="#000000" opacity="0.15" class="iso-face pointer-events-none" />
                             <!-- Top Face -->
-                            <polygon points="302,-5 262,15 302,35 342,15" class="iso-face" fill="var(--iso-color-4)" />
-                            <!-- Top Highlight Overlay -->
-                            <polygon points="302,-5 262,15 302,35 342,15" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <polygon points="302,-34 250,-4 260,-10 312,-40" fill="url(#grad-4)" class="iso-face" />
                             <!-- Outlines -->
-                            <polygon points="262,245 302,265 342,245 342,15 302,-5 262,15" class="iso-outline" />
-                            <line x1="302" y1="265" x2="302" y2="35" class="iso-outline" />
+                            <polygon points="302,191 250,221 250,-4 302,-34" class="iso-outline" />
+                            <polygon points="302,191 312,185 312,-40 302,-34" class="iso-outline" />
+                            <polygon points="302,-34 250,-4 260,-10 312,-40" class="iso-outline" />
                             <!-- Subtitle on Top -->
-                            <text transform="translate(302, 15) skewY(-20)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="10" font-weight="bold">88%</text>
+                            <text transform="translate(296, -2) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="8" font-weight="bold">SUBTITLE</text>
                             <!-- Label on Ribbon -->
-                            <text transform="translate(312, 270) skewY(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 04: النسائية</text>
+                            <text transform="translate(257, 226) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 04: النسائية</text>
                         </g>
 
                         <!-- Step 3 -->
                         <g>
                             <!-- Floor Ribbon -->
-                            <polygon points="201,280 241,300 301,330 261,310" class="iso-ribbon" fill="var(--iso-color-3)" />
-                            <!-- Left Face -->
-                            <polygon points="201,280 241,300 241,110 201,90" class="iso-face" fill="var(--iso-color-3)" />
-                            <!-- Right Face -->
-                            <polygon points="241,300 281,280 281,90 241,110" class="iso-face" fill="var(--iso-color-3)" />
-                            <!-- Right Shade Overlay -->
-                            <polygon points="241,300 281,280 281,90 241,110" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <polygon points="189,244 241,214 172,254 120,284" class="iso-ribbon" fill="var(--iso-color-3)" />
+                            <!-- Base Glowing Rim -->
+                            <polygon points="241,214 189,244 199,238 251,208" stroke="var(--iso-base-stroke)" stroke-width="1.5" fill="none" class="iso-face" />
+                            <!-- Back Wireframe -->
+                            <line x1="199" y1="238" x2="199" y2="68" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="199" y1="238" x2="189" y2="244" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="199" y1="238" x2="251" y2="208" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="199" y1="68" x2="189" y2="74" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="199" y1="68" x2="251" y2="38" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <!-- Front-Left Face -->
+                            <polygon points="241,214 189,244 189,74 241,44" fill="url(#grad-3)" class="iso-face" />
+                            <!-- Front-Right Face -->
+                            <polygon points="241,214 251,208 251,38 241,44" fill="url(#grad-3)" class="iso-face" />
+                            <polygon points="241,214 251,208 251,38 241,44" fill="#000000" opacity="0.15" class="iso-face pointer-events-none" />
                             <!-- Top Face -->
-                            <polygon points="241,70 201,90 241,110 281,90" class="iso-face" fill="var(--iso-color-3)" />
-                            <!-- Top Highlight Overlay -->
-                            <polygon points="241,70 201,90 241,110 281,90" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <polygon points="241,44 189,74 199,68 251,38" fill="url(#grad-3)" class="iso-face" />
                             <!-- Outlines -->
-                            <polygon points="201,280 241,300 281,280 281,90 241,70 201,90" class="iso-outline" />
-                            <line x1="241" y1="300" x2="241" y2="110" class="iso-outline" />
+                            <polygon points="241,214 189,244 189,74 241,44" class="iso-outline" />
+                            <polygon points="241,214 251,208 251,38 241,44" class="iso-outline" />
+                            <polygon points="241,44 189,74 199,68 251,38" class="iso-outline" />
                             <!-- Subtitle on Top -->
-                            <text transform="translate(241, 90) skewY(-20)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="10" font-weight="bold">65%</text>
+                            <text transform="translate(257, 56) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="8" font-weight="bold">SUBTITLE</text>
                             <!-- Label on Ribbon -->
-                            <text transform="translate(251, 305) skewY(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 03: الأطفال</text>
+                            <text transform="translate(218, 249) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 03: الأطفال</text>
                         </g>
 
                         <!-- Step 2 -->
                         <g>
                             <!-- Floor Ribbon -->
-                            <polygon points="141,295 181,315 241,345 201,325" class="iso-ribbon" fill="var(--iso-color-2)" />
-                            <!-- Left Face -->
-                            <polygon points="141,295 181,315 181,175 141,155" class="iso-face" fill="var(--iso-color-2)" />
-                            <!-- Right Face -->
-                            <polygon points="181,315 221,295 221,155 181,175" class="iso-face" fill="var(--iso-color-2)" />
-                            <!-- Right Shade Overlay -->
-                            <polygon points="181,315 221,295 221,155 181,175" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <polygon points="149,267 201,237 132,277 80,307" class="iso-ribbon" fill="var(--iso-color-2)" />
+                            <!-- Base Glowing Rim -->
+                            <polygon points="201,237 149,267 159,261 211,231" stroke="var(--iso-base-stroke)" stroke-width="1.5" fill="none" class="iso-face" />
+                            <!-- Back Wireframe -->
+                            <line x1="159" y1="261" x2="159" y2="126" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="159" y1="261" x2="149" y2="267" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="159" y1="261" x2="211" y2="231" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="159" y1="126" x2="149" y2="132" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="159" y1="126" x2="211" y2="96" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <!-- Front-Left Face -->
+                            <polygon points="201,237 149,267 149,132 201,102" fill="url(#grad-2)" class="iso-face" />
+                            <!-- Front-Right Face -->
+                            <polygon points="201,237 211,231 211,96 201,102" fill="url(#grad-2)" class="iso-face" />
+                            <polygon points="201,237 211,231 211,96 201,102" fill="#000000" opacity="0.15" class="iso-face pointer-events-none" />
                             <!-- Top Face -->
-                            <polygon points="181,135 141,155 181,175 221,155" class="iso-face" fill="var(--iso-color-2)" />
-                            <!-- Top Highlight Overlay -->
-                            <polygon points="181,135 141,155 181,175 221,155" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <polygon points="201,102 149,132 159,126 211,96" fill="url(#grad-2)" class="iso-face" />
                             <!-- Outlines -->
-                            <polygon points="141,295 181,315 221,295 221,155 181,135 141,155" class="iso-outline" />
-                            <line x1="181" y1="315" x2="181" y2="175" class="iso-outline" />
+                            <polygon points="201,237 149,267 149,132 201,102" class="iso-outline" />
+                            <polygon points="201,237 211,231 211,96 201,102" class="iso-outline" />
+                            <polygon points="201,102 149,132 159,126 211,96" class="iso-outline" />
                             <!-- Subtitle on Top -->
-                            <text transform="translate(181, 165) skewY(-20)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="10" font-weight="bold">78%</text>
+                            <text transform="translate(218, 114) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="8" font-weight="bold">SUBTITLE</text>
                             <!-- Label on Ribbon -->
-                            <text transform="translate(191, 340) skewY(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 02: الباطنية</text>
+                            <text transform="translate(179, 272) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 02: الباطنية</text>
                         </g>
 
                         <!-- Step 1 (Closest / Shortest) -->
                         <g>
                             <!-- Floor Ribbon -->
-                            <polygon points="80,330 120,350 180,380 140,360" class="iso-ribbon" fill="var(--iso-color-1)" />
-                            <!-- Left Face -->
-                            <polygon points="80,330 120,350 120,250 80,230" class="iso-face" fill="var(--iso-color-1)" />
-                            <!-- Right Face -->
-                            <polygon points="120,350 160,330 160,230 120,250" class="iso-face" fill="var(--iso-color-1)" />
-                            <!-- Right Shade Overlay -->
-                            <polygon points="120,350 160,330 160,230 120,250" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <polygon points="148,290 200,260 131,300 79,330" class="iso-ribbon" fill="var(--iso-color-1)" />
+                            <!-- Base Glowing Rim -->
+                            <polygon points="200,260 148,290 158,284 210,254" stroke="var(--iso-base-stroke)" stroke-width="1.5" fill="none" class="iso-face" />
+                            <!-- Back Wireframe -->
+                            <line x1="158" y1="284" x2="158" y2="184" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="158" y1="284" x2="148" y2="290" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="158" y1="284" x2="210" y2="254" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="158" y1="184" x2="148" y2="190" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <line x1="158" y1="184" x2="210" y2="154" stroke="var(--iso-stroke-back)" stroke-width="0.75" opacity="var(--iso-back-opacity)" />
+                            <!-- Front-Left Face -->
+                            <polygon points="200,260 148,290 148,190 200,160" fill="url(#grad-1)" class="iso-face" />
+                            <!-- Front-Right Face -->
+                            <polygon points="200,260 210,254 210,154 200,160" fill="url(#grad-1)" class="iso-face" />
+                            <polygon points="200,260 210,254 210,154 200,160" fill="#000000" opacity="0.15" class="iso-face pointer-events-none" />
                             <!-- Top Face -->
-                            <polygon points="120,210 80,230 120,250 160,230" class="iso-face" fill="var(--iso-color-1)" />
-                            <!-- Top Highlight Overlay -->
-                            <polygon points="120,210 80,230 120,250 160,230" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <polygon points="200,160 148,190 158,184 210,154" fill="url(#grad-1)" class="iso-face" />
                             <!-- Outlines -->
-                            <polygon points="80,330 120,350 160,330 160,230 120,210 80,230" class="iso-outline" />
-                            <line x1="120" y1="350" x2="120" y2="250" class="iso-outline" />
+                            <polygon points="200,260 148,290 148,190 200,160" class="iso-outline" />
+                            <polygon points="200,260 210,254 210,154 200,160" class="iso-outline" />
+                            <polygon points="200,160 148,190 158,184 210,154" class="iso-outline" />
                             <!-- Subtitle on Top -->
-                            <text transform="translate(120, 240) skewY(-20)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="10" font-weight="bold">92%</text>
+                            <text transform="translate(179, 172) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="#ffffff" font-family="Outfit" font-size="8" font-weight="bold">SUBTITLE</text>
                             <!-- Label on Ribbon -->
-                            <text transform="translate(130, 375) skewY(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 01: الاستقبال</text>
+                            <text transform="translate(140, 295) rotate(-30) skewX(30)" text-anchor="middle" dominant-baseline="middle" fill="var(--iso-ribbon-text)" font-family="Tajawal" font-size="8" font-weight="bold">STEP 01: الاستقبال</text>
                         </g>
                     </svg>
                 </div>
