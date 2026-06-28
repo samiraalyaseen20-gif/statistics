@@ -7,10 +7,89 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
     
-    /* Soft UI Custom Theme Settings */
-    --color-soft-bg: #eef2f7;
-    --shadow-soft-out: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.8);
-    --shadow-soft-out-sm: 4px 4px 8px rgba(163, 177, 198, 0.55), -4px -4px 8px rgba(255, 255, 255, 0.85);
-    --shadow-soft-in: inset 4px 4px 8px rgba(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
-    --shadow-soft-in-sm: inset 2px 2px 4px rgba(163, 177, 198, 0.55), inset -2px -2px 4px rgba(255, 255, 255, 0.85);
+    /* Dynamic Theme mappings */
+    --color-soft-bg: var(--theme-bg);
+    --color-card-bg: var(--theme-card-bg);
+    --color-text-main: var(--theme-text-main);
+    
+    --shadow-soft-out: var(--theme-shadow-out);
+    --shadow-soft-out-sm: var(--theme-shadow-out-sm);
+    --shadow-soft-in: var(--theme-shadow-in);
+    --shadow-soft-in-sm: var(--theme-shadow-in-sm);
+}
+
+:root {
+    /* 1. Soft UI Theme (Default) */
+    --theme-bg: #eef2f7;
+    --theme-card-bg: #eef2f7;
+    --theme-text-main: #2e3e5c;
+    --theme-shadow-out: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.8);
+    --theme-shadow-out-sm: 4px 4px 8px rgba(163, 177, 198, 0.55), -4px -4px 8px rgba(255, 255, 255, 0.85);
+    --theme-shadow-in: inset 4px 4px 8px rgba(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+    --theme-shadow-in-sm: inset 2px 2px 4px rgba(163, 177, 198, 0.55), inset -2px -2px 4px rgba(255, 255, 255, 0.85);
+}
+
+body[data-theme="soft"] {
+    --theme-bg: #eef2f7;
+    --theme-card-bg: #eef2f7;
+    --theme-text-main: #2e3e5c;
+    --theme-shadow-out: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.8);
+    --theme-shadow-out-sm: 4px 4px 8px rgba(163, 177, 198, 0.55), -4px -4px 8px rgba(255, 255, 255, 0.85);
+    --theme-shadow-in: inset 4px 4px 8px rgba(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+    --theme-shadow-in-sm: inset 2px 2px 4px rgba(163, 177, 198, 0.55), inset -2px -2px 4px rgba(255, 255, 255, 0.85);
+}
+
+body[data-theme="natural"] {
+    /* 2. Natural Sage Theme */
+    --theme-bg: #f2f6f1;
+    --theme-card-bg: #f2f6f1;
+    --theme-text-main: #243522;
+    --theme-shadow-out: 9px 9px 16px rgba(150, 168, 148, 0.55), -9px -9px 16px rgba(255, 255, 255, 0.85);
+    --theme-shadow-out-sm: 4px 4px 8px rgba(150, 168, 148, 0.5), -4px -4px 8px rgba(255, 255, 255, 0.85);
+    --theme-shadow-in: inset 4px 4px 8px rgba(150, 168, 148, 0.55), inset -4px -4px 8px rgba(255, 255, 255, 0.85);
+    --theme-shadow-in-sm: inset 2px 2px 4px rgba(150, 168, 148, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.85);
+}
+
+body[data-theme="modern"] {
+    /* 3. Modern Dark Theme */
+    --theme-bg: #0b1329;
+    --theme-card-bg: #151e3d;
+    --theme-text-main: #f1f5f9;
+    --theme-shadow-out: 8px 8px 24px rgba(0, 0, 0, 0.55), -8px -8px 24px rgba(255, 255, 255, 0.04);
+    --theme-shadow-out-sm: 4px 4px 12px rgba(0, 0, 0, 0.5), -4px -4px 12px rgba(255, 255, 255, 0.04);
+    --theme-shadow-in: inset 4px 4px 8px rgba(0, 0, 0, 0.55), inset -4px -4px 8px rgba(255, 255, 255, 0.04);
+    --theme-shadow-in-sm: inset 2px 2px 4px rgba(0, 0, 0, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.04);
+}
+
+body[data-theme="quiet"] {
+    /* 4. Quiet Theme (Clean minimalist with white cards) */
+    --theme-bg: #f4f5f8;
+    --theme-card-bg: #ffffff;
+    --theme-text-main: #4a5568;
+    --theme-shadow-out: 0 10px 20px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+    --theme-shadow-out-sm: 0 4px 6px rgba(0, 0, 0, 0.03);
+    --theme-shadow-in: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    --theme-shadow-in-sm: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+body[data-theme="warm"] {
+    /* 5. Warm Sunset Theme */
+    --theme-bg: #faf4eb;
+    --theme-card-bg: #faf4eb;
+    --theme-text-main: #4e3629;
+    --theme-shadow-out: 9px 9px 16px rgba(188, 174, 158, 0.55), -9px -9px 16px rgba(255, 255, 255, 0.85);
+    --theme-shadow-out-sm: 4px 4px 8px rgba(188, 174, 158, 0.5), -4px -4px 8px rgba(255, 255, 255, 0.85);
+    --theme-shadow-in: inset 4px 4px 8px rgba(188, 174, 158, 0.55), inset -4px -4px 8px rgba(255, 255, 255, 0.85);
+    --theme-shadow-in-sm: inset 2px 2px 4px rgba(188, 174, 158, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.85);
+}
+
+body {
+    background-color: var(--theme-bg);
+    color: var(--theme-text-main);
+    transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Transitions for soft UI elements when theme shifts */
+header, section, div, button, input, select, span {
+    transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
 }
