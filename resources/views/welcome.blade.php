@@ -117,7 +117,7 @@
             <section class="custom-card p-6 hover-lift">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-bold text-text-main">Overview</h2>
-                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center hover-press text-text-main/70">
+                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center hover-press text-text-main opacity-70">
                         <i data-lucide="more-horizontal" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -129,38 +129,38 @@
                         <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
                             <div class="w-full bg-gradient-to-t from-pink-500 to-pink-300 rounded-full" style="height: 80%"></div>
                         </div>
-                        <span class="text-[10px] text-text-main/60 font-['Outfit']">Class 1</span>
+                        <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 1</span>
                     </div>
                     <!-- Bar 2 -->
                     <div class="flex flex-col items-center gap-2 w-8">
                         <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
                             <div class="w-full bg-gradient-to-t from-amber-500 to-amber-300 rounded-full" style="height: 65%"></div>
                         </div>
-                        <span class="text-[10px] text-text-main/60 font-['Outfit']">Class 2</span>
+                        <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 2</span>
                     </div>
                     <!-- Bar 3 -->
                     <div class="flex flex-col items-center gap-2 w-8">
                         <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
                             <div class="w-full bg-gradient-to-t from-emerald-500 to-emerald-300 rounded-full" style="height: 90%"></div>
                         </div>
-                        <span class="text-[10px] text-text-main/60 font-['Outfit']">Class 3</span>
+                        <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 3</span>
                     </div>
                     <!-- Bar 4 -->
                     <div class="flex flex-col items-center gap-2 w-8">
                         <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
                             <div class="w-full bg-gradient-to-t from-sky-500 to-sky-300 rounded-full" style="height: 50%"></div>
                         </div>
-                        <span class="text-[10px] text-text-main/60 font-['Outfit']">Class 4</span>
+                        <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 4</span>
                     </div>
                 </div>
 
                 <div class="border-t border-slate-200/30 pt-4 flex justify-between">
                     <div>
-                        <div class="text-xs text-text-main/70 font-medium">Sales Analysis</div>
-                        <div class="text-xl font-bold text-pink-500 font-['Outfit']">23K</div>
+                        <div class="text-xs text-text-main opacity-70 font-medium">Sales Analysis</div>
+                        <div class="text-xl font-bold text-theme-pink font-['Outfit']">23K</div>
                     </div>
                     <div class="text-left">
-                        <div class="text-xs text-text-main/70 font-medium">Revenue</div>
+                        <div class="text-xs text-text-main opacity-70 font-medium">Revenue</div>
                         <div class="text-xl font-bold text-sky-500 font-['Outfit']">12K</div>
                     </div>
                 </div>
@@ -171,7 +171,7 @@
             <section class="custom-card p-6 hover-lift">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-bold text-text-main">KPI Dashboard</h2>
-                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center hover-press text-text-main/70">
+                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center hover-press text-text-main opacity-70">
                         <i data-lucide="sliders" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -180,27 +180,27 @@
                     <!-- Radial 1 -->
                     <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
                         <div id="chart-radial-1"></div>
-                        <span class="text-xs text-text-main/80 font-medium">Data Analysis #1</span>
+                        <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #1</span>
                     </div>
                     <!-- Radial 2 -->
                     <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
                         <div id="chart-radial-2"></div>
-                        <span class="text-xs text-text-main/80 font-medium">Data Analysis #2</span>
+                        <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #2</span>
                     </div>
                     <!-- Radial 3 -->
                     <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
                         <div id="chart-radial-3"></div>
-                        <span class="text-xs text-text-main/80 font-medium">Data Analysis #3</span>
+                        <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #3</span>
                     </div>
                     <!-- Radial 4 -->
                     <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
                         <div id="chart-radial-4"></div>
-                        <span class="text-xs text-text-main/80 font-medium">Data Analysis #4</span>
+                        <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #4</span>
                     </div>
                 </div>
 
                 <div class="text-center custom-card rounded-xl py-2">
-                    <span class="text-xs text-text-main/70">Total volume:</span>
+                    <span class="text-xs text-text-main opacity-70">Total volume:</span>
                     <span class="text-sm font-bold text-text-main font-['Outfit']">277,2M</span>
                 </div>
             </section>
@@ -210,7 +210,7 @@
             <section class="custom-card p-6 hover-lift">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-bold text-text-main">KPI Dashboard Sales</h2>
-                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-600 shadow-soft-out-sm font-['Outfit']">96%</span>
+                    <span class="badge-success shadow-soft-out-sm font-['Outfit']">96%</span>
                 </div>
 
                 <!-- Apex Area Chart -->
@@ -218,7 +218,7 @@
                     <div id="chart-area-sales"></div>
                 </div>
 
-                <p class="text-xs text-text-main/60 text-center leading-relaxed">
+                <p class="text-xs text-text-main opacity-60 text-center leading-relaxed">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aeneam commodo ligula eget.
                 </p>
             </section>
@@ -229,9 +229,9 @@
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         <h2 class="text-lg font-bold text-text-main">Strategy & Development</h2>
-                        <span class="text-xs text-text-main/60 font-['Outfit']">Q 277,2M</span>
+                        <span class="text-xs text-text-main opacity-60 font-['Outfit']">Q 277,2M</span>
                     </div>
-                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-emerald-500">
+                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-theme-emerald">
                         <i data-lucide="trending-up" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -245,21 +245,21 @@
                     <div class="flex items-center justify-between p-2 rounded-xl custom-card">
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-full bg-pink-500 shadow-soft-out-sm"></span>
-                            <span class="text-xs text-text-main/80 font-medium">Value Title</span>
+                            <span class="text-xs text-text-main opacity-80 font-medium">Value Title</span>
                         </div>
                         <span class="text-xs font-bold text-text-main font-['Outfit']">16.2M</span>
                     </div>
                     <div class="flex items-center justify-between p-2 rounded-xl custom-card">
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-soft-out-sm"></span>
-                            <span class="text-xs text-text-main/80 font-medium">Value Title</span>
+                            <span class="text-xs text-text-main opacity-80 font-medium">Value Title</span>
                         </div>
                         <span class="text-xs font-bold text-text-main font-['Outfit']">10.8M</span>
                     </div>
                     <div class="flex items-center justify-between p-2 rounded-xl custom-card">
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-full bg-sky-500 shadow-soft-out-sm"></span>
-                            <span class="text-xs text-text-main/80 font-medium">Value Title</span>
+                            <span class="text-xs text-text-main opacity-80 font-medium">Value Title</span>
                         </div>
                         <span class="text-xs font-bold text-text-main font-['Outfit']">18.2M</span>
                     </div>
@@ -271,7 +271,7 @@
             <section class="custom-card p-6 hover-lift md:col-span-2">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-bold text-text-main">Analysis & Speedometer Dials</h2>
-                    <span class="text-xs text-text-main/60 font-medium">مستشعرات أداء حية</span>
+                    <span class="text-xs text-text-main opacity-60 font-medium">مستشعرات أداء حية</span>
                 </div>
 
                 <!-- 3 Speedometers Row -->
@@ -307,19 +307,19 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Column 1: Buttons and Knobs -->
                     <div class="space-y-6">
-                        <h3 class="text-sm font-semibold text-text-main/70 border-b border-slate-200/20 pb-2">الأزرار وتأثيرات الضغط</h3>
+                        <h3 class="text-sm font-semibold text-text-main opacity-70 border-b border-slate-200/20 pb-2">الأزرار وتأثيرات الضغط</h3>
                         
                         <div class="flex gap-4">
-                            <button class="flex-1 py-3 px-4 custom-card rounded-xl text-xs font-bold text-pink-500 hover-press">
+                            <button class="flex-1 py-3 px-4 custom-card rounded-xl text-xs font-bold text-theme-pink hover-press">
                                 زر بارز (Raised)
                             </button>
-                            <button class="flex-1 py-3 px-4 custom-inset rounded-xl text-xs font-bold text-emerald-600 hover-press">
+                            <button class="flex-1 py-3 px-4 custom-inset rounded-xl text-xs font-bold text-theme-emerald hover-press">
                                 زر غائر (Sunken)
                             </button>
                         </div>
 
                         <div class="flex justify-between items-center custom-inset p-3 rounded-xl">
-                            <span class="text-xs font-bold text-text-main/80">مفتاح تفعيل ذكي</span>
+                            <span class="text-xs font-bold text-text-main opacity-80">مفتاح تفعيل ذكي</span>
                             <!-- Custom Switch Toggle -->
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="switch-demo" class="sr-only peer" checked>
@@ -330,37 +330,37 @@
 
                     <!-- Column 2: Form Inputs -->
                     <div class="space-y-4">
-                        <h3 class="text-sm font-semibold text-text-main/70 border-b border-slate-200/20 pb-2">حقول الإدخال والبحث</h3>
+                        <h3 class="text-sm font-semibold text-text-main opacity-70 border-b border-slate-200/20 pb-2">حقول الإدخال والبحث</h3>
                         
                         <div class="relative">
-                            <input type="text" placeholder="ابحث عن مريض..." class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-3 px-4 text-xs font-medium text-text-main placeholder-text-main/40">
-                            <div class="absolute left-3 top-3.5 text-text-main/50">
+                            <input type="text" placeholder="ابحث عن مريض..." class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-3 px-4 text-xs font-medium text-text-main placeholder-text-main opacity-40">
+                            <div class="absolute left-3 top-3.5 text-text-main opacity-50">
                                 <i data-lucide="search" class="w-4 h-4"></i>
                             </div>
                         </div>
 
                         <div class="relative">
                             <select class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-3 px-4 text-xs font-medium text-text-main">
-                                <option class="text-slate-800">اختر الطبيب المعالج...</option>
-                                <option class="text-slate-800">د. أحمد سليمان - العيادة الباطنية</option>
-                                <option class="text-slate-800">د. سارة العلي - عيادة الأطفال</option>
+                                <option>اختر الطبيب المعالج...</option>
+                                <option>د. أحمد سليمان - العيادة الباطنية</option>
+                                <option>د. سارة العلي - عيادة الأطفال</option>
                             </select>
                         </div>
                     </div>
 
                     <!-- Column 3: Indicators and values -->
                     <div class="space-y-4">
-                        <h3 class="text-sm font-semibold text-text-main/70 border-b border-slate-200/20 pb-2">حالة الدفع وحجز الطابور</h3>
+                        <h3 class="text-sm font-semibold text-text-main opacity-70 border-b border-slate-200/20 pb-2">حالة الدفع وحجز الطابور</h3>
                         
                         <div class="flex items-center justify-between p-3 custom-card rounded-xl">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full custom-inset flex items-center justify-center text-emerald-500 text-xs font-bold font-['Outfit']">01</div>
                                 <div>
                                     <h4 class="text-xs font-bold text-text-main">رقم الدور الحالي</h4>
-                                    <span class="text-[10px] text-text-main/60">المريض: محمد خالد</span>
+                                    <span class="text-[10px] text-text-main opacity-60">المريض: محمد خالد</span>
                                 </div>
                             </div>
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 shadow-soft-out-sm">قيد الانتظار</span>
+                            <span class="badge-success shadow-soft-out-sm">قيد الانتظار</span>
                         </div>
 
                         <div class="flex items-center justify-between p-3 custom-card rounded-xl">
@@ -368,10 +368,10 @@
                                 <div class="w-8 h-8 rounded-full custom-inset flex items-center justify-center text-pink-500 text-xs font-bold font-['Outfit']">02</div>
                                 <div>
                                     <h4 class="text-xs font-bold text-text-main">الكشفية والتكلفة</h4>
-                                    <span class="text-[10px] text-text-main/60">سعر كشفية الطبيب</span>
+                                    <span class="text-[10px] text-text-main opacity-60">سعر كشفية الطبيب</span>
                                 </div>
                             </div>
-                            <span class="text-xs font-bold text-pink-600 font-['Outfit']">$120.00</span>
+                            <span class="text-xs font-bold text-theme-pink font-['Outfit']">$120.00</span>
                         </div>
                     </div>
                 </div>
@@ -396,7 +396,7 @@
             const theme = document.body.getAttribute('data-theme');
             if (theme === 'glass') return 'rgba(255, 255, 255, 0.05)';
             if (theme === 'brutal') return '#ffffff';
-            if (theme === 'modern') return '#0f172a';
+            if (theme === 'modern') return '#151e33';
             if (theme === 'minimalist') return '#f5f5f5';
             return '#eef2f7'; // default/soft
         }
@@ -648,6 +648,7 @@
             const updateRadial = (chartInstance) => {
                 if (chartInstance) {
                     chartInstance.updateOptions({
+                        theme: { mode: isDark ? 'dark' : 'light' },
                         plotOptions: {
                             radialBar: {
                                 track: { background: cardBg },
@@ -673,11 +674,13 @@
             // Update tooltips theme
             if (chartAreaSales) {
                 chartAreaSales.updateOptions({
+                    theme: { mode: isDark ? 'dark' : 'light' },
                     tooltip: { theme: isDark ? 'dark' : 'light' }
                 });
             }
             if (chartMultiBar) {
                 chartMultiBar.updateOptions({
+                    theme: { mode: isDark ? 'dark' : 'light' },
                     tooltip: { theme: isDark ? 'dark' : 'light' }
                 });
             }
