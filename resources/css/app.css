@@ -259,10 +259,12 @@ body[data-theme="soft"] {
     --theme-emerald: #10b981;
 
     /* Isometric theme colors */
+    --iso-chart-bg: #eef2f7;
     --iso-stroke: rgba(255, 255, 255, 0.6);
     --iso-stroke-width: 1px;
     --iso-opacity: 0.85;
     --iso-ribbon-opacity: 0.95;
+    --iso-ribbon-text: #ffffff;
     --iso-color-1: #00cfe8;
     --iso-color-2: #7c3aed;
     --iso-color-3: #ff4d7e;
@@ -318,17 +320,19 @@ body[data-theme="glass"] {
     --theme-pink: #ff4d7e;
     --theme-emerald: #10b981;
 
-    /* Isometric theme colors */
-    --iso-stroke: rgba(255, 255, 255, 0.75);
+    /* Isometric theme colors - Uses a dark radial gradient space box for glowing columns */
+    --iso-chart-bg: radial-gradient(circle, #20173a 0%, #0d091a 100%);
+    --iso-stroke: rgba(255, 255, 255, 0.8);
     --iso-stroke-width: 1.5px;
     --iso-opacity: 0.55;
-    --iso-ribbon-opacity: 0.7;
-    --iso-color-1: rgba(0, 207, 232, 0.65);
-    --iso-color-2: rgba(124, 58, 237, 0.65);
-    --iso-color-3: rgba(255, 77, 126, 0.65);
-    --iso-color-4: rgba(255, 159, 67, 0.65);
-    --iso-color-5: rgba(40, 199, 111, 0.65);
-    --iso-color-6: rgba(239, 68, 68, 0.65);
+    --iso-ribbon-opacity: 0.75;
+    --iso-ribbon-text: #ffffff;
+    --iso-color-1: #00cfe8;
+    --iso-color-2: #7c3aed;
+    --iso-color-3: #ff4d7e;
+    --iso-color-4: #ff9f43;
+    --iso-color-5: #28c76f;
+    --iso-color-6: #ef4444;
 }
 body[data-theme="glass"] .custom-card {
     background: rgba(255, 255, 255, 0.55);
@@ -383,10 +387,12 @@ body[data-theme="brutal"] {
     --theme-emerald: #059669;
 
     /* Isometric theme colors */
+    --iso-chart-bg: #ffffff;
     --iso-stroke: #000000;
     --iso-stroke-width: 3px;
     --iso-opacity: 1;
     --iso-ribbon-opacity: 1;
+    --iso-ribbon-text: #000000;
     --iso-color-1: #00cfe8;
     --iso-color-2: #a78bfa;
     --iso-color-3: #ff4d7e;
@@ -452,10 +458,12 @@ body[data-theme="minimalist"] {
     --theme-emerald: #16a34a;
 
     /* Isometric theme colors */
+    --iso-chart-bg: #ffffff;
     --iso-stroke: #e5e5e5;
     --iso-stroke-width: 1px;
     --iso-opacity: 0.85;
     --iso-ribbon-opacity: 0.9;
+    --iso-ribbon-text: #ffffff;
     --iso-color-1: #e5e5e5;
     --iso-color-2: #d4d4d4;
     --iso-color-3: #a3a3a3;
@@ -512,10 +520,12 @@ body[data-theme="excel"] {
     --theme-emerald: #107c41;
 
     /* Isometric theme colors */
+    --iso-chart-bg: #ffffff;
     --iso-stroke: #a19f9d;
     --iso-stroke-width: 1px;
     --iso-opacity: 0.9;
     --iso-ribbon-opacity: 0.95;
+    --iso-ribbon-text: #ffffff;
     --iso-color-1: #e1f2e9;
     --iso-color-2: #c3e5d3;
     --iso-color-3: #87caaa;
