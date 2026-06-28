@@ -86,6 +86,151 @@ body[data-theme="glass"] .glass-blob {
 }
 
 /* ----------------------------------------------------
+   MODAL OVERLAY & CONTAINER STYLING
+   ---------------------------------------------------- */
+.custom-modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
+    transition: opacity 0.3s ease;
+}
+body[data-theme="glass"] .custom-modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+body[data-theme="brutal"] .custom-modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: none;
+}
+body[data-theme="excel"] .custom-modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: none;
+}
+
+.modal-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 24px;
+    transition: all 0.4s ease;
+}
+body[data-theme="soft"] .modal-container {
+    background: #eef2f7;
+    border-radius: 28px;
+    box-shadow: 12px 12px 24px rgba(163, 177, 198, 0.7), -12px -12px 24px rgba(255, 255, 255, 0.9);
+    border: none;
+}
+body[data-theme="glass"] .modal-container {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    border-radius: 28px;
+}
+body[data-theme="brutal"] .modal-container {
+    background: #ffffff;
+    border: 4px solid #000000;
+    box-shadow: 10px 10px 0px #000000;
+    border-radius: 0;
+}
+body[data-theme="minimalist"] .modal-container {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 16px;
+}
+body[data-theme="excel"] .modal-container {
+    background: #ffffff;
+    border: 1px solid #707070;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    border-radius: 0;
+}
+
+/* ----------------------------------------------------
+   ALERTS SYSTEM STYLING
+   ---------------------------------------------------- */
+.alert-box {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.4s ease;
+}
+
+/* Soft UI Alerts */
+body[data-theme="soft"] .alert-success {
+    background: #eef2f7;
+    box-shadow: 4px 4px 8px rgba(163, 177, 198, 0.4), -4px -4px 8px rgba(255, 255, 255, 0.8);
+    border-right: 4px solid #10b981;
+    color: #0f5132;
+}
+body[data-theme="soft"] .alert-warning {
+    background: #eef2f7;
+    box-shadow: 4px 4px 8px rgba(163, 177, 198, 0.4), -4px -4px 8px rgba(255, 255, 255, 0.8);
+    border-right: 4px solid #f59e0b;
+    color: #664d03;
+}
+
+/* Glass Alerts */
+body[data-theme="glass"] .alert-success {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    backdrop-filter: blur(10px);
+    color: #10b981;
+}
+body[data-theme="glass"] .alert-warning {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    backdrop-filter: blur(10px);
+    color: #d97706;
+}
+
+/* Brutalism Alerts */
+body[data-theme="brutal"] .alert-success {
+    background: #28c76f;
+    border: 3px solid #000000;
+    box-shadow: 4px 4px 0px #000000;
+    color: #000000;
+    border-radius: 0;
+}
+body[data-theme="brutal"] .alert-warning {
+    background: #ff9f43;
+    border: 3px solid #000000;
+    box-shadow: 4px 4px 0px #000000;
+    color: #000000;
+    border-radius: 0;
+}
+
+/* Minimalist Alerts */
+body[data-theme="minimalist"] .alert-success {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+}
+body[data-theme="minimalist"] .alert-warning {
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+    color: #92400e;
+}
+
+/* Excel Alerts */
+body[data-theme="excel"] .alert-success {
+    background: #f3f2f1;
+    border: 1px solid #107c41;
+    border-right: 4px solid #107c41;
+    color: #107c41;
+    border-radius: 0;
+}
+body[data-theme="excel"] .alert-warning {
+    background: #fff8f0;
+    border: 1px solid #ffaa44;
+    border-right: 4px solid #ffaa44;
+    color: #a80000;
+    border-radius: 0;
+}
+
+/* ----------------------------------------------------
    1. SOFT UI (NEUMORPHISM) THEME DEFINITIONS
    ---------------------------------------------------- */
 body[data-theme="soft"] {
@@ -291,7 +436,7 @@ body[data-theme="minimalist"] .custom-table tr.table-row:hover {
 }
 
 /* ----------------------------------------------------
-   5. EXCEL SPREADSHEET THEME DEFINITIONS (Official Green grid style)
+   5. EXCEL SPREADSHEET THEME DEFINITIONS
    ---------------------------------------------------- */
 body[data-theme="excel"] {
     --theme-bg: #e1dfdd;
@@ -304,7 +449,7 @@ body[data-theme="excel"] .custom-card {
     background: #ffffff;
     border: 1px solid #a19f9d;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    border-radius: 2px; /* Sharp corporate look */
+    border-radius: 2px;
 }
 body[data-theme="excel"] .custom-inset {
     background: #f3f2f1;
@@ -356,7 +501,6 @@ body[data-theme="excel"] .custom-table tr.table-row:nth-child(even) td {
 body[data-theme="excel"] .custom-table tr.table-row:hover td {
     background: #edebe9;
 }
-/* Excel Sheet Tabs Simulation for pagination */
 body[data-theme="excel"] .excel-sheet-container {
     background: #f3f2f1;
     border-top: 1px solid #d2d0ce;

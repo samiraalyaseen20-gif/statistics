@@ -73,7 +73,7 @@
         </header>
 
         <!-- Theme Switcher (Paradigm Switcher) -->
-        <div class="mb-10 p-4 rounded-[20px] custom-card flex flex-wrap items-center justify-between gap-4">
+        <div class="mb-6 p-4 rounded-[20px] custom-card flex flex-wrap items-center justify-between gap-4">
             <span class="text-sm font-bold text-text-main flex items-center gap-2">
                 <i data-lucide="palette" class="w-5 h-5 text-pink-500"></i>
                 نظام تحويل مدارس التصميم والهوية البصرية:
@@ -91,7 +91,7 @@
                 </button>
                 <!-- Style 3: Neo-Brutalism -->
                 <button onclick="changeTheme('brutal')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="brutal">
-                    <span class="w-3.5 h-3.5 rounded-full bg-[#ffde43] border border-black"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#ffde43] border-2 border-black"></span>
                     ثيم بروتاليزم (Brutalism)
                 </button>
                 <!-- Style 4: Minimalist Clean -->
@@ -104,6 +104,22 @@
                     <span class="w-3.5 h-3.5 rounded-full bg-[#107c41] border border-slate-300"></span>
                     ثيم إكسل (Excel)
                 </button>
+            </div>
+        </div>
+
+        <!-- Alerts Demonstration Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="alert-box alert-success">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-theme-emerald shrink-0"></i>
+                <div>
+                    <span class="font-bold">نجاح العملية:</span> تم تحديث صندوق الكاش اليومي واستلام الدفعة بنجاح.
+                </div>
+            </div>
+            <div class="alert-box alert-warning">
+                <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500 shrink-0"></i>
+                <div>
+                    <span class="font-bold">تنبيه النظام:</span> يوجد طبيب واحد متاح حالياً في عيادة الباطنية، يرجى تدقيق الطابور.
+                </div>
             </div>
         </div>
 
@@ -296,21 +312,48 @@
                 </div>
             </section>
 
-            <!-- Card 6: Dynamic Data Grid (Table) with Pagination -->
+            <!-- Card 6: Dynamic Data Grid (Table) with Pagination, Date Selector & Filters -->
             <section class="custom-card p-6 hover-lift lg:col-span-3">
-                <div class="flex justify-between items-center mb-6">
+                <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
                     <div>
                         <h2 class="text-lg font-bold text-text-main">جدول سجل المعاملات المالية والمرضى (Data Grid)</h2>
-                        <span class="text-xs text-text-main opacity-60">محاكاة تفاعلية للتنقل بين الصفحات بدعم كامل للمظاهر</span>
+                        <span class="text-xs text-text-main opacity-60">تحديث فوري وتصفية ذكية لمعاملات العيادات الخارجية</span>
                     </div>
-                    <!-- Actions -->
-                    <div class="flex items-center gap-3">
-                        <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70 hover-press">
-                            <i data-lucide="filter" class="w-4 h-4"></i>
-                        </button>
-                        <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70 hover-press">
-                            <i data-lucide="download" class="w-4 h-4"></i>
-                        </button>
+                    <!-- Trigger Modal Button -->
+                    <button onclick="toggleModal(true)" class="py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2 shadow-soft-out-sm font-['Outfit']" id="add-trans-trigger">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                        تسجيل كشفية (فتح Modal)
+                    </button>
+                </div>
+
+                <!-- Filters & Date Selector Bar -->
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6 p-4 rounded-2xl custom-inset">
+                    <!-- Search Input -->
+                    <div class="flex items-center gap-2 px-2">
+                        <i data-lucide="search" class="w-4 h-4 text-text-main opacity-50 shrink-0"></i>
+                        <input type="text" placeholder="اسم المريض..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main placeholder-text-main opacity-60">
+                    </div>
+                    <!-- Clinic Dropdown -->
+                    <div>
+                        <select class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main">
+                            <option>جميع الأطباء...</option>
+                            <option>د. أحمد سليمان</option>
+                            <option>د. سارة العلي</option>
+                            <option>د. سمر الياسين</option>
+                        </select>
+                    </div>
+                    <!-- Status Filter -->
+                    <div>
+                        <select class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main">
+                            <option>حالة الدفع...</option>
+                            <option>مدفوع</option>
+                            <option>غير مدفوع</option>
+                        </select>
+                    </div>
+                    <!-- Date Selector (ديت سليكتر) -->
+                    <div class="flex items-center gap-2 px-2 border-r border-slate-200/20">
+                        <i data-lucide="calendar" class="w-4 h-4 text-text-main opacity-50 shrink-0"></i>
+                        <input type="date" value="2026-06-29" class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main custom-date-input">
                     </div>
                 </div>
 
@@ -519,6 +562,61 @@
             </section>
 
         </main>
+    </div>
+
+    <!-- Add Transaction Modal Backdrop & Modal Container -->
+    <div id="add-transaction-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden custom-modal-backdrop p-4">
+        <!-- Modal Card Container -->
+        <div class="modal-container">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-md font-bold text-text-main flex items-center gap-2">
+                    <i data-lucide="file-plus-2" class="w-5 h-5 text-theme-pink"></i>
+                    تسجيل معاملة كشفية جديدة (Modal)
+                </h3>
+                <button onclick="toggleModal(false)" class="w-8 h-8 rounded-full custom-card flex items-center justify-center hover-press text-text-main opacity-70">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Form Inputs -->
+            <div class="space-y-4 mb-6">
+                <!-- Patient Name -->
+                <div>
+                    <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">اسم المريض الكامل</label>
+                    <input type="text" placeholder="أدخل اسم المريض..." class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main placeholder-text-main opacity-70" id="modal-patient-name">
+                </div>
+                <!-- Doctor Assigned -->
+                <div>
+                    <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">الطبيب المعالج والعيادة</label>
+                    <select class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main" id="modal-doctor">
+                        <option>د. أحمد سليمان - العيادة الباطنية ($120)</option>
+                        <option>د. سارة العلي - عيادة الأطفال ($90)</option>
+                        <option>د. سمر الياسين - عيادة النساء ($150)</option>
+                    </select>
+                </div>
+                <!-- Amount / Fee -->
+                <div>
+                    <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">قيمة الكشفية</label>
+                    <input type="text" value="$120.00" class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-bold text-theme-pink" id="modal-fee">
+                </div>
+                <!-- Date Selector (ديت سليكتر) -->
+                <div>
+                    <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">تاريخ المعاملة (Date Picker)</label>
+                    <input type="date" value="2026-06-29" class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main custom-date-input" id="modal-date">
+                </div>
+            </div>
+
+            <!-- Modal Footer Buttons -->
+            <div class="flex justify-end gap-3">
+                <button onclick="toggleModal(false)" class="py-2.5 px-6 rounded-xl text-xs font-bold text-text-main custom-card hover-press" id="modal-cancel-btn">
+                    إلغاء الأمر
+                </button>
+                <button onclick="saveTransaction()" class="py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-500 to-emerald-400 hover-press" id="modal-submit-btn">
+                    تأكيد وحفظ
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Script to render Advanced Visual Styles & ApexCharts -->
@@ -778,6 +876,29 @@
                 excelPag.classList.add('hidden');
             }
 
+            // Adjust modal buttons design to match themes
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+            const submitBtn = document.getElementById('modal-submit-btn');
+            const addTrigger = document.getElementById('add-trans-trigger');
+
+            if (themeName === 'excel') {
+                cancelBtn.className = 'excel-btn-secondary';
+                submitBtn.className = 'excel-btn-primary';
+                addTrigger.className = 'py-2 px-4 border border-[#107c41] bg-[#107c41] text-white text-xs font-bold hover:bg-[#0b592e]';
+            } else if (themeName === 'brutal') {
+                cancelBtn.className = 'py-2.5 px-6 border-2 border-black text-xs font-bold bg-white text-black hover-press';
+                submitBtn.className = 'py-2.5 px-6 border-2 border-black text-xs font-bold bg-[#ffde43] text-black hover-press';
+                addTrigger.className = 'py-2.5 px-4 border-3 border-black text-xs font-bold bg-[#ec4899] text-black hover-press shadow-[4px_4px_0px_#000000]';
+            } else if (themeName === 'minimalist') {
+                cancelBtn.className = 'py-2 px-5 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50';
+                submitBtn.className = 'py-2 px-5 rounded-lg text-xs font-medium text-white bg-slate-900 hover:bg-slate-800';
+                addTrigger.className = 'py-2 px-4 rounded-lg text-xs font-medium text-white bg-slate-900 hover:bg-slate-800';
+            } else { // soft & glass
+                cancelBtn.className = 'py-2.5 px-6 rounded-xl text-xs font-bold text-text-main custom-card hover-press';
+                submitBtn.className = 'py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-500 to-emerald-400 hover-press';
+                addTrigger.className = 'py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2 shadow-soft-out-sm font-["Outfit"]';
+            }
+
             // Wait slightly for transition to complete, then update charts
             setTimeout(() => {
                 updateChartThemes(themeName);
@@ -878,6 +999,24 @@
             });
             const activeTab = document.querySelector(`[data-excel-tab="${pageNum}"]`);
             if (activeTab) activeTab.classList.add('active');
+        }
+
+        // Modal Controls
+        function toggleModal(show) {
+            const modal = document.getElementById('add-transaction-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+                // Force refocus or layout redraw
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function saveTransaction() {
+            // Mock transaction save and trigger success alert animation/notice
+            const patientName = document.getElementById('modal-patient-name').value || "مريض تجريبي";
+            alert("تم حفظ معاملة جديدة للمريض: " + patientName);
+            toggleModal(false);
         }
 
         // Restore saved theme on load
