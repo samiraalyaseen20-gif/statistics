@@ -231,24 +231,6 @@ body[data-theme="excel"] .alert-warning {
 }
 
 /* ----------------------------------------------------
-   ISOMETRIC 3D CHART STYLING RULES
-   ---------------------------------------------------- */
-.iso-face {
-    transition: all 0.4s ease;
-    opacity: var(--iso-opacity, 0.85);
-}
-.iso-outline {
-    stroke: var(--iso-stroke);
-    stroke-width: var(--iso-stroke-width);
-    fill: none;
-    transition: all 0.4s ease;
-}
-.iso-ribbon {
-    transition: all 0.4s ease;
-    opacity: var(--iso-ribbon-opacity, 0.9);
-}
-
-/* ----------------------------------------------------
    1. SOFT UI (NEUMORPHISM) THEME DEFINITIONS
    ---------------------------------------------------- */
 body[data-theme="soft"] {
@@ -257,25 +239,6 @@ body[data-theme="soft"] {
     --theme-text-main: #2e3e5c;
     --theme-pink: #ff4d7e;
     --theme-emerald: #10b981;
-
-    /* Isometric theme colors */
-    --iso-chart-bg: #eef2f7;
-    --iso-stroke: rgba(255, 255, 255, 0.7);
-    --iso-stroke-width: 1px;
-    --iso-stroke-back: rgba(255, 255, 255, 0.35);
-    --iso-back-opacity: 0.5;
-    --iso-base-stroke: rgba(255, 255, 255, 0.9);
-    --iso-opacity: 0.7;
-    --iso-opacity-base: 0.15;
-    --iso-opacity-top: 0.75;
-    --iso-ribbon-opacity: 0.95;
-    --iso-ribbon-text: #ffffff;
-    --iso-color-1: #00cfe8;
-    --iso-color-2: #7c3aed;
-    --iso-color-3: #ff4d7e;
-    --iso-color-4: #ffb800;
-    --iso-color-5: #ff9f43;
-    --iso-color-6: #ef4444;
 }
 body[data-theme="soft"] .custom-card {
     background: #eef2f7;
@@ -324,25 +287,6 @@ body[data-theme="glass"] {
     --theme-text-main: #2e3e5c;
     --theme-pink: #ff4d7e;
     --theme-emerald: #10b981;
-
-    /* Isometric theme colors - Uses a dark radial gradient space box for glowing columns */
-    --iso-chart-bg: radial-gradient(circle, #20173a 0%, #0d091a 100%);
-    --iso-stroke: rgba(255, 255, 255, 0.7);
-    --iso-stroke-width: 1px;
-    --iso-stroke-back: rgba(255, 255, 255, 0.45);
-    --iso-back-opacity: 0.6;
-    --iso-base-stroke: #ffffff;
-    --iso-opacity: 0.65;
-    --iso-opacity-base: 0.1;
-    --iso-opacity-top: 0.65;
-    --iso-ribbon-opacity: 0.85;
-    --iso-ribbon-text: #ffffff;
-    --iso-color-1: #00cfe8;
-    --iso-color-2: #7c3aed;
-    --iso-color-3: #ff4d7e;
-    --iso-color-4: #ffb800;
-    --iso-color-5: #ff9f43;
-    --iso-color-6: #ef4444;
 }
 body[data-theme="glass"] .custom-card {
     background: rgba(255, 255, 255, 0.55);
@@ -395,25 +339,6 @@ body[data-theme="brutal"] {
     --theme-text-main: #000000;
     --theme-pink: #ec4899;
     --theme-emerald: #059669;
-
-    /* Isometric theme colors */
-    --iso-chart-bg: #ffffff;
-    --iso-stroke: #000000;
-    --iso-stroke-width: 3px;
-    --iso-stroke-back: transparent;
-    --iso-back-opacity: 0;
-    --iso-base-stroke: #000000;
-    --iso-opacity: 1;
-    --iso-opacity-base: 1;
-    --iso-opacity-top: 1;
-    --iso-ribbon-opacity: 1;
-    --iso-ribbon-text: #000000;
-    --iso-color-1: #00cfe8;
-    --iso-color-2: #a78bfa;
-    --iso-color-3: #ff4d7e;
-    --iso-color-4: #ffde43;
-    --iso-color-5: #ff9f43;
-    --iso-color-6: #ef4444;
 }
 body[data-theme="brutal"] .custom-card {
     background: #ffffff;
@@ -471,25 +396,6 @@ body[data-theme="minimalist"] {
     --theme-text-main: #171717;
     --theme-pink: #db2777;
     --theme-emerald: #16a34a;
-
-    /* Isometric theme colors */
-    --iso-chart-bg: #ffffff;
-    --iso-stroke: #e5e5e5;
-    --iso-stroke-width: 1px;
-    --iso-stroke-back: rgba(0, 0, 0, 0.08);
-    --iso-back-opacity: 0.35;
-    --iso-base-stroke: #171717;
-    --iso-opacity: 0.85;
-    --iso-opacity-base: 0.15;
-    --iso-opacity-top: 0.85;
-    --iso-ribbon-opacity: 0.9;
-    --iso-ribbon-text: #ffffff;
-    --iso-color-1: #e5e5e5;
-    --iso-color-2: #d4d4d4;
-    --iso-color-3: #a3a3a3;
-    --iso-color-4: #737373;
-    --iso-color-5: #525252;
-    --iso-color-6: #262626;
 }
 body[data-theme="minimalist"] .custom-card {
     background: #ffffff;
@@ -538,25 +444,6 @@ body[data-theme="excel"] {
     --theme-text-main: #323130;
     --theme-pink: #107c41;
     --theme-emerald: #107c41;
-
-    /* Isometric theme colors */
-    --iso-chart-bg: #ffffff;
-    --iso-stroke: #a19f9d;
-    --iso-stroke-width: 1px;
-    --iso-stroke-back: rgba(0, 0, 0, 0.06);
-    --iso-back-opacity: 0.3;
-    --iso-base-stroke: #107c41;
-    --iso-opacity: 0.9;
-    --iso-opacity-base: 0.2;
-    --iso-opacity-top: 0.9;
-    --iso-ribbon-opacity: 0.95;
-    --iso-ribbon-text: #ffffff;
-    --iso-color-1: #e1f2e9;
-    --iso-color-2: #c3e5d3;
-    --iso-color-3: #87caaa;
-    --iso-color-4: #4aae80;
-    --iso-color-5: #107c41;
-    --iso-color-6: #0b592e;
 }
 body[data-theme="excel"] .custom-card {
     background: #ffffff;
