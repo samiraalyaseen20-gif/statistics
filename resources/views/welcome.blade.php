@@ -351,7 +351,7 @@
                 </div>
             </section>
 
-            <!-- Card 10: Bubble Chart - Patient Demographics & Spending (Now spans full row lg:col-span-3) -->
+            <!-- Card 10: Bubble Chart - Patient Demographics & Spending (Spans full row lg:col-span-3) -->
             <section class="custom-card p-6 hover-lift lg:col-span-3">
                 <div class="flex justify-between items-center mb-6">
                     <div>
@@ -387,11 +387,11 @@
                     <!-- Search Input -->
                     <div class="flex items-center gap-2 px-2">
                         <i data-lucide="search" class="w-4 h-4 text-text-main opacity-50 shrink-0"></i>
-                        <input type="text" placeholder="اسم المريض..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main placeholder-text-main opacity-60">
+                        <input type="text" placeholder="اسم المريض..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main placeholder-text-main opacity-60" id="search-input">
                     </div>
                     <!-- Clinic Dropdown -->
                     <div>
-                        <select class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main">
+                        <select class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main" id="doctor-select">
                             <option>جميع الأطباء...</option>
                             <option>د. أحمد سليمان</option>
                             <option>د. سارة العلي</option>
@@ -400,7 +400,7 @@
                     </div>
                     <!-- Status Filter -->
                     <div>
-                        <select class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main">
+                        <select class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main" id="status-select">
                             <option>حالة الدفع...</option>
                             <option>مدفوع</option>
                             <option>غير مدفوع</option>
@@ -409,7 +409,7 @@
                     <!-- Date Selector (ديت سليكتر) -->
                     <div class="flex items-center gap-2 px-2 border-r border-slate-200/20">
                         <i data-lucide="calendar" class="w-4 h-4 text-text-main opacity-50 shrink-0"></i>
-                        <input type="date" value="2026-06-29" class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main custom-date-input">
+                        <input type="date" value="" class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main custom-date-input" id="date-select">
                     </div>
                 </div>
 
@@ -427,91 +427,7 @@
                             </tr>
                         </thead>
                         <tbody id="table-data-body">
-                            <!-- Page 1 Rows -->
-                            <tr class="table-row page-1">
-                                <td>#TX-1092</td>
-                                <td class="font-bold">محمد خالد العتيبي</td>
-                                <td>د. أحمد سليمان - العيادة الباطنية</td>
-                                <td class="font-bold">$120.00</td>
-                                <td><span class="badge-success">مدفوع</span></td>
-                                <td class="font-['Outfit']">2026-06-29</td>
-                            </tr>
-                            <tr class="table-row page-1">
-                                <td>#TX-1093</td>
-                                <td class="font-bold">سارة عبد الرحمن العلي</td>
-                                <td>د. سارة العلي - عيادة الأطفال</td>
-                                <td class="font-bold">$90.00</td>
-                                <td><span class="badge-success">مدفوع</span></td>
-                                <td class="font-['Outfit']">2026-06-29</td>
-                            </tr>
-                            <tr class="table-row page-1">
-                                <td>#TX-1094</td>
-                                <td class="font-bold">عبد الله عمر الفهيد</td>
-                                <td>د. أحمد سليمان - العيادة الباطنية</td>
-                                <td class="font-bold">$120.00</td>
-                                <td><span class="badge-danger">غير مدفوع</span></td>
-                                <td class="font-['Outfit']">2026-06-28</td>
-                            </tr>
-                            <tr class="table-row page-1">
-                                <td>#TX-1095</td>
-                                <td class="font-bold">ريما محمد الشمري</td>
-                                <td>د. سمر الياسين - عيادة النساء</td>
-                                <td class="font-bold">$150.00</td>
-                                <td><span class="badge-success">مدفوع</span></td>
-                                <td class="font-['Outfit']">2026-06-28</td>
-                            </tr>
-                            
-                            <!-- Page 2 Rows (Hidden by default) -->
-                            <tr class="table-row page-2 hidden">
-                                <td>#TX-1088</td>
-                                <td class="font-bold">سعدون ناصر الجاسم</td>
-                                <td>د. سمر الياسين - عيادة النساء</td>
-                                <td class="font-bold">$150.00</td>
-                                <td><span class="badge-success">مدفوع</span></td>
-                                <td class="font-['Outfit']">2026-06-27</td>
-                            </tr>
-                            <tr class="table-row page-2 hidden">
-                                <td>#TX-1089</td>
-                                <td class="font-bold">فاطمة علي الكواري</td>
-                                <td>د. سارة العلي - عيادة الأطفال</td>
-                                <td class="font-bold">$90.00</td>
-                                <td><span class="badge-danger">غير مدفوع</span></td>
-                                <td class="font-['Outfit']">2026-06-27</td>
-                            </tr>
-                            <tr class="table-row page-2 hidden">
-                                <td>#TX-1090</td>
-                                <td class="font-bold">يوسف محمد القحطاني</td>
-                                <td>د. أحمد سليمان - العيادة الباطنية</td>
-                                <td class="font-bold">$120.00</td>
-                                <td><span class="badge-success">مدفوع</span></td>
-                                <td class="font-['Outfit']">2026-06-26</td>
-                            </tr>
-                            <tr class="table-row page-2 hidden">
-                                <td>#TX-1091</td>
-                                <td class="font-bold">ليلى أحمد الحربي</td>
-                                <td>د. سمر الياسين - عيادة النساء</td>
-                                <td class="font-bold">$150.00</td>
-                                <td><span class="badge-success">مدفوع</span></td>
-                                <td class="font-['Outfit']">2026-06-26</td>
-                            </tr>
-
-                            <!-- Page 3 Rows (Hidden by default) -->
-                            <tr class="table-row page-3 hidden">
-                                <td>#TX-1084</td>
-                                <td class="font-bold">فهد فيصل السديري</td>
-                                <td>د. أحمد سليمان - العيادة الباطنية</td>
-                                <td class="font-bold">$120.00</td>
-                                <td><span class="badge-success">مدفوع</span></td>
-                                <td class="font-['Outfit']">2026-06-25</td>
-                            </tr>
-                            <tr class="table-row page-3 hidden">
-                                <td>#TX-1085</td>
-                                <td class="font-bold">منى إبراهيم الدوسري</td>
-                                <td>د. سمر الياسين - عيادة النساء</td>
-                                <td class="font-bold">$150.00</td>
-                                <td><span class="badge-success">مدفوع</span></td>
-                                <td class="font-['Outfit']">2026-06-25</td>
-                            </tr>
+                            <!-- Injected dynamically by JS -->
                         </tbody>
                     </table>
                 </div>
@@ -519,19 +435,16 @@
                 <!-- Pagination Container (Default Standard Pagination) -->
                 <div id="standard-pagination" class="flex justify-between items-center">
                     <span class="text-xs text-text-main opacity-70" id="pag-label">عرض 1 إلى 4 من أصل 10 قيود</span>
-                    <div class="flex gap-2">
-                        <button onclick="changePage(1)" class="pag-btn w-8 h-8 rounded-lg custom-card flex items-center justify-center hover-press text-xs font-bold text-text-main active" data-page-btn="1">1</button>
-                        <button onclick="changePage(2)" class="pag-btn w-8 h-8 rounded-lg custom-card flex items-center justify-center hover-press text-xs font-bold text-text-main" data-page-btn="2">2</button>
-                        <button onclick="changePage(3)" class="pag-btn w-8 h-8 rounded-lg custom-card flex items-center justify-center hover-press text-xs font-bold text-text-main" data-page-btn="3">3</button>
+                    <div class="flex gap-2" id="pag-buttons">
+                        <!-- Injected dynamically by JS -->
                     </div>
                 </div>
 
                 <!-- Excel Tab-style Simulator (Visible ONLY in Excel theme) -->
                 <div id="excel-pagination" class="hidden excel-sheet-container -mx-6 -mb-6">
-                    <div onclick="changePage(1)" class="excel-tab active" data-excel-tab="1">ورقة 1</div>
-                    <div onclick="changePage(2)" class="excel-tab" data-excel-tab="2">ورقة 2</div>
-                    <div onclick="changePage(3)" class="excel-tab" data-excel-tab="3">ورقة 3</div>
-                    <div class="excel-tab text-slate-400 font-bold px-2">+</div>
+                    <div class="flex items-center gap-2 mr-2" id="excel-tabs-list">
+                        <!-- Injected dynamically by JS -->
+                    </div>
                     <div class="ml-auto text-[11px] text-slate-600 mr-2 flex items-center gap-1 font-semibold">
                         <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-700"></i>
                         جاهز (Excel Mode)
@@ -646,9 +559,9 @@
                 <div>
                     <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">الطبيب المعالج والعيادة</label>
                     <select class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main" id="modal-doctor">
-                        <option>د. أحمد سليمان - العيادة الباطنية ($120)</option>
-                        <option>د. سارة العلي - عيادة الأطفال ($90)</option>
-                        <option>د. سمر الياسين - عيادة النساء ($150)</option>
+                        <option value="د. أحمد سليمان - العيادة الباطنية">د. أحمد سليمان - العيادة الباطنية ($120)</option>
+                        <option value="د. سارة العلي - عيادة الأطفال">د. سارة العلي - عيادة الأطفال ($90)</option>
+                        <option value="د. سمر الياسين - عيادة النساء">د. سمر الياسين - عيادة النساء ($150)</option>
                     </select>
                 </div>
                 <!-- Amount / Fee -->
@@ -1013,7 +926,7 @@
         });
         chartStackedRevenue.render();
 
-        // 4. Bubble Chart (Now wide height 280)
+        // 4. Bubble Chart
         chartBubbleSpend = new ApexCharts(document.querySelector("#chart-bubble-spend"), {
             chart: {
                 type: 'bubble',
@@ -1097,6 +1010,7 @@
             // Wait slightly for transition to complete, then update charts
             setTimeout(() => {
                 updateChartThemes(themeName);
+                renderTable(); // Re-render table buttons to apply correct theme classes
             }, 100);
         }
 
@@ -1189,58 +1103,203 @@
             }
         }
 
-        // Pagination Switching Script
-        function changePage(pageNum) {
-            // Hide all table rows
-            document.querySelectorAll('#table-data-body tr').forEach(row => {
-                row.classList.add('hidden');
+
+        // ================= DYNAMIC DATA GRID CLIENT-SIDE CONTROLLER =================
+
+        // Array of Transactions
+        const transactions = [
+            { id: '#TX-1092', name: 'محمد خالد العتيبي', doctor: 'د. أحمد سليمان - العيادة الباطنية', fee: '$120.00', paid: true, date: '2026-06-29' },
+            { id: '#TX-1093', name: 'سارة عبد الرحمن العلي', doctor: 'د. سارة العلي - عيادة الأطفال', fee: '$90.00', paid: true, date: '2026-06-29' },
+            { id: '#TX-1094', name: 'عبد الله عمر الفهيد', doctor: 'د. أحمد سليمان - العيادة الباطنية', fee: '$120.00', paid: false, date: '2026-06-28' },
+            { id: '#TX-1095', name: 'ريما محمد الشمري', doctor: 'د. سمر الياسين - عيادة النساء', fee: '$150.00', paid: true, date: '2026-06-28' },
+            { id: '#TX-1088', name: 'سعدون ناصر الجاسم', doctor: 'د. سمر الياسين - عيادة النساء', fee: '$150.00', paid: true, date: '2026-06-27' },
+            { id: '#TX-1089', name: 'فاطمة علي الكواري', doctor: 'د. سارة العلي - عيادة الأطفال', fee: '$90.00', paid: false, date: '2026-06-27' },
+            { id: '#TX-1090', name: 'يوسف محمد القحطاني', doctor: 'د. أحمد سليمان - العيادة الباطنية', fee: '$120.00', paid: true, date: '2026-06-26' },
+            { id: '#TX-1091', name: 'ليلى أحمد الحربي', doctor: 'د. سمر الياسين - عيادة النساء', fee: '$150.00', paid: true, date: '2026-06-26' },
+            { id: '#TX-1084', name: 'فهد فيصل السديري', doctor: 'د. أحمد سليمان - العيادة الباطنية', fee: '$120.00', paid: true, date: '2026-06-25' },
+            { id: '#TX-1085', name: 'منى إبراهيم الدوسري', doctor: 'د. سمر الياسين - عيادة النساء', fee: '$150.00', paid: true, date: '2026-06-25' }
+        ];
+
+        let currentPage = 1;
+        const pageSize = 4;
+
+        // Render Table Rows and Pagination controls
+        function renderTable() {
+            const searchVal = document.getElementById('search-input').value.trim();
+            const doctorVal = document.getElementById('doctor-select').value;
+            const statusVal = document.getElementById('status-select').value;
+            const dateVal = document.getElementById('date-select').value;
+
+            // Filter transactions
+            let filtered = transactions.filter(t => {
+                // Search filter (Case insensitive name search)
+                if (searchVal && !t.name.includes(searchVal)) return false;
+                
+                // Doctor filter
+                if (doctorVal !== 'جميع الأطباء...') {
+                    const cleanDocName = doctorVal.replace('د. ', '');
+                    if (!t.doctor.includes(cleanDocName)) return false;
+                }
+
+                // Status filter
+                if (statusVal !== 'حالة الدفع...') {
+                    const isPaid = statusVal === 'مدفوع';
+                    if (t.paid !== isPaid) return false;
+                }
+
+                // Date filter
+                if (dateVal && t.date !== dateVal) return false;
+
+                return true;
             });
-            
-            // Show selected page rows
-            document.querySelectorAll(`#table-data-body tr.page-${pageNum}`).forEach(row => {
-                row.classList.remove('hidden');
-            });
-            
-            // Update page label
-            const label = document.getElementById('pag-label');
-            if (pageNum === 1) {
-                label.innerText = "عرض 1 إلى 4 من أصل 10 قيود";
-            } else if (pageNum === 2) {
-                label.innerText = "عرض 5 إلى 8 من أصل 10 قيود";
+
+            const totalItems = filtered.length;
+            const totalPages = Math.ceil(totalItems / pageSize) || 1;
+
+            // Page validation
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIdx = (currentPage - 1) * pageSize;
+            const endIdx = Math.min(startIdx + pageSize, totalItems);
+            const paginatedItems = filtered.slice(startIdx, endIdx);
+
+            // Render table DOM
+            const tbody = document.getElementById('table-data-body');
+            tbody.innerHTML = '';
+
+            if (paginatedItems.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-xs opacity-50 py-8">لا توجد معاملات تطابق فلاتر البحث المحددة.</td>
+                    </tr>
+                `;
             } else {
-                label.innerText = "عرض 9 إلى 10 من أصل 10 قيود";
+                paginatedItems.forEach(t => {
+                    const statusBadge = t.paid 
+                        ? '<span class="badge-success">مدفوع</span>' 
+                        : '<span class="badge-danger">غير مدفوع</span>';
+                    tbody.innerHTML += `
+                        <tr class="table-row">
+                            <td>${t.id}</td>
+                            <td class="font-bold">${t.name}</td>
+                            <td>${t.doctor}</td>
+                            <td class="font-bold">${t.fee}</td>
+                            <td>${statusBadge}</td>
+                            <td class="font-['Outfit']">${t.date}</td>
+                        </tr>
+                    `;
+                });
             }
 
-            // Set active class on standard pagination buttons
-            document.querySelectorAll('.pag-btn').forEach(btn => {
-                btn.classList.remove('active', 'text-pink-500');
-            });
-            const activeBtn = document.querySelector(`[data-page-btn="${pageNum}"]`);
-            if (activeBtn) activeBtn.classList.add('active', 'text-pink-500');
+            // Update page range label
+            const label = document.getElementById('pag-label');
+            if (totalItems === 0) {
+                label.innerText = 'عرض 0 إلى 0 من أصل 0 قيود';
+            } else {
+                label.innerText = `عرض ${startIdx + 1} إلى ${endIdx} من أصل ${totalItems} قيود`;
+            }
+
+            // Draw controls
+            renderPaginationControls(totalPages);
+        }
+
+        // Generate Pagination Buttons dynamically
+        function renderPaginationControls(totalPages) {
+            const pagContainer = document.getElementById('pag-buttons');
+            pagContainer.innerHTML = '';
+
+            const theme = document.body.getAttribute('data-theme') || 'soft';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const activeClass = i === currentPage ? 'active' : '';
+                const activeColorClass = (i === currentPage && theme === 'soft') ? 'text-pink-500' : '';
+                pagContainer.innerHTML += `
+                    <button onclick="changePage(${i})" class="pag-btn w-8 h-8 rounded-lg custom-card flex items-center justify-center hover-press text-xs font-bold text-text-main ${activeClass} ${activeColorClass}" data-page-btn="${i}">${i}</button>
+                `;
+            }
+
+            // Render Excel Sheet Tabs
+            const excelTabsContainer = document.getElementById('excel-tabs-list');
+            excelTabsContainer.innerHTML = '';
             
-            // Set active class on Excel sheet tabs
-            document.querySelectorAll('.excel-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            const activeTab = document.querySelector(`[data-excel-tab="${pageNum}"]`);
-            if (activeTab) activeTab.classList.add('active');
+            for (let i = 1; i <= totalPages; i++) {
+                const activeClass = i === currentPage ? 'active' : '';
+                excelTabsContainer.innerHTML += `
+                    <div onclick="changePage(${i})" class="excel-tab ${activeClass}" data-excel-tab="${i}">ورقة ${i}</div>
+                `;
+            }
+            // Add '+' sheet tab simulator
+            excelTabsContainer.innerHTML += `<div class="excel-tab text-slate-400 font-bold px-2 cursor-pointer" onclick="addNewDemoTab()">+</div>`;
+        }
+
+        // Change active page index
+        function changePage(pageNum) {
+            currentPage = pageNum;
+            renderTable();
+        }
+
+        // Add a demo sheet tab mock
+        function addNewDemoTab() {
+            alert("محاكاة: تم إضافة ورقة عمل جديدة في Excel Mode.");
         }
 
         // Modal Controls
         function toggleModal(show) {
             const modal = document.getElementById('add-transaction-modal');
             if (show) {
+                // Populate default today date
+                document.getElementById('modal-date').value = new Date().toISOString().substring(0, 10);
                 modal.classList.remove('hidden');
             } else {
                 modal.classList.add('hidden');
             }
         }
 
+        // Save new transaction dynamically
+        function saveTransaction() {
+            const patientName = document.getElementById('modal-patient-name').value.trim();
+            const doctorAssigned = document.getElementById('modal-doctor').value;
+            const feeInput = document.getElementById('modal-fee').value;
+            const dateInput = document.getElementById('modal-date').value;
+
+            if (!patientName) {
+                alert("يرجى إدخال اسم المريض أولاً.");
+                return;
+            }
+
+            // Create transaction object
+            const newTx = {
+                id: '#TX-' + Math.floor(Math.random() * 1000 + 1000),
+                name: patientName,
+                doctor: doctorAssigned,
+                fee: feeInput,
+                paid: true, // Defaulting saved transactions as Paid
+                date: dateInput
+            };
+
+            // Push to data array
+            transactions.unshift(newTx);
+            
+            // Reset modal input
+            document.getElementById('modal-patient-name').value = '';
+
+            // Close and re-render
+            toggleModal(false);
+            currentPage = 1; // Go to first page to see the new item
+            renderTable();
+        }
+
+        // Attach dynamic filter listeners
+        document.getElementById('search-input').addEventListener('input', () => { currentPage = 1; renderTable(); });
+        document.getElementById('doctor-select').addEventListener('change', () => { currentPage = 1; renderTable(); });
+        document.getElementById('status-select').addEventListener('change', () => { currentPage = 1; renderTable(); });
+        document.getElementById('date-select').addEventListener('change', () => { currentPage = 1; renderTable(); });
+
         // Restore saved theme on load
         window.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme') || 'soft';
             changeTheme(savedTheme);
-            changePage(1);
         });
     </script>
 </body>
