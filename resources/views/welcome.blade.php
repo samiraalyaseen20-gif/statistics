@@ -35,11 +35,8 @@
             background: #cbd5e1;
             border-radius: 10px;
         }
-        body[data-theme="modern"] ::-webkit-scrollbar-thumb {
-            background: #334155;
-        }
         body[data-theme="glass"] ::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.15);
         }
         body[data-theme="brutal"] ::-webkit-scrollbar-thumb {
             background: #000000;
@@ -50,9 +47,9 @@
 <body class="min-h-screen p-6 md:p-12" data-theme="soft">
 
     <!-- Background blobs for Glassmorphism theme -->
-    <div class="fixed top-10 left-10 w-80 h-80 rounded-full bg-pink-500/20 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
-    <div class="fixed bottom-20 right-10 w-96 h-96 rounded-full bg-sky-500/20 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
-    <div class="fixed top-1/2 left-1/3 w-80 h-80 rounded-full bg-emerald-500/15 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
+    <div class="fixed top-10 left-10 w-80 h-80 rounded-full bg-pink-400/30 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
+    <div class="fixed bottom-20 right-10 w-96 h-96 rounded-full bg-sky-400/30 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
+    <div class="fixed top-1/2 left-1/3 w-80 h-80 rounded-full bg-emerald-400/25 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
 
     <!-- Container -->
     <div class="max-w-7xl mx-auto">
@@ -97,12 +94,7 @@
                     <span class="w-3.5 h-3.5 rounded-full bg-[#ffde43] border-2 border-black"></span>
                     ثيم بروتاليزم (Brutalism)
                 </button>
-                <!-- Style 4: Modern Dark -->
-                <button onclick="changeTheme('modern')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="modern">
-                    <span class="w-3.5 h-3.5 rounded-full bg-[#1e293b] border border-slate-600"></span>
-                    ثيم مودرن (Dark)
-                </button>
-                <!-- Style 5: Minimalist Clean -->
+                <!-- Style 4: Minimalist Clean -->
                 <button onclick="changeTheme('minimalist')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="minimalist">
                     <span class="w-3.5 h-3.5 rounded-full bg-[#ffffff] border border-slate-300"></span>
                     ثيم مبسط (Minimalist)
@@ -394,16 +386,13 @@
         // Dynamic properties reader
         function getCardBgColor() {
             const theme = document.body.getAttribute('data-theme');
-            if (theme === 'glass') return 'rgba(255, 255, 255, 0.05)';
+            if (theme === 'glass') return 'rgba(255, 255, 255, 0.35)';
             if (theme === 'brutal') return '#ffffff';
-            if (theme === 'modern') return '#151e33';
             if (theme === 'minimalist') return '#f5f5f5';
             return '#eef2f7'; // default/soft
         }
         function getTextMainColor() {
-            const theme = document.body.getAttribute('data-theme');
-            if (theme === 'modern' || theme === 'glass') return '#f8fafc';
-            return '#2e3e5c';
+            return '#2e3e5c'; // All current themes have dark text
         }
 
         // Helper to generate circular radial config
@@ -642,13 +631,12 @@
         function updateChartThemes(themeName) {
             const cardBg = getCardBgColor();
             const textMain = getTextMainColor();
-            const isDark = themeName === 'modern' || themeName === 'glass';
 
             // Function to update single radial/gauge chart track and value text
             const updateRadial = (chartInstance) => {
                 if (chartInstance) {
                     chartInstance.updateOptions({
-                        theme: { mode: isDark ? 'dark' : 'light' },
+                        theme: { mode: 'light' },
                         plotOptions: {
                             radialBar: {
                                 track: { background: cardBg },
@@ -674,14 +662,14 @@
             // Update tooltips theme
             if (chartAreaSales) {
                 chartAreaSales.updateOptions({
-                    theme: { mode: isDark ? 'dark' : 'light' },
-                    tooltip: { theme: isDark ? 'dark' : 'light' }
+                    theme: { mode: 'light' },
+                    tooltip: { theme: 'light' }
                 });
             }
             if (chartMultiBar) {
                 chartMultiBar.updateOptions({
-                    theme: { mode: isDark ? 'dark' : 'light' },
-                    tooltip: { theme: isDark ? 'dark' : 'light' }
+                    theme: { mode: 'light' },
+                    tooltip: { theme: 'light' }
                 });
             }
         }

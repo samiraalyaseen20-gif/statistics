@@ -22,7 +22,7 @@
     --theme-card-bg: #eef2f7;
     --theme-text-main: #2e3e5c;
     --theme-pink: #ff4d7e;
-    --theme-emerald: #28c76f;
+    --theme-emerald: #10b981;
 }
 
 /* Base Body Styles */
@@ -104,40 +104,40 @@ body[data-theme="soft"] .badge-danger {
 }
 
 /* ----------------------------------------------------
-   2. GLASSMORPHISM THEME DEFINITIONS
+   2. LIGHT GLASSMORPHISM THEME DEFINITIONS (White background, translucent cards)
    ---------------------------------------------------- */
 body[data-theme="glass"] {
-    --theme-bg: linear-gradient(135deg, #090d16 0%, #111025 100%);
-    --theme-card-bg: rgba(255, 255, 255, 0.07);
-    --theme-text-main: #f8fafc;
-    --theme-pink: #ff85a7;
-    --theme-emerald: #48da89;
+    --theme-bg: #f8fafc;
+    --theme-card-bg: rgba(255, 255, 255, 0.55);
+    --theme-text-main: #2e3e5c;
+    --theme-pink: #ff4d7e;
+    --theme-emerald: #10b981;
 }
 body[data-theme="glass"] .custom-card {
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 30px rgba(163, 177, 198, 0.2);
     border-radius: 24px;
 }
 body[data-theme="glass"] .custom-inset {
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: inset 0 2px 4px rgba(163, 177, 198, 0.1);
 }
 body[data-theme="glass"] .theme-btn.active {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border-color: rgba(255, 255, 255, 0.4) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    border-color: rgba(16, 185, 129, 0.3) !important;
 }
 body[data-theme="glass"] .badge-success {
-    background-color: rgba(40, 199, 111, 0.2);
-    color: #48da89;
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
 }
 body[data-theme="glass"] .badge-danger {
-    background-color: rgba(255, 77, 126, 0.2);
-    color: #ff85a7;
+    background-color: rgba(255, 77, 126, 0.15);
+    color: #ff4d7e;
 }
 
 /* ----------------------------------------------------
@@ -183,42 +183,7 @@ body[data-theme="brutal"] .badge-danger {
 }
 
 /* ----------------------------------------------------
-   4. MODERN DARK THEME DEFINITIONS
-   ---------------------------------------------------- */
-body[data-theme="modern"] {
-    --theme-bg: #090f1e;
-    --theme-card-bg: #151e33;
-    --theme-text-main: #f8fafc;
-    --theme-pink: #ff85a7;
-    --theme-emerald: #48da89;
-}
-body[data-theme="modern"] .custom-card {
-    background: #151e33;
-    border: 1px solid #23314f;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-    border-radius: 20px;
-}
-body[data-theme="modern"] .custom-inset {
-    background: #090f1e;
-    border: 1px solid #1c273e;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
-    border-radius: 16px;
-}
-body[data-theme="modern"] .theme-btn.active {
-    background: #23314f !important;
-    border-color: #2e3e5c !important;
-}
-body[data-theme="modern"] .badge-success {
-    background-color: rgba(40, 199, 111, 0.15);
-    color: #48da89;
-}
-body[data-theme="modern"] .badge-danger {
-    background-color: rgba(255, 77, 126, 0.15);
-    color: #ff85a7;
-}
-
-/* ----------------------------------------------------
-   5. MINIMALIST CLEAN THEME DEFINITIONS
+   4. MINIMALIST CLEAN THEME DEFINITIONS
    ---------------------------------------------------- */
 body[data-theme="minimalist"] {
     --theme-bg: #fafafa;
