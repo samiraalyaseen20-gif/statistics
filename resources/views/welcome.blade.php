@@ -312,9 +312,6 @@
                 </div>
             </section>
 
-
-            <!-- ================= NEW ADVANCED CHARTS SECTIONS ================= -->
-
             <!-- Card 6: Donut Chart - Revenue Breakdown -->
             <section class="custom-card p-6 hover-lift">
                 <div class="flex justify-between items-center mb-6">
@@ -354,12 +351,168 @@
                 </div>
             </section>
 
-            <!-- Card 9: Bubble Chart - Patient Demographics & Spending -->
-            <section class="custom-card p-6 hover-lift lg:col-span-3">
+            <!-- Card 9: Isometric Steps Chart (3D Isometric Infographic Steps) -->
+            <section class="custom-card p-6 hover-lift lg:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-text-main">مسار المريض الإيزومتري ثلاثي الأبعاد (3D Steps)</h2>
+                        <span class="text-xs text-text-main opacity-60">كفاءة الأداء ورحلة المريض المتكاملة داخل العيادات</span>
+                    </div>
+                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
+                        <i data-lucide="layers" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Isometric SVG representation -->
+                <div class="w-full custom-inset rounded-2xl p-2 flex justify-center items-center overflow-hidden">
+                    <svg viewBox="0 0 540 420" class="w-full h-auto" style="overflow: visible;">
+                        <!-- Step 6 (Furthest / Tallest) -->
+                        <g>
+                            <!-- Floor Ribbon -->
+                            <polygon points="383,155 423,175 483,205 443,185" class="iso-ribbon" fill="var(--iso-color-6)" />
+                            <!-- Left Face -->
+                            <polygon points="383,155 423,175 423,-125 383,-145" class="iso-face" fill="var(--iso-color-6)" />
+                            <!-- Right Face -->
+                            <polygon points="423,175 463,155 463,-145 423,-125" class="iso-face" fill="var(--iso-color-6)" />
+                            <!-- Right Shade Overlay -->
+                            <polygon points="423,175 463,155 463,-145 423,-125" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <!-- Top Face -->
+                            <polygon points="423,-165 383,-145 423,-125 463,-145" class="iso-face" fill="var(--iso-color-6)" />
+                            <!-- Top Highlight Overlay -->
+                            <polygon points="423,-165 383,-145 423,-125 463,-145" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <!-- Outlines -->
+                            <polygon points="383,155 423,175 463,155 463,-145 423,-165 383,-145" class="iso-outline" />
+                            <line x1="423" y1="175" x2="423" y2="-125" class="iso-outline" />
+                            <!-- Subtitle on Top -->
+                            <text x="413" y="-140" transform="rotate(-26.5) skewX(26.5)" fill="#ffffff" font-family="Outfit" font-size="9" font-weight="bold">95%</text>
+                            <!-- Label on Ribbon -->
+                            <text x="430" y="198" transform="skewY(26.5)" fill="#ffffff" font-family="Tajawal" font-size="8" font-weight="bold">STEP 06: الصيدلية</text>
+                        </g>
+
+                        <!-- Step 5 -->
+                        <g>
+                            <!-- Floor Ribbon -->
+                            <polygon points="323,190 363,210 423,240 383,220" class="iso-ribbon" fill="var(--iso-color-5)" />
+                            <!-- Left Face -->
+                            <polygon points="323,190 363,210 363,-50 323,-70" class="iso-face" fill="var(--iso-color-5)" />
+                            <!-- Right Face -->
+                            <polygon points="363,210 403,190 403,-70 363,-50" class="iso-face" fill="var(--iso-color-5)" />
+                            <!-- Right Shade Overlay -->
+                            <polygon points="363,210 403,190 403,-70 363,-50" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <!-- Top Face -->
+                            <polygon points="363,-90 323,-70 363,-50 403,-70" class="iso-face" fill="var(--iso-color-5)" />
+                            <!-- Top Highlight Overlay -->
+                            <polygon points="363,-90 323,-70 363,-50 403,-70" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <!-- Outlines -->
+                            <polygon points="323,190 363,210 403,190 403,-70 363,-90 323,-70" class="iso-outline" />
+                            <line x1="363" y1="210" x2="363" y2="-50" class="iso-outline" />
+                            <!-- Subtitle on Top -->
+                            <text x="353" y="-65" transform="rotate(-26.5) skewX(26.5)" fill="#ffffff" font-family="Outfit" font-size="9" font-weight="bold">50%</text>
+                            <!-- Label on Ribbon -->
+                            <text x="370" y="233" transform="skewY(26.5)" fill="#ffffff" font-family="Tajawal" font-size="8" font-weight="bold">STEP 05: المختبر</text>
+                        </g>
+
+                        <!-- Step 4 -->
+                        <g>
+                            <!-- Floor Ribbon -->
+                            <polygon points="262,225 302,245 362,275 322,255" class="iso-ribbon" fill="var(--iso-color-4)" />
+                            <!-- Left Face -->
+                            <polygon points="262,225 302,245 302,25 262,5" class="iso-face" fill="var(--iso-color-4)" />
+                            <!-- Right Face -->
+                            <polygon points="302,245 342,225 342,5 302,25" class="iso-face" fill="var(--iso-color-4)" />
+                            <!-- Right Shade Overlay -->
+                            <polygon points="302,245 342,225 342,5 302,25" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <!-- Top Face -->
+                            <polygon points="302,-15 262,5 302,25 342,5" class="iso-face" fill="var(--iso-color-4)" />
+                            <!-- Top Highlight Overlay -->
+                            <polygon points="302,-15 262,5 302,25 342,5" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <!-- Outlines -->
+                            <polygon points="262,225 302,245 342,225 342,5 302,-15 262,5" class="iso-outline" />
+                            <line x1="302" y1="245" x2="302" y2="25" class="iso-outline" />
+                            <!-- Subtitle on Top -->
+                            <text x="292" y="10" transform="rotate(-26.5) skewX(26.5)" fill="#ffffff" font-family="Outfit" font-size="9" font-weight="bold">88%</text>
+                            <!-- Label on Ribbon -->
+                            <text x="309" y="268" transform="skewY(26.5)" fill="#ffffff" font-family="Tajawal" font-size="8" font-weight="bold">STEP 04: النسائية</text>
+                        </g>
+
+                        <!-- Step 3 -->
+                        <g>
+                            <!-- Floor Ribbon -->
+                            <polygon points="201,260 241,280 301,310 261,290" class="iso-ribbon" fill="var(--iso-color-3)" />
+                            <!-- Left Face -->
+                            <polygon points="201,260 241,280 241,100 201,80" class="iso-face" fill="var(--iso-color-3)" />
+                            <!-- Right Face -->
+                            <polygon points="241,280 281,260 281,80 241,100" class="iso-face" fill="var(--iso-color-3)" />
+                            <!-- Right Shade Overlay -->
+                            <polygon points="241,280 281,260 281,80 241,100" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <!-- Top Face -->
+                            <polygon points="241,60 201,80 241,100 281,80" class="iso-face" fill="var(--iso-color-3)" />
+                            <!-- Top Highlight Overlay -->
+                            <polygon points="241,60 201,80 241,100 281,80" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <!-- Outlines -->
+                            <polygon points="201,260 241,280 281,260 281,80 241,60 201,80" class="iso-outline" />
+                            <line x1="241" y1="280" x2="241" y2="100" class="iso-outline" />
+                            <!-- Subtitle on Top -->
+                            <text x="231" y="85" transform="rotate(-26.5) skewX(26.5)" fill="#ffffff" font-family="Outfit" font-size="9" font-weight="bold">65%</text>
+                            <!-- Label on Ribbon -->
+                            <text x="248" y="303" transform="skewY(26.5)" fill="#ffffff" font-family="Tajawal" font-size="8" font-weight="bold">STEP 03: الأطفال</text>
+                        </g>
+
+                        <!-- Step 2 -->
+                        <g>
+                            <!-- Floor Ribbon -->
+                            <polygon points="141,295 181,315 241,345 201,325" class="iso-ribbon" fill="var(--iso-color-2)" />
+                            <!-- Left Face -->
+                            <polygon points="141,295 181,315 181,175 141,155" class="iso-face" fill="var(--iso-color-2)" />
+                            <!-- Right Face -->
+                            <polygon points="181,315 221,295 221,155 181,175" class="iso-face" fill="var(--iso-color-2)" />
+                            <!-- Right Shade Overlay -->
+                            <polygon points="181,315 221,295 221,155 181,175" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <!-- Top Face -->
+                            <polygon points="181,135 141,155 181,175 221,155" class="iso-face" fill="var(--iso-color-2)" />
+                            <!-- Top Highlight Overlay -->
+                            <polygon points="181,135 141,155 181,175 221,155" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <!-- Outlines -->
+                            <polygon points="141,295 181,315 221,295 221,155 181,135 141,155" class="iso-outline" />
+                            <line x1="181" y1="315" x2="181" y2="175" class="iso-outline" />
+                            <!-- Subtitle on Top -->
+                            <text x="171" y="160" transform="rotate(-26.5) skewX(26.5)" fill="#ffffff" font-family="Outfit" font-size="9" font-weight="bold">78%</text>
+                            <!-- Label on Ribbon -->
+                            <text x="188" y="338" transform="skewY(26.5)" fill="#ffffff" font-family="Tajawal" font-size="8" font-weight="bold">STEP 02: الباطنية</text>
+                        </g>
+
+                        <!-- Step 1 (Closest / Shortest) -->
+                        <g>
+                            <!-- Floor Ribbon -->
+                            <polygon points="80,330 120,350 180,380 140,360" class="iso-ribbon" fill="var(--iso-color-1)" />
+                            <!-- Left Face -->
+                            <polygon points="80,330 120,350 120,250 80,230" class="iso-face" fill="var(--iso-color-1)" />
+                            <!-- Right Face -->
+                            <polygon points="120,350 160,330 160,230 120,250" class="iso-face" fill="var(--iso-color-1)" />
+                            <!-- Right Shade Overlay -->
+                            <polygon points="120,350 160,330 160,230 120,250" class="iso-face pointer-events-none" fill="#000000" opacity="0.18" />
+                            <!-- Top Face -->
+                            <polygon points="120,210 80,230 120,250 160,230" class="iso-face" fill="var(--iso-color-1)" />
+                            <!-- Top Highlight Overlay -->
+                            <polygon points="120,210 80,230 120,250 160,230" class="iso-face pointer-events-none" fill="#ffffff" opacity="0.25" />
+                            <!-- Outlines -->
+                            <polygon points="80,330 120,350 160,330 160,230 120,210 80,230" class="iso-outline" />
+                            <line x1="120" y1="350" x2="120" y2="250" class="iso-outline" />
+                            <!-- Subtitle on Top -->
+                            <text x="110" y="235" transform="rotate(-26.5) skewX(26.5)" fill="#ffffff" font-family="Outfit" font-size="9" font-weight="bold">92%</text>
+                            <!-- Label on Ribbon -->
+                            <text x="127" y="373" transform="skewY(26.5)" fill="#ffffff" font-family="Tajawal" font-size="8" font-weight="bold">STEP 01: الاستقبال</text>
+                        </g>
+                    </svg>
+                </div>
+            </section>
+
+            <!-- Card 10: Bubble Chart - Patient Demographics & Spending -->
+            <section class="custom-card p-6 hover-lift lg:col-span-1">
                 <div class="flex justify-between items-center mb-6">
                     <div>
-                        <h2 class="text-lg font-bold text-text-main">تحليل فئات المرضى العمرية وعلاقتها بالإنفاق والتكرار</h2>
-                        <span class="text-xs text-text-main opacity-60">المحور الأفقي: عمر المريض | العمودي: عدد الزيارات | حجم الفقاعة: إجمالي الفاتورة</span>
+                        <h2 class="text-lg font-bold text-text-main">تحليل فئات المرضى وإنفاقهم</h2>
+                        <span class="text-xs text-text-main opacity-60">الزيارات والإنفاق حسب العمر والعيادة</span>
                     </div>
                     <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
                         <i data-lucide="scatter-chart" class="w-4 h-4"></i>
@@ -370,10 +523,8 @@
                 </div>
             </section>
 
-            <!-- ================= END NEW ADVANCED CHARTS SECTIONS ================= -->
 
-
-            <!-- Card 10: Dynamic Data Grid (Table) with Pagination, Date Selector & Filters -->
+            <!-- Card 10 -> now Card 11: Dynamic Data Grid (Table) with Pagination, Date Selector & Filters -->
             <section class="custom-card p-6 hover-lift lg:col-span-3">
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
                     <div>
@@ -545,7 +696,7 @@
             </section>
 
 
-            <!-- Card 11: Interactive Component Demos -->
+            <!-- Card 11 -> now Card 12: Interactive Component Demos -->
             <section class="custom-card p-6 hover-lift lg:col-span-3">
                 <h2 class="text-lg font-bold text-text-main mb-6">مكونات تفاعلية متعددة المدارس البصرية</h2>
                 
@@ -1022,7 +1173,7 @@
         chartBubbleSpend = new ApexCharts(document.querySelector("#chart-bubble-spend"), {
             chart: {
                 type: 'bubble',
-                height: 220,
+                height: 250,
                 background: 'transparent',
                 toolbar: { show: false }
             },
@@ -1031,26 +1182,26 @@
             series: [{
                 name: 'عيادة الباطنية',
                 data: [
-                    [25, 8, 120], [35, 12, 240], [45, 5, 100], [55, 14, 320], [65, 9, 180]
+                    [25, 8, 120], [35, 12, 240], [45, 5, 100], [55, 14, 320]
                 ]
             }, {
                 name: 'عيادة الأطفال',
                 data: [
-                    [22, 15, 350], [28, 7, 90], [32, 11, 210], [40, 4, 80], [48, 8, 160]
+                    [22, 15, 350], [28, 7, 90], [32, 11, 210], [40, 4, 80]
                 ]
             }, {
                 name: 'عيادة النساء والولادة',
                 data: [
-                    [26, 6, 180], [34, 10, 300], [42, 13, 390], [50, 8, 240], [58, 12, 360]
+                    [26, 6, 180], [34, 10, 300], [42, 13, 390], [50, 8, 240]
                 ]
             }],
             xaxis: {
-                tickAmount: 10,
+                tickAmount: 5,
                 type: 'numeric',
                 labels: { show: false }
             },
             yaxis: {
-                max: 20
+                max: 18
             },
             colors: ['#28c76f', '#ff4d7e', '#00cfe8']
         });
