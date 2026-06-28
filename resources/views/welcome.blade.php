@@ -44,500 +44,584 @@
         }
     </style>
 </head>
-<body class="min-h-screen p-6 md:p-12" data-theme="soft">
+<body class="min-h-screen p-4 md:p-8" data-theme="soft">
 
     <!-- Background blobs for Glassmorphism theme -->
     <div class="fixed top-10 left-10 w-80 h-80 rounded-full bg-pink-400/30 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
     <div class="fixed bottom-20 right-10 w-96 h-96 rounded-full bg-sky-400/30 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
     <div class="fixed top-1/2 left-1/3 w-80 h-80 rounded-full bg-emerald-400/25 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
 
-    <!-- Container -->
-    <div class="max-w-7xl mx-auto">
-
-        <!-- Top Header Navigation -->
-        <header class="flex justify-between items-center mb-6">
-            <!-- Left Dots Control Window mimic -->
-            <div class="flex items-center gap-2">
-                <div class="w-4 h-4 rounded-full bg-red-400 shadow-soft-out-sm"></div>
-                <div class="w-4 h-4 rounded-full bg-yellow-400 shadow-soft-out-sm"></div>
-                <div class="w-4 h-4 rounded-full bg-green-400 shadow-soft-out-sm"></div>
-            </div>
-
-            <!-- Title -->
-            <h1 class="text-3xl font-bold tracking-tight text-text-main font-['Outfit']">KPI Dashboard</h1>
-
-            <!-- Right Circular Badge -->
-            <div class="w-16 h-16 rounded-full custom-card flex items-center justify-center font-bold text-xl text-text-main font-['Outfit']">
-                19
-            </div>
-        </header>
-
-        <!-- Theme Switcher (Paradigm Switcher) -->
-        <div class="mb-6 p-4 rounded-[20px] custom-card flex flex-wrap items-center justify-between gap-4">
-            <span class="text-sm font-bold text-text-main flex items-center gap-2">
-                <i data-lucide="palette" class="w-5 h-5 text-pink-500"></i>
-                نظام تحويل مدارس التصميم والهوية البصرية:
-            </span>
-            <div class="flex flex-wrap gap-3">
-                <!-- Style 1: Soft UI -->
-                <button onclick="changeTheme('soft')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="soft">
-                    <span class="w-3.5 h-3.5 rounded-full bg-[#eef2f7] border border-slate-300"></span>
-                    ثيم سوفت (Soft UI)
-                </button>
-                <!-- Style 2: Glassmorphism -->
-                <button onclick="changeTheme('glass')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="glass">
-                    <span class="w-3.5 h-3.5 rounded-full bg-gradient-to-r from-pink-500 to-sky-500 border border-slate-300 animate-pulse"></span>
-                    ثيم زجاجي (Glassmorphism)
-                </button>
-                <!-- Style 3: Neo-Brutalism -->
-                <button onclick="changeTheme('brutal')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="brutal">
-                    <span class="w-3.5 h-3.5 rounded-full bg-[#ffde43] border-2 border-black"></span>
-                    ثيم بروتاليزم (Brutalism)
-                </button>
-                <!-- Style 4: Minimalist Clean -->
-                <button onclick="changeTheme('minimalist')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="minimalist">
-                    <span class="w-3.5 h-3.5 rounded-full bg-[#ffffff] border border-slate-300"></span>
-                    ثيم مبسط (Minimalist)
-                </button>
-                <!-- Style 5: Excel Sheet style -->
-                <button onclick="changeTheme('excel')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="excel">
-                    <span class="w-3.5 h-3.5 rounded-full bg-[#107c41] border border-slate-300"></span>
-                    ثيم إكسل (Excel)
-                </button>
-            </div>
-        </div>
-
-        <!-- Alerts Demonstration Row -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="alert-box alert-success">
-                <i data-lucide="check-circle-2" class="w-5 h-5 text-theme-emerald shrink-0"></i>
+    <!-- Main Responsive Flex Grid Layout -->
+    <div class="flex min-h-[calc(100vh-2rem)] flex-col md:flex-row gap-6 max-w-7xl mx-auto w-full">
+        
+        <!-- RIGHT SIDEBAR (الشريط الجانبي الأيمن للملاحة) -->
+        <aside id="sidebar" class="sidebar-container w-64 shrink-0 flex flex-col p-6 fixed inset-y-0 right-0 z-40 transform translate-x-full transition-transform duration-300 md:static md:translate-x-0 md:h-auto">
+            <!-- Logo & App Name -->
+            <div class="flex items-center gap-3 mb-8 border-b border-slate-200/20 pb-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-pink-400 flex items-center justify-center text-white shadow-soft-out-sm font-bold text-lg">
+                    <i data-lucide="activity" class="w-5 h-5"></i>
+                </div>
                 <div>
-                    <span class="font-bold">نجاح العملية:</span> تم تحديث صندوق الكاش اليومي واستلام الدفعة بنجاح.
+                    <h2 class="text-sm font-bold text-text-main leading-tight">عيادتنا الذكية</h2>
+                    <span class="text-[10px] text-text-main opacity-60 font-semibold">نظام إدارة العيادات</span>
                 </div>
             </div>
-            <div class="alert-box alert-warning">
-                <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500 shrink-0"></i>
-                <div>
-                    <span class="font-bold">تنبيه النظام:</span> يوجد طبيب واحد متاح حالياً في عيادة الباطنية، يرجى تدقيق الطابور.
-                </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 space-y-3">
+                <button onclick="navigateToPage('dashboard')" class="nav-link w-full py-3 px-4 rounded-xl text-xs font-bold flex items-center gap-3 text-text-main hover:bg-slate-200/10 hover-press active text-pink-500" id="nav-dashboard">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i>
+                    <span>لوحة التحكم</span>
+                </button>
+                <button onclick="navigateToPage('reports')" class="nav-link w-full py-3 px-4 rounded-xl text-xs font-bold flex items-center gap-3 text-text-main hover:bg-slate-200/10 hover-press" id="nav-reports">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0"></i>
+                    <span>التقارير والإحصائيات</span>
+                </button>
+                <button onclick="navigateToPage('doctors')" class="nav-link w-full py-3 px-4 rounded-xl text-xs font-bold flex items-center gap-3 text-text-main hover:bg-slate-200/10 hover-press" id="nav-doctors">
+                    <i data-lucide="users" class="w-4 h-4 shrink-0"></i>
+                    <span>إدارة الأطباء</span>
+                </button>
+                <button onclick="navigateToPage('settings')" class="nav-link w-full py-3 px-4 rounded-xl text-xs font-bold flex items-center gap-3 text-text-main hover:bg-slate-200/10 hover-press" id="nav-settings">
+                    <i data-lucide="settings" class="w-4 h-4 shrink-0"></i>
+                    <span>الإعدادات العامة</span>
+                </button>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="border-t border-slate-200/20 pt-4 text-center">
+                <span class="text-[10px] text-text-main opacity-50 font-bold font-['Outfit']">V 1.0.0 (SPA)</span>
             </div>
-        </div>
+        </aside>
 
-        <!-- main Grid -->
-        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Sidebar Backdrop for Mobile -->
+        <div id="sidebar-backdrop" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/40 z-30 hidden"></div>
 
-            <!-- Card 1: Overview and Vertical Bars -->
-            <section class="custom-card p-6 hover-lift">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-text-main">Overview</h2>
-                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center hover-press text-text-main opacity-70">
-                        <i data-lucide="more-horizontal" class="w-4 h-4"></i>
-                    </button>
+        <!-- LEFT MAIN CONTENT (منطقة المحتوى الرئيسية) -->
+        <div class="flex-1 flex flex-col min-w-0">
+            
+            <!-- Shared Header Navigation -->
+            <header class="flex justify-between items-center mb-6 p-4 rounded-2xl custom-card">
+                <div class="flex items-center gap-3">
+                    <!-- Mobile Hamburger Menu -->
+                    <button onclick="toggleSidebar(true)" class="md:hidden w-10 h-10 rounded-xl custom-card flex items-center justify-center text-text-main hover-press border border-slate-200/20">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                     </button>
+                     <!-- Dynamic Header Titles -->
+                     <div>
+                         <h1 id="page-title" class="text-xl font-bold text-text-main">لوحة التحكم والمؤشرات</h1>
+                         <span id="page-subtitle" class="text-[10px] text-text-main opacity-60">نظرة عامة على كفاءة أداء العيادات الخارجية</span>
+                     </div>
                 </div>
 
-                <!-- Custom Bar representation -->
-                <div class="flex justify-between items-end h-44 px-4 mb-6">
-                    <!-- Bar 1 -->
-                    <div class="flex flex-col items-center gap-2 w-8">
-                        <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
-                            <div class="w-full bg-gradient-to-t from-pink-500 to-pink-300 rounded-full" style="height: 80%"></div>
+                <!-- Right elements: active daily cashbox + profile badge -->
+                <div class="flex items-center gap-4">
+                     <div class="hidden sm:flex items-center gap-2 py-1.5 px-3 rounded-lg custom-inset">
+                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                         <span class="text-[10px] text-text-main font-bold">صندوق الكاش اليومي:</span>
+                         <span class="text-xs font-bold text-theme-emerald font-['Outfit']">$1,240.00</span>
+                     </div>
+                     <div class="w-12 h-12 rounded-full custom-card flex items-center justify-center font-bold text-md text-text-main font-['Outfit'] shadow-soft-out-sm">
+                         AD
+                     </div>
+                </div>
+            </header>
+
+            <!-- PAGE 1: DASHBOARD PAGE SECTION -->
+            <section id="page-dashboard" class="page-section space-y-6">
+                <!-- Alerts row -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="alert-box alert-success">
+                        <i data-lucide="check-circle-2" class="w-5 h-5 text-theme-emerald shrink-0"></i>
+                        <div>
+                            <span class="font-bold">نجاح العملية:</span> تم تحديث صندوق الكاش اليومي واستلام الدفعة بنجاح.
                         </div>
-                        <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 1</span>
                     </div>
-                    <!-- Bar 2 -->
-                    <div class="flex flex-col items-center gap-2 w-8">
-                        <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
-                            <div class="w-full bg-gradient-to-t from-amber-500 to-amber-300 rounded-full" style="height: 65%"></div>
+                    <div class="alert-box alert-warning">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500 shrink-0"></i>
+                        <div>
+                            <span class="font-bold">تنبيه النظام:</span> يوجد طبيب واحد متاح حالياً في عيادة الباطنية، يرجى تدقيق الطابور.
                         </div>
-                        <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 2</span>
-                    </div>
-                    <!-- Bar 3 -->
-                    <div class="flex flex-col items-center gap-2 w-8">
-                        <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
-                            <div class="w-full bg-gradient-to-t from-emerald-500 to-emerald-300 rounded-full" style="height: 90%"></div>
-                        </div>
-                        <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 3</span>
-                    </div>
-                    <!-- Bar 4 -->
-                    <div class="flex flex-col items-center gap-2 w-8">
-                        <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
-                            <div class="w-full bg-gradient-to-t from-sky-500 to-sky-300 rounded-full" style="height: 50%"></div>
-                        </div>
-                        <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 4</span>
                     </div>
                 </div>
 
-                <div class="border-t border-slate-200/30 pt-4 flex justify-between">
-                    <div>
-                        <div class="text-xs text-text-main opacity-70 font-medium">Sales Analysis</div>
-                        <div class="text-xl font-bold text-theme-pink font-['Outfit']">23K</div>
-                    </div>
-                    <div class="text-left">
-                        <div class="text-xs text-text-main opacity-70 font-medium">Revenue</div>
-                        <div class="text-xl font-bold text-sky-500 font-['Outfit']">12K</div>
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- Card 2: 4 circular progress metrics -->
-            <section class="custom-card p-6 hover-lift">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-text-main">KPI Dashboard</h2>
-                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center hover-press text-text-main opacity-70">
-                        <i data-lucide="sliders" class="w-4 h-4"></i>
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <!-- Radial 1 -->
-                    <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
-                        <div id="chart-radial-1"></div>
-                        <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #1</span>
-                    </div>
-                    <!-- Radial 2 -->
-                    <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
-                        <div id="chart-radial-2"></div>
-                        <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #2</span>
-                    </div>
-                    <!-- Radial 3 -->
-                    <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
-                        <div id="chart-radial-3"></div>
-                        <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #3</span>
-                    </div>
-                    <!-- Radial 4 -->
-                    <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
-                        <div id="chart-radial-4"></div>
-                        <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #4</span>
-                    </div>
-                </div>
-
-                <div class="text-center custom-card rounded-xl py-2">
-                    <span class="text-xs text-text-main opacity-70">Total volume:</span>
-                    <span class="text-sm font-bold text-text-main font-['Outfit']">277,2M</span>
-                </div>
-            </section>
-
-
-            <!-- Card 3: Wave/Area Chart Sales -->
-            <section class="custom-card p-6 hover-lift">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-text-main">KPI Dashboard Sales</h2>
-                    <span class="badge-success shadow-soft-out-sm font-['Outfit']">96%</span>
-                </div>
-
-                <!-- Apex Area Chart -->
-                <div class="w-full custom-inset rounded-2xl p-2 mb-4">
-                    <div id="chart-area-sales"></div>
-                </div>
-
-                <p class="text-xs text-text-main opacity-60 text-center leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aeneam commodo ligula eget.
-                </p>
-            </section>
-
-
-            <!-- Card 4: Strategy and Development Gauge -->
-            <section class="custom-card p-6 hover-lift md:col-span-2 lg:col-span-1">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <h2 class="text-lg font-bold text-text-main">Strategy & Development</h2>
-                        <span class="text-xs text-text-main opacity-60 font-['Outfit']">Q 277,2M</span>
-                    </div>
-                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-theme-emerald">
-                        <i data-lucide="trending-up" class="w-4 h-4"></i>
-                    </button>
-                </div>
-
-                <!-- Semi circle donut -->
-                <div class="flex justify-center items-start h-36 overflow-hidden custom-inset rounded-2xl mb-4">
-                    <div id="chart-gauge-strategy" class="w-full"></div>
-                </div>
-
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between p-2 rounded-xl custom-card">
-                        <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-pink-500 shadow-soft-out-sm"></span>
-                            <span class="text-xs text-text-main opacity-80 font-medium">Value Title</span>
-                        </div>
-                        <span class="text-xs font-bold text-text-main font-['Outfit']">16.2M</span>
-                    </div>
-                    <div class="flex items-center justify-between p-2 rounded-xl custom-card">
-                        <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-soft-out-sm"></span>
-                            <span class="text-xs text-text-main opacity-80 font-medium">Value Title</span>
-                        </div>
-                        <span class="text-xs font-bold text-text-main font-['Outfit']">10.8M</span>
-                    </div>
-                    <div class="flex items-center justify-between p-2 rounded-xl custom-card">
-                        <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-sky-500 shadow-soft-out-sm"></span>
-                            <span class="text-xs text-text-main opacity-80 font-medium">Value Title</span>
-                        </div>
-                        <span class="text-xs font-bold text-text-main font-['Outfit']">18.2M</span>
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- Card 5: Speedometer Dials & Bar -->
-            <section class="custom-card p-6 hover-lift md:col-span-2">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-text-main">Analysis & Speedometer Dials</h2>
-                    <span class="text-xs text-text-main opacity-60 font-medium">مستشعرات أداء حية</span>
-                </div>
-
-                <!-- 3 Speedometers Row -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
-                    <!-- Dial 1 -->
-                    <div class="flex flex-col items-center custom-inset p-4 rounded-[20px]">
-                        <div id="chart-dial-pink"></div>
-                        <div class="text-xs font-bold text-text-main mt-2">مستوى الطلبات</div>
-                    </div>
-                    <!-- Dial 2 -->
-                    <div class="flex flex-col items-center custom-inset p-4 rounded-[20px]">
-                        <div id="chart-dial-orange"></div>
-                        <div class="text-xs font-bold text-text-main mt-2">معدل التحويل</div>
-                    </div>
-                    <!-- Dial 3 -->
-                    <div class="flex flex-col items-center custom-inset p-4 rounded-[20px]">
-                        <div id="chart-dial-green"></div>
-                        <div class="text-xs font-bold text-text-main mt-2">نسبة الاستبقاء</div>
-                    </div>
-                </div>
-
-                <!-- Multi-bar Chart at the bottom of card -->
-                <div class="custom-inset rounded-2xl p-4">
-                    <div id="chart-multi-bar"></div>
-                </div>
-            </section>
-
-            <!-- Card 6: Donut Chart - Revenue Breakdown -->
-            <section class="custom-card p-6 hover-lift">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-text-main">توزيع الإيرادات حسب العيادات</h2>
-                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
-                        <i data-lucide="pie-chart" class="w-4 h-4"></i>
-                    </button>
-                </div>
-                <div class="w-full custom-inset rounded-2xl p-4 flex justify-center items-center">
-                    <div id="chart-donut-departments" class="w-full"></div>
-                </div>
-            </section>
-
-            <!-- Card 7: Radar Chart - Clinic Quality Metrics -->
-            <section class="custom-card p-6 hover-lift">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-text-main">مؤشر كفاءة وجودة الخدمة</h2>
-                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
-                        <i data-lucide="activity" class="w-4 h-4"></i>
-                    </button>
-                </div>
-                <div class="w-full custom-inset rounded-2xl p-2">
-                    <div id="chart-radar-quality" class="w-full"></div>
-                </div>
-            </section>
-
-            <!-- Card 8: Stacked Columns - Consultations vs Extras -->
-            <section class="custom-card p-6 hover-lift">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-lg font-bold text-text-main">الإيرادات المتراكمة (كشفيات vs تحاليل)</h2>
-                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
-                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
-                    </button>
-                </div>
-                <div class="w-full custom-inset rounded-2xl p-2">
-                    <div id="chart-stacked-revenue" class="w-full"></div>
-                </div>
-            </section>
-
-            <!-- Card 10: Bubble Chart - Patient Demographics & Spending (Spans full row lg:col-span-3) -->
-            <section class="custom-card p-6 hover-lift lg:col-span-3">
-                <div class="flex justify-between items-center mb-6">
-                    <div>
-                        <h2 class="text-lg font-bold text-text-main">تحليل فئات المرضى وإنفاقهم</h2>
-                        <span class="text-xs text-text-main opacity-60">الزيارات والإنفاق حسب العمر والعيادة</span>
-                    </div>
-                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
-                        <i data-lucide="scatter-chart" class="w-4 h-4"></i>
-                    </button>
-                </div>
-                <div class="w-full custom-inset rounded-2xl p-4">
-                    <div id="chart-bubble-spend" class="w-full"></div>
-                </div>
-            </section>
-
-
-            <!-- Card 11: Dynamic Data Grid (Table) with Pagination, Date Selector & Filters -->
-            <section class="custom-card p-6 hover-lift lg:col-span-3">
-                <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-                    <div>
-                        <h2 class="text-lg font-bold text-text-main">جدول سجل المعاملات المالية والمرضى (Data Grid)</h2>
-                        <span class="text-xs text-text-main opacity-60">تحديث فوري وتصفية ذكية لمعاملات العيادات الخارجية</span>
-                    </div>
-                    <!-- Trigger Modal Button -->
-                    <button onclick="toggleModal(true)" class="py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2 shadow-soft-out-sm font-['Outfit']" id="add-trans-trigger">
-                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                        تسجيل كشفية (فتح Modal)
-                    </button>
-                </div>
-
-                <!-- Filters & Date Selector Bar -->
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6 p-4 rounded-2xl custom-inset">
-                    <!-- Search Input -->
-                    <div class="flex items-center gap-2 px-2">
-                        <i data-lucide="search" class="w-4 h-4 text-text-main opacity-50 shrink-0"></i>
-                        <input type="text" placeholder="اسم المريض..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main placeholder-text-main opacity-60" id="search-input">
-                    </div>
-                    <!-- Clinic Dropdown -->
-                    <div>
-                        <select class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main" id="doctor-select">
-                            <option>جميع الأطباء...</option>
-                            <option>د. أحمد سليمان</option>
-                            <option>د. سارة العلي</option>
-                            <option>د. سمر الياسين</option>
-                        </select>
-                    </div>
-                    <!-- Status Filter -->
-                    <div>
-                        <select class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main" id="status-select">
-                            <option>حالة الدفع...</option>
-                            <option>مدفوع</option>
-                            <option>غير مدفوع</option>
-                        </select>
-                    </div>
-                    <!-- Date Selector (ديت سليكتر) -->
-                    <div class="flex items-center gap-2 px-2 border-r border-slate-200/20">
-                        <i data-lucide="calendar" class="w-4 h-4 text-text-main opacity-50 shrink-0"></i>
-                        <input type="date" value="" class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main custom-date-input" id="date-select">
-                    </div>
-                </div>
-
-                <!-- Table Wrapper -->
-                <div class="overflow-x-auto w-full mb-6">
-                    <table class="custom-table">
-                        <thead>
-                            <tr class="table-header-row">
-                                <th>رقم المعاملة</th>
-                                <th>اسم المريض</th>
-                                <th>الطبيب المعالج</th>
-                                <th>سعر الكشفية</th>
-                                <th>حالة الدفع</th>
-                                <th>تاريخ الزيارة</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-data-body">
-                            <!-- Injected dynamically by JS -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination Container (Default Standard Pagination) -->
-                <div id="standard-pagination" class="flex justify-between items-center">
-                    <span class="text-xs text-text-main opacity-70" id="pag-label">عرض 1 إلى 4 من أصل 10 قيود</span>
-                    <div class="flex gap-2" id="pag-buttons">
-                        <!-- Injected dynamically by JS -->
-                    </div>
-                </div>
-
-                <!-- Excel Tab-style Simulator (Visible ONLY in Excel theme) -->
-                <div id="excel-pagination" class="hidden excel-sheet-container -mx-6 -mb-6">
-                    <div class="flex items-center gap-2 mr-2" id="excel-tabs-list">
-                        <!-- Injected dynamically by JS -->
-                    </div>
-                    <div class="ml-auto text-[11px] text-slate-600 mr-2 flex items-center gap-1 font-semibold">
-                        <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-700"></i>
-                        جاهز (Excel Mode)
-                    </div>
-                </div>
-            </section>
-
-
-            <!-- Card 12: Interactive Component Demos -->
-            <section class="custom-card p-6 hover-lift lg:col-span-3">
-                <h2 class="text-lg font-bold text-text-main mb-6">مكونات تفاعلية متعددة المدارس البصرية</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Column 1: Buttons and Knobs -->
-                    <div class="space-y-6">
-                        <h3 class="text-sm font-semibold text-text-main opacity-70 border-b border-slate-200/20 pb-2">الأزرار وتأثيرات الضغط</h3>
-                        
-                        <div class="flex gap-4">
-                            <button class="flex-1 py-3 px-4 custom-card rounded-xl text-xs font-bold text-theme-pink hover-press">
-                                زر بارز (Raised)
+                <!-- Main charts grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Card 1: Overview and Vertical Bars -->
+                    <section class="custom-card p-6 hover-lift">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-text-main">Overview</h2>
+                            <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center hover-press text-text-main opacity-70">
+                                <i data-lucide="more-horizontal" class="w-4 h-4"></i>
                             </button>
-                            <button class="flex-1 py-3 px-4 custom-inset rounded-xl text-xs font-bold text-theme-emerald hover-press">
-                                زر غائر (Sunken)
+                        </div>
+                        <div class="flex justify-between items-end h-44 px-4 mb-6">
+                            <div class="flex flex-col items-center gap-2 w-8">
+                                <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
+                                    <div class="w-full bg-gradient-to-t from-pink-500 to-pink-300 rounded-full" style="height: 80%"></div>
+                                </div>
+                                <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 1</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-8">
+                                <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
+                                    <div class="w-full bg-gradient-to-t from-amber-500 to-amber-300 rounded-full" style="height: 65%"></div>
+                                </div>
+                                <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 2</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-8">
+                                <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
+                                    <div class="w-full bg-gradient-to-t from-emerald-500 to-emerald-300 rounded-full" style="height: 90%"></div>
+                                </div>
+                                <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 3</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-8">
+                                <div class="w-full custom-inset rounded-full h-36 flex items-end p-[3px]">
+                                    <div class="w-full bg-gradient-to-t from-sky-500 to-sky-300 rounded-full" style="height: 50%"></div>
+                                </div>
+                                <span class="text-[10px] text-text-main opacity-60 font-['Outfit']">Class 4</span>
+                            </div>
+                        </div>
+                        <div class="border-t border-slate-200/30 pt-4 flex justify-between">
+                            <div>
+                                <div class="text-xs text-text-main opacity-70 font-medium">Sales Analysis</div>
+                                <div class="text-xl font-bold text-theme-pink font-['Outfit']">23K</div>
+                            </div>
+                            <div class="text-left">
+                                <div class="text-xs text-text-main opacity-70 font-medium">Revenue</div>
+                                <div class="text-xl font-bold text-sky-500 font-['Outfit']">12K</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card 2: 4 circular progress metrics -->
+                    <section class="custom-card p-6 hover-lift">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-bold text-text-main">KPI Dashboard</h2>
+                            <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center hover-press text-text-main opacity-70">
+                                <i data-lucide="sliders" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
+                                <div id="chart-radial-1"></div>
+                                <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #1</span>
+                            </div>
+                            <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
+                                <div id="chart-radial-2"></div>
+                                <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #2</span>
+                            </div>
+                            <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
+                                <div id="chart-radial-3"></div>
+                                <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #3</span>
+                            </div>
+                            <div class="flex flex-col items-center p-2 rounded-2xl custom-inset">
+                                <div id="chart-radial-4"></div>
+                                <span class="text-xs text-text-main opacity-80 font-medium">Data Analysis #4</span>
+                            </div>
+                        </div>
+                        <div class="text-center custom-card rounded-xl py-2">
+                            <span class="text-xs text-text-main opacity-70">Total volume:</span>
+                            <span class="text-sm font-bold text-text-main font-['Outfit']">277,2M</span>
+                        </div>
+                    </section>
+
+                    <!-- Card 3: Wave/Area Chart Sales -->
+                    <section class="custom-card p-6 hover-lift">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-text-main">KPI Dashboard Sales</h2>
+                            <span class="badge-success shadow-soft-out-sm font-['Outfit']">96%</span>
+                        </div>
+                        <div class="w-full custom-inset rounded-2xl p-2 mb-4">
+                            <div id="chart-area-sales"></div>
+                        </div>
+                        <p class="text-xs text-text-main opacity-60 text-center leading-relaxed">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aeneam commodo ligula eget.
+                        </p>
+                    </section>
+
+                    <!-- Card 4: Strategy and Development Gauge -->
+                    <section class="custom-card p-6 hover-lift md:col-span-2 lg:col-span-1">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h2 class="text-lg font-bold text-text-main">Strategy & Development</h2>
+                                <span class="text-xs text-text-main opacity-60 font-['Outfit']">Q 277,2M</span>
+                            </div>
+                            <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-theme-emerald">
+                                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-center items-start h-36 overflow-hidden custom-inset rounded-2xl mb-4">
+                            <div id="chart-gauge-strategy" class="w-full"></div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-2 rounded-xl custom-card">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-pink-500 shadow-soft-out-sm"></span>
+                                    <span class="text-xs text-text-main opacity-80 font-medium">Value Title</span>
+                                </div>
+                                <span class="text-xs font-bold text-text-main font-['Outfit']">16.2M</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl custom-card">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500 shadow-soft-out-sm"></span>
+                                    <span class="text-xs text-text-main opacity-80 font-medium">Value Title</span>
+                                </div>
+                                <span class="text-xs font-bold text-text-main font-['Outfit']">10.8M</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-xl custom-card">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-sky-500 shadow-soft-out-sm"></span>
+                                    <span class="text-xs text-text-main opacity-80 font-medium">Value Title</span>
+                                </div>
+                                <span class="text-xs font-bold text-text-main font-['Outfit']">18.2M</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card 5: Speedometer Dials & Bar -->
+                    <section class="custom-card p-6 hover-lift md:col-span-2">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-text-main">Analysis & Speedometer Dials</h2>
+                            <span class="text-xs text-text-main opacity-60 font-medium">مستشعرات أداء حية</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
+                            <div class="flex flex-col items-center custom-inset p-4 rounded-[20px]">
+                                <div id="chart-dial-pink"></div>
+                                <div class="text-xs font-bold text-text-main mt-2">مستوى الطلبات</div>
+                            </div>
+                            <div class="flex flex-col items-center custom-inset p-4 rounded-[20px]">
+                                <div id="chart-dial-orange"></div>
+                                <div class="text-xs font-bold text-text-main mt-2">معدل التحويل</div>
+                            </div>
+                            <div class="flex flex-col items-center custom-inset p-4 rounded-[20px]">
+                                <div id="chart-dial-green"></div>
+                                <div class="text-xs font-bold text-text-main mt-2">نسبة الاستبقاء</div>
+                            </div>
+                        </div>
+                        <div class="custom-inset rounded-2xl p-4">
+                            <div id="chart-multi-bar"></div>
+                        </div>
+                    </section>
+
+                    <!-- Card 6: Donut Chart - Revenue Breakdown -->
+                    <section class="custom-card p-6 hover-lift">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-text-main">توزيع الإيرادات حسب العيادات</h2>
+                            <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
+                                <i data-lucide="pie-chart" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="w-full custom-inset rounded-2xl p-4 flex justify-center items-center">
+                            <div id="chart-donut-departments" class="w-full"></div>
+                        </div>
+                    </section>
+
+                    <!-- Card 7: Radar Chart - Clinic Quality Metrics -->
+                    <section class="custom-card p-6 hover-lift">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-text-main">مؤشر كفاءة وجودة الخدمة</h2>
+                            <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
+                                <i data-lucide="activity" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="w-full custom-inset rounded-2xl p-2">
+                            <div id="chart-radar-quality" class="w-full"></div>
+                        </div>
+                    </section>
+
+                    <!-- Card 8: Stacked Columns - Consultations vs Extras -->
+                    <section class="custom-card p-6 hover-lift">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-text-main">الإيرادات المتراكمة (كشفيات vs تحاليل)</h2>
+                            <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
+                                <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="w-full custom-inset rounded-2xl p-2">
+                            <div id="chart-stacked-revenue" class="w-full"></div>
+                        </div>
+                    </section>
+
+                    <!-- Card 10: Bubble Chart - Patient Demographics & Spending -->
+                    <section class="custom-card p-6 hover-lift lg:col-span-3">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h2 class="text-lg font-bold text-text-main">تحليل فئات المرضى وإنفاقهم</h2>
+                                <span class="text-xs text-text-main opacity-60">الزيارات والإنفاق حسب العمر والعيادة</span>
+                            </div>
+                            <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
+                                <i data-lucide="scatter-chart" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="w-full custom-inset rounded-2xl p-4">
+                            <div id="chart-bubble-spend" class="w-full"></div>
+                        </div>
+                    </section>
+
+                    <!-- Card 11: Dynamic Data Grid (Table) -->
+                    <section class="custom-card p-6 hover-lift lg:col-span-3">
+                        <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+                            <div>
+                                <h2 class="text-lg font-bold text-text-main">جدول سجل المعاملات المالية والمرضى (Data Grid)</h2>
+                                <span class="text-xs text-text-main opacity-60">تحديث فوري وتصفية ذكية لمعاملات العيادات الخارجية</span>
+                            </div>
+                            <button onclick="toggleModal(true)" class="py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2 shadow-soft-out-sm font-['Outfit']" id="add-trans-trigger">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                                تسجيل كشفية (فتح Modal)
                             </button>
                         </div>
 
-                        <div class="flex justify-between items-center custom-inset p-3 rounded-xl">
-                            <span class="text-xs font-bold text-text-main opacity-80">مفتاح تفعيل ذكي</span>
-                            <!-- Custom Switch Toggle -->
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="switch-demo" class="sr-only peer" checked>
-                                <div class="w-12 h-6 custom-inset rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gradient-to-r after:from-emerald-500 after:to-emerald-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:shadow-inner"></div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Column 2: Form Inputs -->
-                    <div class="space-y-4">
-                        <h3 class="text-sm font-semibold text-text-main opacity-70 border-b border-slate-200/20 pb-2">حقول الإدخال والبحث</h3>
-                        
-                        <div class="relative">
-                            <input type="text" placeholder="ابحث عن مريض..." class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-3 px-4 text-xs font-medium text-text-main placeholder-text-main opacity-40">
-                            <div class="absolute left-3 top-3.5 text-text-main opacity-50">
-                                <i data-lucide="search" class="w-4 h-4"></i>
+                        <!-- Filters -->
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6 p-4 rounded-2xl custom-inset">
+                            <div class="flex items-center gap-2 px-2">
+                                <i data-lucide="search" class="w-4 h-4 text-text-main opacity-50 shrink-0"></i>
+                                <input type="text" placeholder="اسم المريض..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main placeholder-text-main opacity-60" id="search-input">
+                            </div>
+                            <div>
+                                <select class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main" id="doctor-select">
+                                    <option>جميع الأطباء...</option>
+                                    <option>د. أحمد سليمان</option>
+                                    <option>د. سارة العلي</option>
+                                    <option>د. سمر الياسين</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main" id="status-select">
+                                    <option>حالة الدفع...</option>
+                                    <option>مدفوع</option>
+                                    <option>غير مدفوع</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center gap-2 px-2 border-r border-slate-200/20">
+                                <i data-lucide="calendar" class="w-4 h-4 text-text-main opacity-50 shrink-0"></i>
+                                <input type="date" value="" class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-xs font-medium text-text-main custom-date-input" id="date-select">
                             </div>
                         </div>
 
-                        <div class="relative">
-                            <select class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-3 px-4 text-xs font-medium text-text-main">
-                                <option>اختر الطبيب المعالج...</option>
-                                <option>د. أحمد سليمان - العيادة الباطنية</option>
-                                <option>د. سارة العلي - عيادة الأطفال</option>
-                            </select>
+                        <!-- Table -->
+                        <div class="overflow-x-auto w-full mb-6">
+                            <table class="custom-table">
+                                <thead>
+                                    <tr class="table-header-row">
+                                        <th>رقم المعاملة</th>
+                                        <th>اسم المريض</th>
+                                        <th>الطبيب المعالج</th>
+                                        <th>سعر الكشفية</th>
+                                        <th>حالة الدفع</th>
+                                        <th>تاريخ الزيارة</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-data-body">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
 
-                    <!-- Column 3: Indicators and values -->
-                    <div class="space-y-4">
-                        <h3 class="text-sm font-semibold text-text-main opacity-70 border-b border-slate-200/20 pb-2">حالة الدفع وحجز الطابور</h3>
-                        
-                        <div class="flex items-center justify-between p-3 custom-card rounded-xl">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full custom-inset flex items-center justify-center text-emerald-500 text-xs font-bold font-['Outfit']">01</div>
-                                <div>
-                                    <h4 class="text-xs font-bold text-text-main">رقم الدور الحالي</h4>
-                                    <span class="text-[10px] text-text-main opacity-60">المريض: محمد خالد</span>
+                        <!-- Pagination -->
+                        <div id="standard-pagination" class="flex justify-between items-center">
+                            <span class="text-xs text-text-main opacity-70" id="pag-label"></span>
+                            <div class="flex gap-2" id="pag-buttons"></div>
+                        </div>
+
+                        <div id="excel-pagination" class="hidden excel-sheet-container -mx-6 -mb-6">
+                            <div class="flex items-center gap-2 mr-2" id="excel-tabs-list"></div>
+                            <div class="ml-auto text-[11px] text-slate-600 mr-2 flex items-center gap-1 font-semibold">
+                                <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-700"></i>
+                                جاهز (Excel Mode)
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Card 12: Interactive Component Demos -->
+                    <section class="custom-card p-6 hover-lift lg:col-span-3">
+                        <h2 class="text-lg font-bold text-text-main mb-6">مكونات تفاعلية متعددة المدارس البصرية</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="space-y-6">
+                                <h3 class="text-sm font-semibold text-text-main opacity-70 border-b border-slate-200/20 pb-2">الأزرار وتأثيرات الضغط</h3>
+                                <div class="flex gap-4">
+                                    <button class="flex-1 py-3 px-4 custom-card rounded-xl text-xs font-bold text-theme-pink hover-press">زر بارز</button>
+                                    <button class="flex-1 py-3 px-4 custom-inset rounded-xl text-xs font-bold text-theme-emerald hover-press">زر غائر</button>
+                                </div>
+                                <div class="flex justify-between items-center custom-inset p-3 rounded-xl">
+                                    <span class="text-xs font-bold text-text-main opacity-80">مفتاح تفعيل ذكي</span>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="switch-demo" class="sr-only peer" checked>
+                                        <div class="w-12 h-6 custom-inset rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gradient-to-r after:from-emerald-500 after:to-emerald-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:shadow-inner"></div>
+                                    </label>
                                 </div>
                             </div>
-                            <span class="badge-success shadow-soft-out-sm">قيد الانتظار</span>
-                        </div>
-
-                        <div class="flex items-center justify-between p-3 custom-card rounded-xl">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full custom-inset flex items-center justify-center text-pink-500 text-xs font-bold font-['Outfit']">02</div>
-                                <div>
-                                    <h4 class="text-xs font-bold text-text-main">الكشفية والتكلفة</h4>
-                                    <span class="text-[10px] text-text-main opacity-60">سعر كشفية الطبيب</span>
+                            <div class="space-y-4">
+                                <h3 class="text-sm font-semibold text-text-main opacity-70 border-b border-slate-200/20 pb-2">حقول الإدخال والبحث</h3>
+                                <div class="relative">
+                                    <input type="text" placeholder="ابحث عن مريض..." class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-3 px-4 text-xs font-medium text-text-main placeholder-text-main opacity-40">
+                                    <div class="absolute left-3 top-3.5 text-text-main opacity-50"><i data-lucide="search" class="w-4 h-4"></i></div>
+                                </div>
+                                <div class="relative">
+                                    <select class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-3 px-4 text-xs font-medium text-text-main">
+                                        <option>اختر الطبيب المعالج...</option>
+                                        <option>د. أحمد سليمان - العيادة الباطنية</option>
+                                        <option>د. سارة العلي - عيادة الأطفال</option>
+                                    </select>
                                 </div>
                             </div>
-                            <span class="text-xs font-bold text-theme-pink font-['Outfit']">$120.00</span>
+                            <div class="space-y-4">
+                                <h3 class="text-sm font-semibold text-text-main opacity-70 border-b border-slate-200/20 pb-2">حالة الدفع وحجز الطابور</h3>
+                                <div class="flex items-center justify-between p-3 custom-card rounded-xl">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full custom-inset flex items-center justify-center text-emerald-500 text-xs font-bold font-['Outfit']">01</div>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-text-main">رقم الدور الحالي</h4>
+                                            <span class="text-[10px] text-text-main opacity-60">المريض: محمد خالد</span>
+                                        </div>
+                                    </div>
+                                    <span class="badge-success shadow-soft-out-sm">قيد الانتظار</span>
+                                </div>
+                                <div class="flex items-center justify-between p-3 custom-card rounded-xl">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full custom-inset flex items-center justify-center text-pink-500 text-xs font-bold font-['Outfit']">02</div>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-text-main">الكشفية والتكلفة</h4>
+                                            <span class="text-[10px] text-text-main opacity-60">سعر كشفية الطبيب</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-theme-pink font-['Outfit']">$120.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- PAGE 2: REPORTS PAGE SECTION -->
+            <section id="page-reports" class="page-section space-y-6 hidden">
+                <div class="custom-card p-12 text-center space-y-4">
+                    <div class="w-20 h-20 rounded-full bg-pink-100/30 flex items-center justify-center mx-auto text-pink-500">
+                        <i data-lucide="bar-chart-3" class="w-10 h-10"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-text-main">صفحة التقارير والإحصائيات الشاملة</h2>
+                    <p class="text-xs text-text-main opacity-60 max-w-md mx-auto leading-relaxed">
+                        هذه الصفحة مخصصة لعرض التقارير المالية التفصيلية، وأداء الأطباء اليومي، ونسبة إنجاز معاملات الصيدلية والمختبر. سيتم بناء الجداول والرسوم البيانية المخصصة هنا قريباً.
+                    </p>
+                    <div class="py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 inline-block shadow-soft-out-sm font-['Outfit']">
+                        قيد التطوير والتهيئة (Reports Placeholder)
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 3: DOCTORS MANAGEMENT PAGE SECTION -->
+            <section id="page-doctors" class="page-section space-y-6 hidden">
+                <div class="custom-card p-12 text-center space-y-4">
+                    <div class="w-20 h-20 rounded-full bg-emerald-100/30 flex items-center justify-center mx-auto text-emerald-500">
+                        <i data-lucide="users" class="w-10 h-10"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-text-main">إدارة حسابات وأطباء العيادات</h2>
+                    <p class="text-xs text-text-main opacity-60 max-w-md mx-auto leading-relaxed">
+                        هنا يستطيع الأدمن إضافة حسابات الأطباء الجدد، وتحديد سعر الكشفية لكل طبيب، ومتابعة قائمة المرضى المسجلين باسم كل طبيب على حدة تماشياً مع صلاحيات النظام.
+                    </p>
+                    <div class="py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-500 to-emerald-400 inline-block shadow-soft-out-sm font-['Outfit']">
+                        قيد التطوير والتهيئة (Doctors Placeholder)
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 4: SETTINGS PAGE SECTION (Full Settings page) -->
+            <section id="page-settings" class="page-section space-y-6 hidden">
+                <!-- Visual theme switcher general settings -->
+                <div class="custom-card p-6">
+                    <h3 class="text-md font-bold text-text-main mb-4 flex items-center gap-2">
+                        <i data-lucide="palette" class="w-5 h-5 text-pink-500"></i>
+                        مظهر النظام والهوية البصرية (Theme Paradigm)
+                    </h3>
+                    <p class="text-xs text-text-main opacity-60 mb-6 leading-relaxed">
+                        قم باختيار مدرسة التصميم والهوية البصرية المفضلة لديك. سيقوم هذا الإعداد بتحديث مظهر الشريط الجانبي والجدول والنوافذ المنبثقة وكافة الرسوم البيانية فورياً في جميع الصفحات معاً.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="changeTheme('soft')" class="theme-btn py-3 px-5 rounded-xl text-xs font-bold custom-card flex items-center gap-3 text-text-main" data-theme-btn="soft">
+                            <span class="w-4 h-4 rounded-full bg-[#eef2f7] border border-slate-300"></span>
+                            ثيم سوفت (Soft UI)
+                        </button>
+                        <button onclick="changeTheme('glass')" class="theme-btn py-3 px-5 rounded-xl text-xs font-bold custom-card flex items-center gap-3 text-text-main" data-theme-btn="glass">
+                            <span class="w-4 h-4 rounded-full bg-gradient-to-r from-pink-500 to-sky-500 border border-slate-300 animate-pulse"></span>
+                            ثيم زجاجي (Glassmorphism)
+                        </button>
+                        <button onclick="changeTheme('brutal')" class="theme-btn py-3 px-5 rounded-xl text-xs font-bold custom-card flex items-center gap-3 text-text-main" data-theme-btn="brutal">
+                            <span class="w-4 h-4 rounded-full bg-[#ffde43] border-2 border-black"></span>
+                            ثيم بروتاليزم (Brutalism)
+                        </button>
+                        <button onclick="changeTheme('minimalist')" class="theme-btn py-3 px-5 rounded-xl text-xs font-bold custom-card flex items-center gap-3 text-text-main" data-theme-btn="minimalist">
+                            <span class="w-4 h-4 rounded-full bg-[#ffffff] border border-slate-300"></span>
+                            ثيم مبسط (Minimalist)
+                        </button>
+                        <button onclick="changeTheme('excel')" class="theme-btn py-3 px-5 rounded-xl text-xs font-bold custom-card flex items-center gap-3 text-text-main" data-theme-btn="excel">
+                            <span class="w-4 h-4 rounded-full bg-[#107c41] border border-slate-300"></span>
+                            ثيم إكسل (Excel)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Clinic Details settings -->
+                <div class="custom-card p-6">
+                    <h3 class="text-md font-bold text-text-main mb-4 flex items-center gap-2">
+                        <i data-lucide="building" class="w-5 h-5 text-emerald-500"></i>
+                        إعدادات ملف العيادة الأساسية
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">اسم العيادة / المركز الطبي</label>
+                            <input type="text" value="مجمع عيادات الشفاء الذكي" class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">ساعات العمل اليومية</label>
+                            <input type="text" value="08:00 AM - 10:00 PM" class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Settings Card -->
+                <div class="custom-card p-6">
+                    <h3 class="text-md font-bold text-text-main mb-4 flex items-center gap-2">
+                        <i data-lucide="wallet" class="w-5 h-5 text-amber-500"></i>
+                        الصناديق والربط المالي
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-3 rounded-xl custom-inset">
+                            <div>
+                                <h4 class="text-xs font-bold text-text-main">فصل صناديق الصيدلية والمختبر</h4>
+                                <p class="text-[10px] text-text-main opacity-60">تفعيل صناديق مالية مستقلة للمبيعات الصيدلانية والفحوصات المخبرية</p>
+                            </div>
+                            <span class="badge-success shadow-soft-out-sm">مفعل تلقائياً</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 rounded-xl custom-inset">
+                            <div>
+                                <h4 class="text-xs font-bold text-text-main">الربط الآلي مع حسابات الأطباء</h4>
+                                <p class="text-[10px] text-text-main opacity-60">تحديث إيرادات الأطباء تلقائياً بناءً على كشفيات عياداتهم المسجلة</p>
+                            </div>
+                            <span class="badge-success shadow-soft-out-sm">نشط</span>
                         </div>
                     </div>
                 </div>
             </section>
 
-        </main>
+            <!-- SHARED FOOTER -->
+            <footer class="mt-8 py-6 border-t border-slate-200/20 text-center flex flex-col sm:flex-row justify-between items-center gap-4">
+                 <span class="text-[11px] text-text-main opacity-60 font-medium">
+                     حقوق الطبع محفوظة © 2026 عيادتنا الذكية - Clinic Management System
+                 </span>
+                 <div class="flex items-center gap-3 text-[10px] text-text-main opacity-70 font-semibold">
+                     <span class="flex items-center gap-1">
+                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                         النظام متصل وآمن
+                     </span>
+                     <span>|</span>
+                     <span class="font-['Outfit']">Session ID: CMS-5542</span>
+                 </div>
+            </footer>
+        </div>
     </div>
 
     <!-- Add Transaction Modal Backdrop & Modal Container -->
     <div id="add-transaction-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden custom-modal-backdrop p-4">
-        <!-- Modal Card Container -->
         <div class="modal-container">
-            <!-- Modal Header -->
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-md font-bold text-text-main flex items-center gap-2">
                     <i data-lucide="file-plus-2" class="w-5 h-5 text-theme-pink"></i>
@@ -548,14 +632,11 @@
                 </button>
             </div>
 
-            <!-- Modal Form Inputs -->
             <div class="space-y-4 mb-6">
-                <!-- Patient Name -->
                 <div>
                     <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">اسم المريض الكامل</label>
                     <input type="text" placeholder="أدخل اسم المريض..." class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main placeholder-text-main opacity-70" id="modal-patient-name">
                 </div>
-                <!-- Doctor Assigned -->
                 <div>
                     <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">الطبيب المعالج والعيادة</label>
                     <select class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main" id="modal-doctor">
@@ -564,19 +645,16 @@
                         <option value="د. سمر الياسين - عيادة النساء">د. سمر الياسين - عيادة النساء ($150)</option>
                     </select>
                 </div>
-                <!-- Amount / Fee -->
                 <div>
                     <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">قيمة الكشفية</label>
                     <input type="text" value="$120.00" class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-bold text-theme-pink" id="modal-fee">
                 </div>
-                <!-- Date Selector (ديت سليكتر) -->
                 <div>
                     <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">تاريخ المعاملة (Date Picker)</label>
                     <input type="date" value="2026-06-29" class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main custom-date-input" id="modal-date">
                 </div>
             </div>
 
-            <!-- Modal Footer Buttons -->
             <div class="flex justify-end gap-3">
                 <button onclick="toggleModal(false)" class="py-2.5 px-6 rounded-xl text-xs font-bold text-text-main custom-card hover-press" id="modal-cancel-btn">
                     إلغاء الأمر
@@ -984,7 +1062,7 @@
                 excelPag.classList.add('hidden');
             }
 
-            // Adjust modal buttons design to match themes
+            // Adjust buttons & controls dynamically to match active theme styles
             const cancelBtn = document.getElementById('modal-cancel-btn');
             const submitBtn = document.getElementById('modal-submit-btn');
             const addTrigger = document.getElementById('add-trans-trigger');
@@ -1007,10 +1085,10 @@
                 addTrigger.className = 'py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2 shadow-soft-out-sm font-["Outfit"]';
             }
 
-            // Wait slightly for transition to complete, then update charts
+            // Update standard dynamic grid active classes and re-draw SVG elements
             setTimeout(() => {
                 updateChartThemes(themeName);
-                renderTable(); // Re-render table buttons to apply correct theme classes
+                renderTable(); 
             }, 100);
         }
 
@@ -1028,11 +1106,10 @@
             const cardBg = getCardBgColor();
             const textMain = getTextMainColor();
 
-            // Function to update single radial/gauge chart track and value text
             const updateRadial = (chartInstance) => {
                 if (chartInstance) {
                     chartInstance.updateOptions({
-                        chart: { background: 'transparent' }, // Maintain transparent background
+                        chart: { background: 'transparent' },
                         theme: { mode: 'light' },
                         plotOptions: {
                             radialBar: {
@@ -1046,7 +1123,6 @@
                 }
             };
 
-            // Update all radial charts
             updateRadial(chartRadial1);
             updateRadial(chartRadial2);
             updateRadial(chartRadial3);
@@ -1056,7 +1132,6 @@
             updateRadial(chartDialOrange);
             updateRadial(chartDialGreen);
 
-            // Update new advanced charts tooltips & text styles
             if (chartDonutDept) {
                 chartDonutDept.updateOptions({
                     chart: { background: 'transparent' },
@@ -1086,7 +1161,6 @@
                 });
             }
 
-            // Update tooltips theme
             if (chartAreaSales) {
                 chartAreaSales.updateOptions({
                     chart: { background: 'transparent' },
@@ -1106,7 +1180,6 @@
 
         // ================= DYNAMIC DATA GRID CLIENT-SIDE CONTROLLER =================
 
-        // Array of Transactions
         const transactions = [
             { id: '#TX-1092', name: 'محمد خالد العتيبي', doctor: 'د. أحمد سليمان - العيادة الباطنية', fee: '$120.00', paid: true, date: '2026-06-29' },
             { id: '#TX-1093', name: 'سارة عبد الرحمن العلي', doctor: 'د. سارة العلي - عيادة الأطفال', fee: '$90.00', paid: true, date: '2026-06-29' },
@@ -1123,40 +1196,29 @@
         let currentPage = 1;
         const pageSize = 4;
 
-        // Render Table Rows and Pagination controls
         function renderTable() {
             const searchVal = document.getElementById('search-input').value.trim();
             const doctorVal = document.getElementById('doctor-select').value;
             const statusVal = document.getElementById('status-select').value;
             const dateVal = document.getElementById('date-select').value;
 
-            // Filter transactions
             let filtered = transactions.filter(t => {
-                // Search filter (Case insensitive name search)
                 if (searchVal && !t.name.includes(searchVal)) return false;
-                
-                // Doctor filter
                 if (doctorVal !== 'جميع الأطباء...') {
                     const cleanDocName = doctorVal.replace('د. ', '');
                     if (!t.doctor.includes(cleanDocName)) return false;
                 }
-
-                // Status filter
                 if (statusVal !== 'حالة الدفع...') {
                     const isPaid = statusVal === 'مدفوع';
                     if (t.paid !== isPaid) return false;
                 }
-
-                // Date filter
                 if (dateVal && t.date !== dateVal) return false;
-
                 return true;
             });
 
             const totalItems = filtered.length;
             const totalPages = Math.ceil(totalItems / pageSize) || 1;
 
-            // Page validation
             if (currentPage > totalPages) currentPage = totalPages;
             if (currentPage < 1) currentPage = 1;
 
@@ -1164,7 +1226,6 @@
             const endIdx = Math.min(startIdx + pageSize, totalItems);
             const paginatedItems = filtered.slice(startIdx, endIdx);
 
-            // Render table DOM
             const tbody = document.getElementById('table-data-body');
             tbody.innerHTML = '';
 
@@ -1192,7 +1253,6 @@
                 });
             }
 
-            // Update page range label
             const label = document.getElementById('pag-label');
             if (totalItems === 0) {
                 label.innerText = 'عرض 0 إلى 0 من أصل 0 قيود';
@@ -1200,11 +1260,9 @@
                 label.innerText = `عرض ${startIdx + 1} إلى ${endIdx} من أصل ${totalItems} قيود`;
             }
 
-            // Draw controls
             renderPaginationControls(totalPages);
         }
 
-        // Generate Pagination Buttons dynamically
         function renderPaginationControls(totalPages) {
             const pagContainer = document.getElementById('pag-buttons');
             pagContainer.innerHTML = '';
@@ -1219,7 +1277,6 @@
                 `;
             }
 
-            // Render Excel Sheet Tabs
             const excelTabsContainer = document.getElementById('excel-tabs-list');
             excelTabsContainer.innerHTML = '';
             
@@ -1229,17 +1286,14 @@
                     <div onclick="changePage(${i})" class="excel-tab ${activeClass}" data-excel-tab="${i}">ورقة ${i}</div>
                 `;
             }
-            // Add '+' sheet tab simulator
             excelTabsContainer.innerHTML += `<div class="excel-tab text-slate-400 font-bold px-2 cursor-pointer" onclick="addNewDemoTab()">+</div>`;
         }
 
-        // Change active page index
         function changePage(pageNum) {
             currentPage = pageNum;
             renderTable();
         }
 
-        // Add a demo sheet tab mock
         function addNewDemoTab() {
             alert("محاكاة: تم إضافة ورقة عمل جديدة في Excel Mode.");
         }
@@ -1248,7 +1302,6 @@
         function toggleModal(show) {
             const modal = document.getElementById('add-transaction-modal');
             if (show) {
-                // Populate default today date
                 document.getElementById('modal-date').value = new Date().toISOString().substring(0, 10);
                 modal.classList.remove('hidden');
             } else {
@@ -1256,7 +1309,6 @@
             }
         }
 
-        // Save new transaction dynamically
         function saveTransaction() {
             const patientName = document.getElementById('modal-patient-name').value.trim();
             const doctorAssigned = document.getElementById('modal-doctor').value;
@@ -1268,33 +1320,89 @@
                 return;
             }
 
-            // Create transaction object
             const newTx = {
                 id: '#TX-' + Math.floor(Math.random() * 1000 + 1000),
                 name: patientName,
                 doctor: doctorAssigned,
                 fee: feeInput,
-                paid: true, // Defaulting saved transactions as Paid
+                paid: true,
                 date: dateInput
             };
 
-            // Push to data array
             transactions.unshift(newTx);
-            
-            // Reset modal input
             document.getElementById('modal-patient-name').value = '';
 
-            // Close and re-render
             toggleModal(false);
-            currentPage = 1; // Go to first page to see the new item
+            currentPage = 1;
             renderTable();
         }
 
-        // Attach dynamic filter listeners
+        // Attach filters input events
         document.getElementById('search-input').addEventListener('input', () => { currentPage = 1; renderTable(); });
         document.getElementById('doctor-select').addEventListener('change', () => { currentPage = 1; renderTable(); });
         document.getElementById('status-select').addEventListener('change', () => { currentPage = 1; renderTable(); });
         document.getElementById('date-select').addEventListener('change', () => { currentPage = 1; renderTable(); });
+
+
+        // ================= SPA VIEW STATE MANAGER =================
+
+        function navigateToPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(sec => {
+                sec.classList.add('hidden');
+            });
+            // Show active page
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+
+            // Reset navigation active styles
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active', 'text-pink-500');
+            });
+            
+            // Set active class on nav link
+            const activeNavLink = document.getElementById('nav-' + pageId);
+            activeNavLink.classList.add('active');
+
+            // Apply theme specific highlight color in Soft UI / Glass
+            const currentTheme = document.body.getAttribute('data-theme') || 'soft';
+            if (currentTheme === 'soft' || currentTheme === 'glass') {
+                activeNavLink.classList.add('text-pink-500');
+            }
+
+            // Update Dynamic header titles
+            const pageTitleEl = document.getElementById('page-title');
+            const pageSubtitleEl = document.getElementById('page-subtitle');
+
+            if (pageId === 'dashboard') {
+                pageTitleEl.innerText = "لوحة التحكم والمؤشرات";
+                pageSubtitleEl.innerText = "نظرة عامة على كفاءة أداء العيادات الخارجية";
+            } else if (pageId === 'reports') {
+                pageTitleEl.innerText = "التقارير والإحصائيات الشاملة";
+                pageSubtitleEl.innerText = "التقارير المالية والتحاليل الإحصائية للمبيعات والعيادات";
+            } else if (pageId === 'doctors') {
+                pageTitleEl.innerText = "إدارة حسابات وأطباء العيادات";
+                pageSubtitleEl.innerText = "تحديد كشفيات الأطباء، ومتابعة سجل مرضاهم ومستحقاتهم";
+            } else if (pageId === 'settings') {
+                pageTitleEl.innerText = "الإعدادات العامة للنظام";
+                pageSubtitleEl.innerText = "تغيير هوية التصميم، وضبط مواقيت العمل وتفاصيل المركز";
+            }
+
+            // Close mobile sidebar menu
+            toggleSidebar(false);
+        }
+
+        // Mobile sidebar navigation menu toggles
+        function toggleSidebar(show) {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (show) {
+                sidebar.classList.remove('translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
 
         // Restore saved theme on load
         window.addEventListener('DOMContentLoaded', () => {
