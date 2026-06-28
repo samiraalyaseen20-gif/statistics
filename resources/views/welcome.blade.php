@@ -402,7 +402,8 @@
                     type: 'radialBar',
                     width: 100,
                     height: 100,
-                    sparkline: { enabled: true }
+                    sparkline: { enabled: true },
+                    background: 'transparent' // Explicit transparent background
                 },
                 series: [percentage],
                 colors: [mainColor],
@@ -457,6 +458,7 @@
             chart: {
                 type: 'area',
                 height: 160,
+                background: 'transparent', // Explicit transparent background
                 toolbar: { show: false },
                 sparkline: { enabled: true }
             },
@@ -490,6 +492,7 @@
                 type: 'radialBar',
                 height: 280,
                 offsetY: -10,
+                background: 'transparent', // Explicit transparent background
                 sparkline: { enabled: true }
             },
             plotOptions: {
@@ -533,6 +536,7 @@
                 chart: {
                     type: 'radialBar',
                     height: 120,
+                    background: 'transparent', // Explicit transparent background
                     sparkline: { enabled: true }
                 },
                 series: [percentage],
@@ -582,6 +586,7 @@
             chart: {
                 type: 'bar',
                 height: 150,
+                background: 'transparent', // Explicit transparent background
                 toolbar: { show: false },
                 sparkline: { enabled: true }
             },
@@ -636,6 +641,7 @@
             const updateRadial = (chartInstance) => {
                 if (chartInstance) {
                     chartInstance.updateOptions({
+                        chart: { background: 'transparent' }, // Maintain transparent background
                         theme: { mode: 'light' },
                         plotOptions: {
                             radialBar: {
@@ -659,15 +665,17 @@
             updateRadial(chartDialOrange);
             updateRadial(chartDialGreen);
 
-            // Update tooltips theme
+            // Update tooltips theme and background transparency
             if (chartAreaSales) {
                 chartAreaSales.updateOptions({
+                    chart: { background: 'transparent' },
                     theme: { mode: 'light' },
                     tooltip: { theme: 'light' }
                 });
             }
             if (chartMultiBar) {
                 chartMultiBar.updateOptions({
+                    chart: { background: 'transparent' },
                     theme: { mode: 'light' },
                     tooltip: { theme: 'light' }
                 });
