@@ -312,7 +312,68 @@
                 </div>
             </section>
 
-            <!-- Card 6: Dynamic Data Grid (Table) with Pagination, Date Selector & Filters -->
+
+            <!-- ================= NEW ADVANCED CHARTS SECTIONS ================= -->
+
+            <!-- Card 6: Donut Chart - Revenue Breakdown -->
+            <section class="custom-card p-6 hover-lift">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-bold text-text-main">توزيع الإيرادات حسب العيادات</h2>
+                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
+                        <i data-lucide="pie-chart" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="w-full custom-inset rounded-2xl p-4 flex justify-center items-center">
+                    <div id="chart-donut-departments" class="w-full"></div>
+                </div>
+            </section>
+
+            <!-- Card 7: Radar Chart - Clinic Quality Metrics -->
+            <section class="custom-card p-6 hover-lift">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-bold text-text-main">مؤشر كفاءة وجودة الخدمة</h2>
+                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
+                        <i data-lucide="activity" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="w-full custom-inset rounded-2xl p-2">
+                    <div id="chart-radar-quality" class="w-full"></div>
+                </div>
+            </section>
+
+            <!-- Card 8: Stacked Columns - Consultations vs Extras -->
+            <section class="custom-card p-6 hover-lift">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-bold text-text-main">الإيرادات المتراكمة (كشفيات vs تحاليل)</h2>
+                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="w-full custom-inset rounded-2xl p-2">
+                    <div id="chart-stacked-revenue" class="w-full"></div>
+                </div>
+            </section>
+
+            <!-- Card 9: Bubble Chart - Patient Demographics & Spending -->
+            <section class="custom-card p-6 hover-lift lg:col-span-3">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-lg font-bold text-text-main">تحليل فئات المرضى العمرية وعلاقتها بالإنفاق والتكرار</h2>
+                        <span class="text-xs text-text-main opacity-60">المحور الأفقي: عمر المريض | العمودي: عدد الزيارات | حجم الفقاعة: إجمالي الفاتورة</span>
+                    </div>
+                    <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
+                        <i data-lucide="scatter-chart" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="w-full custom-inset rounded-2xl p-4">
+                    <div id="chart-bubble-spend" class="w-full"></div>
+                </div>
+            </section>
+
+            <!-- ================= END NEW ADVANCED CHARTS SECTIONS ================= -->
+
+
+            <!-- Card 10: Dynamic Data Grid (Table) with Pagination, Date Selector & Filters -->
             <section class="custom-card p-6 hover-lift lg:col-span-3">
                 <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
                     <div>
@@ -484,7 +545,7 @@
             </section>
 
 
-            <!-- Card 7: Interactive Component Demos -->
+            <!-- Card 11: Interactive Component Demos -->
             <section class="custom-card p-6 hover-lift lg:col-span-3">
                 <h2 class="text-lg font-bold text-text-main mb-6">مكونات تفاعلية متعددة المدارس البصرية</h2>
                 
@@ -689,6 +750,7 @@
         let chartRadial1, chartRadial2, chartRadial3, chartRadial4;
         let chartAreaSales, chartGaugeStrategy;
         let chartDialPink, chartDialOrange, chartDialGreen, chartMultiBar;
+        let chartDonutDept, chartRadarQuality, chartStackedRevenue, chartBubbleSpend;
 
         // Render 4 Circular Radial Charts
         chartRadial1 = new ApexCharts(document.querySelector("#chart-radial-1"), getRadialConfig(96, pinkGrad[0], pinkGrad[1]));
@@ -859,6 +921,144 @@
         });
         chartMultiBar.render();
 
+
+        // ================= INITIALIZE NEW ADVANCED CHARTS =================
+
+        // 1. Donut Chart
+        chartDonutDept = new ApexCharts(document.querySelector("#chart-donut-departments"), {
+            chart: {
+                type: 'donut',
+                height: 250,
+                background: 'transparent'
+            },
+            series: [44, 32, 24],
+            labels: ['الباطنية', 'الأطفال', 'النساء والولادة'],
+            colors: ['#28c76f', '#ff9f43', '#ff4d7e'],
+            legend: {
+                position: 'bottom',
+                labels: { colors: getTextMainColor() }
+            },
+            dataLabels: { enabled: true },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '60%',
+                        background: 'transparent'
+                    }
+                }
+            }
+        });
+        chartDonutDept.render();
+
+        // 2. Radar Chart
+        chartRadarQuality = new ApexCharts(document.querySelector("#chart-radar-quality"), {
+            chart: {
+                type: 'radar',
+                height: 250,
+                background: 'transparent',
+                toolbar: { show: false }
+            },
+            series: [{
+                name: 'التقييم العام للخدمات',
+                data: [80, 70, 90, 65, 85, 75]
+            }],
+            labels: ['سرعة الكشف', 'جودة الاستقبال', 'النظافة والتعقيم', 'التنظيم والطابور', 'كفاءة الأطباء', 'سعر الخدمات'],
+            colors: ['#ff4d7e'],
+            markers: { size: 4 },
+            yaxis: {
+                show: false
+            },
+            xaxis: {
+                labels: {
+                    style: {
+                        colors: [
+                            getTextMainColor(), getTextMainColor(), getTextMainColor(),
+                            getTextMainColor(), getTextMainColor(), getTextMainColor()
+                        ],
+                        fontSize: '11px'
+                    }
+                }
+            }
+        });
+        chartRadarQuality.render();
+
+        // 3. Stacked Column Chart
+        chartStackedRevenue = new ApexCharts(document.querySelector("#chart-stacked-revenue"), {
+            chart: {
+                type: 'bar',
+                height: 250,
+                stacked: true,
+                background: 'transparent',
+                toolbar: { show: false }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '40%',
+                    borderRadius: 4
+                },
+            },
+            series: [{
+                name: 'إيرادات الكشفيات',
+                data: [35, 42, 38, 55, 48, 62, 70]
+            }, {
+                name: 'إيرادات التحاليل والمختبر',
+                data: [20, 25, 22, 35, 30, 45, 50]
+            }],
+            xaxis: {
+                categories: ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'],
+                labels: { show: false }
+            },
+            colors: ['#00cfe8', '#ff9f43'],
+            legend: {
+                position: 'bottom',
+                labels: { colors: getTextMainColor() }
+            },
+            dataLabels: { enabled: false }
+        });
+        chartStackedRevenue.render();
+
+        // 4. Bubble Chart
+        chartBubbleSpend = new ApexCharts(document.querySelector("#chart-bubble-spend"), {
+            chart: {
+                type: 'bubble',
+                height: 220,
+                background: 'transparent',
+                toolbar: { show: false }
+            },
+            dataLabels: { enabled: false },
+            fill: { opacity: 0.8 },
+            series: [{
+                name: 'عيادة الباطنية',
+                data: [
+                    [25, 8, 120], [35, 12, 240], [45, 5, 100], [55, 14, 320], [65, 9, 180]
+                ]
+            }, {
+                name: 'عيادة الأطفال',
+                data: [
+                    [22, 15, 350], [28, 7, 90], [32, 11, 210], [40, 4, 80], [48, 8, 160]
+                ]
+            }, {
+                name: 'عيادة النساء والولادة',
+                data: [
+                    [26, 6, 180], [34, 10, 300], [42, 13, 390], [50, 8, 240], [58, 12, 360]
+                ]
+            }],
+            xaxis: {
+                tickAmount: 10,
+                type: 'numeric',
+                labels: { show: false }
+            },
+            yaxis: {
+                max: 20
+            },
+            colors: ['#28c76f', '#ff4d7e', '#00cfe8']
+        });
+        chartBubbleSpend.render();
+
+        // ================= END INITIALIZE NEW ADVANCED CHARTS =================
+
+
         // Theme Switcher Logic
         function changeTheme(themeName) {
             document.body.setAttribute('data-theme', themeName);
@@ -947,6 +1147,36 @@
             updateRadial(chartDialOrange);
             updateRadial(chartDialGreen);
 
+            // Update new advanced charts tooltips & text styles
+            if (chartDonutDept) {
+                chartDonutDept.updateOptions({
+                    chart: { background: 'transparent' },
+                    theme: { mode: 'light' },
+                    legend: { labels: { colors: textMain } }
+                });
+            }
+            if (chartRadarQuality) {
+                chartRadarQuality.updateOptions({
+                    chart: { background: 'transparent' },
+                    theme: { mode: 'light' },
+                    yaxis: { labels: { style: { colors: textMain } } },
+                    xaxis: { labels: { style: { colors: [textMain, textMain, textMain, textMain, textMain, textMain] } } }
+                });
+            }
+            if (chartStackedRevenue) {
+                chartStackedRevenue.updateOptions({
+                    chart: { background: 'transparent' },
+                    theme: { mode: 'light' },
+                    legend: { labels: { colors: textMain } }
+                });
+            }
+            if (chartBubbleSpend) {
+                chartBubbleSpend.updateOptions({
+                    chart: { background: 'transparent' },
+                    theme: { mode: 'light' }
+                });
+            }
+
             // Update tooltips theme
             if (chartAreaSales) {
                 chartAreaSales.updateOptions({
@@ -1006,14 +1236,12 @@
             const modal = document.getElementById('add-transaction-modal');
             if (show) {
                 modal.classList.remove('hidden');
-                // Force refocus or layout redraw
             } else {
                 modal.classList.add('hidden');
             }
         }
 
         function saveTransaction() {
-            // Mock transaction save and trigger success alert animation/notice
             const patientName = document.getElementById('modal-patient-name').value || "مريض تجريبي";
             alert("تم حفظ معاملة جديدة للمريض: " + patientName);
             toggleModal(false);
