@@ -7,89 +7,166 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
     
-    /* Dynamic Theme mappings */
+    /* Map dynamic properties */
     --color-soft-bg: var(--theme-bg);
     --color-card-bg: var(--theme-card-bg);
     --color-text-main: var(--theme-text-main);
-    
-    --shadow-soft-out: var(--theme-shadow-out);
-    --shadow-soft-out-sm: var(--theme-shadow-out-sm);
-    --shadow-soft-in: var(--theme-shadow-in);
-    --shadow-soft-in-sm: var(--theme-shadow-in-sm);
 }
 
 :root {
-    /* 1. Soft UI Theme (Default) */
+    /* DEFAULT THEME: Soft UI */
     --theme-bg: #eef2f7;
     --theme-card-bg: #eef2f7;
     --theme-text-main: #2e3e5c;
-    --theme-shadow-out: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.8);
-    --theme-shadow-out-sm: 4px 4px 8px rgba(163, 177, 198, 0.55), -4px -4px 8px rgba(255, 255, 255, 0.85);
-    --theme-shadow-in: inset 4px 4px 8px rgba(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
-    --theme-shadow-in-sm: inset 2px 2px 4px rgba(163, 177, 198, 0.55), inset -2px -2px 4px rgba(255, 255, 255, 0.85);
 }
 
+/* Base Body Styles */
+body {
+    background: var(--theme-bg);
+    color: var(--theme-text-main);
+    transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* Glassmorphism Background Blobs control */
+.glass-blob {
+    display: none;
+    transition: all 0.4s ease;
+}
+body[data-theme="glass"] .glass-blob {
+    display: block;
+}
+
+/* Card and Inset transitions */
+.custom-card, .custom-inset, button, input, select, span, div, h1, h2, h3, h4 {
+    transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+/* ----------------------------------------------------
+   1. SOFT UI (NEUMORPHISM) THEME DEFINITIONS
+   ---------------------------------------------------- */
 body[data-theme="soft"] {
     --theme-bg: #eef2f7;
     --theme-card-bg: #eef2f7;
     --theme-text-main: #2e3e5c;
-    --theme-shadow-out: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.8);
-    --theme-shadow-out-sm: 4px 4px 8px rgba(163, 177, 198, 0.55), -4px -4px 8px rgba(255, 255, 255, 0.85);
-    --theme-shadow-in: inset 4px 4px 8px rgba(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
-    --theme-shadow-in-sm: inset 2px 2px 4px rgba(163, 177, 198, 0.55), inset -2px -2px 4px rgba(255, 255, 255, 0.85);
+}
+body[data-theme="soft"] .custom-card {
+    background: #eef2f7;
+    border: none;
+    box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.8);
+    border-radius: 24px;
+}
+body[data-theme="soft"] .custom-inset {
+    background: #eef2f7;
+    border: none;
+    box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.6), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+}
+body[data-theme="soft"] .theme-btn.active {
+    box-shadow: inset 3px 3px 6px rgba(163, 177, 198, 0.6), inset -3px -3px 6px rgba(255, 255, 255, 0.8) !important;
 }
 
-body[data-theme="natural"] {
-    /* 2. Natural Sage Theme */
-    --theme-bg: #f2f6f1;
-    --theme-card-bg: #f2f6f1;
-    --theme-text-main: #243522;
-    --theme-shadow-out: 9px 9px 16px rgba(150, 168, 148, 0.55), -9px -9px 16px rgba(255, 255, 255, 0.85);
-    --theme-shadow-out-sm: 4px 4px 8px rgba(150, 168, 148, 0.5), -4px -4px 8px rgba(255, 255, 255, 0.85);
-    --theme-shadow-in: inset 4px 4px 8px rgba(150, 168, 148, 0.55), inset -4px -4px 8px rgba(255, 255, 255, 0.85);
-    --theme-shadow-in-sm: inset 2px 2px 4px rgba(150, 168, 148, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.85);
+/* ----------------------------------------------------
+   2. GLASSMORPHISM THEME DEFINITIONS
+   ---------------------------------------------------- */
+body[data-theme="glass"] {
+    --theme-bg: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    --theme-card-bg: rgba(255, 255, 255, 0.07);
+    --theme-text-main: #f8fafc;
+}
+body[data-theme="glass"] .custom-card {
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 24px;
+}
+body[data-theme="glass"] .custom-inset {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+body[data-theme="glass"] .theme-btn.active {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
 }
 
-body[data-theme="modern"] {
-    /* 3. Modern Dark Theme */
-    --theme-bg: #0b1329;
-    --theme-card-bg: #151e3d;
-    --theme-text-main: #f1f5f9;
-    --theme-shadow-out: 8px 8px 24px rgba(0, 0, 0, 0.55), -8px -8px 24px rgba(255, 255, 255, 0.04);
-    --theme-shadow-out-sm: 4px 4px 12px rgba(0, 0, 0, 0.5), -4px -4px 12px rgba(255, 255, 255, 0.04);
-    --theme-shadow-in: inset 4px 4px 8px rgba(0, 0, 0, 0.55), inset -4px -4px 8px rgba(255, 255, 255, 0.04);
-    --theme-shadow-in-sm: inset 2px 2px 4px rgba(0, 0, 0, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.04);
-}
-
-body[data-theme="quiet"] {
-    /* 4. Quiet Theme (Clean minimalist with white cards) */
-    --theme-bg: #f4f5f8;
+/* ----------------------------------------------------
+   3. NEO-BRUTALISM THEME DEFINITIONS
+   ---------------------------------------------------- */
+body[data-theme="brutal"] {
+    --theme-bg: #f3edd8;
     --theme-card-bg: #ffffff;
-    --theme-text-main: #4a5568;
-    --theme-shadow-out: 0 10px 20px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
-    --theme-shadow-out-sm: 0 4px 6px rgba(0, 0, 0, 0.03);
-    --theme-shadow-in: inset 0 2px 4px rgba(0, 0, 0, 0.05);
-    --theme-shadow-in-sm: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+    --theme-text-main: #000000;
+}
+body[data-theme="brutal"] .custom-card {
+    background: #ffffff;
+    border: 3px solid #000000;
+    box-shadow: 6px 6px 0px #000000;
+    border-radius: 12px;
+}
+body[data-theme="brutal"] .custom-inset {
+    background: #ffffff;
+    border: 3px solid #000000;
+    box-shadow: inset 3px 3px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+body[data-theme="brutal"] .theme-btn.active {
+    background: #ffde43 !important;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #000000 !important;
+}
+body[data-theme="brutal"] .hover-lift:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px #000000;
 }
 
-body[data-theme="warm"] {
-    /* 5. Warm Sunset Theme */
-    --theme-bg: #faf4eb;
-    --theme-card-bg: #faf4eb;
-    --theme-text-main: #4e3629;
-    --theme-shadow-out: 9px 9px 16px rgba(188, 174, 158, 0.55), -9px -9px 16px rgba(255, 255, 255, 0.85);
-    --theme-shadow-out-sm: 4px 4px 8px rgba(188, 174, 158, 0.5), -4px -4px 8px rgba(255, 255, 255, 0.85);
-    --theme-shadow-in: inset 4px 4px 8px rgba(188, 174, 158, 0.55), inset -4px -4px 8px rgba(255, 255, 255, 0.85);
-    --theme-shadow-in-sm: inset 2px 2px 4px rgba(188, 174, 158, 0.5), inset -2px -2px 4px rgba(255, 255, 255, 0.85);
+/* ----------------------------------------------------
+   4. MODERN DARK THEME DEFINITIONS
+   ---------------------------------------------------- */
+body[data-theme="modern"] {
+    --theme-bg: #0f172a;
+    --theme-card-bg: #1e293b;
+    --theme-text-main: #f8fafc;
+}
+body[data-theme="modern"] .custom-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+}
+body[data-theme="modern"] .custom-inset {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    border-radius: 16px;
+}
+body[data-theme="modern"] .theme-btn.active {
+    background: #334155 !important;
+    border-color: #475569 !important;
 }
 
-body {
-    background-color: var(--theme-bg);
-    color: var(--theme-text-main);
-    transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+/* ----------------------------------------------------
+   5. MINIMALIST CLEAN THEME DEFINITIONS
+   ---------------------------------------------------- */
+body[data-theme="minimalist"] {
+    --theme-bg: #fafafa;
+    --theme-card-bg: #ffffff;
+    --theme-text-main: #171717;
 }
-
-/* Transitions for soft UI elements when theme shifts */
-header, section, div, button, input, select, span {
-    transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+body[data-theme="minimalist"] .custom-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border-radius: 16px;
+}
+body[data-theme="minimalist"] .custom-inset {
+    background: #f5f5f5;
+    border: 1px solid #e5e5e5;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    border-radius: 12px;
+}
+body[data-theme="minimalist"] .theme-btn.active {
+    background: #e5e5e5 !important;
+    border-color: #d4d4d4 !important;
 }
