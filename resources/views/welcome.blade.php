@@ -91,13 +91,18 @@
                 </button>
                 <!-- Style 3: Neo-Brutalism -->
                 <button onclick="changeTheme('brutal')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="brutal">
-                    <span class="w-3.5 h-3.5 rounded-full bg-[#ffde43] border-2 border-black"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#ffde43] border border-black"></span>
                     ثيم بروتاليزم (Brutalism)
                 </button>
                 <!-- Style 4: Minimalist Clean -->
                 <button onclick="changeTheme('minimalist')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="minimalist">
                     <span class="w-3.5 h-3.5 rounded-full bg-[#ffffff] border border-slate-300"></span>
                     ثيم مبسط (Minimalist)
+                </button>
+                <!-- Style 5: Excel Sheet style -->
+                <button onclick="changeTheme('excel')" class="theme-btn py-2.5 px-4 rounded-xl text-xs font-bold custom-card flex items-center gap-2 text-text-main" data-theme-btn="excel">
+                    <span class="w-3.5 h-3.5 rounded-full bg-[#107c41] border border-slate-300"></span>
+                    ثيم إكسل (Excel)
                 </button>
             </div>
         </div>
@@ -291,8 +296,152 @@
                 </div>
             </section>
 
+            <!-- Card 6: Dynamic Data Grid (Table) with Pagination -->
+            <section class="custom-card p-6 hover-lift lg:col-span-3">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-lg font-bold text-text-main">جدول سجل المعاملات المالية والمرضى (Data Grid)</h2>
+                        <span class="text-xs text-text-main opacity-60">محاكاة تفاعلية للتنقل بين الصفحات بدعم كامل للمظاهر</span>
+                    </div>
+                    <!-- Actions -->
+                    <div class="flex items-center gap-3">
+                        <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70 hover-press">
+                            <i data-lucide="filter" class="w-4 h-4"></i>
+                        </button>
+                        <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70 hover-press">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
 
-            <!-- Card 6: Interactive Component Demos -->
+                <!-- Table Wrapper -->
+                <div class="overflow-x-auto w-full mb-6">
+                    <table class="custom-table">
+                        <thead>
+                            <tr class="table-header-row">
+                                <th>رقم المعاملة</th>
+                                <th>اسم المريض</th>
+                                <th>الطبيب المعالج</th>
+                                <th>سعر الكشفية</th>
+                                <th>حالة الدفع</th>
+                                <th>تاريخ الزيارة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-data-body">
+                            <!-- Page 1 Rows -->
+                            <tr class="table-row page-1">
+                                <td>#TX-1092</td>
+                                <td class="font-bold">محمد خالد العتيبي</td>
+                                <td>د. أحمد سليمان - العيادة الباطنية</td>
+                                <td class="font-bold">$120.00</td>
+                                <td><span class="badge-success">مدفوع</span></td>
+                                <td class="font-['Outfit']">2026-06-29</td>
+                            </tr>
+                            <tr class="table-row page-1">
+                                <td>#TX-1093</td>
+                                <td class="font-bold">سارة عبد الرحمن العلي</td>
+                                <td>د. سارة العلي - عيادة الأطفال</td>
+                                <td class="font-bold">$90.00</td>
+                                <td><span class="badge-success">مدفوع</span></td>
+                                <td class="font-['Outfit']">2026-06-29</td>
+                            </tr>
+                            <tr class="table-row page-1">
+                                <td>#TX-1094</td>
+                                <td class="font-bold">عبد الله عمر الفهيد</td>
+                                <td>د. أحمد سليمان - العيادة الباطنية</td>
+                                <td class="font-bold">$120.00</td>
+                                <td><span class="badge-danger">غير مدفوع</span></td>
+                                <td class="font-['Outfit']">2026-06-28</td>
+                            </tr>
+                            <tr class="table-row page-1">
+                                <td>#TX-1095</td>
+                                <td class="font-bold">ريما محمد الشمري</td>
+                                <td>د. سمر الياسين - عيادة النساء</td>
+                                <td class="font-bold">$150.00</td>
+                                <td><span class="badge-success">مدفوع</span></td>
+                                <td class="font-['Outfit']">2026-06-28</td>
+                            </tr>
+                            
+                            <!-- Page 2 Rows (Hidden by default) -->
+                            <tr class="table-row page-2 hidden">
+                                <td>#TX-1088</td>
+                                <td class="font-bold">سعدون ناصر الجاسم</td>
+                                <td>د. سمر الياسين - عيادة النساء</td>
+                                <td class="font-bold">$150.00</td>
+                                <td><span class="badge-success">مدفوع</span></td>
+                                <td class="font-['Outfit']">2026-06-27</td>
+                            </tr>
+                            <tr class="table-row page-2 hidden">
+                                <td>#TX-1089</td>
+                                <td class="font-bold">فاطمة علي الكواري</td>
+                                <td>د. سارة العلي - عيادة الأطفال</td>
+                                <td class="font-bold">$90.00</td>
+                                <td><span class="badge-danger">غير مدفوع</span></td>
+                                <td class="font-['Outfit']">2026-06-27</td>
+                            </tr>
+                            <tr class="table-row page-2 hidden">
+                                <td>#TX-1090</td>
+                                <td class="font-bold">يوسف محمد القحطاني</td>
+                                <td>د. أحمد سليمان - العيادة الباطنية</td>
+                                <td class="font-bold">$120.00</td>
+                                <td><span class="badge-success">مدفوع</span></td>
+                                <td class="font-['Outfit']">2026-06-26</td>
+                            </tr>
+                            <tr class="table-row page-2 hidden">
+                                <td>#TX-1091</td>
+                                <td class="font-bold">ليلى أحمد الحربي</td>
+                                <td>د. سمر الياسين - عيادة النساء</td>
+                                <td class="font-bold">$150.00</td>
+                                <td><span class="badge-success">مدفوع</span></td>
+                                <td class="font-['Outfit']">2026-06-26</td>
+                            </tr>
+
+                            <!-- Page 3 Rows (Hidden by default) -->
+                            <tr class="table-row page-3 hidden">
+                                <td>#TX-1084</td>
+                                <td class="font-bold">فهد فيصل السديري</td>
+                                <td>د. أحمد سليمان - العيادة الباطنية</td>
+                                <td class="font-bold">$120.00</td>
+                                <td><span class="badge-success">مدفوع</span></td>
+                                <td class="font-['Outfit']">2026-06-25</td>
+                            </tr>
+                            <tr class="table-row page-3 hidden">
+                                <td>#TX-1085</td>
+                                <td class="font-bold">منى إبراهيم الدوسري</td>
+                                <td>د. سمر الياسين - عيادة النساء</td>
+                                <td class="font-bold">$150.00</td>
+                                <td><span class="badge-success">مدفوع</span></td>
+                                <td class="font-['Outfit']">2026-06-25</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination Container (Default Standard Pagination) -->
+                <div id="standard-pagination" class="flex justify-between items-center">
+                    <span class="text-xs text-text-main opacity-70" id="pag-label">عرض 1 إلى 4 من أصل 10 قيود</span>
+                    <div class="flex gap-2">
+                        <button onclick="changePage(1)" class="pag-btn w-8 h-8 rounded-lg custom-card flex items-center justify-center hover-press text-xs font-bold text-text-main active" data-page-btn="1">1</button>
+                        <button onclick="changePage(2)" class="pag-btn w-8 h-8 rounded-lg custom-card flex items-center justify-center hover-press text-xs font-bold text-text-main" data-page-btn="2">2</button>
+                        <button onclick="changePage(3)" class="pag-btn w-8 h-8 rounded-lg custom-card flex items-center justify-center hover-press text-xs font-bold text-text-main" data-page-btn="3">3</button>
+                    </div>
+                </div>
+
+                <!-- Excel Tab-style Simulator (Visible ONLY in Excel theme) -->
+                <div id="excel-pagination" class="hidden excel-sheet-container -mx-6 -mb-6">
+                    <div onclick="changePage(1)" class="excel-tab active" data-excel-tab="1">ورقة 1</div>
+                    <div onclick="changePage(2)" class="excel-tab" data-excel-tab="2">ورقة 2</div>
+                    <div onclick="changePage(3)" class="excel-tab" data-excel-tab="3">ورقة 3</div>
+                    <div class="excel-tab text-slate-400 font-bold px-2">+</div>
+                    <div class="ml-auto text-[11px] text-slate-600 mr-2 flex items-center gap-1 font-semibold">
+                        <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-700"></i>
+                        جاهز (Excel Mode)
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Card 7: Interactive Component Demos -->
             <section class="custom-card p-6 hover-lift lg:col-span-3">
                 <h2 class="text-lg font-bold text-text-main mb-6">مكونات تفاعلية متعددة المدارس البصرية</h2>
                 
@@ -389,6 +538,7 @@
             if (theme === 'glass') return 'rgba(255, 255, 255, 0.35)';
             if (theme === 'brutal') return '#ffffff';
             if (theme === 'minimalist') return '#f5f5f5';
+            if (theme === 'excel') return '#ffffff';
             return '#eef2f7'; // default/soft
         }
         function getTextMainColor() {
@@ -617,6 +767,17 @@
             localStorage.setItem('theme', themeName);
             setActiveButton(themeName);
             
+            // Handle pagination element switching for Excel theme
+            const standardPag = document.getElementById('standard-pagination');
+            const excelPag = document.getElementById('excel-pagination');
+            if (themeName === 'excel') {
+                standardPag.classList.add('hidden');
+                excelPag.classList.remove('hidden');
+            } else {
+                standardPag.classList.remove('hidden');
+                excelPag.classList.add('hidden');
+            }
+
             // Wait slightly for transition to complete, then update charts
             setTimeout(() => {
                 updateChartThemes(themeName);
@@ -665,7 +826,7 @@
             updateRadial(chartDialOrange);
             updateRadial(chartDialGreen);
 
-            // Update tooltips theme and background transparency
+            // Update tooltips theme
             if (chartAreaSales) {
                 chartAreaSales.updateOptions({
                     chart: { background: 'transparent' },
@@ -682,10 +843,48 @@
             }
         }
 
+        // Pagination Switching Script
+        function changePage(pageNum) {
+            // Hide all table rows
+            document.querySelectorAll('#table-data-body tr').forEach(row => {
+                row.classList.add('hidden');
+            });
+            
+            // Show selected page rows
+            document.querySelectorAll(`#table-data-body tr.page-${pageNum}`).forEach(row => {
+                row.classList.remove('hidden');
+            });
+            
+            // Update page label
+            const label = document.getElementById('pag-label');
+            if (pageNum === 1) {
+                label.innerText = "عرض 1 إلى 4 من أصل 10 قيود";
+            } else if (pageNum === 2) {
+                label.innerText = "عرض 5 إلى 8 من أصل 10 قيود";
+            } else {
+                label.innerText = "عرض 9 إلى 10 من أصل 10 قيود";
+            }
+
+            // Set active class on standard pagination buttons
+            document.querySelectorAll('.pag-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-pink-500');
+            });
+            const activeBtn = document.querySelector(`[data-page-btn="${pageNum}"]`);
+            if (activeBtn) activeBtn.classList.add('active', 'text-pink-500');
+            
+            // Set active class on Excel sheet tabs
+            document.querySelectorAll('.excel-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            const activeTab = document.querySelector(`[data-excel-tab="${pageNum}"]`);
+            if (activeTab) activeTab.classList.add('active');
+        }
+
         // Restore saved theme on load
         window.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme') || 'soft';
             changeTheme(savedTheme);
+            changePage(1);
         });
     </script>
 </body>
