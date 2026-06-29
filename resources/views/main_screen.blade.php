@@ -120,8 +120,20 @@
                          <span class="text-[10px] text-text-main font-bold">صندوق الكاش اليومي:</span>
                          <span class="text-xs font-bold text-theme-emerald font-['Outfit']">$1,240.00</span>
                      </div>
-                     <div class="w-12 h-12 rounded-full custom-card flex items-center justify-center font-bold text-md text-text-main font-['Outfit'] shadow-soft-out-sm">
-                         AD
+                     <div class="flex items-center gap-3">
+                         <div class="w-10 h-10 rounded-full custom-card flex items-center justify-center font-bold text-md text-text-main font-['Outfit'] shadow-soft-out-sm">
+                             {{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 2)) }}
+                         </div>
+                         <div class="hidden sm:block">
+                             <h3 class="text-xs font-bold text-text-main leading-none">{{ auth()->user()->name ?? 'مستخدم' }}</h3>
+                             <span class="text-[10px] text-text-main opacity-60 font-semibold">{{ auth()->user()->role ?? 'visitor' }}</span>
+                         </div>
+                         <form method="POST" action="{{ route('logout') }}" class="ml-2">
+                             @csrf
+                             <button type="submit" class="w-8 h-8 rounded-lg flex items-center justify-center text-text-main opacity-60 hover:opacity-100 hover:text-theme-pink hover-press transition-colors" title="تسجيل الخروج">
+                                 <i data-lucide="log-out" class="w-4 h-4"></i>
+                             </button>
+                         </form>
                      </div>
                 </div>
             </header>
