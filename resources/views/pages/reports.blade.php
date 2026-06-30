@@ -352,43 +352,81 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
 
     // Draw right branch
     const rightPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    rightPath.setAttribute('d', `M ${cx+15} ${cy} L ${cx+15} ${cy-50} C ${cx+15} ${cy-80} ${cx+50} ${cy-90} ${cx+70} ${cy-105} L ${cx+80} ${cy-97} L ${cx+65} ${cy-125} L ${cx+37} ${cy-107} L ${cx+47} ${cy-112} C ${cx+35} ${cy-100} ${cx+5} ${cy-90} ${cx+5} ${cy-50} L ${cx+5} ${cy} Z`);
+    rightPath.setAttribute('d', `M ${cx+15} ${cy} L ${cx+15} ${cy-50} C ${cx+15} ${cy-80} ${cx+50} ${cy-90} ${cx+70} ${cy-105} L ${cx+80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx+35} ${cy-100} ${cx+5} ${cy-90} ${cx+5} ${cy-50} L ${cx+5} ${cy} Z`);
     rightPath.setAttribute('fill', '#db2777');
     rightPath.setAttribute('transform', `translate(${cx*2}, 0) scale(-1, 1)`);
     svg.appendChild(rightPath);
 
-    // Value Labels
+    // Total pill at trunk base
+    const totalValStr = totalVal.toLocaleString();
+    const totalPillW = Math.max(36, totalValStr.length * 6.5 + 10);
+    const totalPillH = 16;
+    const totalPill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    totalPill.setAttribute('x', cx - totalPillW / 2);
+    totalPill.setAttribute('y', cy - 12);
+    totalPill.setAttribute('width', totalPillW);
+    totalPill.setAttribute('height', totalPillH);
+    totalPill.setAttribute('rx', '8');
+    totalPill.setAttribute('fill', '#334155');
+    svg.appendChild(totalPill);
+
     const tTotal = document.createElementNS("http://www.w3.org/2000/svg", "text");
     tTotal.setAttribute('x', cx);
-    tTotal.setAttribute('y', cy - 15);
+    tTotal.setAttribute('y', cy - 0.5);
     tTotal.setAttribute('font-family', 'Outfit');
-    tTotal.setAttribute('font-size', '11px');
+    tTotal.setAttribute('font-size', '10px');
     tTotal.setAttribute('font-weight', 'black');
     tTotal.setAttribute('fill', '#ffffff');
     tTotal.setAttribute('text-anchor', 'middle');
-    tTotal.textContent = totalVal;
+    tTotal.textContent = totalValStr;
     svg.appendChild(tTotal);
 
+    // Left branch badge
+    const label1Text = `${label1}: ${val1.toLocaleString()}`;
+    const badge1W = label1Text.length * 6 + 12;
+    const badge1H = 18;
+    const badge1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    badge1.setAttribute('x', cx - 80 - badge1W / 2);
+    badge1.setAttribute('y', cy - 145);
+    badge1.setAttribute('width', badge1W);
+    badge1.setAttribute('height', badge1H);
+    badge1.setAttribute('rx', '9');
+    badge1.setAttribute('fill', '#0284c7');
+    svg.appendChild(badge1);
+
     const tVal1 = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    tVal1.setAttribute('x', cx - 75);
-    tVal1.setAttribute('y', cy - 135);
+    tVal1.setAttribute('x', cx - 80);
+    tVal1.setAttribute('y', cy - 133);
     tVal1.setAttribute('font-family', 'Tajawal');
     tVal1.setAttribute('font-size', '9px');
     tVal1.setAttribute('font-weight', 'bold');
-    tVal1.setAttribute('fill', '#0284c7');
+    tVal1.setAttribute('fill', '#ffffff');
     tVal1.setAttribute('text-anchor', 'middle');
-    tVal1.textContent = `${label1} (${val1})`;
+    tVal1.textContent = label1Text;
     svg.appendChild(tVal1);
 
+    // Right branch badge
+    const label2Text = `${label2}: ${val2.toLocaleString()}`;
+    const badge2W = label2Text.length * 6 + 12;
+    const badge2H = 18;
+    const badge2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    badge2.setAttribute('x', cx + 80 - badge2W / 2);
+    badge2.setAttribute('y', cy - 145);
+    badge2.setAttribute('width', badge2W);
+    badge2.setAttribute('height', badge2H);
+    badge2.setAttribute('rx', '9');
+    badge2.setAttribute('fill', '#db2777');
+    svg.appendChild(badge2);
+
     const tVal2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    tVal2.setAttribute('x', cx + 75);
-    tVal2.setAttribute('y', cy - 135);
+    tVal2.setAttribute('x', cx + 80);
+    tVal2.setAttribute('y', cy - 133);
     tVal2.setAttribute('font-family', 'Tajawal');
     tVal2.setAttribute('font-size', '9px');
     tVal2.setAttribute('font-weight', 'bold');
-    tVal2.setAttribute('fill', '#db2777');
+    tVal2.setAttribute('fill', '#ffffff');
     tVal2.setAttribute('text-anchor', 'middle');
-    tVal2.textContent = `${label2} (${val2})`;
+    tVal2.textContent = label2Text;
     svg.appendChild(tVal2);
 }
 
@@ -402,17 +440,17 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
     const viewBoxStr = svg.getAttribute('viewBox') || "0 0 900 240";
     const width = parseInt(viewBoxStr.split(' ')[2]);
     const height = parseInt(viewBoxStr.split(' ')[3]);
-    const marginL = 30;
-    const marginR = 30;
+    const marginL = 35;
+    const marginR = 35;
     const availableW = width - marginL - marginR;
     const spacing = n > 1 ? availableW / (n - 1) : availableW;
     const floorY = height - 30;
     
     // Baseline
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute('x1', marginL - 10);
+    line.setAttribute('x1', marginL - 15);
     line.setAttribute('y1', floorY);
-    line.setAttribute('x2', width - marginR + 10);
+    line.setAttribute('x2', width - marginR + 15);
     line.setAttribute('y2', floorY);
     line.setAttribute('stroke', '#cbd5e1');
     line.setAttribute('stroke-width', '1.5');
@@ -437,29 +475,35 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
         dashed.setAttribute('x1', x);
         dashed.setAttribute('y1', floorY - H - 12);
         dashed.setAttribute('x2', x);
-        dashed.setAttribute('y2', floorY - H - 28);
+        dashed.setAttribute('y2', floorY - H - 26);
         dashed.setAttribute('stroke', color);
         dashed.setAttribute('stroke-width', '1');
         dashed.setAttribute('stroke-dasharray', '2 2');
         g.appendChild(dashed);
 
-        // Value circle
-        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute('cx', x);
-        circle.setAttribute('cy', floorY - H - 38);
-        circle.setAttribute('r', '9');
-        circle.setAttribute('fill', color);
-        g.appendChild(circle);
+        // Value dynamic pill
+        const valStr = val.toLocaleString();
+        const pillW = Math.max(20, valStr.length * 6 + 6);
+        const pillH = 14;
+
+        const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        pill.setAttribute('x', x - pillW / 2);
+        pill.setAttribute('y', floorY - H - 36);
+        pill.setAttribute('width', pillW);
+        pill.setAttribute('height', pillH);
+        pill.setAttribute('rx', '7');
+        pill.setAttribute('fill', color);
+        g.appendChild(pill);
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
         tVal.setAttribute('x', x);
-        tVal.setAttribute('y', floorY - H - 35.5);
+        tVal.setAttribute('y', floorY - H - 25.5);
         tVal.setAttribute('font-family', 'Outfit');
-        tVal.setAttribute('font-size', '7.5px');
+        tVal.setAttribute('font-size', '8.5px');
         tVal.setAttribute('font-weight', 'bold');
         tVal.setAttribute('fill', '#ffffff');
         tVal.setAttribute('text-anchor', 'middle');
-        tVal.textContent = val;
+        tVal.textContent = valStr;
         g.appendChild(tVal);
 
         // Rect Arrow Body
@@ -513,8 +557,8 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
     const width = parseInt(viewBoxStr.split(' ')[2]);
     const height = parseInt(viewBoxStr.split(' ')[3]);
     
-    const marginT = 15;
-    const marginB = 15;
+    const marginT = 18;
+    const marginB = 18;
     const availableH = height - marginT - marginB;
     const spacing = n > 1 ? availableH / (n - 1) : availableH;
     
@@ -525,7 +569,7 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         const color = colors[i % colors.length];
         
         const startX = width - 20;
-        const maxL = width - 110;
+        const maxL = width - 130;
         const scaleVal = maxVal > 0 ? val / maxVal : 0;
         const L = 30 + maxL * scaleVal;
         const endX = startX - L;
@@ -539,23 +583,29 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         body.setAttribute('fill', color);
         g.appendChild(body);
 
-        // Circle Badge for values
-        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute('cx', endX - 16);
-        circle.setAttribute('cy', y);
-        circle.setAttribute('r', '8.5');
-        circle.setAttribute('fill', color);
-        g.appendChild(circle);
+        // Value dynamic pill
+        const valStr = val.toLocaleString();
+        const pillW = Math.max(18, valStr.length * 6 + 6);
+        const pillH = 14;
+
+        const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        pill.setAttribute('x', endX - pillW - 6);
+        pill.setAttribute('y', y - pillH / 2);
+        pill.setAttribute('width', pillW);
+        pill.setAttribute('height', pillH);
+        pill.setAttribute('rx', '7');
+        pill.setAttribute('fill', color);
+        g.appendChild(pill);
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tVal.setAttribute('x', endX - 16);
-        tVal.setAttribute('y', y + 2.5);
+        tVal.setAttribute('x', endX - pillW / 2 - 6);
+        tVal.setAttribute('y', y + 4);
         tVal.setAttribute('font-family', 'Outfit');
-        tVal.setAttribute('font-size', '8px');
+        tVal.setAttribute('font-size', '8.5px');
         tVal.setAttribute('font-weight', 'bold');
         tVal.setAttribute('fill', '#ffffff');
         tVal.setAttribute('text-anchor', 'middle');
-        tVal.textContent = val;
+        tVal.textContent = valStr;
         g.appendChild(tVal);
 
         // Chevron label
@@ -563,7 +613,7 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         label.setAttribute('x', startX - 12);
         label.setAttribute('y', y + 3);
         label.setAttribute('font-family', 'Tajawal');
-        label.setAttribute('font-size', '8px');
+        label.setAttribute('font-size', '8.5px');
         label.setAttribute('font-weight', 'bold');
         label.setAttribute('fill', '#ffffff');
         label.setAttribute('text-anchor', 'end');
