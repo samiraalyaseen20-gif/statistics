@@ -89,24 +89,14 @@
                 <svg id="svg-report-5" viewBox="0 0 450 200" class="w-full min-w-[420px] h-[200px] overflow-visible"></svg>
             </div>
         </div>
-        <!-- Lab Tests (Curved Loop Progress) -->
+        <!-- Lab Tests (Flat Arrow Columns) -->
         <div class="custom-card p-6 rounded-2xl flex flex-col justify-between">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
-                جدول (6): الفحوصات والتحاليل المختبرية المنجزة
+                جدول (6): الفحوصات والتحاليل المختبرية المنجزة (المجموع: 4,566 مراجع)
             </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-                <div class="flex justify-center">
-                    <svg id="svg-report-6" viewBox="0 0 180 180" class="w-40 h-40 overflow-visible"></svg>
-                </div>
-                <div>
-                    <p class="text-[9px] font-bold text-slate-400 mb-2">التحاليل المتوفرة:</p>
-                    <div class="flex flex-wrap gap-1">
-                        @foreach(['RBS','WBC','Hb','PCV','HIV','HCV','HBV','PT','PTT','INR'] as $t)
-                        <span class="bg-purple-100 text-purple-700 text-[8px] font-bold px-2 py-0.5 rounded">{{ $t }}</span>
-                        @endforeach
-                    </div>
-                </div>
+            <div class="w-full overflow-x-auto py-2">
+                <svg id="svg-report-6" viewBox="0 0 450 180" class="w-full min-w-[420px] h-[180px] overflow-visible"></svg>
             </div>
         </div>
     </div>
@@ -581,92 +571,7 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
     });
 }
 
-// 4. Curved Loop Progress Arrows
-function drawCurvedLoopArrow(svgId, val, maxVal, label) {
-    const svg = document.getElementById(svgId);
-    if (!svg) return;
-    svg.innerHTML = '';
-    
-    const viewBoxStr = svg.getAttribute('viewBox') || "0 0 180 180";
-    const width = parseInt(viewBoxStr.split(' ')[2]);
-    const height = parseInt(viewBoxStr.split(' ')[3]);
-    
-    const cx = width / 2;
-    const cy = height / 2 - 10;
-    const r = 50;
-    
-    const pct = val / maxVal;
-    const angle = pct * 360;
-    
-    // Background loop track
-    const track = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    track.setAttribute('cx', cx);
-    track.setAttribute('cy', cy);
-    track.setAttribute('r', r);
-    track.setAttribute('fill', 'none');
-    track.setAttribute('stroke', '#e2e8f0');
-    track.setAttribute('stroke-width', '8');
-    svg.appendChild(track);
-    
-    // Active loop path
-    const active = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    const startAngle = -90;
-    const endAngle = startAngle + angle;
-    
-    const rad = Math.PI / 180;
-    const x1 = cx + r * Math.cos(startAngle * rad);
-    const y1 = cy + r * Math.sin(startAngle * rad);
-    const x2 = cx + r * Math.cos(endAngle * rad);
-    const y2 = cy + r * Math.sin(endAngle * rad);
-    
-    const largeArc = angle > 180 ? 1 : 0;
-    const d = `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`;
-    
-    active.setAttribute('d', d);
-    active.setAttribute('fill', 'none');
-    active.setAttribute('stroke', '#a855f7');
-    active.setAttribute('stroke-width', '8');
-    active.setAttribute('stroke-linecap', 'round');
-    svg.appendChild(active);
-    
-    // Loop arrowhead indicator
-    const tAngle = endAngle + 90;
-    const tx1 = x2 + 8 * Math.cos((tAngle - 135) * rad);
-    const ty1 = y2 + 8 * Math.sin((tAngle - 135) * rad);
-    const tx2 = x2 + 8 * Math.cos((tAngle + 135) * rad);
-    const ty2 = y2 + 8 * Math.sin((tAngle + 135) * rad);
-    const tx3 = x2 + 12 * Math.cos(tAngle * rad);
-    const ty3 = y2 + 12 * Math.sin(tAngle * rad);
-    
-    const head = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    head.setAttribute('points', `${tx1},${ty1} ${tx2},${ty2} ${tx3},${ty3}`);
-    head.setAttribute('fill', '#a855f7');
-    svg.appendChild(head);
-    
-    // Value text
-    const textVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    textVal.setAttribute('x', cx);
-    textVal.setAttribute('y', cy + 5);
-    textVal.setAttribute('font-family', 'Outfit');
-    textVal.setAttribute('font-size', '16px');
-    textVal.setAttribute('font-weight', 'black');
-    textVal.setAttribute('fill', '#6b21a8');
-    textVal.setAttribute('text-anchor', 'middle');
-    textVal.textContent = val;
-    svg.appendChild(textVal);
-    
-    // Label text
-    const labelText = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    labelText.setAttribute('x', cx);
-    labelText.setAttribute('y', height - 10);
-    labelText.setAttribute('font-family', 'Tajawal');
-    labelText.setAttribute('font-size', '9px');
-    labelText.setAttribute('font-weight', 'bold');
-    labelText.setAttribute('fill', '#64748b');
-    labelText.setAttribute('text-anchor', 'middle');
-    labelText.textContent = label;
-    svg.appendChild(labelText);
-}
+
 
 // Global page initialization hook triggers drawing of all elements
 function renderAll2DArrowCharts() {
@@ -693,8 +598,10 @@ function renderAll2DArrowCharts() {
     const visualLabels = ['فحص البصر', 'OCT', 'قوة العدسة', 'C.T', 'سونار', 'FUNDUS'];
     draw2DFlatHorizontalChevrons('svg-report-5', visualData, visualLabels, ['#f97316','#ea580c','#c2410c','#ea580c','#f97316','#c2410c']);
 
-    // 6. Lab progress curved loop
-    drawCurvedLoopArrow('svg-report-6', 4566, 4566, 'مراجع للمختبر');
+    // 6. Lab tests (5 tests) -> 2D Flat Columns
+    const labTestData = [120, 95, 85, 70, 40];
+    const labTestLabels = ['RBS', 'WBC', 'Hb', 'PCV', 'INR'];
+    draw2DFlatVerticalArrows('svg-report-6', labTestData, labTestLabels, ['#8b5cf6','#a855f7','#c084fc','#d8b4fe','#f3e8ff']);
 
     // 7. Surgery Classification -> 2D Flat Columns
     const surgClassData = [33, 103, 85, 90, 434, 1257];
