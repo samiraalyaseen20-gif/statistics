@@ -24,49 +24,40 @@
         body {
             font-family: 'Tajawal', 'Outfit', 'Plus Jakarta Sans', sans-serif;
         }
-        /* Custom scrollbar matching active theme */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
-        }
-        body[data-theme="glass"] ::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.15);
-        }
-        body[data-theme="brutal"] ::-webkit-scrollbar-thumb {
-            background: #000000;
-            border: 2px solid #000000;
-        }
+        /* Custom slim scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        body[data-theme="glass"] ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }
+        body[data-theme="brutal"] ::-webkit-scrollbar-thumb { background: #000000; border: 2px solid #000000; }
+        /* Fix sidebar border-radius in app shell mode */
+        #sidebar { border-radius: 0 !important; }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-6" data-theme="soft">
+<body class="h-screen overflow-hidden" data-theme="soft">
 
     <!-- Background blobs for Glassmorphism theme -->
     <div class="fixed top-10 left-10 w-80 h-80 rounded-full bg-pink-400/30 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
     <div class="fixed bottom-20 right-10 w-96 h-96 rounded-full bg-sky-400/30 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
     <div class="fixed top-1/2 left-1/3 w-80 h-80 rounded-full bg-emerald-400/25 blur-3xl glass-blob pointer-events-none z-[-1]"></div>
 
-    <!-- Main Responsive Widescreen Flex Grid Layout -->
-    <div class="flex min-h-[calc(100vh-2rem)] flex-col md:flex-row gap-6 w-full max-w-full">
-        
-        <!-- RIGHT SIDEBAR (الشريط الجانبي الأيمن للملاحة) -->
-        <aside id="sidebar" class="sidebar-container w-56 shrink-0 flex flex-col p-4 fixed inset-y-0 right-0 z-40 transform translate-x-full transition-transform duration-300 md:static md:translate-x-0 md:h-auto">
+    <!-- APP SHELL -->
+    <div class="flex h-screen w-full overflow-hidden">
+
+        <!-- SIDEBAR (ثابت) -->
+        <aside id="sidebar" class="sidebar-container w-56 shrink-0 flex flex-col
+                                   fixed inset-y-0 right-0 z-40 transform translate-x-full transition-transform duration-300
+                                   md:relative md:inset-auto md:translate-x-0 md:z-auto md:self-stretch">
             <!-- Logo -->
-            <div class="flex items-center gap-3 mb-6 border-b border-slate-200/20 pb-4">
+            <div class="flex items-center gap-3 px-4 py-5 border-b border-slate-200/20 shrink-0">
                 <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-500 to-pink-400 flex items-center justify-center text-white shadow-soft-out-sm">
                     <i data-lucide="activity" class="w-4 h-4"></i>
                 </div>
                 <span class="text-xs font-bold text-text-main">المركز الطبي</span>
             </div>
 
-            <!-- Navigation -->
-            <nav class="flex-1 space-y-1 overflow-y-auto">
+            <!-- Navigation (يسكرول داخل السايدبار لو طال) -->
+            <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
                 <button onclick="navigateToPage('dashboard')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press active text-pink-500" id="nav-dashboard">
                     <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 shrink-0"></i>
                     <span>الرئيسية</span>
@@ -87,36 +78,28 @@
                     </button>
                     <div id="mgmt-menu" class="hidden mt-1 space-y-0.5 pr-3 border-r-2 border-slate-200/20 mr-3">
                         <button onclick="navigateToPage('doctors')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-doctors">
-                            <i data-lucide="stethoscope" class="w-3 h-3 shrink-0 text-violet-500"></i>
-                            <span>الأطباء</span>
+                            <i data-lucide="stethoscope" class="w-3 h-3 shrink-0 text-violet-500"></i><span>الأطباء</span>
                         </button>
                         <button onclick="navigateToPage('countries')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-countries">
-                            <i data-lucide="globe" class="w-3 h-3 shrink-0 text-sky-500"></i>
-                            <span>الدول</span>
+                            <i data-lucide="globe" class="w-3 h-3 shrink-0 text-sky-500"></i><span>الدول</span>
                         </button>
                         <button onclick="navigateToPage('governorates')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-governorates">
-                            <i data-lucide="map-pin" class="w-3 h-3 shrink-0 text-emerald-500"></i>
-                            <span>المحافظات</span>
+                            <i data-lucide="map-pin" class="w-3 h-3 shrink-0 text-emerald-500"></i><span>المحافظات</span>
                         </button>
                         <button onclick="navigateToPage('test_types')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-test_types">
-                            <i data-lucide="eye" class="w-3 h-3 shrink-0 text-orange-500"></i>
-                            <span>أنواع الفحص</span>
+                            <i data-lucide="eye" class="w-3 h-3 shrink-0 text-orange-500"></i><span>أنواع الفحص</span>
                         </button>
                         <button onclick="navigateToPage('operations')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-operations">
-                            <i data-lucide="scissors" class="w-3 h-3 shrink-0 text-rose-500"></i>
-                            <span>العمليات</span>
+                            <i data-lucide="scissors" class="w-3 h-3 shrink-0 text-rose-500"></i><span>العمليات</span>
                         </button>
                         <button onclick="navigateToPage('sectors')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-sectors">
-                            <i data-lucide="building-2" class="w-3 h-3 shrink-0 text-amber-500"></i>
-                            <span>القطاعات</span>
+                            <i data-lucide="building-2" class="w-3 h-3 shrink-0 text-amber-500"></i><span>القطاعات</span>
                         </button>
                         <button onclick="navigateToPage('clinic_units')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-clinic_units">
-                            <i data-lucide="layout-list" class="w-3 h-3 shrink-0 text-indigo-500"></i>
-                            <span>الوحدات</span>
+                            <i data-lucide="layout-list" class="w-3 h-3 shrink-0 text-indigo-500"></i><span>الوحدات</span>
                         </button>
                         <button onclick="navigateToPage('lab_test_types')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-lab_test_types">
-                            <i data-lucide="test-tube" class="w-3 h-3 shrink-0 text-purple-500"></i>
-                            <span>التحاليل</span>
+                            <i data-lucide="test-tube" class="w-3 h-3 shrink-0 text-purple-500"></i><span>التحاليل</span>
                         </button>
                     </div>
                 </div>
@@ -132,11 +115,11 @@
         <!-- Sidebar Backdrop for Mobile -->
         <div id="sidebar-backdrop" onclick="toggleSidebar(false)" class="fixed inset-0 bg-black/40 z-30 hidden"></div>
 
-        <!-- LEFT MAIN CONTENT (منطقة المحتوى الرئيسية - كامل العرض المتاح) -->
-        <div class="flex-1 flex flex-col min-w-0 w-full">
-            
-            <!-- Header -->
-            <header class="flex justify-between items-center mb-6 p-4 rounded-2xl custom-card w-full">
+        <!-- ═══ MAIN AREA (عمود المحتوى - flex-col ثابت الارتفاع) ═══ -->
+        <div class="flex-1 flex flex-col h-full min-w-0 overflow-hidden border-r border-slate-200/20">
+
+            <!-- HEADER -->
+            <header class="flex justify-between items-center px-4 py-3 custom-card shrink-0 border-b border-slate-200/20" style="border-radius:0!important">
                 <div class="flex items-center gap-3">
                     <button onclick="toggleSidebar(true)" class="md:hidden w-9 h-9 rounded-xl custom-card flex items-center justify-center text-text-main hover-press">
                         <i data-lucide="menu" class="w-4 h-4"></i>
@@ -156,8 +139,8 @@
                 </div>
             </header>
 
-            <!-- Separated Pages Inclusions -->
-            <div class="w-full flex-1">
+            <!-- CONTENT AREA (يسكرول هنا فقط) -->
+            <main class="flex-1 overflow-y-auto p-4">
                 @include('pages.dashboard')
                 @include('pages.reports')
                 @include('pages.doctors')
@@ -169,8 +152,7 @@
                 @include('pages.clinic_units')
                 @include('pages.lab_test_types')
                 @include('pages.settings')
-            </div>
-
+            </main>
 
         </div>
     </div>
@@ -982,12 +964,9 @@
             // Close mobile sidebar menu
             toggleSidebar(false);
 
-            // Trigger report charts when navigating to the reports page
-            if (pageId === 'reports' && !window._reportChartsRendered) {
-                window._reportChartsRendered = true;
-                setTimeout(() => {
-                    if (typeof renderReportCharts === 'function') renderReportCharts();
-                }, 150);
+            // Trigger report page hooks
+            if (pageId === 'reports' && typeof window.initReportsPage === 'function') {
+                window.initReportsPage();
             }
 
             // Trigger hooks for each page
