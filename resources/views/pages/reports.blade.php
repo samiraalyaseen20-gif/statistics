@@ -1,821 +1,637 @@
-<!-- PAGE 2: REPORTS PAGE SECTION (PowerPoint Slide Presentation Style) -->
-<section id="page-reports" class="page-section hidden h-full flex flex-col overflow-hidden">
+<!-- PAGE 2: REPORTS PAGE SECTION (Single Scrollable Dashboard Page) -->
+<section id="page-reports" class="page-section space-y-6 hidden">
 
-    <!-- Top Slide Control Bar -->
-    <div class="custom-card p-3 rounded-xl shrink-0 flex flex-wrap items-center justify-between gap-3 mb-4">
+    <!-- Filter & Action Bar (Clean & minimalist) -->
+    <div class="custom-card p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-500">
-                <i data-lucide="presentation" class="w-4 h-4"></i>
+                <i data-lucide="file-bar-chart-2" class="w-4 h-4"></i>
             </div>
-            <div>
-                <h2 class="text-xs font-bold text-text-main">تقرير إحصاءات العيادات والعمليات</h2>
-                <p class="text-[9px] text-text-main opacity-50">أيار 2026 – عرض الشرائح التفاعلي</p>
-            </div>
+            <h2 class="text-xs font-bold text-text-main">الإحصاءات والتقارير الطبية</h2>
         </div>
-        
-        <!-- Controls and navigation -->
-        <div class="flex items-center gap-2">
-            <button onclick="prevSlide()" class="w-8 h-8 rounded-lg bg-slate-200/10 text-text-main hover:bg-slate-200/20 flex items-center justify-center hover-press" title="الشريحة السابقة">
-                <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            </button>
-            <div class="px-3 text-[10px] font-bold text-text-main">
-                <span id="active-slide-num">1</span> / 8
-            </div>
-            <button onclick="nextSlide()" class="w-8 h-8 rounded-lg bg-slate-200/10 text-text-main hover:bg-slate-200/20 flex items-center justify-center hover-press" title="الشريحة التالية">
-                <i data-lucide="chevron-left" class="w-4 h-4"></i>
-            </button>
-            <div class="h-6 w-px bg-slate-200/20 mx-1"></div>
-            <select id="slide-selector" onchange="jumpToSlide(this.value)" class="custom-inset border-none focus:outline-none rounded-lg py-1 px-2.5 text-[10px] font-bold text-text-main">
-                <option value="1">1. غلاف التقرير الإحصائي</option>
-                <option value="2">2. أعداد المراجعين في الاستشاريات</option>
-                <option value="3">3. مراجعو الأطباء الاختصاص</option>
-                <option value="4">4. التوزيع الديمغرافي للمراجعين</option>
-                <option value="5">5. الفحوصات البصرية والتحاليل</option>
-                <option value="6">6. تصنيف العمليات الجراحية</option>
-                <option value="7">7. العمليات الجراحية لكل طبيب</option>
-                <option value="8">8. الإحصائية التفصيلية والختام</option>
-            </select>
-            <div class="h-6 w-px bg-slate-200/20 mx-1"></div>
-            <button onclick="window.print()" class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 flex items-center justify-center hover-press" title="طباعة العرض">
-                <i data-lucide="printer" class="w-4 h-4"></i>
+        <div class="flex items-center gap-3">
+            <input type="month" value="2026-05" class="custom-inset border-none focus:outline-none rounded-xl py-2 px-4 text-xs font-bold text-text-main custom-date-input">
+            <button onclick="window.print()" class="py-2 px-5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2">
+                <i data-lucide="printer" class="w-3.5 h-3.5"></i><span>طباعة PDF</span>
             </button>
         </div>
     </div>
 
-    <!-- MAIN SLIDE CONTAINER (Aspect Ratio like PPT) -->
-    <div class="flex-1 min-h-0 flex items-center justify-center p-1">
-        <div class="w-full h-full max-w-5xl aspect-[16/9] min-h-[480px] bg-gradient-to-br from-[#fefcf7] via-[#f7f2e9] to-[#ebdcd0] rounded-3xl shadow-2xl border border-slate-200/40 relative overflow-hidden flex flex-col p-8 select-none" id="ppt-slide-card">
-            
-            <!-- Slide Background Decorative Vectors -->
-            <div class="absolute -top-20 -left-20 w-80 h-80 rounded-full bg-orange-200/10 blur-3xl pointer-events-none"></div>
-            <div class="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-pink-200/10 blur-3xl pointer-events-none"></div>
-
-            <!-- Slide Footer (Subtle Branding) -->
-            <div class="absolute bottom-4 left-6 right-6 flex justify-between items-center text-[8px] font-bold text-slate-400 shrink-0 border-t border-slate-200/10 pt-2">
-                <span>مركز السيدة زينب الكبرى (ع) لعيون وجراحة العيون</span>
-                <span class="slide-indicator-dot font-['Outfit']">CMS - MAY 2026</span>
-                <span class="font-['Outfit']" id="slide-footer-num">SLIDE 01</span>
+    <!-- 1. الاستشاريات العامة والتخصصية (جدول 1) -->
+    <div class="custom-card p-6 rounded-2xl">
+        <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+            <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
+            أعداد المراجعين في الاستشاريات
+        </h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <!-- 3D Isometric Arrows Infographic -->
+            <div class="flex justify-center">
+                <svg viewBox="0 0 350 220" class="w-full max-w-[320px] h-auto drop-shadow-sm overflow-visible">
+                    <defs>
+                        <linearGradient id="g1-teal" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#0284c7" />
+                            <stop offset="100%" stop-color="#38bdf8" />
+                        </linearGradient>
+                        <linearGradient id="g1-pink" x1="0%" y1="100%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#db2777" />
+                            <stop offset="100%" stop-color="#f472b6" />
+                        </linearGradient>
+                    </defs>
+                    <polygon points="50,190 150,220 310,130 210,100" fill="#e2e8f0" opacity="0.4" />
+                    <!-- Arrow 1 (General: 3375 - 76%) -->
+                    <g class="hover:opacity-90 cursor-pointer transition-opacity duration-300">
+                        <path d="M 90 190 L 150 150 L 150 70 L 170 75 L 140 30 L 110 75 L 130 70 L 130 135 L 90 160 Z" fill="url(#g1-teal)" />
+                        <path d="M 130 70 L 150 70 L 150 150 L 130 135 Z" fill="#0369a1" opacity="0.3" />
+                        <text x="140" y="110" font-family="Outfit" font-size="14px" font-weight="900" fill="#ffffff" text-anchor="middle" transform="rotate(-30 140 110)">76%</text>
+                    </g>
+                    <!-- Arrow 2 (Special: 1091 - 24%) -->
+                    <g class="hover:opacity-90 cursor-pointer transition-opacity duration-300">
+                        <path d="M 190 190 L 250 150 L 250 110 L 270 115 L 240 70 L 210 115 L 230 110 L 230 135 L 190 160 Z" fill="url(#g1-pink)" />
+                        <path d="M 230 110 L 250 110 L 250 150 L 230 135 Z" fill="#be185d" opacity="0.3" />
+                        <text x="240" y="130" font-family="Outfit" font-size="12px" font-weight="900" fill="#ffffff" text-anchor="middle" transform="rotate(-30 240 130)">24%</text>
+                    </g>
+                </svg>
             </div>
-
-            <!-- ========================================== -->
-            <!-- SLIDE 1: COVER SLIDE                       -->
-            <!-- ========================================== -->
-            <div class="slide-page flex-1 flex flex-col justify-center items-center text-center p-6" id="slide-1">
-                <div class="w-16 h-16 bg-gradient-to-tr from-pink-500 to-orange-400 rounded-2xl flex items-center justify-center text-white shadow-lg mb-6 transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                    <i data-lucide="activity" class="w-8 h-8"></i>
-                </div>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-800 leading-tight mb-2 tracking-wide font-['Tajawal']">التقرير الإحصائي الشهري</h1>
-                <p class="text-sm font-bold text-slate-500 max-w-xl leading-relaxed mb-8">إحصائيات العيادات الاستشارية، الفحوصات الطبية، والعمليات الجراحية المنجزة لجميع أطباء الاختصاص لشهر أيار 2026</p>
-                
-                <div class="flex items-center gap-3 text-[10px] font-bold text-slate-500 bg-white/40 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/60">
-                    <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> أيار 2026</span>
-                    <span class="opacity-30">|</span>
-                    <span class="flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i> بيانات معتمدة</span>
-                </div>
+            <!-- Data Table -->
+            <div>
+                <table class="custom-table text-xs">
+                    <thead><tr><th class="w-12 text-center">ت</th><th>الوحدة الطبية</th><th class="text-center">المجموع</th></tr></thead>
+                    <tbody>
+                        <tr class="table-row"><td class="text-center">1</td><td>استشارية العيون العامة</td><td class="text-center font-bold">3,375</td></tr>
+                        <tr class="table-row"><td class="text-center">2</td><td>استشارية التخصصات الدقيقة</td><td class="text-center font-bold">1,091</td></tr>
+                        <tr class="table-row font-extrabold text-theme-pink"><td colspan="2" class="text-center">المجموع الكلي</td><td class="text-center text-sm">4,566</td></tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
+    </div>
 
-            <!-- ========================================== -->
-            <!-- SLIDE 2: CONSULTATIONS (TABLE 1)           -->
-            <!-- ========================================== -->
-            <div class="slide-page flex-1 flex flex-col justify-between hidden" id="slide-2">
-                <div class="flex justify-between items-start shrink-0 mb-4">
-                    <div>
-                        <h3 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
-                            <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
-                            أعداد المراجعين في الاستشاريات
-                        </h3>
-                        <p class="text-[10px] text-slate-400 font-medium">جدول (1): مقارنة مراجعي العيون العامة والتخصصات الدقيقة</p>
-                    </div>
-                </div>
+    <!-- 2. مراجعو كل طبيب اختصاص (جدول 2) -->
+    <div class="custom-card p-6 rounded-2xl">
+        <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+            <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
+            أعداد مراجعي الاستشارية لكل طبيب اختصاص
+        </h3>
+        <div id="chart-report-2" class="w-full mb-5" style="height:240px"></div>
+        <div class="overflow-x-auto">
+            <table class="custom-table text-[11px] text-center">
+                <thead><tr>
+                    <th>د. بشرى علي</th><th>د. حيدر حسين</th><th>د. حمزة صادق</th><th>د. حذيفه سامي</th><th>د. مؤيد صبار</th><th>د. منتصر عرب</th><th>د. نور رعد</th><th>د. غياث الدين</th><th>د. اريج هادي</th><th>د. ذوالفقار</th><th>البقية</th><th class="text-theme-pink">المجموع</th>
+                </tr></thead>
+                <tbody><tr class="table-row font-bold">
+                    <td>1204</td><td>729</td><td>562</td><td>348</td><td>346</td><td>212</td><td>194</td><td>177</td><td>134</td><td>120</td><td>540</td><td class="text-theme-pink font-extrabold">4,566</td>
+                </tr></tbody>
+            </table>
+        </div>
+    </div>
 
-                <div class="flex-1 flex flex-col md:flex-row gap-8 items-center justify-center min-h-0">
-                    <!-- Left: 3D Isometric Arrows SVG Infographic -->
-                    <div class="w-full md:w-1/2 flex justify-center">
-                        <svg viewBox="0 0 350 280" class="w-full max-w-[320px] h-auto drop-shadow-md">
-                            <defs>
-                                <linearGradient id="g1-teal" x1="0%" y1="100%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#0284c7" />
-                                    <stop offset="100%" stop-color="#38bdf8" />
-                                </linearGradient>
-                                <linearGradient id="g1-pink" x1="0%" y1="100%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#db2777" />
-                                    <stop offset="100%" stop-color="#f472b6" />
-                                </linearGradient>
-                            </defs>
-                            
-                            <!-- Arrow 1 (General: 3375 - 76%) -->
-                            <g class="hover:opacity-90 cursor-pointer transition-opacity duration-300">
-                                <path d="M 90 240 L 150 200 L 150 80 L 170 85 L 140 40 L 110 85 L 130 80 L 130 185 L 90 210 Z" fill="url(#g1-teal)" />
-                                <path d="M 130 80 L 150 80 L 150 200 L 130 185 Z" fill="#0369a1" opacity="0.3" />
-                                <text x="140" y="140" font-family="Outfit" font-size="16px" font-weight="900" fill="#ffffff" text-anchor="middle" transform="rotate(-30 140 140)">76%</text>
-                            </g>
-                            
-                            <!-- Arrow 2 (Special: 1091 - 24%) -->
-                            <g class="hover:opacity-90 cursor-pointer transition-opacity duration-300">
-                                <path d="M 190 240 L 250 200 L 250 140 L 270 145 L 240 100 L 210 145 L 230 140 L 230 185 L 190 210 Z" fill="url(#g1-pink)" />
-                                <path d="M 230 140 L 250 140 L 250 200 L 230 185 Z" fill="#be185d" opacity="0.3" />
-                                <text x="240" y="170" font-family="Outfit" font-size="14px" font-weight="900" fill="#ffffff" text-anchor="middle" transform="rotate(-30 240 170)">24%</text>
-                            </g>
-                            
-                            <!-- Base Platform -->
-                            <polygon points="50,240 150,270 310,180 210,150" fill="#e2e8f0" opacity="0.4" />
-                            <polygon points="50,240 150,270 150,275 50,245" fill="#cbd5e1" opacity="0.6" />
-                        </svg>
-                    </div>
-
-                    <!-- Right: Info cards & Table data -->
-                    <div class="w-full md:w-1/2 flex flex-col gap-4">
-                        <div class="bg-white/50 backdrop-blur-sm p-4 rounded-2xl border border-white/60">
-                            <div class="flex items-center justify-between mb-3 border-b border-slate-200/10 pb-2">
-                                <span class="text-xs font-bold text-slate-800">استشارية العيون العامة</span>
-                                <span class="text-xs font-bold text-sky-600">3,375 مراجع</span>
-                            </div>
-                            <div class="w-full bg-slate-200/40 h-2.5 rounded-full overflow-hidden">
-                                <div class="bg-sky-500 h-full rounded-full" style="width: 76%"></div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white/50 backdrop-blur-sm p-4 rounded-2xl border border-white/60">
-                            <div class="flex items-center justify-between mb-3 border-b border-slate-200/10 pb-2">
-                                <span class="text-xs font-bold text-slate-800">استشارية التخصصات الدقيقة</span>
-                                <span class="text-xs font-bold text-pink-600">1,091 مراجع</span>
-                            </div>
-                            <div class="w-full bg-slate-200/40 h-2.5 rounded-full overflow-hidden">
-                                <div class="bg-pink-500 h-full rounded-full" style="width: 24%"></div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-3 bg-gradient-to-r from-pink-500 to-orange-400 p-4 rounded-2xl text-white shadow-md">
-                            <i data-lucide="users" class="w-5 h-5 shrink-0"></i>
-                            <div>
-                                <p class="text-[9px] font-bold uppercase opacity-85">المجموع الكلي للمراجعين</p>
-                                <h4 class="text-lg font-black font-['Outfit']">4,566 مراجع</h4>
-                            </div>
-                        </div>
-                    </div>
+    <!-- 3. التوزيع الديمغرافي لمراجعي الاستشاريات (جدول 3 و 4) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Inside Iraq -->
+        <div class="custom-card p-6 rounded-2xl">
+            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                <i data-lucide="flag" class="w-4 h-4 text-sky-500"></i>
+                التوزيع الجغرافي داخل العراق (الاستشاريات)
+            </h3>
+            <div id="chart-report-3" class="w-full mb-4" style="height:200px"></div>
+            <div class="overflow-x-auto">
+                <table class="custom-table text-[10px] text-center">
+                    <thead><tr><th>كربلاء</th><th>بابل</th><th>بغداد</th><th>النجف</th><th>المحافظات الأخرى</th></tr></thead>
+                    <tbody><tr class="table-row font-bold"><td>3455</td><td>521</td><td>127</td><td>46</td><td>401</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Outside Iraq -->
+        <div class="custom-card p-6 rounded-2xl">
+            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
+                المراجعون من خارج العراق
+            </h3>
+            <div class="flex flex-col sm:flex-row gap-4 items-center">
+                <div id="chart-report-4" class="w-full sm:w-1/2" style="height:180px"></div>
+                <div class="w-full sm:w-1/2">
+                    <table class="custom-table text-xs">
+                        <thead><tr><th>البلد</th><th class="text-center font-bold">المراجعين</th></tr></thead>
+                        <tbody>
+                            <tr class="table-row"><td>ايران</td><td class="text-center font-bold">6</td></tr>
+                            <tr class="table-row"><td>افغانستان</td><td class="text-center font-bold">4</td></tr>
+                            <tr class="table-row"><td>سوريا</td><td class="text-center font-bold">2</td></tr>
+                            <tr class="table-row font-extrabold text-theme-pink"><td>المجموع</td><td class="text-center font-extrabold">16</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- ========================================== -->
-            <!-- SLIDE 3: DOCTORS VISITS (TABLE 2)          -->
-            <!-- ========================================== -->
-            <div class="slide-page flex-1 flex flex-col justify-between hidden" id="slide-3">
-                <div class="flex justify-between items-start shrink-0 mb-4">
-                    <div>
-                        <h3 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
-                            <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
-                            أعداد مراجعي الاستشارية لكل طبيب اختصاص
-                        </h3>
-                        <p class="text-[10px] text-slate-400 font-medium">جدول (2): تفصيل زيارات المرضى للعيادات التخصصية الـ 15</p>
-                    </div>
-                </div>
-
-                <div class="flex-1 flex flex-col min-h-0">
-                    <div id="ppt-chart-report-2" class="w-full h-44 mb-3"></div>
-                    <div class="overflow-x-auto max-h-[140px] border border-slate-200/20 rounded-xl bg-white/40 backdrop-blur-sm">
-                        <table class="w-full text-right text-[10px]">
-                            <thead class="bg-slate-200/40 sticky top-0">
-                                <tr>
-                                    <th class="p-2 font-bold text-slate-700">د. بشرى علي</th>
-                                    <th class="p-2 font-bold text-slate-700">د. حيدر حسين</th>
-                                    <th class="p-2 font-bold text-slate-700">د. حمزة الشريفي</th>
-                                    <th class="p-2 font-bold text-slate-700">د. حذيفه جواد</th>
-                                    <th class="p-2 font-bold text-slate-700">د. مؤيد صبار</th>
-                                    <th class="p-2 font-bold text-slate-700">د. منتصر عرب</th>
-                                    <th class="p-2 font-bold text-slate-700">د. نور رعد</th>
-                                    <th class="p-2 font-bold text-slate-700">د. غياث الدين</th>
-                                    <th class="p-2 font-bold text-slate-700">البقية</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-t border-slate-200/10">
-                                    <td class="p-2 font-extrabold text-slate-800">1204</td>
-                                    <td class="p-2 font-extrabold text-slate-800">729</td>
-                                    <td class="p-2 font-extrabold text-slate-800">562</td>
-                                    <td class="p-2 font-extrabold text-slate-800">348</td>
-                                    <td class="p-2 font-extrabold text-slate-800">346</td>
-                                    <td class="p-2 font-extrabold text-slate-800">212</td>
-                                    <td class="p-2 font-extrabold text-slate-800">194</td>
-                                    <td class="p-2 font-extrabold text-slate-800">177</td>
-                                    <td class="p-2 font-extrabold text-slate-800">794</td>
-                                </tr>
-                            </tbody>
-                        </table>
+    <!-- 4. الفحوصات البصرية والتحاليل المختبرية (جدول 5 و 6) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Visual Tests -->
+        <div class="custom-card p-6 rounded-2xl">
+            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
+                جدول (5): الفحوصات البصرية والساندة
+            </h3>
+            <div id="chart-report-5" class="w-full mb-4" style="height:220px"></div>
+            <table class="custom-table text-xs">
+                <thead><tr><th>نوع الفحص البصري</th><th class="text-center">العدد</th></tr></thead>
+                <tbody>
+                    <tr class="table-row"><td>فحص البصر</td><td class="text-center font-bold">4,730</td></tr>
+                    <tr class="table-row"><td>فحص الشبكية OCT</td><td class="text-center font-bold">1,444</td></tr>
+                    <tr class="table-row"><td>فحص قوة العدسة</td><td class="text-center font-bold">641</td></tr>
+                    <tr class="table-row font-extrabold text-orange-500"><td>المجموع الكلي</td><td class="text-center font-extrabold">7,240</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Lab Tests -->
+        <div class="custom-card p-6 rounded-2xl flex flex-col justify-between">
+            <div>
+                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                    <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
+                    جدول (6): مراجعو المختبر والتحاليل
+                </h3>
+                <div class="flex flex-col sm:flex-row gap-4 items-center justify-center my-6">
+                    <div id="chart-report-6" class="w-32 h-32"></div>
+                    <div class="text-center">
+                        <span class="text-[10px] font-bold text-slate-400 block uppercase">مجموع مراجعي المختبر</span>
+                        <h4 class="text-2xl font-black text-purple-600 font-['Outfit']">4,566</h4>
                     </div>
                 </div>
             </div>
-
-            <!-- ========================================== -->
-            <!-- SLIDE 4: DEMOGRAPHICS (TABLE 3 & 4)        -->
-            <!-- ========================================== -->
-            <div class="slide-page flex-1 flex flex-col justify-between hidden" id="slide-4">
-                <div class="flex justify-between items-start shrink-0 mb-4">
-                    <div>
-                        <h3 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
-                            <i data-lucide="map-pin" class="w-4 h-4 text-sky-500"></i>
-                            التوزيع الديمغرافي لمراجعي الاستشاريات
-                        </h3>
-                        <p class="text-[10px] text-slate-400 font-medium">جدول (3) و (4): ديمغرافية المرضى من داخل وخارج العراق</p>
-                    </div>
-                </div>
-
-                <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 min-h-0 items-center">
-                    <!-- Inside Iraq (Top Governorates) -->
-                    <div class="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/60 flex flex-col justify-between h-full max-h-[260px]">
-                        <h4 class="text-[11px] font-bold text-slate-700 flex items-center gap-1.5 mb-2">
-                            <i data-lucide="flag" class="w-3.5 h-3.5 text-sky-500"></i> داخل العراق – الأعلى مراجعة
-                        </h4>
-                        <div class="space-y-2">
-                            <div>
-                                <div class="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
-                                    <span>محافظة كربلاء المقدسة</span>
-                                    <span>3455 مراجع</span>
-                                </div>
-                                <div class="w-full bg-slate-200/40 h-2 rounded-full"><div class="bg-sky-500 h-full rounded-full" style="width: 76%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
-                                    <span>محافظة بابل</span>
-                                    <span>521 مراجع</span>
-                                </div>
-                                <div class="w-full bg-slate-200/40 h-2 rounded-full"><div class="bg-sky-500/80 h-full rounded-full" style="width: 12%"></div></div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
-                                    <span>محافظة بغداد</span>
-                                    <span>127 مراجع</span>
-                                </div>
-                                <div class="w-full bg-slate-200/40 h-2 rounded-full"><div class="bg-sky-500/60 h-full rounded-full" style="width: 3%"></div></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Outside Iraq -->
-                    <div class="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/60 flex flex-col justify-between h-full max-h-[260px]">
-                        <h4 class="text-[11px] font-bold text-slate-700 flex items-center gap-1.5 mb-2">
-                            <i data-lucide="globe" class="w-3.5 h-3.5 text-pink-500"></i> مراجعو خارج العراق
-                        </h4>
-                        <div class="flex-1 flex gap-4 items-center min-h-0">
-                            <div id="ppt-chart-report-4" class="w-1/2" style="height:140px"></div>
-                            <div class="w-1/2 text-[9px] space-y-1.5">
-                                <div class="flex justify-between font-bold text-slate-600"><span>إيران</span><span>6 مراجعين</span></div>
-                                <div class="flex justify-between font-bold text-slate-600"><span>أفغانستان</span><span>4 مراجعين</span></div>
-                                <div class="flex justify-between font-bold text-slate-600"><span>سوريا</span><span>مراجَعين</span></div>
-                                <div class="flex justify-between font-bold text-slate-600"><span>باقي الجنسيات</span><span>3 مراجعين</span></div>
-                            </div>
-                        </div>
-                    </div>
+            <div>
+                <p class="text-[9px] font-bold text-slate-400 mb-2">التحاليل المتوفرة:</p>
+                <div class="flex flex-wrap gap-1">
+                    @foreach(['RBS','WBC','Hp','PCV','HIV','HCV','HBV','PT','PTT','INR'] as $t)
+                    <span class="bg-purple-100 text-purple-700 text-[8px] font-bold px-2 py-0.5 rounded">{{ $t }}</span>
+                    @endforeach
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- ========================================== -->
-            <!-- SLIDE 5: VISUAL TESTS & LAB (TABLE 5 & 6)  -->
-            <!-- ========================================== -->
-            <div class="slide-page flex-1 flex flex-col justify-between hidden" id="slide-5">
-                <div class="flex justify-between items-start shrink-0 mb-4">
-                    <div>
-                        <h3 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
-                            <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
-                            الفحوصات البصرية والتحاليل المختبرية المنجزة
-                        </h3>
-                        <p class="text-[10px] text-slate-400 font-medium">جدول (5) و (6): أعداد الفحوصات ونشاط المختبر الكلي</p>
-                    </div>
-                </div>
+    <!-- 5. تصنيف العمليات الجراحية (جدول 7) -->
+    <div class="custom-card p-6 rounded-2xl">
+        <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+            <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
+            جدول (7): أعداد وتصنيف العمليات الجراحية للعيون
+        </h3>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+            <!-- 3D Infographic Column (Takes 2 cols on LG) -->
+            <div class="lg:col-span-2 flex justify-center overflow-visible">
+                <svg viewBox="0 0 520 250" class="w-full max-w-[480px] h-auto overflow-visible" style="filter: drop-shadow(0 15px 25px rgba(0,0,0,0.06))">
+                    <defs>
+                        <linearGradient id="ar-f-cyan" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0ea5e9" /><stop offset="100%" stop-color="#38bdf8" /></linearGradient>
+                        <linearGradient id="ar-f-pink" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#db2777" /><stop offset="100%" stop-color="#f472b6" /></linearGradient>
+                        <linearGradient id="ar-f-amber" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#d97706" /><stop offset="100%" stop-color="#fbbf24" /></linearGradient>
+                        <linearGradient id="ar-f-slate" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#475569" /><stop offset="100%" stop-color="#94a3b8" /></linearGradient>
+                        <linearGradient id="ar-f-violet" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6d28d9" /><stop offset="100%" stop-color="#c084fc" /></linearGradient>
+                        <linearGradient id="ar-f-rose" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#e11d48" /><stop offset="100%" stop-color="#fda4af" /></linearGradient>
 
-                <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 min-h-0 items-center">
-                    <!-- Visual Tests -->
-                    <div class="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/60 h-full max-h-[260px] flex flex-col">
-                        <h4 class="text-[11px] font-bold text-slate-700 flex items-center gap-1.5 mb-2">
-                            <i data-lucide="eye" class="w-3.5 h-3.5 text-orange-500"></i> الفحوصات البصرية الأعلى طلباً
-                        </h4>
-                        <div class="flex-1 overflow-y-auto pr-1 text-[10px] space-y-2">
-                            <div class="flex justify-between font-bold text-slate-600">
-                                <span>فحص البصر</span><span>4,730 فحص</span>
-                            </div>
-                            <div class="flex justify-between font-bold text-slate-600">
-                                <span>فحص الشبكية OCT</span><span>1,444 فحص</span>
-                            </div>
-                            <div class="flex justify-between font-bold text-slate-600">
-                                <span>فحص قوة العدسة</span><span>641 فحص</span>
-                            </div>
-                            <div class="flex justify-between font-bold text-slate-600 font-extrabold text-orange-600 border-t border-slate-200/25 pt-1.5 mt-1.5">
-                                <span>المجموع الإجمالي</span><span>7,240 فحص</span>
-                            </div>
-                        </div>
-                    </div>
+                        <linearGradient id="ar-s-cyan" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0369a1" /><stop offset="100%" stop-color="#0284c7" /></linearGradient>
+                        <linearGradient id="ar-s-pink" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#9d174d" /><stop offset="100%" stop-color="#c2185b" /></linearGradient>
+                        <linearGradient id="ar-s-amber" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#92400e" /><stop offset="100%" stop-color="#b45309" /></linearGradient>
+                        <linearGradient id="ar-s-slate" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1e293b" /><stop offset="100%" stop-color="#334155" /></linearGradient>
+                        <linearGradient id="ar-s-violet" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#4c1d95" /><stop offset="100%" stop-color="#5b21b6" /></linearGradient>
+                        <linearGradient id="ar-s-rose" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#9f1239" /><stop offset="100%" stop-color="#be123c" /></linearGradient>
+                    </defs>
 
-                    <!-- Lab stats -->
-                    <div class="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/60 h-full max-h-[260px] flex flex-col justify-between">
-                        <h4 class="text-[11px] font-bold text-slate-700 flex items-center gap-1.5 mb-2">
-                            <i data-lucide="test-tube" class="w-3.5 h-3.5 text-purple-500"></i> نشاط المختبر
-                        </h4>
-                        <div class="flex-1 flex flex-col items-center justify-center gap-2">
-                            <div id="ppt-chart-report-6" class="w-full max-w-[140px]" style="height:120px"></div>
-                            <div class="text-center">
-                                <p class="text-[9px] font-bold text-slate-500 uppercase">مراجعو المختبر</p>
-                                <h3 class="text-base font-black text-purple-600 font-['Outfit']">4,566 مراجع</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ========================================== -->
-            <!-- SLIDE 6: SURGERY CLASSIFICATION (TABLE 7)  -->
-            <!-- ========================================== -->
-            <div class="slide-page flex-1 flex flex-col justify-between hidden" id="slide-6">
-                <div class="flex justify-between items-start shrink-0 mb-2">
-                    <div>
-                        <h3 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
-                            <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
-                            تصنيف العمليات الجراحية المنجزة للعيون
-                        </h3>
-                        <p class="text-[10px] text-slate-400 font-medium">جدول (7): إحصائية وتصنيفات العمليات الـ 2002 حسب القطاعات</p>
-                    </div>
-                    <div class="bg-rose-500/10 text-rose-600 px-3 py-1.5 rounded-xl text-xs font-bold font-['Outfit'] shadow-sm">
-                        الإجمالي: 2,002 عملية
-                    </div>
-                </div>
-
-                <!-- Fully Refactored 3D Isometric PowerPoint Infographic with floating circular badges and dashed lines -->
-                <div class="flex-1 flex flex-col md:flex-row gap-6 items-center justify-center min-h-0">
+                    <polygon points="30,220 480,220 440,205 70,205" fill="#cbd5e1" opacity="0.25" />
                     
-                    <!-- Left: Clean 3D Vector Infographic SVG -->
-                    <div class="w-full md:w-3/5 flex justify-center">
-                        <svg viewBox="0 0 520 280" class="w-full max-w-[480px] h-auto overflow-visible" style="filter: drop-shadow(0 15px 25px rgba(0,0,0,0.08))">
-                            <defs>
-                                <!-- Gradients Front Face -->
-                                <linearGradient id="ar-f-cyan" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0ea5e9" /><stop offset="100%" stop-color="#38bdf8" /></linearGradient>
-                                <linearGradient id="ar-f-pink" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#db2777" /><stop offset="100%" stop-color="#f472b6" /></linearGradient>
-                                <linearGradient id="ar-f-amber" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#d97706" /><stop offset="100%" stop-color="#fbbf24" /></linearGradient>
-                                <linearGradient id="ar-f-slate" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#475569" /><stop offset="100%" stop-color="#94a3b8" /></linearGradient>
-                                <linearGradient id="ar-f-violet" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6d28d9" /><stop offset="100%" stop-color="#c084fc" /></linearGradient>
-                                <linearGradient id="ar-f-rose" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#e11d48" /><stop offset="100%" stop-color="#fda4af" /></linearGradient>
+                    <!-- 1. صغرى -->
+                    <g class="cursor-pointer">
+                        <line x1="60" y1="130" x2="60" y2="85" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+                        <circle cx="60" cy="70" r="14" fill="#0ea5e9" />
+                        <text x="60" y="73" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">1%</text>
+                        <polygon points="40,220 60,230 60,170 40,160" fill="url(#ar-f-cyan)" />
+                        <polygon points="60,230 80,220 80,160 60,170" fill="url(#ar-s-cyan)" />
+                        <polygon points="40,160 60,170 60,140" fill="#38bdf8" />
+                        <polygon points="60,170 80,160 60,140" fill="#0284c7" />
+                        <text x="60" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">صغرى</text>
+                    </g>
+                    <!-- 2. ليزر -->
+                    <g class="cursor-pointer">
+                        <line x1="130" y1="100" x2="130" y2="65" stroke="#db2777" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+                        <circle cx="130" cy="50" r="14" fill="#db2777" />
+                        <text x="130" y="53" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">5%</text>
+                        <polygon points="110,220 130,230 130,140 110,130" fill="url(#ar-f-pink)" />
+                        <polygon points="130,230 150,220 150,130 130,140" fill="url(#ar-s-pink)" />
+                        <polygon points="110,130 130,140 130,110" fill="#f472b6" />
+                        <polygon points="130,140 150,130 130,110" fill="#c2185b" />
+                        <text x="130" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">ليزر</text>
+                    </g>
+                    <!-- 3. كبرى -->
+                    <g class="cursor-pointer">
+                        <line x1="200" y1="110" x2="200" y2="75" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+                        <circle cx="200" cy="60" r="14" fill="#d97706" />
+                        <text x="200" y="63" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">4%</text>
+                        <polygon points="180,220 200,230 200,150 180,140" fill="url(#ar-f-amber)" />
+                        <polygon points="200,230 220,220 220,140 200,150" fill="url(#ar-s-amber)" />
+                        <polygon points="180,140 200,150 200,120" fill="#fbbf24" />
+                        <polygon points="200,150 220,140 200,120" fill="#b45309" />
+                        <text x="200" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">كبرى</text>
+                    </g>
+                    <!-- 4. خاصة -->
+                    <g class="cursor-pointer">
+                        <line x1="270" y1="105" x2="270" y2="70" stroke="#475569" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+                        <circle cx="270" cy="55" r="14" fill="#475569" />
+                        <text x="270" y="58" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">4%</text>
+                        <polygon points="250,220 270,230 270,145 250,135" fill="url(#ar-f-slate)" />
+                        <polygon points="270,230 290,220 290,135 270,145" fill="url(#ar-s-slate)" />
+                        <polygon points="250,135 270,145 270,115" fill="#94a3b8" />
+                        <polygon points="270,145 290,135 270,115" fill="#334155" />
+                        <text x="270" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">خاصة</text>
+                    </g>
+                    <!-- 5. فوق الكبرى -->
+                    <g class="cursor-pointer">
+                        <line x1="340" y1="40" x2="340" y2="25" stroke="#6d28d9" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+                        <circle cx="340" cy="10" r="14" fill="#6d28d9" />
+                        <text x="340" y="13" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">22%</text>
+                        <polygon points="320,220 340,230 340,80 320,70" fill="url(#ar-f-violet)" />
+                        <polygon points="340,230 360,220 360,70 340,80" fill="url(#ar-s-violet)" />
+                        <polygon points="320,70 340,80 340,50" fill="#c084fc" />
+                        <polygon points="340,80 360,70 340,50" fill="#5b21b6" />
+                        <text x="340" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">فوق كبرى</text>
+                    </g>
+                    <!-- 6. حقن العين -->
+                    <g class="cursor-pointer">
+                        <line x1="410" y1="-10" x2="410" y2="-20" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+                        <circle cx="410" cy="-35" r="14" fill="#e11d48" />
+                        <text x="410" y="-32" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">63%</text>
+                        <polygon points="390,220 410,230 410,20 390,10" fill="url(#ar-f-rose)" />
+                        <polygon points="410,230 430,220 430,10 410,20" fill="url(#ar-s-rose)" />
+                        <polygon points="390,10 410,20 410,-10" fill="#fda4af" />
+                        <polygon points="410,20 430,10 410,-10" fill="#be123c" />
+                        <text x="410" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">حقن العين</text>
+                    </g>
+                </svg>
+            </div>
+            <!-- Legend / Stats Table -->
+            <div class="lg:col-span-1">
+                <table class="custom-table text-xs">
+                    <thead><tr><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
+                    <tbody>
+                        <tr class="table-row"><td>وسطى (حقن العين)</td><td class="text-center font-bold text-rose-600">1,257</td></tr>
+                        <tr class="table-row"><td>فوق الكبرى</td><td class="text-center font-bold text-violet-600">434</td></tr>
+                        <tr class="table-row"><td>وسطى (ليزر)</td><td class="text-center font-bold text-pink-600">103</td></tr>
+                        <tr class="table-row"><td>الخاصة</td><td class="text-center font-bold text-slate-600">90</td></tr>
+                        <tr class="table-row font-extrabold text-rose-600"><td class="text-sm">المجموع الكلي</td><td class="text-center text-sm font-extrabold">2,002</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-                                <!-- Gradients Shadow Face -->
-                                <linearGradient id="ar-s-cyan" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0369a1" /><stop offset="100%" stop-color="#0284c7" /></linearGradient>
-                                <linearGradient id="ar-s-pink" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#9d174d" /><stop offset="100%" stop-color="#c2185b" /></linearGradient>
-                                <linearGradient id="ar-s-amber" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#92400e" /><stop offset="100%" stop-color="#b45309" /></linearGradient>
-                                <linearGradient id="ar-s-slate" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1e293b" /><stop offset="100%" stop-color="#334155" /></linearGradient>
-                                <linearGradient id="ar-s-violet" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#4c1d95" /><stop offset="100%" stop-color="#5b21b6" /></linearGradient>
-                                <linearGradient id="ar-s-rose" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#9f1239" /><stop offset="100%" stop-color="#be123c" /></linearGradient>
-                            </defs>
+    <!-- 6. العمليات الجراحية لكل طبيب اختصاص (جدول 10) -->
+    <div class="custom-card p-6 rounded-2xl">
+        <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+            <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
+            جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص
+        </h3>
+        <div id="chart-report-10" class="w-full mb-6" style="height:280px"></div>
+        <div class="overflow-x-auto">
+            <table class="custom-table text-center" style="font-size:10px; min-width:850px">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="w-6">ت</th>
+                        <th rowspan="2" class="text-right pr-2">اسم الطبيب</th>
+                        <th colspan="3" class="bg-yellow-400/20">صغرى</th>
+                        <th colspan="3" class="bg-blue-400/20">وسطى</th>
+                        <th colspan="3" class="bg-orange-400/20">كبرى</th>
+                        <th colspan="3" class="bg-rose-400/20">فوق الكبرى</th>
+                        <th colspan="3" class="bg-purple-400/20">خاصة</th>
+                        <th rowspan="2" class="text-theme-pink font-extrabold">المجموع</th>
+                    </tr>
+                    <tr>
+                        <th>ص</th><th>خ</th><th>ع</th>
+                        <th>ص</th><th>خ</th><th>ع</th>
+                        <th>ص</th><th>خ</th><th>ع</th>
+                        <th>ص</th><th>خ</th><th>ع</th>
+                        <th>ص</th><th>خ</th><th>ع</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                    $d10=[
+                        [1,'د. غياث الدين ثجيل نعمه',[2,1,0,31,0,0,3,6,0,3,10,0,1,28,0],85],
+                        [2,'د. حمزة صادق علوان الشريفي',[0,1,0,0,11,4,0,27,9,0,55,8,0,50,0],165],
+                        [3,'د. ذو الفقار غني عبد',[0,0,0,0,2,1,0,4,0,0,5,0,0,10,0],22],
+                        [4,'د. منتصر محمد عرب',[1,1,0,101,0,0,1,0,0,15,1,0,0,0,0],120],
+                        [5,'د. افراح عبدالزهرة القصير',[0,0,0,0,2,0,0,0,0,0,7,0,0,1,0],10],
+                        [6,'د. مؤيد عبد اللطيف صبار',[3,4,0,86,1,0,4,9,0,27,12,0,0,0,0],146],
+                        [7,'د. بشرى سليمان علي الصقر',[0,2,7,0,1,11,0,0,6,0,28,107,0,0,0],162],
+                        [8,'د. علاء صبري الغانمي',[1,0,0,128,0,0,1,0,0,13,4,0,0,0,0],147],
+                        [9,'د. نور رعد كريم',[0,0,0,151,3,0,2,5,0,11,17,0,0,0,0],189],
+                        [10,'د. حيدر حسين علي الموسوي',[3,1,0,751,14,0,4,0,0,29,37,0,0,0,0],839],
+                        [11,'د. حذيفه سامي جواد العبايجي',[0,0,0,31,6,0,2,0,0,10,8,0,0,0,0],57],
+                        [12,'د. اريج هادي كريم',[0,1,0,1,0,0,0,0,0,8,2,0,0,0,0],12],
+                        [13,'د. خلدون خليل نايف',[0,0,0,1,0,0,0,0,0,4,1,0,0,0,0],6],
+                        [14,'د. ايات معتز محمد',[1,2,0,22,0,0,2,0,0,6,2,0,0,0,0],35],
+                        [15,'د. محمد بدر الجريان',[0,0,0,0,0,0,0,0,0,0,0,2,0,0,0],2],
+                        [16,'د. زهراء علوان الحمداني',[2,0,0,0,1,0,0,0,0,2,0,0,0,0,0],5],
+                    ];
+                    @endphp
+                    @foreach($d10 as [$num,$name,$vals,$total])
+                    <tr class="table-row">
+                        <td>{{ $num }}</td>
+                        <td class="text-right pr-2 font-bold whitespace-nowrap">{{ $name }}</td>
+                        @foreach($vals as $v)
+                        <td class="{{ $v==0?'opacity-20':'' }}">{{ $v }}</td>
+                        @endforeach
+                        <td class="font-extrabold text-theme-pink text-xs">{{ $total }}</td>
+                    </tr>
+                    @endforeach
+                    <tr class="table-row font-extrabold text-rose-600 text-xs">
+                        <td colspan="2" class="text-right pr-2">المجموع</td>
+                        <td>13</td><td>13</td><td>7</td>
+                        <td>1303</td><td>41</td><td>16</td>
+                        <td>19</td><td>51</td><td>15</td>
+                        <td>128</td><td>189</td><td>117</td>
+                        <td>1</td><td>89</td><td>0</td>
+                        <td class="text-sm font-black">2,002</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="text-[8px] text-slate-400 mt-2">ص = قطاع الصحة &nbsp;|&nbsp; خ = عتبة الخاص &nbsp;|&nbsp; ع = عتبة العام</p>
+    </div>
 
-                            <!-- Isometric grid base plane shadows -->
-                            <polygon points="30,240 480,240 440,225 70,225" fill="#cbd5e1" opacity="0.25" />
+    <!-- 7. الإحصائية التفصيلية لكل طبيب (تصفح ديناميكي مبسط) -->
+    <div class="custom-card p-6 rounded-2xl">
+        <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+            <i data-lucide="user-cog" class="w-4 h-4 text-violet-500"></i>
+            الإحصائية التفصيلية للعمليات الجراحية لكل طبيب
+        </h3>
+        
+        <!-- Tab Select Dropdown instead of bulk tabs to save screen space -->
+        <div class="flex items-center gap-3 mb-6 bg-slate-200/20 p-3 rounded-xl">
+            <span class="text-xs font-bold text-slate-500">اختيار الطبيب:</span>
+            @php
+            $dnames=[1=>'غياث الدين',2=>'حمزة صادق',3=>'ذوالفقار',4=>'منتصر عرب',5=>'افراح',6=>'مؤيد',7=>'بشرى',8=>'علاء',9=>'نور رعد',10=>'حيدر',11=>'حذيفه',12=>'اريج',13=>'زهراء',14=>'خلدون',15=>'ايات',16=>'محمد بدر'];
+            @endphp
+            <select id="doc-active-selector" onchange="showDocStats(this.value)" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main">
+                @foreach($dnames as $id=>$n)
+                <option value="{{ $id }}">{{ $id }}. {{ $n }}</option>
+                @endforeach
+            </select>
+        </div>
 
-                            <!-- ARROWS LOGIC (Left face, Right face, Creased pointer top) -->
-                            
-                            <!-- 1. صغرى (Height: 60) -->
-                            <g class="group cursor-pointer">
-                                <!-- Dashed line -->
-                                <line x1="60" y1="140" x2="60" y2="95" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                                <!-- Circle badge -->
-                                <circle cx="60" cy="80" r="14" fill="#0ea5e9" />
-                                <text x="60" y="83" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">1%</text>
-                                
-                                <!-- 3D Arrow Block -->
-                                <polygon points="40,240 60,250 60,190 40,180" fill="url(#ar-f-cyan)" />
-                                <polygon points="60,250 80,240 80,180 60,190" fill="url(#ar-s-cyan)" />
-                                <!-- Pointer top -->
-                                <polygon points="40,180 60,190 60,160" fill="#38bdf8" />
-                                <polygon points="60,190 80,180 60,160" fill="#0284c7" />
-                                <text x="60" y="265" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">صغرى</text>
-                            </g>
+        <!-- Details Panel -->
+        @php
+        $ddetails=[
+            1=>['د. غياث الدين ثجيل نعمة',85,[['قص السائل الزجاجي','خاصة',29],['رفع ماء اسود + رفع ساد','خاصة',2],['رفع ساد + زراعة عدسة','فوق الكبرى',3],['رفع سليكون + زرع عدسة','فوق الكبرى',8],['زرع عدسة ثانوية','فوق الكبرى',2],['غسل حجرة','كبرى',3],['رفع سليكون','كبرى',6],['حقن الايليليا','وسطى',18],['حقن الافاستين','وسطى',13]]],
+            2=>['د. حمزة صادق علوان الشريفي',165,[['قص السائل الزجاجي','خاصة',50],['رفع ماء اسود + رفع ساد','خاصة',2],['رفع ساد + زراعة عدسة','فوق الكبرى',56],['رفع سليكون + زرع عدسة','فوق الكبرى',5],['زرع عدسة ثانوية','فوق الكبرى',1],['زرع صمام احمد','فوق الكبرى',1],['تعديل هطول الاجفان','كبرى',1],['تصليب القرنية','كبرى',1],['غسل حجرة','كبرى',9],['رفع سليكون','كبرى',25],['الليزر','وسطى',15],['تسليك مجرى الدمع','صغرى',1]]],
+            3=>['د. ذوالفقار غني عبد الكندي',22,[['قص السائل الزجاجي','خاصة',10],['رفع ساد + زراعة عدسة','فوق الكبرى',5],['الحول','كبرى',1],['رفع سليكون','كبرى',3],['الليزر','وسطى',3]]],
+            4=>['د. منتصر محمد عرب',120,[['رفع ساد + زراعة عدسة','فوق الكبرى',16],['رفع ظفرة','كبرى',1],['حقن الايليا','وسطى',52],['حقن اللوسنتس','وسطى',11],['حقن الافاستين','وسطى',30],['الليزر','وسطى',8],['تسليك مجرى الدمع','صغرى',1],['رفع جسم غريب','صغرى',1]]],
+            5=>['د. افراح عبد الزهرة القصير',10,[['زرع صمام + رفع ساد','خاصة',1],['رفع ساد + زراعة عدسة','فوق الكبرى',7],['الليزر','وسطى',2]]],
+            6=>['د. مؤيد عبد اللطيف صبار',146,[['رفع ساد + زراعة عدسة','فوق الكبرى',39],['تعديل هطول الاجفان','كبرى',1],['الحول','كبرى',10],['رفع ظفرة','كبرى',2],['حقن الايليا','وسطى',58],['حقن الافاستين','وسطى',26],['الليزر','وسطى',3],['رفع كيس دهني','صغرى',4],['رفع ورم مجرى الدمع','صغرى',1],['فحص تخدير عام','صغرى',1],['رفع جسم غريب','صغرى',1]]],
+            7=>['د. بشرى سليمان علي الصقر',162,[['رفع ساد + زراعة عدسة','فوق الكبرى',135],['تعديل هطول الاجفان','كبرى',1],['تصليب القرنية','كبرى',4],['غسل حجرة','كبرى',1],['الليزر','وسطى',21],['رفع كيس دهني','صغرى',3],['رفع ورم درمويد','صغرى',1],['تسليك مجرى الدمع','صغرى',3],['رفع جسم غريب','صغرى',2]]],
+            8=>['د. علاء صبري الغانمي',147,[['رفع ساد + زراعة عدسة','فوق الكبرى',17],['رفع ظفرة','كبرى',1],['حقن الفابزمو','وسطى',3],['حقن الايليا','وسطى',82],['حقن اللوسنتس','وسطى',23],['حقن الافاستين','وسطى',18],['حقن الكيناكورت','وسطى',2],['فحص تخدير عام','صغرى',1]]],
+            9=>['د. نور رعد كريم',189,[['رفع ساد + زراعة عدسة','فوق الكبرى',27],['زرع عدسة ثانوية','فوق الكبرى',1],['تعديل هطول الاجفان','كبرى',1],['الحول','كبرى',4],['رفع ظفرة','كبرى',2],['حقن الايليا','وسطى',45],['حقن الافاستين','وسطى',101],['حقن الكيناكورت','وسطى',1],['الليزر','وسطى',7]]],
+            10=>['د. حيدر حسين علي الموسوي',839,[['رفع ساد + زراعة عدسة','فوق الكبرى',66],['تعديل هطول الاجفان','كبرى',1],['تصليب القرنية','كبرى',2],['رفع ظفرة','كبرى',1],['حقن الايليا','وسطى',148],['حقن الافاستين','وسطى',572],['حقن الكيناكورت','وسطى',15],['حقن الاكتيليس','وسطى',1],['الليزر','وسطى',29],['رفع كيس دهني','صغرى',1],['تسليك مجرى الدمع','صغرى',2],['رفع جسم غريب','صغرى',1]]],
+            11=>['د. حذيفه سامي جواد العبايجي',57,[['رفع ساد + زراعة عدسة','فوق الكبرى',18],['الحول','كبرى',1],['رفع ظفرة','كبرى',1],['حقن الافاستين','وسطى',30],['الليزر','وسطى',7]]],
+            12=>['د. اريج هادي كريم',12,[['رفع ساد + زراعة عدسة','فوق الكبرى',10],['الليزر','وسطى',1],['رفع كيس دهني','صغرى',1]]],
+            13=>['د. زهراء علوان الحمداني',5,[['رفع ساد + زراعة عدسة','فوق الكبرى',2],['الليزر','وسطى',1],['رفع كيس دهني','صغرى',2]]],
+            14=>['د. خلدون خليل نايف',6,[['رفع ساد + زراعة عدسة','فوق الكبرى',5],['الليزر','وسطى',1]]],
+            15=>['د. ايات معتز محمد',35,[['رفع ساد + زراعة عدسة','فوق الكبرى',8],['تعديل هطول الاجفان','كبرى',1],['تصليب القرنية','كبرى',1],['حقن الايليا','وسطى',1],['حقن الافاستين','وسطى',20],['الليزر','وسطى',1],['رفع كيس دهني','صغرى',3]]],
+            16=>['د. محمد بدر محمد الجريان',2,[['رفع ساد + زراعة عدسة','فوق الكبرى',2]]],
+        ];
+        $bc=['خاصة'=>'bg-purple-100 text-purple-700','فوق الكبرى'=>'bg-rose-100 text-rose-700','كبرى'=>'bg-orange-100 text-orange-700','وسطى'=>'bg-blue-100 text-blue-700','صغرى'=>'bg-yellow-100 text-yellow-700'];
+        @endphp
 
-                            <!-- 2. ليزر (Height: 90) -->
-                            <g class="group cursor-pointer">
-                                <!-- Dashed line -->
-                                <line x1="130" y1="110" x2="130" y2="75" stroke="#db2777" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                                <!-- Circle badge -->
-                                <circle cx="130" cy="60" r="14" fill="#db2777" />
-                                <text x="130" y="63" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">5%</text>
-                                
-                                <polygon points="110,240 130,250 130,160 110,150" fill="url(#ar-f-pink)" />
-                                <polygon points="130,250 150,240 150,150 130,160" fill="url(#ar-s-pink)" />
-                                <polygon points="110,150 130,160 130,130" fill="#f472b6" />
-                                <polygon points="130,160 150,150 130,130" fill="#c2185b" />
-                                <text x="130" y="265" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">ليزر</text>
-                            </g>
-
-                            <!-- 3. كبرى (Height: 80) -->
-                            <g class="group cursor-pointer">
-                                <!-- Dashed line -->
-                                <line x1="200" y1="120" x2="200" y2="85" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                                <!-- Circle badge -->
-                                <circle cx="200" cy="70" r="14" fill="#d97706" />
-                                <text x="200" y="73" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">4%</text>
-                                
-                                <polygon points="180,240 200,250 200,170 180,160" fill="url(#ar-f-amber)" />
-                                <polygon points="200,250 220,240 220,160 200,170" fill="url(#ar-s-amber)" />
-                                <polygon points="180,160 200,170 200,140" fill="#fbbf24" />
-                                <polygon points="200,170 220,160 200,140" fill="#b45309" />
-                                <text x="200" y="265" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">كبرى</text>
-                            </g>
-
-                            <!-- 4. خاصة (Height: 85) -->
-                            <g class="group cursor-pointer">
-                                <!-- Dashed line -->
-                                <line x1="270" y1="115" x2="270" y2="80" stroke="#475569" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                                <!-- Circle badge -->
-                                <circle cx="270" cy="65" r="14" fill="#475569" />
-                                <text x="270" y="68" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">4%</text>
-                                
-                                <polygon points="250,240 270,250 270,165 250,155" fill="url(#ar-f-slate)" />
-                                <polygon points="270,250 290,240 290,155 270,165" fill="url(#ar-s-slate)" />
-                                <polygon points="250,155 270,165 270,135" fill="#94a3b8" />
-                                <polygon points="270,165 290,155 270,135" fill="#334155" />
-                                <text x="270" y="265" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">خاصة</text>
-                            </g>
-
-                            <!-- 5. فوق كبرى (Height: 150) -->
-                            <g class="group cursor-pointer">
-                                <!-- Dashed line -->
-                                <line x1="340" y1="50" x2="340" y2="35" stroke="#6d28d9" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                                <!-- Circle badge -->
-                                <circle cx="340" cy="20" r="14" fill="#6d28d9" />
-                                <text x="340" y="23" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">22%</text>
-                                
-                                <polygon points="320,240 340,250 340,100 320,90" fill="url(#ar-f-violet)" />
-                                <polygon points="340,250 360,240 360,90 340,100" fill="url(#ar-s-violet)" />
-                                <polygon points="320,90 340,100 340,70" fill="#c084fc" />
-                                <polygon points="340,100 360,90 340,70" fill="#5b21b6" />
-                                <text x="340" y="265" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">فوق الكبرى</text>
-                            </g>
-
-                            <!-- 6. حقن العين (Height: 210) -->
-                            <g class="group cursor-pointer">
-                                <!-- Dashed line -->
-                                <line x1="410" y1="10" x2="410" y2="0" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                                <!-- Circle badge placed carefully to avoid clipping -->
-                                <circle cx="410" cy="-14" r="14" fill="#e11d48" />
-                                <text x="410" y="-11" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">63%</text>
-                                
-                                <polygon points="390,240 410,250 410,40 390,30" fill="url(#ar-f-rose)" />
-                                <polygon points="410,250 430,240 430,30 410,40" fill="url(#ar-s-rose)" />
-                                <polygon points="390,30 410,40 410,10" fill="#fda4af" />
-                                <polygon points="410,40 430,30 410,10" fill="#be123c" />
-                                <text x="410" y="265" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">حقن العين</text>
-                            </g>
-                        </svg>
-                    </div>
-
-                    <!-- Right: Info Details Legend List -->
-                    <div class="w-full md:w-2/5 flex flex-col gap-2">
-                        <div class="flex items-center gap-3 bg-white/50 backdrop-blur-sm p-3 rounded-2xl border border-white/60">
-                            <span class="w-7 h-7 rounded-xl bg-rose-500/10 text-rose-600 flex items-center justify-center font-bold text-xs"><i data-lucide="syringe" class="w-4 h-4"></i></span>
-                            <div class="flex-1 flex justify-between text-[10px] font-bold text-slate-700">
-                                <span>وسطى (حقن العين)</span>
-                                <span class="text-rose-600 font-extrabold font-['Outfit']">1,257 عملية (62.8%)</span>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center gap-3 bg-white/50 backdrop-blur-sm p-3 rounded-2xl border border-white/60">
-                            <span class="w-7 h-7 rounded-xl bg-violet-500/10 text-violet-600 flex items-center justify-center font-bold text-xs"><i data-lucide="shield" class="w-4 h-4"></i></span>
-                            <div class="flex-1 flex justify-between text-[10px] font-bold text-slate-700">
-                                <span>فوق الكبرى</span>
-                                <span class="text-violet-600 font-extrabold font-['Outfit']">434 عملية (21.7%)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-3 bg-white/50 backdrop-blur-sm p-3 rounded-2xl border border-white/60">
-                            <span class="w-7 h-7 rounded-xl bg-pink-500/10 text-pink-600 flex items-center justify-center font-bold text-xs"><i data-lucide="zap" class="w-4 h-4"></i></span>
-                            <div class="flex-1 flex justify-between text-[10px] font-bold text-slate-700">
-                                <span>وسطى (الليزر)</span>
-                                <span class="text-pink-600 font-extrabold font-['Outfit']">103 عملية (5.1%)</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-3 bg-white/50 backdrop-blur-sm p-3 rounded-2xl border border-white/60">
-                            <span class="w-7 h-7 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center font-bold text-xs"><i data-lucide="heart" class="w-4 h-4"></i></span>
-                            <div class="flex-1 flex justify-between text-[10px] font-bold text-slate-700">
-                                <span>العمليات الأخرى</span>
-                                <span class="text-amber-600 font-extrabold font-['Outfit']">208 عملية (10.4%)</span>
-                            </div>
-                        </div>
-                    </div>
+        @foreach($ddetails as $id=>[$docname,$total,$ops])
+        <div id="stats-panel-{{ $id }}" class="stats-panel {{ $id==1?'':'hidden' }} transition-opacity duration-300">
+            <div class="flex items-center justify-between gap-3 mb-4">
+                <h4 class="text-xs font-bold text-slate-800">{{ $docname }}</h4>
+                <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $total }} عملية</span>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-6 items-start">
+                <div id="chart-doc-{{ $id }}" class="w-full lg:w-2/5 flex-shrink-0" style="height:240px"></div>
+                <div class="w-full lg:w-3/5">
+                    <table class="custom-table text-xs">
+                        <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
+                        <tbody>
+                            @foreach($ops as $i=>$op)
+                            <tr class="table-row">
+                                <td class="w-8 text-center">{{ $i+1 }}</td>
+                                <td>{{ $op[0] }}</td>
+                                <td><span class="text-[9px] font-bold px-2 py-0.5 rounded-full {{ $bc[$op[1]] ?? '' }}">{{ $op[1] }}</span></td>
+                                <td class="text-center font-bold text-violet-600 text-xs">{{ $op[2] }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
+        @endforeach
+    </div>
 
-            <!-- ========================================== -->
-            <!-- SLIDE 7: DOCTORS SURGERIES (TABLE 10)      -->
-            <!-- ========================================== -->
-            <div class="slide-page flex-1 flex flex-col justify-between hidden" id="slide-7">
-                <div class="flex justify-between items-start shrink-0 mb-4">
-                    <div>
-                        <h3 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
-                            <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
-                            العمليات الجراحية المنجزة لكل طبيب اختصاص
-                        </h3>
-                        <p class="text-[10px] text-slate-400 font-medium">جدول (10): تفصيل العمليات لـ 16 طبيب في جميع قطاعات المركز</p>
-                    </div>
-                </div>
-
-                <div class="flex-1 flex flex-col min-h-0">
-                    <!-- Taller Chart showing all doctors surgeries -->
-                    <div id="ppt-chart-report-10" class="w-full h-48 mb-2"></div>
-                    
-                    <div class="flex gap-4 items-center justify-between text-[9px] font-bold text-slate-500 bg-white/40 p-2 rounded-xl border border-slate-200/20">
-                        <span>المرتبة الأولى: د. حيدر حسين الموسوي (839 عملية)</span>
-                        <span>المرتبة الثانية: د. حمزة صادق الشريفي (165 عملية)</span>
-                        <span>المرتبة الثالثة: د. بشرى سليمان الصقر (162 عملية)</span>
-                    </div>
-                </div>
+    <!-- 8. التواقيع والاعتماد (تذييل الصفحة) -->
+    <div class="custom-card p-5 rounded-2xl">
+        <div class="grid grid-cols-2 gap-4 text-center text-xs text-text-main">
+            <div class="border-l border-slate-200/20 pl-4 space-y-1.5">
+                <p class="font-bold opacity-60">المهندسة</p>
+                <p class="font-extrabold text-sm">سميره علي ياسين</p>
+                <p class="opacity-50 text-[10px]">مسؤول الإحصاء الطبي</p>
             </div>
-
-            <!-- ========================================== -->
-            <!-- SLIDE 8: DETAILED DOC & SIGNATURES         -->
-            <!-- ========================================== -->
-            <div class="slide-page flex-1 flex flex-col justify-between hidden" id="slide-8">
-                <div class="flex justify-between items-start shrink-0 mb-3">
-                    <div>
-                        <h3 class="text-base font-extrabold text-slate-800 flex items-center gap-2">
-                            <i data-lucide="user-check" class="w-4 h-4 text-emerald-500"></i>
-                            الإحصائية التفصيلية لكل طبيب معتمد
-                        </h3>
-                        <p class="text-[10px] text-slate-400 font-medium">الملف الثاني: تفصيل العمليات الدقيقة ونسب النجاح</p>
-                    </div>
-                </div>
-
-                <!-- Live Switcher & Signature layout combined for PowerPoint style -->
-                <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 min-h-0 items-center">
-                    
-                    <!-- Mini interactive dropdown for doctors details in Slide -->
-                    <div class="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-white/60 flex flex-col h-full max-h-[260px] justify-between">
-                        <div class="flex items-center justify-between mb-3 border-b border-slate-200/10 pb-2">
-                            <span class="text-[10px] font-bold text-slate-700">تصفح إحصائية الطبيب:</span>
-                            @php
-                            $dnames=[1=>'غياث الدين',2=>'حمزة صادق',3=>'ذوالفقار',4=>'منتصر عرب',5=>'افراح',6=>'مؤيد',7=>'بشرى',8=>'علاء',9=>'نور رعد',10=>'حيدر',11=>'حذيفه',12=>'اريج',13=>'زهراء',14=>'خلدون',15=>'ايات',16=>'محمد بدر'];
-                            @endphp
-                            <select id="doc-ppt-switcher" onchange="switchPptDoc(this.value)" class="custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-[10px] font-bold text-text-main">
-                                @foreach($dnames as $did=>$dn)
-                                <option value="{{ $did }}">{{ $dn }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
-                        <!-- Content of active doctor -->
-                        <div class="flex-1 flex flex-col justify-center text-center py-4">
-                            <h4 class="text-sm font-black text-slate-800 mb-1" id="ppt-doc-name">د. غياث الدين ثجيل نعمة</h4>
-                            <p class="text-lg font-black text-violet-600 font-['Outfit']" id="ppt-doc-total">85 عملية</p>
-                            <p class="text-[9px] text-slate-400 font-medium mt-1">العمليات الأكثر شيوعاً: قص السائل الزجاجي وحقن العين</p>
-                        </div>
-                    </div>
-
-                    <!-- Signatures panel -->
-                    <div class="bg-white/40 backdrop-blur-sm p-5 rounded-2xl border border-white/60 flex flex-col justify-between h-full max-h-[260px]">
-                        <h4 class="text-[10px] font-bold text-slate-500 uppercase mb-4 tracking-wider">مراجعة واعتماد التقرير</h4>
-                        
-                        <div class="grid grid-cols-2 gap-4 text-right text-[9px] font-bold text-slate-600">
-                            <div class="border-l border-slate-200/20 pl-3 space-y-1">
-                                <p class="opacity-60 text-[8px]">مسؤول الإحصاء الطبي</p>
-                                <p class="text-[10px] font-extrabold text-slate-800">سميره علي ياسين</p>
-                                <p class="opacity-45 text-[7px]">قسم البرمجة والإحصاء</p>
-                            </div>
-                            <div class="pr-3 space-y-1">
-                                <p class="opacity-60 text-[8px]">مدير مركز السيدة زينب (ع)</p>
-                                <p class="text-[10px] font-extrabold text-slate-800">د. عدي السالمي</p>
-                                <p class="opacity-45 text-[7px]">الطبيب الاستشاري</p>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 text-center">
-                            <span class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">قسم إحصاء العيادات التخصصية</span>
-                        </div>
-                    </div>
-
-                </div>
+            <div class="pr-4 space-y-1.5">
+                <p class="font-bold opacity-60">الطبيب الاستشاري</p>
+                <p class="font-extrabold text-sm">د. عدي عبد الحسين السالمي</p>
+                <p class="opacity-50 text-[10px]">مدير مركز السيدة زينب الكبرى (ع)</p>
             </div>
-
         </div>
     </div>
 
 </section>
 
-<!-- CSS print helper inside page to format PPT view on printing -->
+<!-- Custom Styles for Print and 3D effects -->
 <style>
 @media print {
-    #sidebar, header, .custom-card, #slide-selector, .slide-indicators, button { display: none !important; }
-    #page-reports { display: block !important; height: auto !important; overflow: visible !important; }
-    .slide-page { display: flex !important; page-break-after: always !important; opacity: 1 !important; transform: none !important; height: 100vh !important; }
-    #ppt-slide-card { aspect-ratio: 16/9 !important; border: none !important; box-shadow: none !important; background: white !important; width: 100% !important; height: 100vh !important; }
-}
-
-/* Infographic custom animation styles */
-@keyframes pptRise {
-    from {
-        transform: scaleY(0);
-        transform-origin: bottom;
-    }
-    to {
-        transform: scaleY(1);
-        transform-origin: bottom;
-    }
-}
-
-.ppt-animate-rise polygon {
-    animation: pptRise 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    #sidebar, header, .custom-card:first-child, select, button { display: none !important; }
+    #page-reports { display: block !important; overflow: visible !important; }
+    .custom-card { border: none !important; box-shadow: none !important; page-break-inside: avoid !important; }
 }
 </style>
 
 <script>
-let currentSlide = 1;
-const totalSlides = 8;
-
-function updateSlideView() {
-    // Hide all slide pages
-    document.querySelectorAll('.slide-page').forEach(page => {
-        page.classList.add('hidden');
-    });
-    
-    // Show active slide
-    const activeSlide = document.getElementById('slide-' + currentSlide);
-    if (activeSlide) {
-        activeSlide.classList.remove('hidden');
-        
-        // Trigger animations on active slide's SVG elements if relevant
-        const svgs = activeSlide.querySelectorAll('svg');
-        svgs.forEach(svg => {
-            const groups = svg.querySelectorAll('g');
-            groups.forEach((g, index) => {
-                g.classList.remove('ppt-animate-rise');
-                // Force reflow
-                void g.offsetWidth;
-                // Add class with small staggered delay
-                g.style.animationDelay = `${index * 80}ms`;
-                g.classList.add('ppt-animate-rise');
-            });
-        });
+// Toggle Stats panel for active doctor
+function showDocStats(id) {
+    document.querySelectorAll('.stats-panel').forEach(p => p.classList.add('hidden'));
+    const activePanel = document.getElementById('stats-panel-' + id);
+    if (activePanel) {
+        activePanel.classList.remove('hidden');
     }
-    
-    // Update labels and selectors
-    document.getElementById('active-slide-num').innerText = currentSlide;
-    document.getElementById('slide-footer-num').innerText = 'SLIDE ' + String(currentSlide).padStart(2, '0');
-    document.getElementById('slide-selector').value = currentSlide;
-    
-    // Trigger charts rendering when entering their respective slides
-    if (currentSlide === 3) {
-        renderPptDoctorVisitsChart();
-    } else if (currentSlide === 4) {
-        renderPptCountryChart();
-    } else if (currentSlide === 5) {
-        renderPptLabChart();
-    } else if (currentSlide === 7) {
-        renderPptAllDoctorsSurgeriesChart();
-    }
+    renderDocChart(id);
 }
 
-function nextSlide() {
-    if (currentSlide < totalSlides) {
-        currentSlide++;
-        updateSlideView();
-    }
+// Active theme texts color resolver for ApexCharts
+function getThemeTextColor() {
+    const t = document.body.getAttribute('data-theme') || 'soft';
+    const colors = { soft:'#2e3e5c', glass:'#2e3e5c', brutal:'#000000', minimalist:'#171717', excel:'#323130' };
+    return colors[t] || '#2e3e5c';
 }
 
-// Global scope bindings for navigation functions
-window.nextSlide = nextSlide;
-window.prevSlide = function() {
-    if (currentSlide > 1) {
-        currentSlide--;
-        updateSlideView();
-    }
-};
-window.jumpToSlide = function(num) {
-    currentSlide = parseInt(num);
-    updateSlideView();
-};
-window.switchPptDoc = function(id) {
-    const data = pptDocData[id];
-    if (data) {
-        document.getElementById('ppt-doc-name').innerText = data.name;
-        document.getElementById('ppt-doc-total').innerText = data.total;
-    }
-};
+const reportColors = ['#ff4d7e','#10b981','#3b82f6','#f59e0b','#8b5cf6','#06b6d4','#f97316','#64748b','#ec4899','#84cc16','#0ea5e9','#6366f1','#d946ef','#14b8a6','#f43f5e','#a78bfa'];
 
-// Interactive Doctor details on slide 8
-const pptDocData = {
-    1: { name: 'د. غياث الدين ثجيل نعمة', total: '85 عملية' },
-    2: { name: 'د. حمزة صادق علوان الشريفي', total: '165 عملية' },
-    3: { name: 'د. ذوالفقار غني عبد الكندي', total: '22 عملية' },
-    4: { name: 'د. منتصر محمد عرب', total: '120 عملية' },
-    5: { name: 'د. افراح عبد الزهرة القصير', total: '10 عملية' },
-    6: { name: 'د. مؤيد عبد اللطيف صبار', total: '146 عملية' },
-    7: { name: 'د. بشرى سليمان علي الصقر', total: '162 عملية' },
-    8: { name: 'د. علاء صبري الغانمي', total: '147 عملية' },
-    9: { name: 'د. نور رعد كريم', total: '189 عملية' },
-    10: { name: 'د. حيدر حسين علي الموسوي', total: '839 عملية' },
-    11: { name: 'د. حذيفه سامي جواد العبايجي', total: '57 عملية' },
-    12: { name: 'د. اريج هادي كريم', total: '12 عملية' },
-    13: { name: 'د. زهراء علوان الحمداني', total: '5 عملية' },
-    14: { name: 'د. خلدون خليل نايف', total: '6 عملية' },
-    15: { name: 'د. ايات معتز محمد', total: '35 عملية' },
-    16: { name: 'د. محمد بدر محمد الجريان', total: '2 عملية' }
-};
+// Global charts rendering logic on section activate
+function renderReportPageCharts() {
+    const txColor = getThemeTextColor();
 
-// Keyboard shortcuts for PPT slide navigation
-document.addEventListener('keydown', (e) => {
-    // Only navigate if reports page is active/visible
-    const reportsPage = document.getElementById('page-reports');
-    if (reportsPage && !reportsPage.classList.contains('hidden')) {
-        if (e.key === 'ArrowLeft') {
-            nextSlide(); // Left arrow goes next in RTL
-        } else if (e.key === 'ArrowRight') {
-            window.prevSlide(); // Right arrow goes previous in RTL
-        }
-    }
-});
-
-// ===== Charts Renderers (PPT Version) =====
-let pptChartVisitsDone = false;
-let pptChartCountryDone = false;
-let pptChartLabDone = false;
-let pptChartSurgeriesDone = false;
-
-const pptColors = ['#ff4d7e','#10b981','#3b82f6','#f59e0b','#8b5cf6','#06b6d4','#f97316','#64748b','#ec4899','#84cc16','#0ea5e9','#6366f1','#d946ef','#14b8a6','#f43f5e','#a78bfa'];
-
-function renderPptDoctorVisitsChart() {
-    if (pptChartVisitsDone) return;
-    const el = document.querySelector('#ppt-chart-report-2');
-    if (!el) return;
-    pptChartVisitsDone = true;
-    
-    new ApexCharts(el, {
-        chart: { type: 'bar', height: 160, background: 'transparent', toolbar: { show: false } },
+    // Chart 2: Doctor Visits
+    new ApexCharts(document.querySelector('#chart-report-2'), {
+        chart: { type: 'bar', height: 240, background: 'transparent', toolbar: { show: false } },
         series: [{ name: 'المراجعون', data: [177, 562, 120, 212, 120, 346, 1204, 56, 194, 729, 348, 134, 106, 171, 87] }],
         xaxis: { 
             categories: ['غياث','حمزة','ذوالفقار','منتصر','افراح','مؤيد','بشرى','علاء','نور','حيدر','حذيفه','اريج','زهراء','ايات','م.بدر'],
-            labels: { style: { fontSize: '8px', colors: '#64748b', fontWeight: 'bold' } } 
+            labels: { style: { colors: txColor, fontSize: '9px' } } 
         },
-        colors: pptColors,
+        colors: reportColors,
         plotOptions: { bar: { borderRadius: 4, distributed: true, columnWidth: '60%' } },
         legend: { show: false },
-        dataLabels: { enabled: true, style: { fontSize: '8px', fontWeight: 'bold' } },
-        yaxis: { show: false }
+        dataLabels: { enabled: true, style: { fontSize: '9px', fontWeight: 'bold' } },
+        yaxis: { labels: { style: { colors: txColor } } }
     }).render();
-}
 
-function renderPptCountryChart() {
-    if (pptChartCountryDone) return;
-    const el = document.querySelector('#ppt-chart-report-4');
-    if (!el) return;
-    pptChartCountryDone = true;
-
-    new ApexCharts(el, {
-        chart: { type: 'donut', height: 130, background: 'transparent', toolbar: { show: false } },
-        series: [6, 4, 2, 1, 1, 1],
-        labels: ['إيران', 'أفغانستان', 'سوريا', 'مصر', 'نيجيريا', 'باكستان'],
-        colors: ['#ff4d7e', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#06b6d4'],
+    // Chart 3: Geographic Distribution
+    new ApexCharts(document.querySelector('#chart-report-3'), {
+        chart: { type: 'bar', height: 200, background: 'transparent', toolbar: { show: false } },
+        series: [{ name: 'المراجعون', data: [3455, 521, 127, 46, 401] }],
+        xaxis: { 
+            categories: ['كربلاء', 'بابل', 'بغداد', 'النجف', 'باقي المحافظات'],
+            labels: { style: { colors: txColor, fontSize: '9px' } } 
+        },
+        colors: ['#0284c7'],
+        plotOptions: { bar: { borderRadius: 5, columnWidth: '50%' } },
         legend: { show: false },
+        dataLabels: { enabled: true, style: { fontSize: '9px', fontWeight: 'bold' } },
+        yaxis: { labels: { style: { colors: txColor } } }
+    }).render();
+
+    // Chart 4: Outside Iraq
+    new ApexCharts(document.querySelector('#chart-report-4'), {
+        chart: { type: 'donut', height: 180, background: 'transparent', toolbar: { show: false } },
+        series: [6, 4, 2, 4],
+        labels: ['إيران', 'أفغانستان', 'سوريا', 'أخرى'],
+        colors: ['#db2777', '#d97706', '#10b981', '#475569'],
+        legend: { position: 'bottom', labels: { colors: txColor }, fontSize: '10px' },
         dataLabels: { enabled: false }
     }).render();
-}
 
-function renderPptLabChart() {
-    if (pptChartLabDone) return;
-    const el = document.querySelector('#ppt-chart-report-6');
-    if (!el) return;
-    pptChartLabDone = true;
+    // Chart 5: Visual tests
+    new ApexCharts(document.querySelector('#chart-report-5'), {
+        chart: { type: 'bar', height: 220, background: 'transparent', toolbar: { show: false } },
+        series: [{ name: 'العدد', data: [4730, 1444, 641, 425] }],
+        xaxis: { 
+            categories: ['فحص البصر', 'OCT', 'قوة العدسة', 'أخرى'],
+            labels: { style: { colors: txColor, fontSize: '9px' } } 
+        },
+        colors: reportColors,
+        plotOptions: { bar: { borderRadius: 5, distributed: true, columnWidth: '50%' } },
+        legend: { show: false },
+        dataLabels: { enabled: true, style: { fontSize: '9px', fontWeight: 'bold' } },
+        yaxis: { labels: { style: { colors: txColor } } }
+    }).render();
 
-    new ApexCharts(el, {
-        chart: { type: 'radialBar', height: 120, background: 'transparent', sparkline: { enabled: true } },
+    // Chart 6: Lab Radial Progress
+    new ApexCharts(document.querySelector('#chart-report-6'), {
+        chart: { type: 'radialBar', height: 130, background: 'transparent', sparkline: { enabled: true } },
         series: [100],
-        colors: ['#8b5cf6'],
+        colors: ['#a855f7'],
         plotOptions: {
             radialBar: {
                 hollow: { size: '55%' },
                 dataLabels: {
                     name: { show: false },
-                    value: { fontSize: '20px', fontWeight: '800', color: '#6d28d9', offsetY: 6, formatter: () => '4566' }
+                    value: { fontSize: '22px', fontWeight: '900', color: txColor, offsetY: 6, formatter: () => '4566' }
                 }
             }
         }
     }).render();
-}
 
-function renderPptAllDoctorsSurgeriesChart() {
-    if (pptChartSurgeriesDone) return;
-    const el = document.querySelector('#ppt-chart-report-10');
-    if (!el) return;
-    pptChartSurgeriesDone = true;
-
-    new ApexCharts(el, {
-        chart: { type: 'bar', height: 180, background: 'transparent', toolbar: { show: false } },
-        series: [{ name: 'إجمالي العمليات', data: [85, 165, 22, 120, 10, 146, 162, 147, 189, 839, 57, 12, 5, 6, 35, 2] }],
+    // Chart 10: All surgeries bar
+    new ApexCharts(document.querySelector('#chart-report-10'), {
+        chart: { type: 'bar', height: 280, background: 'transparent', toolbar: { show: false } },
+        series: [{ name: 'إجمالي العمليات', data: [85, 165, 22, 120, 10, 146, 162, 147, 189, 839, 57, 12, 6, 35, 2, 5] }],
         xaxis: { 
             categories: ['غياث','حمزة','ذوالفقار','منتصر','افراح','مؤيد','بشرى','علاء','نور','حيدر','حذيفه','اريج','زهراء','خلدون','ايات','م.بدر'],
-            labels: { style: { fontSize: '8px', colors: '#64748b', fontWeight: 'bold' } } 
+            labels: { style: { colors: txColor, fontSize: '9px' }, rotate: -40 } 
         },
-        colors: pptColors,
-        plotOptions: { bar: { borderRadius: 4, distributed: true, columnWidth: '60%' } },
+        colors: reportColors,
+        plotOptions: { bar: { borderRadius: 4, distributed: true, columnWidth: '65%' } },
         legend: { show: false },
-        dataLabels: { enabled: true, style: { fontSize: '8px', fontWeight: '800' } },
-        yaxis: { show: false }
+        dataLabels: { enabled: true, style: { fontSize: '9px', fontWeight: 'bold' } },
+        yaxis: { labels: { style: { colors: txColor } } }
+    }).render();
+
+    // Initialize first doctor stats donut
+    renderDocChart(1);
+}
+
+// Individual Doctor operations chart render
+const docOpsData = {
+    1:[29,2,3,8,2,3,6,18,13],
+    2:[50,2,56,5,1,1,1,1,9,25,15,1],
+    3:[10,5,1,3,3],
+    4:[16,1,52,11,30,8,1,1],
+    5:[1,7,2],
+    6:[39,1,10,2,58,26,3,4,1,1,1],
+    7:[135,1,4,1,21,3,1,3,2],
+    8:[17,1,3,82,23,18,2,1],
+    9:[27,1,1,4,2,45,101,1,7],
+    10:[66,1,2,1,148,572,15,1,29,1,2,1],
+    11:[18,1,1,30,7],
+    12:[10,1,1],
+    13:[2,1,2],
+    14:[5,1],
+    15:[8,1,1,1,20,1,3],
+    16:[2]
+};
+const docNamesData = {
+    1:['قص السائل','رفع ماء اسود','رفع ساد','سليكون+عدسة','زرع عدسة','غسل حجرة','رفع سليكون','حقن ايليليا','حقن افاستين'],
+    2:['قص السائل','رفع ساد (خاص)','رفع ساد','سليكون+عدسة','زرع عدسة','زرع صمام','هطول اجفان','تصليب قرنية','غسل حجرة','رفع سليكون','ليزر','تسليك'],
+    3:['قص السائل','رفع ساد','حول','رفع سليكون','ليزر'],
+    4:['رفع ساد','رفع ظفرة','حقن ايليا','حقن لوسنتس','حقن افاستين','ليزر','تسليك','جسم غريب'],
+    5:['زرع صمام','رفع ساد','ليزر'],
+    6:['رفع ساد','هطول اجفان','حول','رفع ظفرة','حقن ايليا','حقن افاستين','ليزر','كيس دهني','ورم','تخدير','جسم غريب'],
+    7:['رفع ساد','هطول اجفان','تصليب قرنية','غسل حجرة','ليزر','كيس دهني','ورم درمويد','تسليك','جسم غريب'],
+    8:['رفع ساد','رفع ظفرة','فابزمو','حقن ايليا','حقن لوسنتس','حقن افاستين','كيناكورت','تخدير'],
+    9:['رفع ساد','زرع عدسة','هطول اجفان','حول','رفع ظفرة','حقن ايليا','حقن افاستين','كيناكورت','ليزر'],
+    10:['رفع ساد','هطول اجفان','تصليب قرنية','رفع ظفرة','حقن ايليا','حقن افاستين','كيناكورت','اكتيليس','ليزر','كيس دهني','تسليك','جسم غريب'],
+    11:['رفع ساد','حول','رفع ظفرة','حقن افاستين','ليزر'],
+    12:['رفع ساد','ليزر','كيس دهني'],
+    13:['رفع ساد','ليزر','كيس دهني'],
+    14:['رفع ساد','ليزر'],
+    15:['رفع ساد','هطول اجفان','تصليب قرنية','حقن ايليا','حقن افاستين','ليزر','كيس دهني'],
+    16:['رفع ساد']
+};
+
+let renderedDocCharts = {};
+
+function renderDocChart(id) {
+    if (renderedDocCharts[id]) return;
+    const el = document.querySelector('#chart-doc-' + id);
+    if (!el) return;
+    renderedDocCharts[id] = true;
+    const tx = getThemeTextColor();
+    
+    new ApexCharts(el, {
+        chart: { type: 'donut', height: 240, background: 'transparent', toolbar: { show: false } },
+        series: docOpsData[id] || [1],
+        labels: docNamesData[id] || [''],
+        colors: reportColors,
+        legend: { position: 'bottom', labels: { colors: tx }, fontSize: '9px', show: (docOpsData[id]||[]).length <= 8 },
+        dataLabels: { enabled: (docOpsData[id]||[]).length <= 5, style: { fontSize: '9px' } }
     }).render();
 }
 
 // Global page initialization hook
+let _chartsInitialized = false;
 window.initReportsPage = function() {
-    currentSlide = 1;
-    updateSlideView();
+    if (!_chartsInitialized) {
+        _chartsInitialized = true;
+        setTimeout(() => {
+            renderReportPageCharts();
+        }, 150);
+    }
 };
 </script>
