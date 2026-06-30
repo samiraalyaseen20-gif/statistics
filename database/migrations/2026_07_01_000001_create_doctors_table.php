@@ -9,7 +9,6 @@ return new class extends Migration {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('fee', 10, 2)->default(0);
             $table->timestamps();
         });
     }

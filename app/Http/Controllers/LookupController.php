@@ -17,12 +17,12 @@ class LookupController extends Controller
     // ========== DOCTORS ==========
     public function doctorsIndex()    { return response()->json(Doctor::all()); }
     public function doctorsStore(Request $r) {
-        $r->validate(['name'=>'required|string|max:255','fee'=>'nullable|numeric|min:0']);
-        return response()->json(Doctor::create(['name'=>$r->name,'fee'=>$r->fee??0]), 201);
+        $r->validate(['name'=>'required|string|max:255']);
+        return response()->json(Doctor::create(['name'=>$r->name]), 201);
     }
     public function doctorsUpdate(Request $r, Doctor $doctor) {
-        $r->validate(['name'=>'required|string|max:255','fee'=>'nullable|numeric|min:0']);
-        $doctor->update(['name'=>$r->name,'fee'=>$r->fee??$doctor->fee]);
+        $r->validate(['name'=>'required|string|max:255']);
+        $doctor->update(['name'=>$r->name]);
         return response()->json($doctor);
     }
     public function doctorsDestroy(Doctor $doctor) {
