@@ -1,7 +1,7 @@
-<!-- PAGE 2: REPORTS PAGE SECTION (Single Scrollable Dashboard Page) -->
+<!-- PAGE 2: REPORTS PAGE SECTION (Unified Scrollable Dashboard with 3D Arrow Infographics) -->
 <section id="page-reports" class="page-section space-y-6 hidden">
 
-    <!-- Filter & Action Bar (Clean & minimalist) -->
+    <!-- Filter & Action Bar -->
     <div class="custom-card p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
             <div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-500">
@@ -21,34 +21,38 @@
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
-            أعداد المراجعين في الاستشاريات
+            جدول (1): أعداد المراجعين في الاستشاريات
         </h3>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <!-- 3D Isometric Arrows Infographic -->
+            <!-- 3D Isometric Arrows SVG Infographic -->
             <div class="flex justify-center">
-                <svg viewBox="0 0 350 220" class="w-full max-w-[320px] h-auto drop-shadow-sm overflow-visible">
+                <svg viewBox="0 0 350 200" class="w-full max-w-[320px] h-auto overflow-visible">
                     <defs>
                         <linearGradient id="g1-teal" x1="0%" y1="100%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#0284c7" />
-                            <stop offset="100%" stop-color="#38bdf8" />
+                            <stop offset="0%" stop-color="#0284c7" /><stop offset="100%" stop-color="#38bdf8" />
                         </linearGradient>
                         <linearGradient id="g1-pink" x1="0%" y1="100%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#db2777" />
-                            <stop offset="100%" stop-color="#f472b6" />
+                            <stop offset="0%" stop-color="#db2777" /><stop offset="100%" stop-color="#f472b6" />
                         </linearGradient>
                     </defs>
                     <polygon points="50,190 150,220 310,130 210,100" fill="#e2e8f0" opacity="0.4" />
                     <!-- Arrow 1 (General: 3375 - 76%) -->
                     <g class="hover:opacity-90 cursor-pointer transition-opacity duration-300">
-                        <path d="M 90 190 L 150 150 L 150 70 L 170 75 L 140 30 L 110 75 L 130 70 L 130 135 L 90 160 Z" fill="url(#g1-teal)" />
-                        <path d="M 130 70 L 150 70 L 150 150 L 130 135 Z" fill="#0369a1" opacity="0.3" />
-                        <text x="140" y="110" font-family="Outfit" font-size="14px" font-weight="900" fill="#ffffff" text-anchor="middle" transform="rotate(-30 140 110)">76%</text>
+                        <line x1="140" y1="110" x2="140" y2="75" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+                        <circle cx="140" cy="60" r="14" fill="#0284c7" />
+                        <text x="140" y="63" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">3375</text>
+                        <path d="M 90 190 L 150 150 L 150 110 L 170 115 L 140 70 L 110 115 L 130 110 L 130 135 L 90 160 Z" fill="url(#g1-teal)" />
+                        <path d="M 130 110 L 150 110 L 150 150 L 130 135 Z" fill="#0369a1" opacity="0.3" />
+                        <text x="140" y="205" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">العيون العامة (76%)</text>
                     </g>
                     <!-- Arrow 2 (Special: 1091 - 24%) -->
                     <g class="hover:opacity-90 cursor-pointer transition-opacity duration-300">
-                        <path d="M 190 190 L 250 150 L 250 110 L 270 115 L 240 70 L 210 115 L 230 110 L 230 135 L 190 160 Z" fill="url(#g1-pink)" />
-                        <path d="M 230 110 L 250 110 L 250 150 L 230 135 Z" fill="#be185d" opacity="0.3" />
-                        <text x="240" y="130" font-family="Outfit" font-size="12px" font-weight="900" fill="#ffffff" text-anchor="middle" transform="rotate(-30 240 130)">24%</text>
+                        <line x1="240" y1="130" x2="240" y2="95" stroke="#db2777" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+                        <circle cx="240" cy="80" r="14" fill="#db2777" />
+                        <text x="240" y="83" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">1091</text>
+                        <path d="M 190 190 L 250 150 L 250 130 L 270 135 L 240 90 L 210 135 L 230 130 L 230 135 L 190 160 Z" fill="url(#g1-pink)" />
+                        <path d="M 230 130 L 250 130 L 250 150 L 230 135 Z" fill="#be185d" opacity="0.3" />
+                        <text x="240" y="205" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">التخصصات الدقيقة (24%)</text>
                     </g>
                 </svg>
             </div>
@@ -70,18 +74,10 @@
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
-            أعداد مراجعي الاستشارية لكل طبيب اختصاص
+            جدول (2): أعداد مراجعي الاستشارية لكل طبيب اختصاص
         </h3>
-        <div id="chart-report-2" class="w-full mb-5" style="height:240px"></div>
-        <div class="overflow-x-auto">
-            <table class="custom-table text-[11px] text-center">
-                <thead><tr>
-                    <th>د. بشرى علي</th><th>د. حيدر حسين</th><th>د. حمزة صادق</th><th>د. حذيفه سامي</th><th>د. مؤيد صبار</th><th>د. منتصر عرب</th><th>د. نور رعد</th><th>د. غياث الدين</th><th>د. اريج هادي</th><th>د. ذوالفقار</th><th>البقية</th><th class="text-theme-pink">المجموع</th>
-                </tr></thead>
-                <tbody><tr class="table-row font-bold">
-                    <td>1204</td><td>729</td><td>562</td><td>348</td><td>346</td><td>212</td><td>194</td><td>177</td><td>134</td><td>120</td><td>540</td><td class="text-theme-pink font-extrabold">4,566</td>
-                </tr></tbody>
-            </table>
+        <div class="w-full overflow-x-auto py-2">
+            <svg id="svg-report-2" class="w-full min-w-[850px] h-[260px] overflow-visible"></svg>
         </div>
     </div>
 
@@ -91,35 +87,20 @@
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="flag" class="w-4 h-4 text-sky-500"></i>
-                التوزيع الجغرافي داخل العراق (الاستشاريات)
+                جدول (3): التوزيع الجغرافي داخل العراق
             </h3>
-            <div id="chart-report-3" class="w-full mb-4" style="height:200px"></div>
-            <div class="overflow-x-auto">
-                <table class="custom-table text-[10px] text-center">
-                    <thead><tr><th>كربلاء</th><th>بابل</th><th>بغداد</th><th>النجف</th><th>المحافظات الأخرى</th></tr></thead>
-                    <tbody><tr class="table-row font-bold"><td>3455</td><td>521</td><td>127</td><td>46</td><td>401</td></tr></tbody>
-                </table>
+            <div class="w-full overflow-x-auto py-2">
+                <svg id="svg-report-3" class="w-full min-w-[450px] h-[220px] overflow-visible"></svg>
             </div>
         </div>
         <!-- Outside Iraq -->
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                المراجعون من خارج العراق
+                جدول (4): المراجعون من خارج العراق
             </h3>
-            <div class="flex flex-col sm:flex-row gap-4 items-center">
-                <div id="chart-report-4" class="w-full sm:w-1/2" style="height:180px"></div>
-                <div class="w-full sm:w-1/2">
-                    <table class="custom-table text-xs">
-                        <thead><tr><th>البلد</th><th class="text-center font-bold">المراجعين</th></tr></thead>
-                        <tbody>
-                            <tr class="table-row"><td>ايران</td><td class="text-center font-bold">6</td></tr>
-                            <tr class="table-row"><td>افغانستان</td><td class="text-center font-bold">4</td></tr>
-                            <tr class="table-row"><td>سوريا</td><td class="text-center font-bold">2</td></tr>
-                            <tr class="table-row font-extrabold text-theme-pink"><td>المجموع</td><td class="text-center font-extrabold">16</td></tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="w-full overflow-x-auto py-2">
+                <svg id="svg-report-4" class="w-full min-w-[400px] h-[220px] overflow-visible"></svg>
             </div>
         </div>
     </div>
@@ -132,39 +113,18 @@
                 <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
                 جدول (5): الفحوصات البصرية والساندة
             </h3>
-            <div id="chart-report-5" class="w-full mb-4" style="height:220px"></div>
-            <table class="custom-table text-xs">
-                <thead><tr><th>نوع الفحص البصري</th><th class="text-center">العدد</th></tr></thead>
-                <tbody>
-                    <tr class="table-row"><td>فحص البصر</td><td class="text-center font-bold">4,730</td></tr>
-                    <tr class="table-row"><td>فحص الشبكية OCT</td><td class="text-center font-bold">1,444</td></tr>
-                    <tr class="table-row"><td>فحص قوة العدسة</td><td class="text-center font-bold">641</td></tr>
-                    <tr class="table-row font-extrabold text-orange-500"><td>المجموع الكلي</td><td class="text-center font-extrabold">7,240</td></tr>
-                </tbody>
-            </table>
+            <div class="w-full overflow-x-auto py-2">
+                <svg id="svg-report-5" class="w-full min-w-[450px] h-[220px] overflow-visible"></svg>
+            </div>
         </div>
         <!-- Lab Tests -->
-        <div class="custom-card p-6 rounded-2xl flex flex-col justify-between">
-            <div>
-                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                    <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
-                    جدول (6): مراجعو المختبر والتحاليل
-                </h3>
-                <div class="flex flex-col sm:flex-row gap-4 items-center justify-center my-6">
-                    <div id="chart-report-6" class="w-32 h-32"></div>
-                    <div class="text-center">
-                        <span class="text-[10px] font-bold text-slate-400 block uppercase">مجموع مراجعي المختبر</span>
-                        <h4 class="text-2xl font-black text-purple-600 font-['Outfit']">4,566</h4>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <p class="text-[9px] font-bold text-slate-400 mb-2">التحاليل المتوفرة:</p>
-                <div class="flex flex-wrap gap-1">
-                    @foreach(['RBS','WBC','Hp','PCV','HIV','HCV','HBV','PT','PTT','INR'] as $t)
-                    <span class="bg-purple-100 text-purple-700 text-[8px] font-bold px-2 py-0.5 rounded">{{ $t }}</span>
-                    @endforeach
-                </div>
+        <div class="custom-card p-6 rounded-2xl">
+            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
+                جدول (6): الفحوصات والتحاليل المختبرية المنجزة
+            </h3>
+            <div class="w-full overflow-x-auto py-2">
+                <svg id="svg-report-6" class="w-full min-w-[450px] h-[220px] overflow-visible"></svg>
             </div>
         </div>
     </div>
@@ -287,7 +247,9 @@
             <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
             جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص
         </h3>
-        <div id="chart-report-10" class="w-full mb-6" style="height:280px"></div>
+        <div class="w-full overflow-x-auto py-2 mb-4">
+            <svg id="svg-report-10" class="w-full min-w-[850px] h-[280px] overflow-visible"></svg>
+        </div>
         <div class="overflow-x-auto">
             <table class="custom-table text-center" style="font-size:10px; min-width:850px">
                 <thead>
@@ -355,20 +317,19 @@
         <p class="text-[8px] text-slate-400 mt-2">ص = قطاع الصحة &nbsp;|&nbsp; خ = عتبة الخاص &nbsp;|&nbsp; ع = عتبة العام</p>
     </div>
 
-    <!-- 7. الإحصائية التفصيلية لكل طبيب (تصفح ديناميكي مبسط) -->
+    <!-- 7. الإحصائية التفصيلية لكل طبيب -->
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="user-cog" class="w-4 h-4 text-violet-500"></i>
             الإحصائية التفصيلية للعمليات الجراحية لكل طبيب
         </h3>
         
-        <!-- Tab Select Dropdown instead of bulk tabs to save screen space -->
         <div class="flex items-center gap-3 mb-6 bg-slate-200/20 p-3 rounded-xl">
             <span class="text-xs font-bold text-slate-500">اختيار الطبيب:</span>
             @php
             $dnames=[1=>'غياث الدين',2=>'حمزة صادق',3=>'ذوالفقار',4=>'منتصر عرب',5=>'افراح',6=>'مؤيد',7=>'بشرى',8=>'علاء',9=>'نور رعد',10=>'حيدر',11=>'حذيفه',12=>'اريج',13=>'زهراء',14=>'خلدون',15=>'ايات',16=>'محمد بدر'];
             @endphp
-            <select id="doc-active-selector" onchange="showDocStats(this.value)" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main">
+            <select id="doc-active-selector" onchange="showDocStats(this.value)" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
                 @foreach($dnames as $id=>$n)
                 <option value="{{ $id }}">{{ $id }}. {{ $n }}</option>
                 @endforeach
@@ -405,10 +366,12 @@
                 <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $total }} عملية</span>
             </div>
             <div class="flex flex-col lg:flex-row gap-6 items-start">
-                <div id="chart-doc-{{ $id }}" class="w-full lg:w-2/5 flex-shrink-0" style="height:240px"></div>
+                <div class="w-full lg:w-2/5 flex-shrink-0">
+                    <svg id="svg-doc-{{ $id }}" class="w-full h-[250px] overflow-visible"></svg>
+                </div>
                 <div class="w-full lg:w-3/5">
                     <table class="custom-table text-xs">
-                        <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
+                        <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
                         <tbody>
                             @foreach($ops as $i=>$op)
                             <tr class="table-row">
@@ -451,6 +414,18 @@
     #page-reports { display: block !important; overflow: visible !important; }
     .custom-card { border: none !important; box-shadow: none !important; page-break-inside: avoid !important; }
 }
+
+/* Entrance Animations */
+.arrow-grp {
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.arrow-grp.show {
+    opacity: 1;
+    transform: scaleY(1);
+}
 </style>
 
 <script>
@@ -461,113 +436,218 @@ function showDocStats(id) {
     if (activePanel) {
         activePanel.classList.remove('hidden');
     }
-    renderDocChart(id);
+    renderSingleDocChart(id);
 }
 
-// Active theme texts color resolver for ApexCharts
-function getThemeTextColor() {
-    const t = document.body.getAttribute('data-theme') || 'soft';
-    const colors = { soft:'#2e3e5c', glass:'#2e3e5c', brutal:'#000000', minimalist:'#171717', excel:'#323130' };
-    return colors[t] || '#2e3e5c';
+// Adjust colors hex brightness utility
+function adjustColorBrightness(hex, percent) {
+    let R = parseInt(hex.substring(1, 3), 16);
+    let G = parseInt(hex.substring(3, 5), 16);
+    let B = parseInt(hex.substring(5, 7), 16);
+
+    R = parseInt(R * (100 + percent) / 100);
+    G = parseInt(G * (100 + percent) / 100);
+    B = parseInt(B * (100 + percent) / 100);
+
+    R = (R < 255) ? R : 255;
+    G = (G < 255) ? G : 255;
+    B = (B < 255) ? B : 255;
+
+    R = (R > 0) ? R : 0;
+    G = (G > 0) ? G : 0;
+    B = (B > 0) ? B : 0;
+
+    const rHex = R.toString(16).padStart(2, '0');
+    const gHex = G.toString(16).padStart(2, '0');
+    const bHex = B.toString(16).padStart(2, '0');
+
+    return "#" + rHex + gHex + bHex;
 }
 
-const reportColors = ['#ff4d7e','#10b981','#3b82f6','#f59e0b','#8b5cf6','#06b6d4','#f97316','#64748b','#ec4899','#84cc16','#0ea5e9','#6366f1','#d946ef','#14b8a6','#f43f5e','#a78bfa'];
+// Reusable 3D Isometric Arrows Drawing Engine
+function draw3DIsometricArrows(svgId, values, labels, presetColors = null) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    svg.innerHTML = ''; // Clear
 
-// Global charts rendering logic on section activate
-function renderReportPageCharts() {
-    const txColor = getThemeTextColor();
+    const maxVal = Math.max(...values, 1);
+    const n = values.length;
 
-    // Chart 2: Doctor Visits
-    new ApexCharts(document.querySelector('#chart-report-2'), {
-        chart: { type: 'bar', height: 240, background: 'transparent', toolbar: { show: false } },
-        series: [{ name: 'المراجعون', data: [177, 562, 120, 212, 120, 346, 1204, 56, 194, 729, 348, 134, 106, 171, 87] }],
-        xaxis: { 
-            categories: ['غياث','حمزة','ذوالفقار','منتصر','افراح','مؤيد','بشرى','علاء','نور','حيدر','حذيفه','اريج','زهراء','ايات','م.بدر'],
-            labels: { style: { colors: txColor, fontSize: '9px' } } 
-        },
-        colors: reportColors,
-        plotOptions: { bar: { borderRadius: 4, distributed: true, columnWidth: '60%' } },
-        legend: { show: false },
-        dataLabels: { enabled: true, style: { fontSize: '9px', fontWeight: 'bold' } },
-        yaxis: { labels: { style: { colors: txColor } } }
-    }).render();
+    // ViewBox dimensions
+    const viewBoxStr = svg.getAttribute('viewBox') || "0 0 900 280";
+    const width = parseInt(viewBoxStr.split(' ')[2]);
+    const height = parseInt(viewBoxStr.split(' ')[3]);
 
-    // Chart 3: Geographic Distribution
-    new ApexCharts(document.querySelector('#chart-report-3'), {
-        chart: { type: 'bar', height: 200, background: 'transparent', toolbar: { show: false } },
-        series: [{ name: 'المراجعون', data: [3455, 521, 127, 46, 401] }],
-        xaxis: { 
-            categories: ['كربلاء', 'بابل', 'بغداد', 'النجف', 'باقي المحافظات'],
-            labels: { style: { colors: txColor, fontSize: '9px' } } 
-        },
-        colors: ['#0284c7'],
-        plotOptions: { bar: { borderRadius: 5, columnWidth: '50%' } },
-        legend: { show: false },
-        dataLabels: { enabled: true, style: { fontSize: '9px', fontWeight: 'bold' } },
-        yaxis: { labels: { style: { colors: txColor } } }
-    }).render();
+    const marginL = 40;
+    const marginR = 40;
+    const availableW = width - marginL - marginR;
+    const spacing = n > 1 ? availableW / (n - 1) : availableW;
+    const floorY = height - 40;
 
-    // Chart 4: Outside Iraq
-    new ApexCharts(document.querySelector('#chart-report-4'), {
-        chart: { type: 'donut', height: 180, background: 'transparent', toolbar: { show: false } },
-        series: [6, 4, 2, 4],
-        labels: ['إيران', 'أفغانستان', 'سوريا', 'أخرى'],
-        colors: ['#db2777', '#d97706', '#10b981', '#475569'],
-        legend: { position: 'bottom', labels: { colors: txColor }, fontSize: '10px' },
-        dataLabels: { enabled: false }
-    }).render();
+    // Base Shadow Polygon
+    const baseLine = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    baseLine.setAttribute('points', `${marginL-25},${floorY} ${width-marginR+25},${floorY} ${width-marginR},${floorY-15} ${marginL},${floorY-15}`);
+    baseLine.setAttribute('fill', '#cbd5e1');
+    baseLine.setAttribute('opacity', '0.2');
+    svg.appendChild(baseLine);
 
-    // Chart 5: Visual tests
-    new ApexCharts(document.querySelector('#chart-report-5'), {
-        chart: { type: 'bar', height: 220, background: 'transparent', toolbar: { show: false } },
-        series: [{ name: 'العدد', data: [4730, 1444, 641, 425] }],
-        xaxis: { 
-            categories: ['فحص البصر', 'OCT', 'قوة العدسة', 'أخرى'],
-            labels: { style: { colors: txColor, fontSize: '9px' } } 
-        },
-        colors: reportColors,
-        plotOptions: { bar: { borderRadius: 5, distributed: true, columnWidth: '50%' } },
-        legend: { show: false },
-        dataLabels: { enabled: true, style: { fontSize: '9px', fontWeight: 'bold' } },
-        yaxis: { labels: { style: { colors: txColor } } }
-    }).render();
+    // Definitions for gradients
+    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    svg.appendChild(defs);
 
-    // Chart 6: Lab Radial Progress
-    new ApexCharts(document.querySelector('#chart-report-6'), {
-        chart: { type: 'radialBar', height: 130, background: 'transparent', sparkline: { enabled: true } },
-        series: [100],
-        colors: ['#a855f7'],
-        plotOptions: {
-            radialBar: {
-                hollow: { size: '55%' },
-                dataLabels: {
-                    name: { show: false },
-                    value: { fontSize: '22px', fontWeight: '900', color: txColor, offsetY: 6, formatter: () => '4566' }
-                }
-            }
-        }
-    }).render();
+    const colors = presetColors || ['#ff4d7e','#10b981','#3b82f6','#f59e0b','#8b5cf6','#06b6d4','#f97316','#64748b','#ec4899','#84cc16','#0ea5e9','#6366f1','#d946ef','#14b8a6','#f43f5e','#a78bfa'];
 
-    // Chart 10: All surgeries bar
-    new ApexCharts(document.querySelector('#chart-report-10'), {
-        chart: { type: 'bar', height: 280, background: 'transparent', toolbar: { show: false } },
-        series: [{ name: 'إجمالي العمليات', data: [85, 165, 22, 120, 10, 146, 162, 147, 189, 839, 57, 12, 6, 35, 2, 5] }],
-        xaxis: { 
-            categories: ['غياث','حمزة','ذوالفقار','منتصر','افراح','مؤيد','بشرى','علاء','نور','حيدر','حذيفه','اريج','زهراء','خلدون','ايات','م.بدر'],
-            labels: { style: { colors: txColor, fontSize: '9px' }, rotate: -40 } 
-        },
-        colors: reportColors,
-        plotOptions: { bar: { borderRadius: 4, distributed: true, columnWidth: '65%' } },
-        legend: { show: false },
-        dataLabels: { enabled: true, style: { fontSize: '9px', fontWeight: 'bold' } },
-        yaxis: { labels: { style: { colors: txColor } } }
-    }).render();
+    // Generate gradients dynamically
+    labels.forEach((l, i) => {
+        const color = colors[i % colors.length];
+        
+        // Front gradient
+        const gradF = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
+        gradF.setAttribute('id', `grad-f-${svgId}-${i}`);
+        gradF.setAttribute('x1', '0%'); gradF.setAttribute('y1', '100%');
+        gradF.setAttribute('x2', '100%'); gradF.setAttribute('y2', '0%');
+        gradF.innerHTML = `<stop offset="0%" stop-color="${color}"/><stop offset="100%" stop-color="${adjustColorBrightness(color, 35)}"/>`;
+        defs.appendChild(gradF);
 
-    // Initialize first doctor stats donut
-    renderDocChart(1);
+        // Side gradient
+        const gradS = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
+        gradS.setAttribute('id', `grad-s-${svgId}-${i}`);
+        gradS.setAttribute('x1', '0%'); gradS.setAttribute('y1', '100%');
+        gradS.setAttribute('x2', '100%'); gradS.setAttribute('y2', '0%');
+        gradS.innerHTML = `<stop offset="0%" stop-color="${adjustColorBrightness(color, -25)}"/><stop offset="100%" stop-color="${color}"/>`;
+        defs.appendChild(gradS);
+    });
+
+    // Draw individual arrows
+    values.forEach((val, i) => {
+        const x = marginL + i * spacing;
+        const y = floorY;
+
+        // Custom heights scale logic
+        const minH = 20;
+        const maxH = height - 95;
+        const scaleVal = maxVal > 1 ? Math.sqrt(val) / Math.sqrt(maxVal) : 1;
+        const H = minH + (maxH - minH) * scaleVal;
+
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute('class', 'arrow-grp cursor-pointer');
+
+        // Dashed lines
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute('x1', x);
+        line.setAttribute('y1', y - H - 15);
+        line.setAttribute('x2', x);
+        line.setAttribute('y2', y - H - 38);
+        line.setAttribute('stroke', colors[i % colors.length]);
+        line.setAttribute('stroke-width', '1');
+        line.setAttribute('stroke-dasharray', '2.5 2.5');
+        line.setAttribute('opacity', '0.5');
+        g.appendChild(line);
+
+        // Floating Circle badge
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute('cx', x);
+        circle.setAttribute('cy', y - H - 48);
+        circle.setAttribute('r', '10.5');
+        circle.setAttribute('fill', colors[i % colors.length]);
+        g.appendChild(circle);
+
+        // Value text
+        const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        tVal.setAttribute('x', x);
+        tVal.setAttribute('y', y - H - 45);
+        tVal.setAttribute('font-family', 'Outfit');
+        tVal.setAttribute('font-size', '7.5px');
+        tVal.setAttribute('font-weight', 'bold');
+        tVal.setAttribute('fill', '#ffffff');
+        tVal.setAttribute('text-anchor', 'middle');
+        tVal.textContent = val;
+        g.appendChild(tVal);
+
+        // Isometric Arrow Sides (Front / Left)
+        const front = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        front.setAttribute('points', `${x-10},${y} ${x},${y+5} ${x},${y+5-H} ${x-10},${y-H}`);
+        front.setAttribute('fill', `url(#grad-f-${svgId}-${i})`);
+        g.appendChild(front);
+
+        // Side / Right
+        const side = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        side.setAttribute('points', `${x},${y+5} ${x+10},${y} ${x+10},${y-H} ${x},${y+5-H}`);
+        side.setAttribute('fill', `url(#grad-s-${svgId}-${i})`);
+        g.appendChild(side);
+
+        // Pointed Caps
+        const lTip = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        lTip.setAttribute('points', `${x-10},${y-H} ${x},${y+5-H} ${x},${y+5-H-12}`);
+        lTip.setAttribute('fill', adjustColorBrightness(colors[i % colors.length], 45));
+        g.appendChild(lTip);
+
+        const rTip = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        rTip.setAttribute('points', `${x},${y+5-H} ${x+10},${y-H} ${x},${y+5-H-12}`);
+        rTip.setAttribute('fill', adjustColorBrightness(colors[i % colors.length], -5));
+        g.appendChild(rTip);
+
+        // Label Text under arrows
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute('x', x);
+        label.setAttribute('y', y + 16);
+        label.setAttribute('font-family', 'Tajawal');
+        label.setAttribute('font-size', '8px');
+        label.setAttribute('font-weight', 'bold');
+        label.setAttribute('fill', '#64748b');
+        label.setAttribute('text-anchor', 'middle');
+
+        let labelText = labels[i];
+        if (labelText.length > 7) labelText = labelText.substring(0, 6) + '..';
+        label.textContent = labelText;
+        g.appendChild(label);
+
+        g.style.transitionDelay = `${i * 35}ms`;
+        svg.appendChild(g);
+
+        setTimeout(() => {
+            g.classList.add('show');
+        }, 50);
+    });
 }
 
-// Individual Doctor operations chart render
+// Global drawing triggers
+function renderAll3DIsometricCharts() {
+    // 2. Doctor visits visits (15 doctors)
+    const docVisitsData = [177, 562, 120, 212, 120, 346, 1204, 56, 194, 729, 348, 134, 106, 171, 87];
+    const docVisitsLabels = ['غياث','حمزة','ذوالفقار','منتصر','افراح','مؤيد','بشرى','علاء','نور','حيدر','حذيفه','اريج','زهراء','ايات','م.بدر'];
+    draw3DIsometricArrows('svg-report-2', docVisitsData, docVisitsLabels);
+
+    // 3. Inside Iraq governorates
+    const govData = [3455, 521, 127, 120, 76, 46];
+    const govLabels = ['كربلاء', 'بابل', 'بغداد', 'ذي قار', 'واسط', 'النجف'];
+    draw3DIsometricArrows('svg-report-3', govData, govLabels);
+
+    // 4. Outside Iraq countries
+    const countryData = [6, 4, 2, 1, 1, 1];
+    const countryLabels = ['إيران', 'أفغانستان', 'سوريا', 'مصر', 'نيجيريا', 'باكستان'];
+    draw3DIsometricArrows('svg-report-4', countryData, countryLabels);
+
+    // 5. Visual test types
+    const visualData = [4730, 1444, 641, 142, 135, 67];
+    const visualLabels = ['فحص البصر', 'OCT', 'قوة العدسة', 'C.T', 'سونار', 'FUNDUS'];
+    draw3DIsometricArrows('svg-report-5', visualData, visualLabels);
+
+    // 6. Lab test types
+    const labTestData = [120, 95, 85, 70, 40];
+    const labTestLabels = ['RBS', 'WBC', 'Hb', 'PCV', 'INR'];
+    draw3DIsometricArrows('svg-report-6', labTestData, labTestLabels);
+
+    // 10. Surgeries total (16 doctors)
+    const docSurgData = [85, 165, 22, 120, 10, 146, 162, 147, 189, 839, 57, 12, 5, 6, 35, 2];
+    const docSurgLabels = ['غياث','حمزة','ذوالفقار','منتصر','افراح','مؤيد','بشرى','علاء','نور','حيدر','حذيفه','اريج','زهراء','خلدون','ايات','م.بدر'];
+    draw3DIsometricArrows('svg-report-10', docSurgData, docSurgLabels);
+
+    // Init first doctor switcher details
+    renderSingleDocChart(1);
+}
+
+// switcher individual doctor operations details
 const docOpsData = {
     1:[29,2,3,8,2,3,6,18,13],
     2:[50,2,56,5,1,1,1,1,9,25,15,1],
@@ -587,14 +667,14 @@ const docOpsData = {
     16:[2]
 };
 const docNamesData = {
-    1:['قص السائل','رفع ماء اسود','رفع ساد','سليكون+عدسة','زرع عدسة','غسل حجرة','رفع سليكون','حقن ايليليا','حقن افاستين'],
-    2:['قص السائل','رفع ساد (خاص)','رفع ساد','سليكون+عدسة','زرع عدسة','زرع صمام','هطول اجفان','تصليب قرنية','غسل حجرة','رفع سليكون','ليزر','تسليك'],
-    3:['قص السائل','رفع ساد','حول','رفع سليكون','ليزر'],
-    4:['رفع ساد','رفع ظفرة','حقن ايليا','حقن لوسنتس','حقن افاستين','ليزر','تسليك','جسم غريب'],
+    1:['قص سائل','رفع ماء اسود','رفع ساد','سليكون+عدسة','زرع عدسة','غسل حجرة','رفع سليكون','حقن ايليليا','حقن افاستين'],
+    2:['قص سائل','ساد خاص','رفع ساد','سليكون+عدسة','زرع عدسة','زرع صمام','هطول اجفان','تصليب قرنية','غسل حجرة','رفع سليكون','ليزر','تسليك'],
+    3:['قص سائل','رفع ساد','حول','رفع سليكون','ليزر'],
+    4:['رفع ساد','رفع ظفرة','حقن ايليا','لوسنتس','حقن افاستين','ليزر','تسليك','جسم غريب'],
     5:['زرع صمام','رفع ساد','ليزر'],
     6:['رفع ساد','هطول اجفان','حول','رفع ظفرة','حقن ايليا','حقن افاستين','ليزر','كيس دهني','ورم','تخدير','جسم غريب'],
     7:['رفع ساد','هطول اجفان','تصليب قرنية','غسل حجرة','ليزر','كيس دهني','ورم درمويد','تسليك','جسم غريب'],
-    8:['رفع ساد','رفع ظفرة','فابزمو','حقن ايليا','حقن لوسنتس','حقن افاستين','كيناكورت','تخدير'],
+    8:['رفع ساد','رفع ظفرة','فابزمو','حقن ايليا','لوسنتس','حقن افاستين','كيناكورت','تخدير'],
     9:['رفع ساد','زرع عدسة','هطول اجفان','حول','رفع ظفرة','حقن ايليا','حقن افاستين','كيناكورت','ليزر'],
     10:['رفع ساد','هطول اجفان','تصليب قرنية','رفع ظفرة','حقن ايليا','حقن افاستين','كيناكورت','اكتيليس','ليزر','كيس دهني','تسليك','جسم غريب'],
     11:['رفع ساد','حول','رفع ظفرة','حقن افاستين','ليزر'],
@@ -605,23 +685,10 @@ const docNamesData = {
     16:['رفع ساد']
 };
 
-let renderedDocCharts = {};
-
-function renderDocChart(id) {
-    if (renderedDocCharts[id]) return;
-    const el = document.querySelector('#chart-doc-' + id);
-    if (!el) return;
-    renderedDocCharts[id] = true;
-    const tx = getThemeTextColor();
-    
-    new ApexCharts(el, {
-        chart: { type: 'donut', height: 240, background: 'transparent', toolbar: { show: false } },
-        series: docOpsData[id] || [1],
-        labels: docNamesData[id] || [''],
-        colors: reportColors,
-        legend: { position: 'bottom', labels: { colors: tx }, fontSize: '9px', show: (docOpsData[id]||[]).length <= 8 },
-        dataLabels: { enabled: (docOpsData[id]||[]).length <= 5, style: { fontSize: '9px' } }
-    }).render();
+function renderSingleDocChart(id) {
+    const values = docOpsData[id] || [1];
+    const labels = docNamesData[id] || [''];
+    draw3DIsometricArrows('svg-doc-' + id, values, labels);
 }
 
 // Global page initialization hook
@@ -630,7 +697,7 @@ window.initReportsPage = function() {
     if (!_chartsInitialized) {
         _chartsInitialized = true;
         setTimeout(() => {
-            renderReportPageCharts();
+            renderAll3DIsometricCharts();
         }, 150);
     }
 };
