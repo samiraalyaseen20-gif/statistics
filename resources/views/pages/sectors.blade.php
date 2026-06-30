@@ -1,0 +1,66 @@
+{{-- PAGE: SECTORS MANAGEMENT --}}
+<section id="page-sectors" class="page-section space-y-6 hidden">
+    <div class="custom-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <div>
+            <h2 class="text-base font-bold text-text-main flex items-center gap-2">
+                <i data-lucide="building-2" class="w-5 h-5 text-amber-500"></i>
+                إدارة القطاعات
+            </h2>
+            <p class="text-[11px] text-text-main opacity-60 mt-0.5">تسجيل القطاعات (قطاع الصحة، العتبة العام، العتبة الخاص)</p>
+        </div>
+    </div>
+
+    <div class="custom-card p-6 rounded-2xl">
+        <h3 class="text-sm font-bold text-text-main flex items-center gap-2 mb-4"><i data-lucide="plus" class="w-4 h-4 text-amber-500"></i> إضافة قطاع جديد</h3>
+        <div class="flex gap-3">
+            <input id="inp-sector-name" type="text" placeholder="اسم القطاع" class="flex-1 custom-inset border-none rounded-xl py-2.5 px-4 text-xs font-medium focus:outline-none text-text-main">
+            <button onclick="addSector()" class="py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-amber-500 to-amber-400 hover-press flex items-center gap-2">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> إضافة
+            </button>
+        </div>
+    </div>
+
+    <div class="custom-card p-6 rounded-2xl">
+        <div class="overflow-x-auto"><table class="custom-table text-xs" id="tbl-sectors">
+            <thead><tr><th class="w-8">ت</th><th>اسم القطاع</th><th class="text-center w-20">حذف</th></tr></thead>
+            <tbody id="tbody-sectors"></tbody>
+        </table></div>
+    </div>
+</section>
+
+<script>
+async function loadSectors() {
+    const data = await apiFetch('/api/sectors');
+    const tb = document.getElementById('tbody-sectors');
+    if(!tb) return;
+    if(!data?.length) { tb.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-text-main opacity-40 text-xs">لا توجد بيانات بعد</td></tr>`; return; }
+    tb.innerHTML = data.map((d,i)=>`<tr class="table-row">
+        <td class="text-center">${i+1}</td>
+        <td class="font-bold">${d.name}</td>
+        <td class="text-center">
+            <button onclick="deleteSector(${d.id})" class="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center mx-auto hover-press">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </td>
+    </tr>`).join('');
+}
+
+async function addSector() {
+    const name = document.getElementById('inp-sector-name').value.trim();
+    if(!name) return showToast('الرجاء كتابة اسم القطاع','error');
+    await apiFetch('/api/sectors','POST',{name});
+    document.getElementById('inp-sector-name').value='';
+    loadSectors();
+    showToast('تمت إضافة القطاع بنجاح ✅');
+}
+
+async function deleteSector(id) {
+    await apiFetch(`/api/sectors/${id}`,'DELETE');
+    loadSectors();
+    showToast('تم الحذف');
+}
+
+window.initSectorsPage = function() {
+    loadSectors();
+};
+</script>

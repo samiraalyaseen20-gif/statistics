@@ -69,21 +69,57 @@
             </div>
 
             <!-- Navigation Links -->
-            <nav class="flex-1 space-y-3">
-                <button onclick="navigateToPage('dashboard')" class="nav-link w-full py-3 px-4 rounded-xl text-xs font-bold flex items-center gap-3 text-text-main hover:bg-slate-200/10 hover-press active text-pink-500" id="nav-dashboard">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i>
+            <nav class="flex-1 space-y-1 overflow-y-auto max-h-[70vh] -mr-2 pr-2">
+                <button onclick="navigateToPage('dashboard')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press active text-pink-500" id="nav-dashboard">
+                    <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 shrink-0"></i>
                     <span>لوحة التحكم</span>
                 </button>
-                <button onclick="navigateToPage('reports')" class="nav-link w-full py-3 px-4 rounded-xl text-xs font-bold flex items-center gap-3 text-text-main hover:bg-slate-200/10 hover-press" id="nav-reports">
-                    <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0"></i>
+                <button onclick="navigateToPage('reports')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-reports">
+                    <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 shrink-0"></i>
                     <span>التقارير والإحصائيات</span>
                 </button>
-                <button onclick="navigateToPage('doctors')" class="nav-link w-full py-3 px-4 rounded-xl text-xs font-bold flex items-center gap-3 text-text-main hover:bg-slate-200/10 hover-press" id="nav-doctors">
-                    <i data-lucide="users" class="w-4 h-4 shrink-0"></i>
-                    <span>إدارة الأطباء</span>
+                
+                <div class="border-t border-slate-200/10 my-2 pt-2">
+                    <span class="text-[9px] text-text-main opacity-40 font-bold px-3 block mb-1">إدارة المدخلات</span>
+                </div>
+                
+                <button onclick="navigateToPage('doctors')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-doctors">
+                    <i data-lucide="stethoscope" class="w-3.5 h-3.5 shrink-0 text-violet-500"></i>
+                    <span>الأطباء</span>
                 </button>
-                <button onclick="navigateToPage('settings')" class="nav-link w-full py-3 px-4 rounded-xl text-xs font-bold flex items-center gap-3 text-text-main hover:bg-slate-200/10 hover-press" id="nav-settings">
-                    <i data-lucide="settings" class="w-4 h-4 shrink-0"></i>
+                <button onclick="navigateToPage('countries')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-countries">
+                    <i data-lucide="globe" class="w-3.5 h-3.5 shrink-0 text-sky-500"></i>
+                    <span>الدول</span>
+                </button>
+                <button onclick="navigateToPage('governorates')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-governorates">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0 text-emerald-500"></i>
+                    <span>المحافظات</span>
+                </button>
+                <button onclick="navigateToPage('test_types')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-test_types">
+                    <i data-lucide="eye" class="w-3.5 h-3.5 shrink-0 text-orange-500"></i>
+                    <span>أنواع الفحص</span>
+                </button>
+                <button onclick="navigateToPage('operations')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-operations">
+                    <i data-lucide="scissors" class="w-3.5 h-3.5 shrink-0 text-rose-500"></i>
+                    <span>أسماء العمليات</span>
+                </button>
+                <button onclick="navigateToPage('sectors')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-sectors">
+                    <i data-lucide="building-2" class="w-3.5 h-3.5 shrink-0 text-amber-500"></i>
+                    <span>القطاعات</span>
+                </button>
+                <button onclick="navigateToPage('clinic_units')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-clinic_units">
+                    <i data-lucide="layout-list" class="w-3.5 h-3.5 shrink-0 text-indigo-500"></i>
+                    <span>وحدات الاستشارية</span>
+                </button>
+                <button onclick="navigateToPage('lab_test_types')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-lab_test_types">
+                    <i data-lucide="test-tube" class="w-3.5 h-3.5 shrink-0 text-purple-500"></i>
+                    <span>تحاليل المختبر</span>
+                </button>
+                
+                <div class="border-t border-slate-200/10 my-2 pt-2"></div>
+                
+                <button onclick="navigateToPage('settings')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-settings">
+                    <i data-lucide="settings" class="w-3.5 h-3.5 shrink-0"></i>
                     <span>الإعدادات العامة</span>
                 </button>
             </nav>
@@ -144,6 +180,13 @@
                 @include('pages.dashboard')
                 @include('pages.reports')
                 @include('pages.doctors')
+                @include('pages.countries')
+                @include('pages.governorates')
+                @include('pages.test_types')
+                @include('pages.operations')
+                @include('pages.sectors')
+                @include('pages.clinic_units')
+                @include('pages.lab_test_types')
                 @include('pages.settings')
             </div>
 
@@ -215,6 +258,23 @@
     <script>
         // Init Lucide Icons
         lucide.createIcons();
+
+        // --- GLOBAL API HELPERS ---
+        const CSRF = document.querySelector('meta[name="csrf-token"]')?.content;
+        async function apiFetch(url, method='GET', body=null) {
+            const opts = { method, headers:{'Content-Type':'application/json','X-CSRF-TOKEN':CSRF,'Accept':'application/json'} };
+            if(body) opts.body = JSON.stringify(body);
+            const res = await fetch(url, opts);
+            if(!res.ok) { const e = await res.json().catch(()=>({})); showToast(e.message||'حدث خطأ!','error'); throw e; }
+            return res.status===204 ? null : res.json();
+        }
+        function showToast(msg, type='success') {
+            const c = document.createElement('div');
+            c.className = `fixed bottom-6 left-1/2 -translate-x-1/2 z-[999] px-5 py-3 rounded-2xl text-xs font-bold text-white shadow-xl transition-all ${type==='error'?'bg-rose-500':'bg-emerald-500'}`;
+            c.textContent = msg;
+            document.body.appendChild(c);
+            setTimeout(()=>c.remove(), 3000);
+        }
 
         // Color Palette from Design
         const pinkGrad = ['#ff4d7e', '#ff85a7'];
@@ -946,8 +1006,29 @@
                     pageTitleEl.innerText = "التقارير والإحصائيات الشاملة";
                     pageSubtitleEl.innerText = "التقارير المالية والتحاليل الإحصائية للمبيعات والعيادات";
                 } else if (pageId === 'doctors') {
-                    pageTitleEl.innerText = "إدارة المدخلات الأساسية";
-                    pageSubtitleEl.innerText = "الأطباء · الدول · المحافظات · الفحوصات · العمليات · القطاعات · الوحدات · التحاليل";
+                    pageTitleEl.innerText = "إدارة الأطباء";
+                    pageSubtitleEl.innerText = "إضافة وتحديث حسابات أطباء الاختصاص وسعر كشفيتهم بالمركز";
+                } else if (pageId === 'countries') {
+                    pageTitleEl.innerText = "إدارة الدول";
+                    pageSubtitleEl.innerText = "إضافة وتعديل الدول للمرضى من خارج العراق";
+                } else if (pageId === 'governorates') {
+                    pageTitleEl.innerText = "إدارة المحافظات";
+                    pageSubtitleEl.innerText = "إضافة وتحديث المحافظات الـ 18 لتتبع ديمغرافية المرضى";
+                } else if (pageId === 'test_types') {
+                    pageTitleEl.innerText = "إدارة أنواع الفحص البصري";
+                    pageSubtitleEl.innerText = "الفحوصات البصرية والساندة المنجزة في المركز";
+                } else if (pageId === 'operations') {
+                    pageTitleEl.innerText = "إدارة أسماء العمليات";
+                    pageSubtitleEl.innerText = "أسماء وتصنيفات العمليات الجراحية";
+                } else if (pageId === 'sectors') {
+                    pageTitleEl.innerText = "إدارة القطاعات";
+                    pageSubtitleEl.innerText = "القطاعات الطبية والتمويلية للعمليات بالمركز";
+                } else if (pageId === 'clinic_units') {
+                    pageTitleEl.innerText = "إدارة وحدات الاستشارية";
+                    pageSubtitleEl.innerText = "العيادات العامة والتخصصات الدقيقة";
+                } else if (pageId === 'lab_test_types') {
+                    pageTitleEl.innerText = "إدارة تحاليل المختبر";
+                    pageSubtitleEl.innerText = "الفحوصات والتحاليل المختبرية المنجزة بالمركز";
                 } else if (pageId === 'settings') {
                     pageTitleEl.innerText = "الإعدادات العامة للنظام";
                     pageSubtitleEl.innerText = "تغيير هوية التصميم، وضبط مواقيت العمل وتفاصيل المركز";
@@ -965,13 +1046,19 @@
                 }, 150);
             }
 
-            // Trigger management page load when navigating to doctors/management page
-            if (pageId === 'doctors') {
-                setTimeout(() => {
-                    if (typeof window.initManagementPage === 'function') window.initManagementPage();
-                    if (window.lucide) lucide.createIcons();
-                }, 100);
-            }
+            // Trigger hooks for each page
+            if (pageId === 'doctors' && typeof window.initDoctorsPage === 'function') window.initDoctorsPage();
+            if (pageId === 'countries' && typeof window.initCountriesPage === 'function') window.initCountriesPage();
+            if (pageId === 'governorates' && typeof window.initGovernoratesPage === 'function') window.initGovernoratesPage();
+            if (pageId === 'test_types' && typeof window.initTestTypesPage === 'function') window.initTestTypesPage();
+            if (pageId === 'operations' && typeof window.initOperationsPage === 'function') window.initOperationsPage();
+            if (pageId === 'sectors' && typeof window.initSectorsPage === 'function') window.initSectorsPage();
+            if (pageId === 'clinic_units' && typeof window.initClinicUnitsPage === 'function') window.initClinicUnitsPage();
+            if (pageId === 'lab_test_types' && typeof window.initLabTestTypesPage === 'function') window.initLabTestTypesPage();
+
+            setTimeout(() => {
+                if (window.lucide) lucide.createIcons();
+            }, 100);
         }
 
         // Mobile sidebar navigation menu toggles
