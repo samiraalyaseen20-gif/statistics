@@ -352,9 +352,9 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
 
     // Draw right branch
     const rightPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    rightPath.setAttribute('d', `M ${cx+15} ${cy} L ${cx+15} ${cy-50} C ${cx+15} ${cy-80} ${cx+50} ${cy-90} ${cx+70} ${cy-105} L ${cx+80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx+35} ${cy-100} ${cx+5} ${cy-90} ${cx+5} ${cy-50} L ${cx+5} ${cy} Z`);
+    rightPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
     rightPath.setAttribute('fill', '#db2777');
-    rightPath.setAttribute('transform', `translate(${cx*2}, 0) scale(-1, 1)`);
+    rightPath.setAttribute('transform', `translate(${cx}, 0) scale(-1, 1) translate(-${cx}, 0)`);
     svg.appendChild(rightPath);
 
     // Total pill at trunk base
