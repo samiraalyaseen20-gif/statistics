@@ -9,8 +9,16 @@
             </div>
             <h2 class="text-xs font-bold text-text-main">الإحصاءات والتقارير الطبية</h2>
         </div>
-        <div class="flex items-center gap-3">
-            <input type="month" value="2026-05" class="custom-inset border-none focus:outline-none rounded-xl py-2 px-4 text-xs font-bold text-text-main custom-date-input">
+        <div class="flex flex-wrap items-center gap-3">
+            <div class="flex items-center gap-1.5 bg-slate-200/20 px-3 py-1.5 rounded-xl border border-slate-200/10">
+                <span class="text-[9px] font-bold text-slate-400">من:</span>
+                <input type="date" id="report-date-from" value="{{ $start_date ?? '2026-05-01' }}" class="bg-transparent border-none focus:outline-none text-[10px] font-bold text-text-main custom-date-input">
+                <span class="text-[9px] font-bold text-slate-400">إلى:</span>
+                <input type="date" id="report-date-to" value="{{ $end_date ?? '2026-05-31' }}" class="bg-transparent border-none focus:outline-none text-[10px] font-bold text-text-main custom-date-input">
+                <button onclick="applyDateRangeFilter()" class="mr-1.5 p-1 rounded-lg bg-pink-500/10 hover:bg-pink-500/20 text-pink-500 hover-press transition-colors">
+                    <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                </button>
+            </div>
             <button onclick="window.print()" class="py-2 px-5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2">
                 <i data-lucide="printer" class="w-3.5 h-3.5"></i><span>طباعة PDF</span>
             </button>
@@ -659,6 +667,13 @@ function renderSingleDocChart(id) {
     const values = docOpsData[id] || [1];
     const labels = docNamesData[id] || [''];
     draw2DFlatHorizontalChevrons('svg-doc-' + id, values, labels);
+}
+
+function applyDateRangeFilter() {
+    const fromVal = document.getElementById('report-date-from').value;
+    const toVal = document.getElementById('report-date-to').value;
+    if (!fromVal || !toVal) return;
+    window.location.href = `/?start_date=${fromVal}&end_date=${toVal}#reports`;
 }
 
 // Global page initialization hook

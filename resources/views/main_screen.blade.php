@@ -1014,6 +1014,14 @@
             const savedTheme = localStorage.getItem('theme') || 'soft';
             changeTheme(savedTheme);
             attachGridListeners();
+
+            // Hash or Query Parameter routing on load
+            const hash = window.location.hash.substring(1);
+            if (hash === 'reports' || window.location.search.includes('start_date')) {
+                setTimeout(() => {
+                    navigateToPage('reports');
+                }, 100);
+            }
         });
     </script>
 </body>
