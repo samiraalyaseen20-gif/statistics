@@ -1,4 +1,4 @@
-<!-- PAGE 2: REPORTS PAGE SECTION (Unified Scrollable Dashboard with 3D Arrow Infographics) -->
+<!-- PAGE 2: REPORTS PAGE SECTION (Unified Scrollable Dashboard with Flat Arrow Infographics) -->
 <section id="page-reports" class="page-section space-y-6 hidden">
 
     <!-- Filter & Action Bar -->
@@ -24,46 +24,18 @@
             جدول (1): أعداد المراجعين في الاستشاريات
         </h3>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <!-- 3D Isometric Arrows SVG Infographic -->
+            <!-- Branching/Split Arrow Infographic -->
             <div class="flex justify-center">
-                <svg viewBox="0 0 350 200" class="w-full max-w-[320px] h-auto overflow-visible">
-                    <defs>
-                        <linearGradient id="g1-teal" x1="0%" y1="100%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#0284c7" /><stop offset="100%" stop-color="#38bdf8" />
-                        </linearGradient>
-                        <linearGradient id="g1-pink" x1="0%" y1="100%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#db2777" /><stop offset="100%" stop-color="#f472b6" />
-                        </linearGradient>
-                    </defs>
-                    <polygon points="50,190 150,220 310,130 210,100" fill="#e2e8f0" opacity="0.4" />
-                    <!-- Arrow 1 (General: 3375 - 76%) -->
-                    <g class="hover:opacity-90 cursor-pointer transition-opacity duration-300">
-                        <line x1="140" y1="110" x2="140" y2="75" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                        <circle cx="140" cy="60" r="14" fill="#0284c7" />
-                        <text x="140" y="63" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">3375</text>
-                        <path d="M 90 190 L 150 150 L 150 110 L 170 115 L 140 70 L 110 115 L 130 110 L 130 135 L 90 160 Z" fill="url(#g1-teal)" />
-                        <path d="M 130 110 L 150 110 L 150 150 L 130 135 Z" fill="#0369a1" opacity="0.3" />
-                        <text x="140" y="205" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">العيون العامة (76%)</text>
-                    </g>
-                    <!-- Arrow 2 (Special: 1091 - 24%) -->
-                    <g class="hover:opacity-90 cursor-pointer transition-opacity duration-300">
-                        <line x1="240" y1="130" x2="240" y2="95" stroke="#db2777" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                        <circle cx="240" cy="80" r="14" fill="#db2777" />
-                        <text x="240" y="83" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">1091</text>
-                        <path d="M 190 190 L 250 150 L 250 130 L 270 135 L 240 90 L 210 135 L 230 130 L 230 135 L 190 160 Z" fill="url(#g1-pink)" />
-                        <path d="M 230 130 L 250 130 L 250 150 L 230 135 Z" fill="#be185d" opacity="0.3" />
-                        <text x="240" y="205" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">التخصصات الدقيقة (24%)</text>
-                    </g>
-                </svg>
+                <svg id="svg-report-1" viewBox="0 0 350 200" class="w-full max-w-[320px] h-auto overflow-visible"></svg>
             </div>
             <!-- Data Table -->
             <div>
                 <table class="custom-table text-xs">
-                    <thead><tr><th class="w-12 text-center">ت</th><th>الوحدة الطبية</th><th class="text-center">المجموع</th></tr></thead>
+                    <thead><tr><th class="w-12 text-center">ت</th><th>الوحدة الطبية</th><th class="text-center font-bold">المجموع</th></tr></thead>
                     <tbody>
                         <tr class="table-row"><td class="text-center">1</td><td>استشارية العيون العامة</td><td class="text-center font-bold">3,375</td></tr>
                         <tr class="table-row"><td class="text-center">2</td><td>استشارية التخصصات الدقيقة</td><td class="text-center font-bold">1,091</td></tr>
-                        <tr class="table-row font-extrabold text-theme-pink"><td colspan="2" class="text-center">المجموع الكلي</td><td class="text-center text-sm">4,566</td></tr>
+                        <tr class="table-row font-extrabold text-theme-pink"><td colspan="2" class="text-center">المجموع الكلي</td><td class="text-center text-sm font-extrabold">4,566</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -77,54 +49,64 @@
             جدول (2): أعداد مراجعي الاستشارية لكل طبيب اختصاص
         </h3>
         <div class="w-full overflow-x-auto py-2">
-            <svg id="svg-report-2" class="w-full min-w-[850px] h-[260px] overflow-visible"></svg>
+            <svg id="svg-report-2" viewBox="0 0 900 240" class="w-full min-w-[850px] h-[240px] overflow-visible"></svg>
         </div>
     </div>
 
     <!-- 3. التوزيع الديمغرافي لمراجعي الاستشاريات (جدول 3 و 4) -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Inside Iraq -->
+        <!-- Inside Iraq (Vertical Columns) -->
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="flag" class="w-4 h-4 text-sky-500"></i>
                 جدول (3): التوزيع الجغرافي داخل العراق
             </h3>
             <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-3" class="w-full min-w-[450px] h-[220px] overflow-visible"></svg>
+                <svg id="svg-report-3" viewBox="0 0 450 180" class="w-full min-w-[420px] h-[180px] overflow-visible"></svg>
             </div>
         </div>
-        <!-- Outside Iraq -->
+        <!-- Outside Iraq (Horizontal Chevrons) -->
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
                 جدول (4): المراجعون من خارج العراق
             </h3>
             <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-4" class="w-full min-w-[400px] h-[220px] overflow-visible"></svg>
+                <svg id="svg-report-4" viewBox="0 0 450 180" class="w-full min-w-[400px] h-[180px] overflow-visible"></svg>
             </div>
         </div>
     </div>
 
     <!-- 4. الفحوصات البصرية والتحاليل المختبرية (جدول 5 و 6) -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Visual Tests -->
+        <!-- Visual Tests (Horizontal Chevrons) -->
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
                 جدول (5): الفحوصات البصرية والساندة
             </h3>
             <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-5" class="w-full min-w-[450px] h-[220px] overflow-visible"></svg>
+                <svg id="svg-report-5" viewBox="0 0 450 200" class="w-full min-w-[420px] h-[200px] overflow-visible"></svg>
             </div>
         </div>
-        <!-- Lab Tests -->
-        <div class="custom-card p-6 rounded-2xl">
+        <!-- Lab Tests (Curved Loop Progress) -->
+        <div class="custom-card p-6 rounded-2xl flex flex-col justify-between">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
                 جدول (6): الفحوصات والتحاليل المختبرية المنجزة
             </h3>
-            <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-6" class="w-full min-w-[450px] h-[220px] overflow-visible"></svg>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                <div class="flex justify-center">
+                    <svg id="svg-report-6" viewBox="0 0 180 180" class="w-40 h-40 overflow-visible"></svg>
+                </div>
+                <div>
+                    <p class="text-[9px] font-bold text-slate-400 mb-2">التحاليل المتوفرة:</p>
+                    <div class="flex flex-wrap gap-1">
+                        @foreach(['RBS','WBC','Hb','PCV','HIV','HCV','HBV','PT','PTT','INR'] as $t)
+                        <span class="bg-purple-100 text-purple-700 text-[8px] font-bold px-2 py-0.5 rounded">{{ $t }}</span>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -136,99 +118,14 @@
             جدول (7): أعداد وتصنيف العمليات الجراحية للعيون
         </h3>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-            <!-- 3D Infographic Column (Takes 2 cols on LG) -->
-            <div class="lg:col-span-2 flex justify-center overflow-visible">
-                <svg viewBox="0 0 520 250" class="w-full max-w-[480px] h-auto overflow-visible" style="filter: drop-shadow(0 15px 25px rgba(0,0,0,0.06))">
-                    <defs>
-                        <linearGradient id="ar-f-cyan" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0ea5e9" /><stop offset="100%" stop-color="#38bdf8" /></linearGradient>
-                        <linearGradient id="ar-f-pink" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#db2777" /><stop offset="100%" stop-color="#f472b6" /></linearGradient>
-                        <linearGradient id="ar-f-amber" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#d97706" /><stop offset="100%" stop-color="#fbbf24" /></linearGradient>
-                        <linearGradient id="ar-f-slate" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#475569" /><stop offset="100%" stop-color="#94a3b8" /></linearGradient>
-                        <linearGradient id="ar-f-violet" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#6d28d9" /><stop offset="100%" stop-color="#c084fc" /></linearGradient>
-                        <linearGradient id="ar-f-rose" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#e11d48" /><stop offset="100%" stop-color="#fda4af" /></linearGradient>
-
-                        <linearGradient id="ar-s-cyan" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0369a1" /><stop offset="100%" stop-color="#0284c7" /></linearGradient>
-                        <linearGradient id="ar-s-pink" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#9d174d" /><stop offset="100%" stop-color="#c2185b" /></linearGradient>
-                        <linearGradient id="ar-s-amber" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#92400e" /><stop offset="100%" stop-color="#b45309" /></linearGradient>
-                        <linearGradient id="ar-s-slate" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#1e293b" /><stop offset="100%" stop-color="#334155" /></linearGradient>
-                        <linearGradient id="ar-s-violet" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#4c1d95" /><stop offset="100%" stop-color="#5b21b6" /></linearGradient>
-                        <linearGradient id="ar-s-rose" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#9f1239" /><stop offset="100%" stop-color="#be123c" /></linearGradient>
-                    </defs>
-
-                    <polygon points="30,220 480,220 440,205 70,205" fill="#cbd5e1" opacity="0.25" />
-                    
-                    <!-- 1. صغرى -->
-                    <g class="cursor-pointer">
-                        <line x1="60" y1="130" x2="60" y2="85" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                        <circle cx="60" cy="70" r="14" fill="#0ea5e9" />
-                        <text x="60" y="73" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">1%</text>
-                        <polygon points="40,220 60,230 60,170 40,160" fill="url(#ar-f-cyan)" />
-                        <polygon points="60,230 80,220 80,160 60,170" fill="url(#ar-s-cyan)" />
-                        <polygon points="40,160 60,170 60,140" fill="#38bdf8" />
-                        <polygon points="60,170 80,160 60,140" fill="#0284c7" />
-                        <text x="60" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">صغرى</text>
-                    </g>
-                    <!-- 2. ليزر -->
-                    <g class="cursor-pointer">
-                        <line x1="130" y1="100" x2="130" y2="65" stroke="#db2777" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                        <circle cx="130" cy="50" r="14" fill="#db2777" />
-                        <text x="130" y="53" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">5%</text>
-                        <polygon points="110,220 130,230 130,140 110,130" fill="url(#ar-f-pink)" />
-                        <polygon points="130,230 150,220 150,130 130,140" fill="url(#ar-s-pink)" />
-                        <polygon points="110,130 130,140 130,110" fill="#f472b6" />
-                        <polygon points="130,140 150,130 130,110" fill="#c2185b" />
-                        <text x="130" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">ليزر</text>
-                    </g>
-                    <!-- 3. كبرى -->
-                    <g class="cursor-pointer">
-                        <line x1="200" y1="110" x2="200" y2="75" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                        <circle cx="200" cy="60" r="14" fill="#d97706" />
-                        <text x="200" y="63" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">4%</text>
-                        <polygon points="180,220 200,230 200,150 180,140" fill="url(#ar-f-amber)" />
-                        <polygon points="200,230 220,220 220,140 200,150" fill="url(#ar-s-amber)" />
-                        <polygon points="180,140 200,150 200,120" fill="#fbbf24" />
-                        <polygon points="200,150 220,140 200,120" fill="#b45309" />
-                        <text x="200" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">كبرى</text>
-                    </g>
-                    <!-- 4. خاصة -->
-                    <g class="cursor-pointer">
-                        <line x1="270" y1="105" x2="270" y2="70" stroke="#475569" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                        <circle cx="270" cy="55" r="14" fill="#475569" />
-                        <text x="270" y="58" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">4%</text>
-                        <polygon points="250,220 270,230 270,145 250,135" fill="url(#ar-f-slate)" />
-                        <polygon points="270,230 290,220 290,135 270,145" fill="url(#ar-s-slate)" />
-                        <polygon points="250,135 270,145 270,115" fill="#94a3b8" />
-                        <polygon points="270,145 290,135 270,115" fill="#334155" />
-                        <text x="270" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">خاصة</text>
-                    </g>
-                    <!-- 5. فوق الكبرى -->
-                    <g class="cursor-pointer">
-                        <line x1="340" y1="40" x2="340" y2="25" stroke="#6d28d9" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                        <circle cx="340" cy="10" r="14" fill="#6d28d9" />
-                        <text x="340" y="13" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">22%</text>
-                        <polygon points="320,220 340,230 340,80 320,70" fill="url(#ar-f-violet)" />
-                        <polygon points="340,230 360,220 360,70 340,80" fill="url(#ar-s-violet)" />
-                        <polygon points="320,70 340,80 340,50" fill="#c084fc" />
-                        <polygon points="340,80 360,70 340,50" fill="#5b21b6" />
-                        <text x="340" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">فوق كبرى</text>
-                    </g>
-                    <!-- 6. حقن العين -->
-                    <g class="cursor-pointer">
-                        <line x1="410" y1="-10" x2="410" y2="-20" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
-                        <circle cx="410" cy="-35" r="14" fill="#e11d48" />
-                        <text x="410" y="-32" font-family="Outfit" font-size="9px" font-weight="900" fill="#ffffff" text-anchor="middle">63%</text>
-                        <polygon points="390,220 410,230 410,20 390,10" fill="url(#ar-f-rose)" />
-                        <polygon points="410,230 430,220 430,10 410,20" fill="url(#ar-s-rose)" />
-                        <polygon points="390,10 410,20 410,-10" fill="#fda4af" />
-                        <polygon points="410,20 430,10 410,-10" fill="#be123c" />
-                        <text x="410" y="245" font-family="Tajawal" font-size="8px" font-weight="bold" fill="#64748b" text-anchor="middle">حقن العين</text>
-                    </g>
-                </svg>
+            <!-- 2D Arrow Columns -->
+            <div class="lg:col-span-2 flex justify-center">
+                <svg id="svg-report-7" viewBox="0 0 520 220" class="w-full max-w-[480px] h-[220px] overflow-visible"></svg>
             </div>
             <!-- Legend / Stats Table -->
             <div class="lg:col-span-1">
                 <table class="custom-table text-xs">
-                    <thead><tr><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
+                    <thead><tr><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
                     <tbody>
                         <tr class="table-row"><td>وسطى (حقن العين)</td><td class="text-center font-bold text-rose-600">1,257</td></tr>
                         <tr class="table-row"><td>فوق الكبرى</td><td class="text-center font-bold text-violet-600">434</td></tr>
@@ -248,7 +145,7 @@
             جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص
         </h3>
         <div class="w-full overflow-x-auto py-2 mb-4">
-            <svg id="svg-report-10" class="w-full min-w-[850px] h-[280px] overflow-visible"></svg>
+            <svg id="svg-report-10" viewBox="0 0 900 240" class="w-full min-w-[850px] h-[240px] overflow-visible"></svg>
         </div>
         <div class="overflow-x-auto">
             <table class="custom-table text-center" style="font-size:10px; min-width:850px">
@@ -348,7 +245,7 @@
             7=>['د. بشرى سليمان علي الصقر',162,[['رفع ساد + زراعة عدسة','فوق الكبرى',135],['تعديل هطول الاجفان','كبرى',1],['تصليب القرنية','كبرى',4],['غسل حجرة','كبرى',1],['الليزر','وسطى',21],['رفع كيس دهني','صغرى',3],['رفع ورم درمويد','صغرى',1],['تسليك مجرى الدمع','صغرى',3],['رفع جسم غريب','صغرى',2]]],
             8=>['د. علاء صبري الغانمي',147,[['رفع ساد + زراعة عدسة','فوق الكبرى',17],['رفع ظفرة','كبرى',1],['حقن الفابزمو','وسطى',3],['حقن الايليا','وسطى',82],['حقن اللوسنتس','وسطى',23],['حقن الافاستين','وسطى',18],['حقن الكيناكورت','وسطى',2],['فحص تخدير عام','صغرى',1]]],
             9=>['د. نور رعد كريم',189,[['رفع ساد + زراعة عدسة','فوق الكبرى',27],['زرع عدسة ثانوية','فوق الكبرى',1],['تعديل هطول الاجفان','كبرى',1],['الحول','كبرى',4],['رفع ظفرة','كبرى',2],['حقن الايليا','وسطى',45],['حقن الافاستين','وسطى',101],['حقن الكيناكورت','وسطى',1],['الليزر','وسطى',7]]],
-            10=>['د. حيدر حسين علي الموسوي',839,[['رفع ساد + زراعة عدسة','فوق الكبرى',66],['تعديل هطول الاجفان','كبرى',1],['تصليب القرنية','كبرى',2],['رفع ظفرة','كبرى',1],['حقن الايليا','وسطى',148],['حقن الافاستين','وسطى',572],['حقن الكيناكورت','وسطى',15],['حقن الاكتيليس','وسطى',1],['الليزر','وسطى',29],['رفع كيس دهني','صغرى',1],['تسليك مجرى الدمع','صغرى',2],['رفع جسم غريب','صغرى',1]]],
+            10=>['د. حيددر حسين علي الموسوي',839,[['رفع ساد + زراعة عدسة','فوق الكبرى',66],['تعديل هطول الاجفان','كبرى',1],['تصليب القرنية','كبرى',2],['رفع ظفرة','كبرى',1],['حقن الايليا','وسطى',148],['حقن الافاستين','وسطى',572],['حقن الكيناكورت','وسطى',15],['حقن الاكتيليس','وسطى',1],['الليزر','وسطى',29],['رفع كيس دهني','صغرى',1],['تسليك مجرى الدمع','صغرى',2],['رفع جسم غريب','صغرى',1]]],
             11=>['د. حذيفه سامي جواد العبايجي',57,[['رفع ساد + زراعة عدسة','فوق الكبرى',18],['الحول','كبرى',1],['رفع ظفرة','كبرى',1],['حقن الافاستين','وسطى',30],['الليزر','وسطى',7]]],
             12=>['د. اريج هادي كريم',12,[['رفع ساد + زراعة عدسة','فوق الكبرى',10],['الليزر','وسطى',1],['رفع كيس دهني','صغرى',1]]],
             13=>['د. زهراء علوان الحمداني',5,[['رفع ساد + زراعة عدسة','فوق الكبرى',2],['الليزر','وسطى',1],['رفع كيس دهني','صغرى',2]]],
@@ -367,7 +264,7 @@
             </div>
             <div class="flex flex-col lg:flex-row gap-6 items-start">
                 <div class="w-full lg:w-2/5 flex-shrink-0">
-                    <svg id="svg-doc-{{ $id }}" class="w-full h-[250px] overflow-visible"></svg>
+                    <svg id="svg-doc-{{ $id }}" viewBox="0 0 450 200" class="w-full h-[200px] overflow-visible"></svg>
                 </div>
                 <div class="w-full lg:w-3/5">
                     <table class="custom-table text-xs">
@@ -407,7 +304,7 @@
 
 </section>
 
-<!-- Custom Styles for Print and 3D effects -->
+<!-- Custom Styles for Print and 2D Arrow effects -->
 <style>
 @media print {
     #sidebar, header, .custom-card:first-child, select, button { display: none !important; }
@@ -415,16 +312,15 @@
     .custom-card { border: none !important; box-shadow: none !important; page-break-inside: avoid !important; }
 }
 
-/* Entrance Animations */
+/* Arrow Growth Animation */
 .arrow-grp {
     opacity: 0;
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: scale(0.95);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .arrow-grp.show {
     opacity: 1;
-    transform: scaleY(1);
+    transform: scale(1);
 }
 </style>
 
@@ -439,123 +335,127 @@ function showDocStats(id) {
     renderSingleDocChart(id);
 }
 
-// Adjust colors hex brightness utility
-function adjustColorBrightness(hex, percent) {
-    let R = parseInt(hex.substring(1, 3), 16);
-    let G = parseInt(hex.substring(3, 5), 16);
-    let B = parseInt(hex.substring(5, 7), 16);
+// ─── DYNAMIC GRAPHIC ENGINES (FLAT 2D ARROWS) ───
 
-    R = parseInt(R * (100 + percent) / 100);
-    G = parseInt(G * (100 + percent) / 100);
-    B = parseInt(B * (100 + percent) / 100);
-
-    R = (R < 255) ? R : 255;
-    G = (G < 255) ? G : 255;
-    B = (B < 255) ? B : 255;
-
-    R = (R > 0) ? R : 0;
-    G = (G > 0) ? G : 0;
-    B = (B > 0) ? B : 0;
-
-    const rHex = R.toString(16).padStart(2, '0');
-    const gHex = G.toString(16).padStart(2, '0');
-    const bHex = B.toString(16).padStart(2, '0');
-
-    return "#" + rHex + gHex + bHex;
-}
-
-// Reusable 3D Isometric Arrows Drawing Engine
-function draw3DIsometricArrows(svgId, values, labels, presetColors = null) {
+// 1. Branching/Split Arrow Infographic (Table 1)
+function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
     const svg = document.getElementById(svgId);
     if (!svg) return;
-    svg.innerHTML = ''; // Clear
+    svg.innerHTML = '';
+    
+    const cx = 175;
+    const cy = 180;
 
+    // Draw left branch
+    const leftPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    leftPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+    leftPath.setAttribute('fill', '#0284c7');
+    svg.appendChild(leftPath);
+
+    // Draw right branch
+    const rightPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    rightPath.setAttribute('d', `M ${cx+15} ${cy} L ${cx+15} ${cy-50} C ${cx+15} ${cy-80} ${cx+50} ${cy-90} ${cx+70} ${cy-105} L ${cx+80} ${cy-97} L ${cx+65} ${cy-125} L ${cx+37} ${cy-107} L ${cx+47} ${cy-112} C ${cx+35} ${cy-100} ${cx+5} ${cy-90} ${cx+5} ${cy-50} L ${cx+5} ${cy} Z`);
+    rightPath.setAttribute('fill', '#db2777');
+    rightPath.setAttribute('transform', `translate(${cx*2}, 0) scale(-1, 1)`);
+    svg.appendChild(rightPath);
+
+    // Value Labels
+    const tTotal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    tTotal.setAttribute('x', cx);
+    tTotal.setAttribute('y', cy - 15);
+    tTotal.setAttribute('font-family', 'Outfit');
+    tTotal.setAttribute('font-size', '11px');
+    tTotal.setAttribute('font-weight', 'black');
+    tTotal.setAttribute('fill', '#ffffff');
+    tTotal.setAttribute('text-anchor', 'middle');
+    tTotal.textContent = totalVal;
+    svg.appendChild(tTotal);
+
+    const tVal1 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    tVal1.setAttribute('x', cx - 75);
+    tVal1.setAttribute('y', cy - 135);
+    tVal1.setAttribute('font-family', 'Tajawal');
+    tVal1.setAttribute('font-size', '9px');
+    tVal1.setAttribute('font-weight', 'bold');
+    tVal1.setAttribute('fill', '#0284c7');
+    tVal1.setAttribute('text-anchor', 'middle');
+    tVal1.textContent = `${label1} (${val1})`;
+    svg.appendChild(tVal1);
+
+    const tVal2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    tVal2.setAttribute('x', cx + 75);
+    tVal2.setAttribute('y', cy - 135);
+    tVal2.setAttribute('font-family', 'Tajawal');
+    tVal2.setAttribute('font-size', '9px');
+    tVal2.setAttribute('font-weight', 'bold');
+    tVal2.setAttribute('fill', '#db2777');
+    tVal2.setAttribute('text-anchor', 'middle');
+    tVal2.textContent = `${label2} (${val2})`;
+    svg.appendChild(tVal2);
+}
+
+// 2. Vertical Flat Arrow Columns
+function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    svg.innerHTML = '';
     const maxVal = Math.max(...values, 1);
     const n = values.length;
-
-    // ViewBox dimensions
-    const viewBoxStr = svg.getAttribute('viewBox') || "0 0 900 280";
+    const viewBoxStr = svg.getAttribute('viewBox') || "0 0 900 240";
     const width = parseInt(viewBoxStr.split(' ')[2]);
     const height = parseInt(viewBoxStr.split(' ')[3]);
-
-    const marginL = 40;
-    const marginR = 40;
+    const marginL = 30;
+    const marginR = 30;
     const availableW = width - marginL - marginR;
     const spacing = n > 1 ? availableW / (n - 1) : availableW;
-    const floorY = height - 40;
+    const floorY = height - 30;
+    
+    // Baseline
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute('x1', marginL - 10);
+    line.setAttribute('y1', floorY);
+    line.setAttribute('x2', width - marginR + 10);
+    line.setAttribute('y2', floorY);
+    line.setAttribute('stroke', '#cbd5e1');
+    line.setAttribute('stroke-width', '1.5');
+    svg.appendChild(line);
 
-    // Base Shadow Polygon
-    const baseLine = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    baseLine.setAttribute('points', `${marginL-25},${floorY} ${width-marginR+25},${floorY} ${width-marginR},${floorY-15} ${marginL},${floorY-15}`);
-    baseLine.setAttribute('fill', '#cbd5e1');
-    baseLine.setAttribute('opacity', '0.2');
-    svg.appendChild(baseLine);
+    const colors = presetColors || ['#3b82f6','#ec4899','#f59e0b','#10b981','#8b5cf6','#06b6d4','#f97316','#64748b','#ec4899','#84cc16','#0ea5e9','#6366f1','#d946ef','#14b8a6','#f43f5e','#a78bfa'];
 
-    // Definitions for gradients
-    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-    svg.appendChild(defs);
-
-    const colors = presetColors || ['#ff4d7e','#10b981','#3b82f6','#f59e0b','#8b5cf6','#06b6d4','#f97316','#64748b','#ec4899','#84cc16','#0ea5e9','#6366f1','#d946ef','#14b8a6','#f43f5e','#a78bfa'];
-
-    // Generate gradients dynamically
-    labels.forEach((l, i) => {
-        const color = colors[i % colors.length];
-        
-        // Front gradient
-        const gradF = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
-        gradF.setAttribute('id', `grad-f-${svgId}-${i}`);
-        gradF.setAttribute('x1', '0%'); gradF.setAttribute('y1', '100%');
-        gradF.setAttribute('x2', '100%'); gradF.setAttribute('y2', '0%');
-        gradF.innerHTML = `<stop offset="0%" stop-color="${color}"/><stop offset="100%" stop-color="${adjustColorBrightness(color, 35)}"/>`;
-        defs.appendChild(gradF);
-
-        // Side gradient
-        const gradS = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
-        gradS.setAttribute('id', `grad-s-${svgId}-${i}`);
-        gradS.setAttribute('x1', '0%'); gradS.setAttribute('y1', '100%');
-        gradS.setAttribute('x2', '100%'); gradS.setAttribute('y2', '0%');
-        gradS.innerHTML = `<stop offset="0%" stop-color="${adjustColorBrightness(color, -25)}"/><stop offset="100%" stop-color="${color}"/>`;
-        defs.appendChild(gradS);
-    });
-
-    // Draw individual arrows
     values.forEach((val, i) => {
         const x = marginL + i * spacing;
-        const y = floorY;
-
-        // Custom heights scale logic
+        const color = colors[i % colors.length];
+        
         const minH = 20;
-        const maxH = height - 95;
+        const maxH = height - 85;
         const scaleVal = maxVal > 1 ? Math.sqrt(val) / Math.sqrt(maxVal) : 1;
         const H = minH + (maxH - minH) * scaleVal;
-
+        
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         g.setAttribute('class', 'arrow-grp cursor-pointer');
 
-        // Dashed lines
-        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        line.setAttribute('x1', x);
-        line.setAttribute('y1', y - H - 15);
-        line.setAttribute('x2', x);
-        line.setAttribute('y2', y - H - 38);
-        line.setAttribute('stroke', colors[i % colors.length]);
-        line.setAttribute('stroke-width', '1');
-        line.setAttribute('stroke-dasharray', '2.5 2.5');
-        line.setAttribute('opacity', '0.5');
-        g.appendChild(line);
+        // Dashed connector
+        const dashed = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        dashed.setAttribute('x1', x);
+        dashed.setAttribute('y1', floorY - H - 12);
+        dashed.setAttribute('x2', x);
+        dashed.setAttribute('y2', floorY - H - 28);
+        dashed.setAttribute('stroke', color);
+        dashed.setAttribute('stroke-width', '1');
+        dashed.setAttribute('stroke-dasharray', '2 2');
+        g.appendChild(dashed);
 
-        // Floating Circle badge
+        // Value circle
         const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         circle.setAttribute('cx', x);
-        circle.setAttribute('cy', y - H - 48);
-        circle.setAttribute('r', '10.5');
-        circle.setAttribute('fill', colors[i % colors.length]);
+        circle.setAttribute('cy', floorY - H - 38);
+        circle.setAttribute('r', '9');
+        circle.setAttribute('fill', color);
         g.appendChild(circle);
 
-        // Value text
         const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
         tVal.setAttribute('x', x);
-        tVal.setAttribute('y', y - H - 45);
+        tVal.setAttribute('y', floorY - H - 35.5);
         tVal.setAttribute('font-family', 'Outfit');
         tVal.setAttribute('font-size', '7.5px');
         tVal.setAttribute('font-weight', 'bold');
@@ -564,45 +464,38 @@ function draw3DIsometricArrows(svgId, values, labels, presetColors = null) {
         tVal.textContent = val;
         g.appendChild(tVal);
 
-        // Isometric Arrow Sides (Front / Left)
-        const front = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        front.setAttribute('points', `${x-10},${y} ${x},${y+5} ${x},${y+5-H} ${x-10},${y-H}`);
-        front.setAttribute('fill', `url(#grad-f-${svgId}-${i})`);
-        g.appendChild(front);
+        // Rect Arrow Body
+        const body = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        body.setAttribute('x', x - 8);
+        body.setAttribute('y', floorY - H);
+        body.setAttribute('width', '16');
+        body.setAttribute('height', H);
+        body.setAttribute('fill', color);
+        body.setAttribute('rx', '1');
+        g.appendChild(body);
 
-        // Side / Right
-        const side = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        side.setAttribute('points', `${x},${y+5} ${x+10},${y} ${x+10},${y-H} ${x},${y+5-H}`);
-        side.setAttribute('fill', `url(#grad-s-${svgId}-${i})`);
-        g.appendChild(side);
+        // Pointed Cap
+        const head = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        head.setAttribute('points', `${x-12},${floorY-H} ${x+12},${floorY-H} ${x},${floorY-H-10}`);
+        head.setAttribute('fill', color);
+        g.appendChild(head);
 
-        // Pointed Caps
-        const lTip = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        lTip.setAttribute('points', `${x-10},${y-H} ${x},${y+5-H} ${x},${y+5-H-12}`);
-        lTip.setAttribute('fill', adjustColorBrightness(colors[i % colors.length], 45));
-        g.appendChild(lTip);
-
-        const rTip = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        rTip.setAttribute('points', `${x},${y+5-H} ${x+10},${y-H} ${x},${y+5-H-12}`);
-        rTip.setAttribute('fill', adjustColorBrightness(colors[i % colors.length], -5));
-        g.appendChild(rTip);
-
-        // Label Text under arrows
+        // Label
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
         label.setAttribute('x', x);
-        label.setAttribute('y', y + 16);
+        label.setAttribute('y', floorY + 15);
         label.setAttribute('font-family', 'Tajawal');
         label.setAttribute('font-size', '8px');
         label.setAttribute('font-weight', 'bold');
         label.setAttribute('fill', '#64748b');
         label.setAttribute('text-anchor', 'middle');
-
+        
         let labelText = labels[i];
         if (labelText.length > 7) labelText = labelText.substring(0, 6) + '..';
         label.textContent = labelText;
         g.appendChild(label);
 
-        g.style.transitionDelay = `${i * 35}ms`;
+        g.style.transitionDelay = `${i * 30}ms`;
         svg.appendChild(g);
 
         setTimeout(() => {
@@ -611,43 +504,213 @@ function draw3DIsometricArrows(svgId, values, labels, presetColors = null) {
     });
 }
 
-// Global drawing triggers
-function renderAll3DIsometricCharts() {
-    // 2. Doctor visits visits (15 doctors)
+// 3. Horizontal Flat Chevron Lists
+function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    svg.innerHTML = '';
+    const maxVal = Math.max(...values, 1);
+    const n = values.length;
+    const viewBoxStr = svg.getAttribute('viewBox') || "0 0 450 200";
+    const width = parseInt(viewBoxStr.split(' ')[2]);
+    const height = parseInt(viewBoxStr.split(' ')[3]);
+    
+    const marginT = 15;
+    const marginB = 15;
+    const availableH = height - marginT - marginB;
+    const spacing = n > 1 ? availableH / (n - 1) : availableH;
+    
+    const colors = presetColors || ['#db2777', '#d97706', '#10b981', '#475569', '#3b82f6', '#8b5cf6'];
+    
+    values.forEach((val, i) => {
+        const y = marginT + i * spacing;
+        const color = colors[i % colors.length];
+        
+        const startX = width - 20;
+        const maxL = width - 110;
+        const scaleVal = maxVal > 0 ? val / maxVal : 0;
+        const L = 30 + maxL * scaleVal;
+        const endX = startX - L;
+        
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute('class', 'arrow-grp cursor-pointer');
+
+        // Draw body of chevron
+        const body = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        body.setAttribute('points', `${startX},${y-8} ${endX+8},${y-8} ${endX},${y} ${endX+8},${y+8} ${startX},${y+8}`);
+        body.setAttribute('fill', color);
+        g.appendChild(body);
+
+        // Circle Badge for values
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute('cx', endX - 16);
+        circle.setAttribute('cy', y);
+        circle.setAttribute('r', '8.5');
+        circle.setAttribute('fill', color);
+        g.appendChild(circle);
+
+        const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        tVal.setAttribute('x', endX - 16);
+        tVal.setAttribute('y', y + 2.5);
+        tVal.setAttribute('font-family', 'Outfit');
+        tVal.setAttribute('font-size', '8px');
+        tVal.setAttribute('font-weight', 'bold');
+        tVal.setAttribute('fill', '#ffffff');
+        tVal.setAttribute('text-anchor', 'middle');
+        tVal.textContent = val;
+        g.appendChild(tVal);
+
+        // Chevron label
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute('x', startX - 12);
+        label.setAttribute('y', y + 3);
+        label.setAttribute('font-family', 'Tajawal');
+        label.setAttribute('font-size', '8px');
+        label.setAttribute('font-weight', 'bold');
+        label.setAttribute('fill', '#ffffff');
+        label.setAttribute('text-anchor', 'end');
+        label.textContent = labels[i];
+        g.appendChild(label);
+
+        g.style.transitionDelay = `${i * 30}ms`;
+        svg.appendChild(g);
+
+        setTimeout(() => {
+            g.classList.add('show');
+        }, 50);
+    });
+}
+
+// 4. Curved Loop Progress Arrows
+function drawCurvedLoopArrow(svgId, val, maxVal, label) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    svg.innerHTML = '';
+    
+    const viewBoxStr = svg.getAttribute('viewBox') || "0 0 180 180";
+    const width = parseInt(viewBoxStr.split(' ')[2]);
+    const height = parseInt(viewBoxStr.split(' ')[3]);
+    
+    const cx = width / 2;
+    const cy = height / 2 - 10;
+    const r = 50;
+    
+    const pct = val / maxVal;
+    const angle = pct * 360;
+    
+    // Background loop track
+    const track = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    track.setAttribute('cx', cx);
+    track.setAttribute('cy', cy);
+    track.setAttribute('r', r);
+    track.setAttribute('fill', 'none');
+    track.setAttribute('stroke', '#e2e8f0');
+    track.setAttribute('stroke-width', '8');
+    svg.appendChild(track);
+    
+    // Active loop path
+    const active = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    const startAngle = -90;
+    const endAngle = startAngle + angle;
+    
+    const rad = Math.PI / 180;
+    const x1 = cx + r * Math.cos(startAngle * rad);
+    const y1 = cy + r * Math.sin(startAngle * rad);
+    const x2 = cx + r * Math.cos(endAngle * rad);
+    const y2 = cy + r * Math.sin(endAngle * rad);
+    
+    const largeArc = angle > 180 ? 1 : 0;
+    const d = `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`;
+    
+    active.setAttribute('d', d);
+    active.setAttribute('fill', 'none');
+    active.setAttribute('stroke', '#a855f7');
+    active.setAttribute('stroke-width', '8');
+    active.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(active);
+    
+    // Loop arrowhead indicator
+    const tAngle = endAngle + 90;
+    const tx1 = x2 + 8 * Math.cos((tAngle - 135) * rad);
+    const ty1 = y2 + 8 * Math.sin((tAngle - 135) * rad);
+    const tx2 = x2 + 8 * Math.cos((tAngle + 135) * rad);
+    const ty2 = y2 + 8 * Math.sin((tAngle + 135) * rad);
+    const tx3 = x2 + 12 * Math.cos(tAngle * rad);
+    const ty3 = y2 + 12 * Math.sin(tAngle * rad);
+    
+    const head = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    head.setAttribute('points', `${tx1},${ty1} ${tx2},${ty2} ${tx3},${ty3}`);
+    head.setAttribute('fill', '#a855f7');
+    svg.appendChild(head);
+    
+    // Value text
+    const textVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    textVal.setAttribute('x', cx);
+    textVal.setAttribute('y', cy + 5);
+    textVal.setAttribute('font-family', 'Outfit');
+    textVal.setAttribute('font-size', '16px');
+    textVal.setAttribute('font-weight', 'black');
+    textVal.setAttribute('fill', '#6b21a8');
+    textVal.setAttribute('text-anchor', 'middle');
+    textVal.textContent = val;
+    svg.appendChild(textVal);
+    
+    // Label text
+    const labelText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    labelText.setAttribute('x', cx);
+    labelText.setAttribute('y', height - 10);
+    labelText.setAttribute('font-family', 'Tajawal');
+    labelText.setAttribute('font-size', '9px');
+    labelText.setAttribute('font-weight', 'bold');
+    labelText.setAttribute('fill', '#64748b');
+    labelText.setAttribute('text-anchor', 'middle');
+    labelText.textContent = label;
+    svg.appendChild(labelText);
+}
+
+// Global page initialization hook triggers drawing of all elements
+function renderAll2DArrowCharts() {
+    // 1. Branching Split Arrow for consultations
+    draw2DBranchingArrow('svg-report-1', 3375, 1091, 'العيون العامة', 'التخصصات الدقيقة', 4566);
+
+    // 2. Doctor visits (15 doctors) -> 2D Flat Columns
     const docVisitsData = [177, 562, 120, 212, 120, 346, 1204, 56, 194, 729, 348, 134, 106, 171, 87];
     const docVisitsLabels = ['غياث','حمزة','ذوالفقار','منتصر','افراح','مؤيد','بشرى','علاء','نور','حيدر','حذيفه','اريج','زهراء','ايات','م.بدر'];
-    draw3DIsometricArrows('svg-report-2', docVisitsData, docVisitsLabels);
+    draw2DFlatVerticalArrows('svg-report-2', docVisitsData, docVisitsLabels);
 
-    // 3. Inside Iraq governorates
+    // 3. Inside Iraq (6 governorates) -> 2D Flat Columns
     const govData = [3455, 521, 127, 120, 76, 46];
     const govLabels = ['كربلاء', 'بابل', 'بغداد', 'ذي قار', 'واسط', 'النجف'];
-    draw3DIsometricArrows('svg-report-3', govData, govLabels);
+    draw2DFlatVerticalArrows('svg-report-3', govData, govLabels, ['#0284c7']);
 
-    // 4. Outside Iraq countries
+    // 4. Outside Iraq (6 countries) -> Horizontal Chevrons
     const countryData = [6, 4, 2, 1, 1, 1];
     const countryLabels = ['إيران', 'أفغانستان', 'سوريا', 'مصر', 'نيجيريا', 'باكستان'];
-    draw3DIsometricArrows('svg-report-4', countryData, countryLabels);
+    draw2DFlatHorizontalChevrons('svg-report-4', countryData, countryLabels);
 
-    // 5. Visual test types
+    // 5. Visual test types (6 tests) -> Horizontal Chevrons
     const visualData = [4730, 1444, 641, 142, 135, 67];
     const visualLabels = ['فحص البصر', 'OCT', 'قوة العدسة', 'C.T', 'سونار', 'FUNDUS'];
-    draw3DIsometricArrows('svg-report-5', visualData, visualLabels);
+    draw2DFlatHorizontalChevrons('svg-report-5', visualData, visualLabels, ['#f97316','#ea580c','#c2410c','#ea580c','#f97316','#c2410c']);
 
-    // 6. Lab test types
-    const labTestData = [120, 95, 85, 70, 40];
-    const labTestLabels = ['RBS', 'WBC', 'Hb', 'PCV', 'INR'];
-    draw3DIsometricArrows('svg-report-6', labTestData, labTestLabels);
+    // 6. Lab progress curved loop
+    drawCurvedLoopArrow('svg-report-6', 4566, 4566, 'مراجع للمختبر');
 
-    // 10. Surgeries total (16 doctors)
+    // 7. Surgery Classification -> 2D Flat Columns
+    const surgClassData = [33, 103, 85, 90, 434, 1257];
+    const surgClassLabels = ['صغرى', 'ليزر', 'كبرى', 'خاصة', 'فوق كبرى', 'حقن العين'];
+    draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#0ea5e9','#db2777','#d97706','#475569','#6d28d9','#e11d48']);
+
+    // 10. Surgeries total (16 doctors) -> 2D Flat Columns
     const docSurgData = [85, 165, 22, 120, 10, 146, 162, 147, 189, 839, 57, 12, 5, 6, 35, 2];
     const docSurgLabels = ['غياث','حمزة','ذوالفقار','منتصر','افراح','مؤيد','بشرى','علاء','نور','حيدر','حذيفه','اريج','زهراء','خلدون','ايات','م.بدر'];
-    draw3DIsometricArrows('svg-report-10', docSurgData, docSurgLabels);
+    draw2DFlatVerticalArrows('svg-report-10', docSurgData, docSurgLabels);
 
-    // Init first doctor switcher details
+    // Initialize switcher single doctor stats
     renderSingleDocChart(1);
 }
 
-// switcher individual doctor operations details
+// switcher individual doctor operations details -> Horizontal Chevrons
 const docOpsData = {
     1:[29,2,3,8,2,3,6,18,13],
     2:[50,2,56,5,1,1,1,1,9,25,15,1],
@@ -688,7 +751,7 @@ const docNamesData = {
 function renderSingleDocChart(id) {
     const values = docOpsData[id] || [1];
     const labels = docNamesData[id] || [''];
-    draw3DIsometricArrows('svg-doc-' + id, values, labels);
+    draw2DFlatHorizontalChevrons('svg-doc-' + id, values, labels);
 }
 
 // Global page initialization hook
@@ -697,7 +760,7 @@ window.initReportsPage = function() {
     if (!_chartsInitialized) {
         _chartsInitialized = true;
         setTimeout(() => {
-            renderAll3DIsometricCharts();
+            renderAll2DArrowCharts();
         }, 150);
     }
 };
