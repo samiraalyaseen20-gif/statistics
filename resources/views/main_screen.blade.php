@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>لوحة التحكم المؤشرات الذكية - Multi-Style Dashboard</title>
 
     <!-- Google Fonts: Outfit, Tajawal & Rubik for Brutalism -->
@@ -945,8 +946,8 @@
                     pageTitleEl.innerText = "التقارير والإحصائيات الشاملة";
                     pageSubtitleEl.innerText = "التقارير المالية والتحاليل الإحصائية للمبيعات والعيادات";
                 } else if (pageId === 'doctors') {
-                    pageTitleEl.innerText = "إدارة حسابات وأطباء العيادات";
-                    pageSubtitleEl.innerText = "تحديد كشفيات الأطباء، ومتابعة سجل مرضاهم ومستحقاتهم";
+                    pageTitleEl.innerText = "إدارة المدخلات الأساسية";
+                    pageSubtitleEl.innerText = "الأطباء · الدول · المحافظات · الفحوصات · العمليات · القطاعات · الوحدات · التحاليل";
                 } else if (pageId === 'settings') {
                     pageTitleEl.innerText = "الإعدادات العامة للنظام";
                     pageSubtitleEl.innerText = "تغيير هوية التصميم، وضبط مواقيت العمل وتفاصيل المركز";
@@ -962,6 +963,14 @@
                 setTimeout(() => {
                     if (typeof renderReportCharts === 'function') renderReportCharts();
                 }, 150);
+            }
+
+            // Trigger management page load when navigating to doctors/management page
+            if (pageId === 'doctors') {
+                setTimeout(() => {
+                    if (typeof window.initManagementPage === 'function') window.initManagementPage();
+                    if (window.lucide) lucide.createIcons();
+                }, 100);
             }
         }
 
