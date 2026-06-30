@@ -955,6 +955,14 @@
 
             // Close mobile sidebar menu
             toggleSidebar(false);
+
+            // Trigger report charts when navigating to the reports page
+            if (pageId === 'reports' && !window._reportChartsRendered) {
+                window._reportChartsRendered = true;
+                setTimeout(() => {
+                    if (typeof renderReportCharts === 'function') renderReportCharts();
+                }, 150);
+            }
         }
 
         // Mobile sidebar navigation menu toggles
