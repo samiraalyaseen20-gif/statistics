@@ -1,17 +1,6 @@
 {{-- PAGE: CLINIC UNITS MANAGEMENT --}}
 <section id="page-clinic_units" class="page-section space-y-6 hidden">
-    <div class="custom-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-center justify-between">
-        <div>
-            <h2 class="text-base font-bold text-text-main flex items-center gap-2">
-                <i data-lucide="layout-list" class="w-5 h-5 text-indigo-500"></i>
-                إدارة وحدات الاستشارية
-            </h2>
-            <p class="text-[11px] text-text-main opacity-60 mt-0.5">تسجيل وحدات الاستشارية (العيون العامة، التخصصات الدقيقة)</p>
-        </div>
-    </div>
-
     <div class="custom-card p-6 rounded-2xl">
-        <h3 class="text-sm font-bold text-text-main flex items-center gap-2 mb-4"><i data-lucide="plus" class="w-4 h-4 text-indigo-500"></i> إضافة وحدة استشارية جديدة</h3>
         <div class="flex gap-3">
             <input id="inp-unit-name" type="text" placeholder="اسم الوحدة الاستشارية" class="flex-1 custom-inset border-none rounded-xl py-2.5 px-4 text-xs font-medium focus:outline-none text-text-main">
             <button onclick="addClinicUnit()" class="py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-500 to-indigo-400 hover-press flex items-center gap-2">

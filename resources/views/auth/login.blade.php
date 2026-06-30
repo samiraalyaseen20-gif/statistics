@@ -48,50 +48,28 @@
 
     <div class="flex w-full h-screen">
         
-        <!-- Right Side: Branding (Visible on lg screens and up) -->
+        <!-- Right Side: Branding -->
         <div class="hidden lg:flex w-1/2 bg-animated-gradient relative items-center justify-center overflow-hidden">
-            <!-- Decorative circles -->
             <div class="absolute top-1/4 -right-20 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl"></div>
             <div class="absolute bottom-1/4 -left-20 w-80 h-80 bg-black opacity-10 rounded-full blur-3xl"></div>
-            
-            <div class="relative z-10 text-center text-white p-12 max-w-xl glass-panel rounded-3xl shadow-2xl">
-                <div class="w-24 h-24 mx-auto bg-white rounded-2xl flex items-center justify-center text-pink-500 shadow-xl mb-8 transform rotate-3 hover:rotate-0 transition-transform duration-500">
+            <div class="relative z-10 text-center text-white">
+                <div class="w-24 h-24 mx-auto bg-white rounded-2xl flex items-center justify-center text-pink-500 shadow-xl mb-6">
                     <i data-lucide="activity" class="w-12 h-12"></i>
-                </div>
-                <h1 class="text-4xl font-extrabold mb-4 font-['Tajawal'] leading-tight">عيادتنا الذكية</h1>
-                <p class="text-lg opacity-90 leading-relaxed font-medium">نظام الإدارة المتكامل المصمم خصيصاً للارتقاء بجودة الرعاية الصحية وتنظيم سير العمل باحترافية.</p>
-                
-                <div class="mt-10 flex items-center justify-center gap-4 text-sm font-bold opacity-80">
-                    <div class="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
-                        <i data-lucide="shield-check" class="w-4 h-4"></i>
-                        <span>نظام آمن</span>
-                    </div>
-                    <div class="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
-                        <i data-lucide="zap" class="w-4 h-4"></i>
-                        <span>سريع وفعال</span>
-                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Left Side: Login Form -->
         <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative">
-            
-            <!-- Mobile Logo (hidden on large screens) -->
+            <!-- Mobile Logo -->
             <div class="absolute top-8 left-0 right-0 flex justify-center lg:hidden">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-pink-500 flex items-center justify-center text-white shadow-lg font-bold">
-                        <i data-lucide="activity" class="w-5 h-5"></i>
-                    </div>
-                    <h2 class="text-xl font-bold text-slate-800">عيادتنا الذكية</h2>
+                <div class="w-10 h-10 rounded-xl bg-pink-500 flex items-center justify-center text-white shadow-lg">
+                    <i data-lucide="activity" class="w-5 h-5"></i>
                 </div>
             </div>
 
             <div class="w-full max-w-md">
-                <div class="mb-10">
-                    <h2 class="text-3xl font-extrabold text-slate-900 mb-2">مرحباً بعودتك! 👋</h2>
-                    <p class="text-slate-500 font-medium">يرجى إدخال بيانات الدخول للمتابعة إلى لوحة التحكم.</p>
-                </div>
+                <div class="mb-8"></div>
 
                 @if ($errors->any())
                     <div class="mb-6 bg-red-50 border-r-4 border-red-500 p-4 rounded-xl flex items-start gap-3 shadow-sm">
@@ -138,28 +116,6 @@
                         <span class="relative z-10">تسجيل الدخول</span>
                         <i data-lucide="arrow-left" class="w-5 h-5 relative z-10 transform group-hover:-translate-x-1 transition-transform"></i>
                     </button>
-                </form>
-
-                <!-- Demo Accounts Info -->
-                <div class="mt-12 bg-slate-100 rounded-2xl p-5 border border-slate-200/60">
-                    <h4 class="text-xs font-bold text-slate-500 mb-3 flex items-center gap-2">
-                        <i data-lucide="info" class="w-4 h-4"></i>
-                        حسابات تجريبية سريعة:
-                    </h4>
-                    <div class="grid grid-cols-2 gap-3 text-sm font-bold text-slate-700 font-['Outfit']">
-                        <div class="bg-white px-3 py-2 rounded-xl shadow-sm flex flex-col">
-                            <span class="text-[10px] text-slate-400 mb-0.5">مدير النظام</span>
-                            <span>U: admin</span>
-                            <span>P: 123456</span>
-                        </div>
-                        <div class="bg-white px-3 py-2 rounded-xl shadow-sm flex flex-col">
-                            <span class="text-[10px] text-slate-400 mb-0.5">موظف استقبال</span>
-                            <span>U: employee</span>
-                            <span>P: 123456</span>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 

@@ -1,17 +1,6 @@
 {{-- PAGE: SECTORS MANAGEMENT --}}
 <section id="page-sectors" class="page-section space-y-6 hidden">
-    <div class="custom-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-center justify-between">
-        <div>
-            <h2 class="text-base font-bold text-text-main flex items-center gap-2">
-                <i data-lucide="building-2" class="w-5 h-5 text-amber-500"></i>
-                إدارة القطاعات
-            </h2>
-            <p class="text-[11px] text-text-main opacity-60 mt-0.5">تسجيل القطاعات (قطاع الصحة، العتبة العام، العتبة الخاص)</p>
-        </div>
-    </div>
-
     <div class="custom-card p-6 rounded-2xl">
-        <h3 class="text-sm font-bold text-text-main flex items-center gap-2 mb-4"><i data-lucide="plus" class="w-4 h-4 text-amber-500"></i> إضافة قطاع جديد</h3>
         <div class="flex gap-3">
             <input id="inp-sector-name" type="text" placeholder="اسم القطاع" class="flex-1 custom-inset border-none rounded-xl py-2.5 px-4 text-xs font-medium focus:outline-none text-text-main">
             <button onclick="addSector()" class="py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-amber-500 to-amber-400 hover-press flex items-center gap-2">

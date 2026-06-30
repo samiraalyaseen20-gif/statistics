@@ -56,78 +56,77 @@
     <div class="flex min-h-[calc(100vh-2rem)] flex-col md:flex-row gap-6 w-full max-w-full">
         
         <!-- RIGHT SIDEBAR (الشريط الجانبي الأيمن للملاحة) -->
-        <aside id="sidebar" class="sidebar-container w-64 shrink-0 flex flex-col p-6 fixed inset-y-0 right-0 z-40 transform translate-x-full transition-transform duration-300 md:static md:translate-x-0 md:h-auto">
-            <!-- Logo & App Name -->
-            <div class="flex items-center gap-3 mb-8 border-b border-slate-200/20 pb-4">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-pink-400 flex items-center justify-center text-white shadow-soft-out-sm font-bold text-lg">
-                    <i data-lucide="activity" class="w-5 h-5"></i>
+        <aside id="sidebar" class="sidebar-container w-56 shrink-0 flex flex-col p-4 fixed inset-y-0 right-0 z-40 transform translate-x-full transition-transform duration-300 md:static md:translate-x-0 md:h-auto">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-200/20 pb-4">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-500 to-pink-400 flex items-center justify-center text-white shadow-soft-out-sm">
+                    <i data-lucide="activity" class="w-4 h-4"></i>
                 </div>
-                <div>
-                    <h2 class="text-sm font-bold text-text-main leading-tight">عيادتنا الذكية</h2>
-                    <span class="text-[10px] text-text-main opacity-60 font-semibold">نظام إدارة العيادات</span>
-                </div>
+                <span class="text-xs font-bold text-text-main">المركز الطبي</span>
             </div>
 
-            <!-- Navigation Links -->
-            <nav class="flex-1 space-y-1 overflow-y-auto max-h-[70vh] -mr-2 pr-2">
+            <!-- Navigation -->
+            <nav class="flex-1 space-y-1 overflow-y-auto">
                 <button onclick="navigateToPage('dashboard')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press active text-pink-500" id="nav-dashboard">
                     <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 shrink-0"></i>
-                    <span>لوحة التحكم</span>
+                    <span>الرئيسية</span>
                 </button>
                 <button onclick="navigateToPage('reports')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-reports">
                     <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 shrink-0"></i>
-                    <span>التقارير والإحصائيات</span>
+                    <span>التقارير</span>
                 </button>
-                
-                <div class="border-t border-slate-200/10 my-2 pt-2">
-                    <span class="text-[9px] text-text-main opacity-40 font-bold px-3 block mb-1">إدارة المدخلات</span>
+
+                <!-- Management Dropdown -->
+                <div class="mt-1">
+                    <button onclick="toggleMgmtMenu()" id="btn-mgmt" class="w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center justify-between text-text-main hover:bg-slate-200/10 hover-press">
+                        <span class="flex items-center gap-2">
+                            <i data-lucide="database" class="w-3.5 h-3.5 shrink-0"></i>
+                            الإدارة
+                        </span>
+                        <i data-lucide="chevron-down" id="mgmt-chevron" class="w-3.5 h-3.5 transition-transform duration-200"></i>
+                    </button>
+                    <div id="mgmt-menu" class="hidden mt-1 space-y-0.5 pr-3 border-r-2 border-slate-200/20 mr-3">
+                        <button onclick="navigateToPage('doctors')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-doctors">
+                            <i data-lucide="stethoscope" class="w-3 h-3 shrink-0 text-violet-500"></i>
+                            <span>الأطباء</span>
+                        </button>
+                        <button onclick="navigateToPage('countries')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-countries">
+                            <i data-lucide="globe" class="w-3 h-3 shrink-0 text-sky-500"></i>
+                            <span>الدول</span>
+                        </button>
+                        <button onclick="navigateToPage('governorates')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-governorates">
+                            <i data-lucide="map-pin" class="w-3 h-3 shrink-0 text-emerald-500"></i>
+                            <span>المحافظات</span>
+                        </button>
+                        <button onclick="navigateToPage('test_types')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-test_types">
+                            <i data-lucide="eye" class="w-3 h-3 shrink-0 text-orange-500"></i>
+                            <span>أنواع الفحص</span>
+                        </button>
+                        <button onclick="navigateToPage('operations')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-operations">
+                            <i data-lucide="scissors" class="w-3 h-3 shrink-0 text-rose-500"></i>
+                            <span>العمليات</span>
+                        </button>
+                        <button onclick="navigateToPage('sectors')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-sectors">
+                            <i data-lucide="building-2" class="w-3 h-3 shrink-0 text-amber-500"></i>
+                            <span>القطاعات</span>
+                        </button>
+                        <button onclick="navigateToPage('clinic_units')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-clinic_units">
+                            <i data-lucide="layout-list" class="w-3 h-3 shrink-0 text-indigo-500"></i>
+                            <span>الوحدات</span>
+                        </button>
+                        <button onclick="navigateToPage('lab_test_types')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-lab_test_types">
+                            <i data-lucide="test-tube" class="w-3 h-3 shrink-0 text-purple-500"></i>
+                            <span>التحاليل</span>
+                        </button>
+                    </div>
                 </div>
-                
-                <button onclick="navigateToPage('doctors')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-doctors">
-                    <i data-lucide="stethoscope" class="w-3.5 h-3.5 shrink-0 text-violet-500"></i>
-                    <span>الأطباء</span>
-                </button>
-                <button onclick="navigateToPage('countries')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-countries">
-                    <i data-lucide="globe" class="w-3.5 h-3.5 shrink-0 text-sky-500"></i>
-                    <span>الدول</span>
-                </button>
-                <button onclick="navigateToPage('governorates')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-governorates">
-                    <i data-lucide="map-pin" class="w-3.5 h-3.5 shrink-0 text-emerald-500"></i>
-                    <span>المحافظات</span>
-                </button>
-                <button onclick="navigateToPage('test_types')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-test_types">
-                    <i data-lucide="eye" class="w-3.5 h-3.5 shrink-0 text-orange-500"></i>
-                    <span>أنواع الفحص</span>
-                </button>
-                <button onclick="navigateToPage('operations')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-operations">
-                    <i data-lucide="scissors" class="w-3.5 h-3.5 shrink-0 text-rose-500"></i>
-                    <span>أسماء العمليات</span>
-                </button>
-                <button onclick="navigateToPage('sectors')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-sectors">
-                    <i data-lucide="building-2" class="w-3.5 h-3.5 shrink-0 text-amber-500"></i>
-                    <span>القطاعات</span>
-                </button>
-                <button onclick="navigateToPage('clinic_units')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-clinic_units">
-                    <i data-lucide="layout-list" class="w-3.5 h-3.5 shrink-0 text-indigo-500"></i>
-                    <span>وحدات الاستشارية</span>
-                </button>
-                <button onclick="navigateToPage('lab_test_types')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-lab_test_types">
-                    <i data-lucide="test-tube" class="w-3.5 h-3.5 shrink-0 text-purple-500"></i>
-                    <span>تحاليل المختبر</span>
-                </button>
-                
-                <div class="border-t border-slate-200/10 my-2 pt-2"></div>
-                
+
+                <div class="border-t border-slate-200/10 my-2"></div>
                 <button onclick="navigateToPage('settings')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-settings">
                     <i data-lucide="settings" class="w-3.5 h-3.5 shrink-0"></i>
-                    <span>الإعدادات العامة</span>
+                    <span>الإعدادات</span>
                 </button>
             </nav>
-
-            <!-- Sidebar Footer -->
-            <div class="border-t border-slate-200/20 pt-4 text-center">
-                <span class="text-[10px] text-text-main opacity-50 font-bold font-['Outfit']">V 1.0.0 (SPA)</span>
-            </div>
         </aside>
 
         <!-- Sidebar Backdrop for Mobile -->
@@ -136,42 +135,24 @@
         <!-- LEFT MAIN CONTENT (منطقة المحتوى الرئيسية - كامل العرض المتاح) -->
         <div class="flex-1 flex flex-col min-w-0 w-full">
             
-            <!-- Shared Header Navigation -->
+            <!-- Header -->
             <header class="flex justify-between items-center mb-6 p-4 rounded-2xl custom-card w-full">
                 <div class="flex items-center gap-3">
-                    <!-- Mobile Hamburger Menu -->
-                    <button onclick="toggleSidebar(true)" class="md:hidden w-10 h-10 rounded-xl custom-card flex items-center justify-center text-text-main hover-press border border-slate-200/20">
-                        <i data-lucide="menu" class="w-5 h-5"></i>
-                     </button>
-                     <!-- Dynamic Header Titles -->
-                     <div>
-                         <h1 id="page-title" class="text-xl font-bold text-text-main">لوحة التحكم والمؤشرات</h1>
-                         <span id="page-subtitle" class="text-[10px] text-text-main opacity-60">نظرة عامة على كفاءة أداء العيادات الخارجية</span>
-                     </div>
+                    <button onclick="toggleSidebar(true)" class="md:hidden w-9 h-9 rounded-xl custom-card flex items-center justify-center text-text-main hover-press">
+                        <i data-lucide="menu" class="w-4 h-4"></i>
+                    </button>
+                    <h1 id="page-title" class="text-base font-bold text-text-main">الرئيسية</h1>
                 </div>
-
-                <!-- Right elements: active daily cashbox + profile badge -->
-                <div class="flex items-center gap-4">
-                     <div class="hidden sm:flex items-center gap-2 py-1.5 px-3 rounded-lg custom-inset">
-                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                         <span class="text-[10px] text-text-main font-bold">صندوق الكاش اليومي:</span>
-                         <span class="text-xs font-bold text-theme-emerald font-['Outfit']">$1,240.00</span>
-                     </div>
-                     <div class="flex items-center gap-3">
-                         <div class="w-10 h-10 rounded-full custom-card flex items-center justify-center font-bold text-md text-text-main font-['Outfit'] shadow-soft-out-sm">
-                             {{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 2)) }}
-                         </div>
-                         <div class="hidden sm:block">
-                             <h3 class="text-xs font-bold text-text-main leading-none">{{ auth()->user()->name ?? 'مستخدم' }}</h3>
-                             <span class="text-[10px] text-text-main opacity-60 font-semibold">{{ auth()->user()->role ?? 'visitor' }}</span>
-                         </div>
-                         <form method="POST" action="{{ route('logout') }}" class="ml-2">
-                             @csrf
-                             <button type="submit" class="w-8 h-8 rounded-lg flex items-center justify-center text-text-main opacity-60 hover:opacity-100 hover:text-theme-pink hover-press transition-colors" title="تسجيل الخروج">
-                                 <i data-lucide="log-out" class="w-4 h-4"></i>
-                             </button>
-                         </form>
-                     </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full custom-card flex items-center justify-center font-bold text-sm text-text-main shadow-soft-out-sm">
+                        {{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 2)) }}
+                    </div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-8 h-8 rounded-lg flex items-center justify-center text-text-main opacity-60 hover:opacity-100 hover:text-theme-pink hover-press transition-colors">
+                            <i data-lucide="log-out" class="w-4 h-4"></i>
+                        </button>
+                    </form>
                 </div>
             </header>
 
@@ -190,20 +171,7 @@
                 @include('pages.settings')
             </div>
 
-            <!-- SHARED FOOTER -->
-            <footer class="mt-8 py-6 border-t border-slate-200/20 text-center flex flex-col sm:flex-row justify-between items-center gap-4 w-full">
-                 <span class="text-[11px] text-text-main opacity-60 font-medium">
-                     حقوق الطبع محفوظة © 2026 عيادتنا الذكية - Clinic Management System
-                 </span>
-                 <div class="flex items-center gap-3 text-[10px] text-text-main opacity-70 font-semibold">
-                     <span class="flex items-center gap-1">
-                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                         النظام متصل وآمن
-                     </span>
-                     <span>|</span>
-                     <span class="font-['Outfit']">Session ID: CMS-5542</span>
-                 </div>
-            </footer>
+
         </div>
     </div>
 
@@ -994,46 +962,22 @@
                 }
             }
 
-            // Update Dynamic header titles
+            // Update page title
             const pageTitleEl = document.getElementById('page-title');
-            const pageSubtitleEl = document.getElementById('page-subtitle');
-
-            if (pageTitleEl && pageSubtitleEl) {
-                if (pageId === 'dashboard') {
-                    pageTitleEl.innerText = "لوحة التحكم والمؤشرات";
-                    pageSubtitleEl.innerText = "نظرة عامة على كفاءة أداء العيادات الخارجية";
-                } else if (pageId === 'reports') {
-                    pageTitleEl.innerText = "التقارير والإحصائيات الشاملة";
-                    pageSubtitleEl.innerText = "التقارير المالية والتحاليل الإحصائية للمبيعات والعيادات";
-                } else if (pageId === 'doctors') {
-                    pageTitleEl.innerText = "إدارة الأطباء";
-                    pageSubtitleEl.innerText = "إضافة وتحديث حسابات أطباء الاختصاص وسعر كشفيتهم بالمركز";
-                } else if (pageId === 'countries') {
-                    pageTitleEl.innerText = "إدارة الدول";
-                    pageSubtitleEl.innerText = "إضافة وتعديل الدول للمرضى من خارج العراق";
-                } else if (pageId === 'governorates') {
-                    pageTitleEl.innerText = "إدارة المحافظات";
-                    pageSubtitleEl.innerText = "إضافة وتحديث المحافظات الـ 18 لتتبع ديمغرافية المرضى";
-                } else if (pageId === 'test_types') {
-                    pageTitleEl.innerText = "إدارة أنواع الفحص البصري";
-                    pageSubtitleEl.innerText = "الفحوصات البصرية والساندة المنجزة في المركز";
-                } else if (pageId === 'operations') {
-                    pageTitleEl.innerText = "إدارة أسماء العمليات";
-                    pageSubtitleEl.innerText = "أسماء وتصنيفات العمليات الجراحية";
-                } else if (pageId === 'sectors') {
-                    pageTitleEl.innerText = "إدارة القطاعات";
-                    pageSubtitleEl.innerText = "القطاعات الطبية والتمويلية للعمليات بالمركز";
-                } else if (pageId === 'clinic_units') {
-                    pageTitleEl.innerText = "إدارة وحدات الاستشارية";
-                    pageSubtitleEl.innerText = "العيادات العامة والتخصصات الدقيقة";
-                } else if (pageId === 'lab_test_types') {
-                    pageTitleEl.innerText = "إدارة تحاليل المختبر";
-                    pageSubtitleEl.innerText = "الفحوصات والتحاليل المختبرية المنجزة بالمركز";
-                } else if (pageId === 'settings') {
-                    pageTitleEl.innerText = "الإعدادات العامة للنظام";
-                    pageSubtitleEl.innerText = "تغيير هوية التصميم، وضبط مواقيت العمل وتفاصيل المركز";
-                }
-            }
+            const titles = {
+                dashboard: 'الرئيسية',
+                reports: 'التقارير',
+                doctors: 'الأطباء',
+                countries: 'الدول',
+                governorates: 'المحافظات',
+                test_types: 'أنواع الفحص',
+                operations: 'العمليات',
+                sectors: 'القطاعات',
+                clinic_units: 'الوحدات',
+                lab_test_types: 'التحاليل',
+                settings: 'الإعدادات',
+            };
+            if (pageTitleEl) pageTitleEl.innerText = titles[pageId] || pageId;
 
             // Close mobile sidebar menu
             toggleSidebar(false);
@@ -1061,7 +1005,7 @@
             }, 100);
         }
 
-        // Mobile sidebar navigation menu toggles
+        // Mobile sidebar toggle
         function toggleSidebar(show) {
             const sidebar = document.getElementById('sidebar');
             const backdrop = document.getElementById('sidebar-backdrop');
@@ -1073,6 +1017,16 @@
                     sidebar.classList.add('translate-x-full');
                     backdrop.classList.add('hidden');
                 }
+            }
+        }
+
+        // Management dropdown toggle
+        function toggleMgmtMenu() {
+            const menu = document.getElementById('mgmt-menu');
+            const chevron = document.getElementById('mgmt-chevron');
+            if (menu) {
+                menu.classList.toggle('hidden');
+                if (chevron) chevron.style.transform = menu.classList.contains('hidden') ? '' : 'rotate(180deg)';
             }
         }
 

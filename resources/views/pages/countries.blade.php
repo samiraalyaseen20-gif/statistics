@@ -1,19 +1,8 @@
 {{-- PAGE: COUNTRIES MANAGEMENT --}}
 <section id="page-countries" class="page-section space-y-6 hidden">
-    <div class="custom-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-center justify-between">
-        <div>
-            <h2 class="text-base font-bold text-text-main flex items-center gap-2">
-                <i data-lucide="globe" class="w-5 h-5 text-sky-500"></i>
-                إدارة الدول
-            </h2>
-            <p class="text-[11px] text-text-main opacity-60 mt-0.5">تسجيل الدول لمرضى الاستشاريات والعمليات من خارج العراق</p>
-        </div>
-    </div>
-
     <div class="custom-card p-6 rounded-2xl">
-        <h3 class="text-sm font-bold text-text-main flex items-center gap-2 mb-4"><i data-lucide="plus" class="w-4 h-4 text-sky-500"></i> إضافة دولة جديدة</h3>
         <div class="flex gap-3">
-            <input id="inp-country-name" type="text" placeholder="اسم الدولة (مثال: ايران)" class="flex-1 custom-inset border-none rounded-xl py-2.5 px-4 text-xs font-medium focus:outline-none text-text-main">
+            <input id="inp-country-name" type="text" placeholder="اسم الدولة" class="flex-1 custom-inset border-none rounded-xl py-2.5 px-4 text-xs font-medium focus:outline-none text-text-main">
             <button onclick="addCountry()" class="py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-sky-500 to-sky-400 hover-press flex items-center gap-2">
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i> إضافة
             </button>

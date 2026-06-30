@@ -1,19 +1,8 @@
 {{-- PAGE: DOCTORS MANAGEMENT --}}
 <section id="page-doctors" class="page-section space-y-6 hidden">
-    <div class="custom-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 items-center justify-between">
-        <div>
-            <h2 class="text-base font-bold text-text-main flex items-center gap-2">
-                <i data-lucide="stethoscope" class="w-5 h-5 text-violet-500"></i>
-                إدارة الأطباء
-            </h2>
-            <p class="text-[11px] text-text-main opacity-60 mt-0.5">تسجيل الأطباء الاختصاص بالمركز</p>
-        </div>
-    </div>
-
     <div class="custom-card p-6 rounded-2xl">
-        <h3 class="text-sm font-bold text-text-main flex items-center gap-2 mb-4"><i data-lucide="plus" class="w-4 h-4 text-violet-500"></i> إضافة طبيب جديد</h3>
         <div class="flex flex-col sm:flex-row gap-3">
-            <input id="inp-doc-name" type="text" placeholder="اسم الطبيب (مثال: د. أحمد علي)" class="flex-1 custom-inset border-none rounded-xl py-2.5 px-4 text-xs font-medium focus:outline-none text-text-main">
+            <input id="inp-doc-name" type="text" placeholder="اسم الطبيب" class="flex-1 custom-inset border-none rounded-xl py-2.5 px-4 text-xs font-medium focus:outline-none text-text-main">
             <button onclick="addDoctor()" class="py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-violet-500 to-violet-400 hover-press flex items-center gap-2">
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i> إضافة
             </button>
