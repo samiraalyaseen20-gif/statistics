@@ -2,26 +2,95 @@
 <section id="page-reports" class="page-section space-y-6 hidden">
 
     <!-- Filter & Action Bar -->
-    <div class="custom-card p-4 rounded-2xl flex flex-wrap items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-500">
-                <i data-lucide="file-bar-chart-2" class="w-4 h-4"></i>
+    <div class="custom-card p-4 rounded-2xl space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-500">
+                    <i data-lucide="file-bar-chart-2" class="w-4 h-4"></i>
+                </div>
+                <h2 class="text-xs font-bold text-text-main">الإحصاءات والتقارير الطبية</h2>
             </div>
-            <h2 class="text-xs font-bold text-text-main">الإحصاءات والتقارير الطبية</h2>
-        </div>
-        <div class="flex flex-wrap items-center gap-3">
-            <div class="flex items-center gap-1.5 bg-slate-200/20 px-3 py-1.5 rounded-xl border border-slate-200/10">
-                <span class="text-[9px] font-bold text-slate-400">من:</span>
-                <input type="date" id="report-date-from" value="{{ $start_date ?? '2026-05-01' }}" class="bg-transparent border-none focus:outline-none text-[10px] font-bold text-text-main custom-date-input">
-                <span class="text-[9px] font-bold text-slate-400">إلى:</span>
-                <input type="date" id="report-date-to" value="{{ $end_date ?? '2026-05-31' }}" class="bg-transparent border-none focus:outline-none text-[10px] font-bold text-text-main custom-date-input">
-                <button onclick="applyDateRangeFilter()" class="mr-1.5 p-1 rounded-lg bg-pink-500/10 hover:bg-pink-500/20 text-pink-500 hover-press transition-colors">
-                    <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Date range pickers -->
+                <div class="flex items-center gap-1.5 bg-slate-200/20 px-3 py-1.5 rounded-xl border border-slate-200/10">
+                    <span class="text-[9px] font-bold text-slate-400">من:</span>
+                    <input type="date" id="report-date-from" value="{{ $start_date ?? '2026-05-01' }}" class="bg-transparent border-none focus:outline-none text-[10px] font-bold text-text-main custom-date-input">
+                    <span class="text-[9px] font-bold text-slate-400">إلى:</span>
+                    <input type="date" id="report-date-to" value="{{ $end_date ?? '2026-05-31' }}" class="bg-transparent border-none focus:outline-none text-[10px] font-bold text-text-main custom-date-input">
+                </div>
+                <!-- Advanced Toggle button -->
+                <button onclick="toggleAdvancedFilters()" class="py-2 px-4 rounded-xl text-xs font-bold text-text-main bg-slate-200/20 hover:bg-slate-200/40 border border-slate-200/10 hover-press flex items-center gap-1.5">
+                    <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-pink-500"></i>
+                    <span>تصفية متقدمة</span>
+                    <i data-lucide="chevron-down" id="adv-filters-chevron" class="w-3 h-3 transition-transform"></i>
+                </button>
+                <button onclick="applyDateRangeFilter()" class="py-2 px-5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2">
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i><span>تطبيق التصفية</span>
+                </button>
+                <button onclick="window.print()" class="py-2 px-4 rounded-xl text-xs font-bold bg-slate-200/20 text-slate-400 hover:bg-slate-200/40 hover-press">
+                    <i data-lucide="printer" class="w-3.5 h-3.5"></i>
                 </button>
             </div>
-            <button onclick="window.print()" class="py-2 px-5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2">
-                <i data-lucide="printer" class="w-3.5 h-3.5"></i><span>طباعة PDF</span>
-            </button>
+        </div>
+
+        <!-- Collapsible Advanced Filters Drawer -->
+        <div id="advanced-filters-panel" class="hidden border-t border-slate-200/10 pt-4 transition-all duration-300">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                <!-- 1. Doctor Select -->
+                <div class="flex flex-col gap-1">
+                    <label class="text-[9px] font-bold text-slate-400 font-['Tajawal']">الطبيب الاختصاص:</label>
+                    <select id="filter-doctor-id" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
+                        <option value="">كل الأطباء</option>
+                        @foreach($filterDoctors as $doc)
+                        <option value="{{ $doc->id }}" {{ isset($doctor_id) && $doctor_id == $doc->id ? 'selected' : '' }}>{{ $doc->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <!-- 2. Clinic Unit Select -->
+                <div class="flex flex-col gap-1">
+                    <label class="text-[9px] font-bold text-slate-400 font-['Tajawal']">العيادة الاستشارية:</label>
+                    <select id="filter-clinic-unit-id" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
+                        <option value="">كل العيادات</option>
+                        @foreach($filterClinicUnits as $unit)
+                        <option value="{{ $unit->id }}" {{ isset($clinic_unit_id) && $clinic_unit_id == $unit->id ? 'selected' : '' }}>{{ $unit->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <!-- 3. Governorate Select -->
+                <div class="flex flex-col gap-1">
+                    <label class="text-[9px] font-bold text-slate-400 font-['Tajawal']">المحافظة:</label>
+                    <select id="filter-governorate-id" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
+                        <option value="">كل المحافظات</option>
+                        @foreach($filterGovernorates as $gov)
+                        <option value="{{ $gov->id }}" {{ isset($governorate_id) && $governorate_id == $gov->id ? 'selected' : '' }}>{{ $gov->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <!-- 4. Country Select -->
+                <div class="flex flex-col gap-1">
+                    <label class="text-[9px] font-bold text-slate-400 font-['Tajawal']">الدولة:</label>
+                    <select id="filter-country-id" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
+                        <option value="">كل الدول</option>
+                        @foreach($filterCountries as $c)
+                        <option value="{{ $c->id }}" {{ isset($country_id) && $country_id == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <!-- 5. Sector Select -->
+                <div class="flex flex-col gap-1">
+                    <label class="text-[9px] font-bold text-slate-400 font-['Tajawal']">القطاع:</label>
+                    <select id="filter-sector-id" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
+                        <option value="">كل القطاعات</option>
+                        @foreach($filterSectors as $sec)
+                        <option value="{{ $sec->id }}" {{ isset($sector_id) && $sector_id == $sec->id ? 'selected' : '' }}>{{ $sec->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <!-- Action buttons -->
+            <div class="flex justify-end gap-2 mt-4">
+                <button onclick="resetAllFilters()" class="py-1.5 px-4 rounded-xl text-[10px] font-bold bg-slate-200/40 text-slate-500 hover:bg-slate-200/60 hover-press">إعادة تعيين</button>
+            </div>
         </div>
     </div>
 
@@ -634,96 +703,133 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
 // Global page initialization hook triggers drawing of all elements
 function renderAll2DArrowCharts() {
     // 1. Branching Split Arrow for consultations
-    draw2DBranchingArrow('svg-report-1', 3375, 1091, 'العيون العامة', 'التخصصات الدقيقة', 4566);
+    @php
+    $cGeneral = $consultations->firstWhere('unit', 'استشارية العيون العامة')['total'] ?? 0;
+    $cSpecial = $consultations->firstWhere('unit', 'استشارية التخصصات الدقيقة')['total'] ?? 0;
+    @endphp
+    draw2DBranchingArrow('svg-report-1', {{ $cGeneral }}, {{ $cSpecial }}, 'العيون العامة', 'التخصصات الدقيقة', {{ $totalVisits }});
 
-    // 2. Doctor visits (15 doctors) -> 2D Flat Columns
-    const docVisitsData = [177, 562, 120, 212, 120, 346, 1204, 56, 194, 729, 348, 134, 106, 171, 87];
-    const docVisitsLabels = ['غياث','حمزة','ذوالفقار','منتصر','افراح','مؤيد','بشرى','علاء','نور','حيدر','حذيفه','اريج','زهراء','ايات','م.بدر'];
+    // 2. Doctor visits -> 2D Flat Columns
+    const docVisitsData = @json($visitsByDoctor->pluck('total'));
+    const docVisitsLabels = @json($visitsByDoctor->pluck('doctor')->map(fn($name) => str_replace('د. ', '', $name)));
     draw2DFlatVerticalArrows('svg-report-2', docVisitsData, docVisitsLabels);
 
-    // 3. Inside Iraq (6 governorates) -> 2D Flat Columns
-    const govData = [3455, 521, 127, 120, 76, 46];
-    const govLabels = ['كربلاء', 'بابل', 'بغداد', 'ذي قار', 'واسط', 'النجف'];
+    // 3. Inside Iraq (Governorates) -> 2D Flat Columns
+    const govData = @json($visitsByGov->pluck('total'));
+    const govLabels = @json($visitsByGov->pluck('gov'));
     draw2DFlatVerticalArrows('svg-report-3', govData, govLabels, ['#0284c7']);
 
-    // 4. Outside Iraq (6 countries) -> Horizontal Chevrons
-    const countryData = [6, 4, 2, 1, 1, 1];
-    const countryLabels = ['إيران', 'أفغانستان', 'سوريا', 'مصر', 'نيجيريا', 'باكستان'];
+    // 4. Outside Iraq (Countries) -> Horizontal Chevrons
+    const countryData = @json($visitsByCountry->pluck('total'));
+    const countryLabels = @json($visitsByCountry->pluck('country'));
     draw2DFlatHorizontalChevrons('svg-report-4', countryData, countryLabels);
 
-    // 5. Visual test types (6 tests) -> Horizontal Chevrons
-    const visualData = [4730, 1444, 641, 142, 135, 67];
-    const visualLabels = ['فحص البصر', 'OCT', 'قوة العدسة', 'C.T', 'سونار', 'FUNDUS'];
+    // 5. Visual test types -> Horizontal Chevrons
+    const visualData = @json($eyeTestsByType->pluck('total'));
+    const visualLabels = @json($eyeTestsByType->pluck('type'));
     draw2DFlatHorizontalChevrons('svg-report-5', visualData, visualLabels, ['#f97316','#ea580c','#c2410c','#ea580c','#f97316','#c2410c']);
 
-    // 6. Lab tests (5 tests) -> 2D Flat Columns
-    const labTestData = [120, 95, 85, 70, 40];
-    const labTestLabels = ['RBS', 'WBC', 'Hb', 'PCV', 'INR'];
+    // 6. Lab tests -> 2D Flat Columns
+    const labTestData = @json($labTestsByType->pluck('total'));
+    const labTestLabels = @json($labTestsByType->pluck('type'));
     draw2DFlatVerticalArrows('svg-report-6', labTestData, labTestLabels, ['#8b5cf6','#a855f7','#c084fc','#d8b4fe','#f3e8ff']);
 
     // 7. Surgery Classification -> 2D Flat Columns
-    const surgClassData = [33, 103, 85, 90, 434, 1257];
-    const surgClassLabels = ['صغرى', 'ليزر', 'كبرى', 'خاصة', 'فوق كبرى', 'حقن العين'];
+    const surgClassData = [
+        {{ $surgeriesByCatSector->where('classification', 'صغرى')->sum('total') }},
+        {{ $surgeriesByCatSector->where('classification', 'ليزر')->sum('total') }},
+        {{ $surgeriesByCatSector->where('classification', 'كبرى')->sum('total') }},
+        {{ $surgeriesByCatSector->where('classification', 'خاصة')->sum('total') }},
+        {{ $surgeriesByCatSector->where('classification', 'فوق الكبرى')->sum('total') }},
+        {{ $surgeriesByCatSector->where('classification', 'وسطى')->sum('total') }}
+    ];
+    const surgClassLabels = ['صغرى', 'ليزر', 'كبرى', 'خاصة', 'فوق كبرى', 'حقن/وسطى'];
     draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#0ea5e9','#db2777','#d97706','#475569','#6d28d9','#e11d48']);
 
     // 10. Surgeries total (16 doctors) -> 2D Flat Columns
-    const docSurgData = [85, 165, 22, 120, 10, 146, 162, 147, 189, 839, 57, 12, 5, 6, 35, 2];
-    const docSurgLabels = ['غياث','حمزة','ذوالفقار','منتصر','افراح','مؤيد','بشرى','علاء','نور','حيدر','حذيفه','اريج','زهراء','خلدون','ايات','م.بدر'];
+    @php
+    $docSurgs = $surgeriesByDoctorCatSector->groupBy('doctor')->map(fn($group) => $group->sum('total'));
+    @endphp
+    const docSurgData = @json($docSurgs->values());
+    const docSurgLabels = @json($docSurgs->keys()->map(fn($name) => str_replace('د. ', '', $name)));
     draw2DFlatVerticalArrows('svg-report-10', docSurgData, docSurgLabels);
 
     // Initialize switcher single doctor stats
-    renderSingleDocChart(1);
+    const selector = document.getElementById('doc-active-selector');
+    if (selector) {
+        renderSingleDocChart(selector.value);
+    }
 }
 
 // switcher individual doctor operations details -> Horizontal Chevrons
 const docOpsData = {
-    1:[29,2,3,8,2,3,6,18,13],
-    2:[50,2,56,5,1,1,1,1,9,25,15,1],
-    3:[10,5,1,3,3],
-    4:[16,1,52,11,30,8,1,1],
-    5:[1,7,2],
-    6:[39,1,10,2,58,26,3,4,1,1,1],
-    7:[135,1,4,1,21,3,1,3,2],
-    8:[17,1,3,82,23,18,2,1],
-    9:[27,1,1,4,2,45,101,1,7],
-    10:[66,1,2,1,148,572,15,1,29,1,2,1],
-    11:[18,1,1,30,7],
-    12:[10,1,1],
-    13:[2,1,2],
-    14:[5,1],
-    15:[8,1,1,1,20,1,3],
-    16:[2]
+    @foreach($surgeryDetailByDoctor as $docName => $ops)
+        @php
+        $docModel = $filterDoctors->firstWhere('name', $docName);
+        $docId = $docModel ? $docModel->id : 0;
+        @endphp
+        @if($docId)
+        "{{ $docId }}": @json($ops->pluck('total')),
+        @endif
+    @endforeach
 };
 const docNamesData = {
-    1:['قص سائل','رفع ماء اسود','رفع ساد','سليكون+عدسة','زرع عدسة','غسل حجرة','رفع سليكون','حقن ايليليا','حقن افاستين'],
-    2:['قص سائل','ساد خاص','رفع ساد','سليكون+عدسة','زرع عدسة','زرع صمام','هطول اجفان','تصليب قرنية','غسل حجرة','رفع سليكون','ليزر','تسليك'],
-    3:['قص سائل','رفع ساد','حول','رفع سليكون','ليزر'],
-    4:['رفع ساد','رفع ظفرة','حقن ايليا','لوسنتس','حقن افاستين','ليزر','تسليك','جسم غريب'],
-    5:['زرع صمام','رفع ساد','ليزر'],
-    6:['رفع ساد','هطول اجفان','حول','رفع ظفرة','حقن ايليا','حقن افاستين','ليزر','كيس دهني','ورم','تخدير','جسم غريب'],
-    7:['رفع ساد','هطول اجفان','تصليب قرنية','غسل حجرة','ليزر','كيس دهني','ورم درمويد','تسليك','جسم غريب'],
-    8:['رفع ساد','رفع ظفرة','فابزمو','حقن ايليا','لوسنتس','حقن افاستين','كيناكورت','تخدير'],
-    9:['رفع ساد','زرع عدسة','هطول اجفان','حول','رفع ظفرة','حقن ايليا','حقن افاستين','كيناكورت','ليزر'],
-    10:['رفع ساد','هطول اجفان','تصليب قرنية','رفع ظفرة','حقن ايليا','حقن افاستين','كيناكورت','اكتيليس','ليزر','كيس دهني','تسليك','جسم غريب'],
-    11:['رفع ساد','حول','رفع ظفرة','حقن افاستين','ليزر'],
-    12:['رفع ساد','ليزر','كيس دهني'],
-    13:['رفع ساد','ليزر','كيس دهني'],
-    14:['رفع ساد','ليزر'],
-    15:['رفع ساد','هطول اجفان','تصليب قرنية','حقن ايليا','حقن افاستين','ليزر','كيس دهني'],
-    16:['رفع ساد']
+    @foreach($surgeryDetailByDoctor as $docName => $ops)
+        @php
+        $docModel = $filterDoctors->firstWhere('name', $docName);
+        $docId = $docModel ? $docModel->id : 0;
+        @endphp
+        @if($docId)
+        "{{ $docId }}": @json($ops->pluck('op')),
+        @endif
+    @endforeach
 };
 
 function renderSingleDocChart(id) {
-    const values = docOpsData[id] || [1];
-    const labels = docNamesData[id] || [''];
+    const values = docOpsData[id] || [];
+    const labels = docNamesData[id] || [];
+    if (values.length === 0) {
+        const svg = document.getElementById('svg-doc-' + id);
+        if (svg) svg.innerHTML = '<text x="225" y="100" font-family="Tajawal" font-size="11" font-weight="bold" fill="#94a3b8" text-anchor="middle">لا توجد عمليات مسجلة لهذا الطبيب</text>';
+        return;
+    }
     draw2DFlatHorizontalChevrons('svg-doc-' + id, values, labels);
+}
+
+function toggleAdvancedFilters() {
+    const panel = document.getElementById('advanced-filters-panel');
+    const chevron = document.getElementById('adv-filters-chevron');
+    if (panel) {
+        panel.classList.toggle('hidden');
+        if (chevron) {
+            chevron.style.transform = panel.classList.contains('hidden') ? '' : 'rotate(180deg)';
+        }
+    }
 }
 
 function applyDateRangeFilter() {
     const fromVal = document.getElementById('report-date-from').value;
     const toVal = document.getElementById('report-date-to').value;
     if (!fromVal || !toVal) return;
-    window.location.href = `/?start_date=${fromVal}&end_date=${toVal}#reports`;
+    
+    const docId = document.getElementById('filter-doctor-id').value;
+    const unitId = document.getElementById('filter-clinic-unit-id').value;
+    const govId = document.getElementById('filter-governorate-id').value;
+    const countryId = document.getElementById('filter-country-id').value;
+    const sectorId = document.getElementById('filter-sector-id').value;
+    
+    let url = `/?start_date=${fromVal}&end_date=${toVal}`;
+    if (docId) url += `&doctor_id=${docId}`;
+    if (unitId) url += `&clinic_unit_id=${unitId}`;
+    if (govId) url += `&governorate_id=${govId}`;
+    if (countryId) url += `&country_id=${countryId}`;
+    if (sectorId) url += `&sector_id=${sectorId}`;
+    
+    window.location.href = url + '#reports';
+}
+
+function resetAllFilters() {
+    window.location.href = '/#reports';
 }
 
 // Global page initialization hook
