@@ -288,8 +288,9 @@
         let chartDialPink, chartDialOrange, chartDialGreen, chartMultiBar;
         let chartDonutDept, chartRadarQuality, chartStackedRevenue, chartBubbleSpend;
 
-        // Render 4 Circular Radial Charts
-        chartRadial1 = new ApexCharts(document.querySelector("#chart-radial-1"), getRadialConfig(96, pinkGrad[0], pinkGrad[1]));
+        // Render 4 Circular Radial Charts (Only if dashboard is present)
+        if (document.querySelector("#chart-radial-1")) {
+            chartRadial1 = new ApexCharts(document.querySelector("#chart-radial-1"), getRadialConfig(96, pinkGrad[0], pinkGrad[1]));
         chartRadial2 = new ApexCharts(document.querySelector("#chart-radial-2"), getRadialConfig(75, orangeGrad[0], orangeGrad[1]));
         chartRadial3 = new ApexCharts(document.querySelector("#chart-radial-3"), getRadialConfig(50, greenGrad[0], greenGrad[1]));
         chartRadial4 = new ApexCharts(document.querySelector("#chart-radial-4"), getRadialConfig(85, blueGrad[0], blueGrad[1]));
@@ -591,6 +592,7 @@
             colors: ['#28c76f', '#ff4d7e', '#00cfe8']
         });
         chartBubbleSpend.render();
+        }
 
         // ================= END INITIALIZE NEW ADVANCED CHARTS =================
 
@@ -601,44 +603,48 @@
             localStorage.setItem('theme', themeName);
             setActiveButton(themeName);
             
-            // Handle pagination element switching for Excel theme
+            // Handle pagination element switching for Excel theme safely
             const standardPag = document.getElementById('standard-pagination');
             const excelPag = document.getElementById('excel-pagination');
-            if (themeName === 'excel') {
-                standardPag.classList.add('hidden');
-                excelPag.classList.remove('hidden');
-            } else {
-                standardPag.classList.remove('hidden');
-                excelPag.classList.add('hidden');
+            if (standardPag && excelPag) {
+                if (themeName === 'excel') {
+                    standardPag.classList.add('hidden');
+                    excelPag.classList.remove('hidden');
+                } else {
+                    standardPag.classList.remove('hidden');
+                    excelPag.classList.add('hidden');
+                }
             }
 
-            // Adjust buttons & controls dynamically to match active theme styles
+            // Adjust buttons & controls dynamically to match active theme styles safely
             const cancelBtn = document.getElementById('modal-cancel-btn');
             const submitBtn = document.getElementById('modal-submit-btn');
             const addTrigger = document.getElementById('add-trans-trigger');
 
             if (themeName === 'excel') {
-                cancelBtn.className = 'excel-btn-secondary';
-                submitBtn.className = 'excel-btn-primary';
+                if (cancelBtn) cancelBtn.className = 'excel-btn-secondary';
+                if (submitBtn) submitBtn.className = 'excel-btn-primary';
                 if (addTrigger) addTrigger.className = 'py-2 px-4 border border-[#107c41] bg-[#107c41] text-white text-xs font-bold hover:bg-[#0b592e]';
             } else if (themeName === 'brutal') {
-                cancelBtn.className = 'py-2.5 px-6 border-2 border-black text-xs font-bold bg-white text-black hover-press';
-                submitBtn.className = 'py-2.5 px-6 border-2 border-black text-xs font-bold bg-[#ffde43] text-black hover-press';
+                if (cancelBtn) cancelBtn.className = 'py-2.5 px-6 border-2 border-black text-xs font-bold bg-white text-black hover-press';
+                if (submitBtn) submitBtn.className = 'py-2.5 px-6 border-2 border-black text-xs font-bold bg-[#ffde43] text-black hover-press';
                 if (addTrigger) addTrigger.className = 'py-2.5 px-4 border-3 border-black text-xs font-bold bg-[#ec4899] text-black hover-press shadow-[4px_4px_0px_#000000]';
             } else if (themeName === 'minimalist') {
-                cancelBtn.className = 'py-2 px-5 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50';
-                submitBtn.className = 'py-2 px-5 rounded-lg text-xs font-medium text-white bg-slate-900 hover:bg-slate-800';
+                if (cancelBtn) cancelBtn.className = 'py-2 px-5 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 bg-white hover:bg-slate-50';
+                if (submitBtn) submitBtn.className = 'py-2 px-5 rounded-lg text-xs font-medium text-white bg-slate-900 hover:bg-slate-800';
                 if (addTrigger) addTrigger.className = 'py-2 px-4 rounded-lg text-xs font-medium text-white bg-slate-900 hover:bg-slate-800';
             } else { // soft & glass
-                cancelBtn.className = 'py-2.5 px-6 rounded-xl text-xs font-bold text-text-main custom-card hover-press';
-                submitBtn.className = 'py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-500 to-emerald-400 hover-press';
+                if (cancelBtn) cancelBtn.className = 'py-2.5 px-6 rounded-xl text-xs font-bold text-text-main custom-card hover-press';
+                if (submitBtn) submitBtn.className = 'py-2.5 px-6 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-500 to-emerald-400 hover-press';
                 if (addTrigger) addTrigger.className = 'py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2 shadow-soft-out-sm font-["Outfit"]';
             }
 
-            // Update standard dynamic grid active classes and re-draw SVG elements
+            // Update standard dynamic grid active classes and re-draw SVG elements safely
             setTimeout(() => {
                 updateChartThemes(themeName);
-                renderTable(); 
+                if (typeof renderTable === 'function') {
+                    renderTable(); 
+                }
             }, 100);
         }
 
