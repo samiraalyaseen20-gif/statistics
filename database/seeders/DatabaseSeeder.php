@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
             ClinicUnitSeeder::class,
             LabTestTypeSeeder::class,
             OperationNameSeeder::class,
-            // ── بيانات تجريبية ──
-            SampleDataSeeder::class,
+            // ── البيانات الحقيقية لمايو 2026 ──
+            RealReportSeeder::class,
         ]);
     }
 }
