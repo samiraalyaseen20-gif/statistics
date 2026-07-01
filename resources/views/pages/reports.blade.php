@@ -643,23 +643,24 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
 
         // Label Text (Dynamic angle & positioning to display full names)
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        label.setAttribute('x', x);
+        label.setAttribute('x', x - 4);
         label.setAttribute('font-family', 'Tajawal');
         label.setAttribute('font-weight', 'bold');
         label.setAttribute('fill', '#64748b');
 
         let labelText = labels[i] || '';
         if (n > 6) {
-            // Rotate labels when columns are dense to prevent overlapping
-            label.setAttribute('y', floorY + 12);
-            label.setAttribute('font-size', '8px');
+            // Rotate labels clockwise by 28 degrees so they slope downwards (away from the chart columns)
+            label.setAttribute('y', floorY + 10);
+            label.setAttribute('font-size', '8.5px');
             label.setAttribute('text-anchor', 'end');
-            label.setAttribute('transform', `rotate(-28, ${x}, ${floorY + 12})`);
+            label.setAttribute('transform', `rotate(28, ${x - 4}, ${floorY + 10})`);
             if (labelText.length > 25) {
                 labelText = labelText.substring(0, 23) + '..';
             }
         } else {
             // Keep horizontal for sparse columns
+            label.setAttribute('x', x);
             label.setAttribute('y', floorY + 16);
             label.setAttribute('font-size', '9.5px');
             label.setAttribute('text-anchor', 'middle');
