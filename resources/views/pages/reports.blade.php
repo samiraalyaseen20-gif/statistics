@@ -412,7 +412,7 @@
             <div class="pr-4 space-y-1.5">
                 <p class="font-bold opacity-60">الطبيب الاستشاري</p>
                 <p class="font-extrabold text-sm">د. عدي عبد الحسين السالمي</p>
-                <p class="opacity-50 text-[10px]">مدير مركز السيدة زينب الكبرى (ع)</p>
+                <p class="opacity-50 text-[10px]">مدير مركز السيدة زينب(ع) الجراحي التخصصي للعيون</p>
             </div>
         </div>
     </div>

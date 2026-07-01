@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>لوحة التحكم المؤشرات الذكية - Multi-Style Dashboard</title>
+    <title>لوحة إحصائيات مركز السيدة زينب(ع) الجراحي التخصصي للعيون</title>
 
     <!-- Google Fonts: Outfit, Tajawal & Rubik for Brutalism -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,7 +53,7 @@
                 <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-pink-500 to-pink-400 flex items-center justify-center text-white shadow-soft-out-sm">
                     <i data-lucide="activity" class="w-4 h-4"></i>
                 </div>
-                <span class="text-xs font-bold text-text-main">المركز الطبي</span>
+                <span class="text-[9.5px] leading-[1.15] font-black text-text-main text-right">مركز السيدة زينب(ع)<br>الجراحي التخصصي للعيون</span>
             </div>
 
             <!-- Navigation (يسكرول داخل السايدبار لو طال) -->
