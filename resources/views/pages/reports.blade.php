@@ -614,7 +614,7 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
     });
 }
 
-// 3. Horizontal Flat Chevron Lists
+// 3. Horizontal Flat Chevron Lists (Premium Labels-Above-Bars Layout)
 function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null) {
     const svg = document.getElementById(svgId);
     if (!svg) return;
@@ -623,11 +623,11 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
     const n = values.length;
     if (n === 0) return;
 
-    // Calculate dynamic height based on number of items (prevent overlaps)
-    const spacing = 24;
-    const marginT = 18;
-    const marginB = 18;
-    const dynamicHeight = marginT + marginB + (n - 1) * spacing;
+    // Spacious vertical layout: 42px per item (label + bar + gap)
+    const spacing = 42;
+    const marginT = 16;
+    const marginB = 16;
+    const dynamicHeight = marginT + marginB + (n - 1) * spacing + 22;
     
     svg.setAttribute('viewBox', `0 0 450 ${dynamicHeight}`);
     svg.style.height = `${dynamicHeight}px`;
@@ -635,14 +635,14 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
     const maxVal = Math.max(...values, 1);
     const colors = presetColors || ['#db2777', '#d97706', '#10b981', '#475569', '#3b82f6', '#8b5cf6'];
     
-    // RTL Layout coordinates configuration (chevrons grow right-to-left)
-    const labelEndX = 140; // Right edge of label column
-    const chartStartX = 150; // Left-most boundary of chart area
-    const startX = 430; // Right baseline where chevrons start growing
-    const maxL = startX - chartStartX - 45; // Max length of chevron, leaving room for pill on the left
+    // Width boundaries: chevrons grow from right to left (RTL)
+    const startX = 435; // Right baseline
+    const chartStartX = 10; // Left-most boundary of chart area
+    const maxL = startX - chartStartX - 45; // Max length of chevron, leaving 45px for pill on the left
 
     values.forEach((val, i) => {
-        const y = marginT + i * spacing;
+        const labelY = marginT + i * spacing;
+        const barY = labelY + 16; // Bar is drawn 16px below the label
         const color = colors[i % colors.length];
         
         const scaleVal = maxVal > 0 ? val / maxVal : 0;
@@ -652,28 +652,22 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         g.setAttribute('class', 'arrow-grp cursor-pointer');
 
-        // 1. Draw Label on the Left (dark text, fully visible, right-aligned)
+        // 1. Draw Label ABOVE the bar (dark text, fully visible, right-aligned)
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        label.setAttribute('x', labelEndX);
-        label.setAttribute('y', y + 3);
+        label.setAttribute('x', startX);
+        label.setAttribute('y', labelY + 4);
         label.setAttribute('font-family', 'Tajawal');
-        label.setAttribute('font-size', '9px');
+        label.setAttribute('font-size', '10.5px');
         label.setAttribute('font-weight', 'bold');
-        label.setAttribute('fill', '#334155');
+        label.setAttribute('fill', '#475569');
         label.setAttribute('text-anchor', 'end');
-        
-        // Truncate label if it is too long (over 24 chars) to prevent overflow
-        let labelText = labels[i] || '';
-        if (labelText.length > 25) {
-            labelText = labelText.substring(0, 23) + '..';
-        }
-        label.textContent = labelText;
+        label.textContent = labels[i] || '';
         g.appendChild(label);
 
-        // 2. Draw Chevron Body (RTL pointing to the left)
+        // 2. Draw Chevron Body pointing to the left
         const body = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
         // Chevron shape: Flat on right (startX), pointed tip on left (endX)
-        body.setAttribute('points', `${startX},${y-7} ${endX+6},${y-7} ${endX},${y} ${endX+6},${y+7} ${startX},${y+7}`);
+        body.setAttribute('points', `${startX},${barY-6} ${endX+6},${barY-6} ${endX},${barY} ${endX+6},${barY+6} ${startX},${barY+6}`);
         body.setAttribute('fill', color);
         g.appendChild(body);
 
@@ -684,7 +678,7 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
 
         const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         pill.setAttribute('x', endX - pillW - 6);
-        pill.setAttribute('y', y - pillH / 2);
+        pill.setAttribute('y', barY - pillH / 2);
         pill.setAttribute('width', pillW);
         pill.setAttribute('height', pillH);
         pill.setAttribute('rx', '7');
@@ -693,7 +687,7 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
         tVal.setAttribute('x', endX - pillW / 2 - 6);
-        tVal.setAttribute('y', y + 4);
+        tVal.setAttribute('y', barY + 4);
         tVal.setAttribute('font-family', 'Outfit');
         tVal.setAttribute('font-size', '8.5px');
         tVal.setAttribute('font-weight', 'bold');
