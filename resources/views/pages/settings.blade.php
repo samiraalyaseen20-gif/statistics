@@ -38,12 +38,12 @@
     <div class="custom-card p-6">
         <h3 class="text-md font-bold text-text-main mb-4 flex items-center gap-2">
             <i data-lucide="building" class="w-5 h-5 text-emerald-500"></i>
-            إعدادات ملف العيادة الأساسية
+            إعدادات ملف المركز الأساسية
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-                <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">اسم العيادة / المركز الطبي</label>
-                <input type="text" value="مجمع عيادات الشفاء الذكي" class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main">
+                <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">اسم المركز الطبي</label>
+                <input type="text" value="مجمع الشفاء الذكي" class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main">
             </div>
             <div>
                 <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">ساعات العمل اليومية</label>
@@ -69,7 +69,7 @@
             <div class="flex justify-between items-center p-3 rounded-xl custom-inset">
                 <div>
                     <h4 class="text-xs font-bold text-text-main">الربط الآلي مع حسابات الأطباء</h4>
-                    <p class="text-[10px] text-text-main opacity-60">تحديث إيرادات الأطباء تلقائياً بناءً على كشفيات عياداتهم المسجلة</p>
+                    <p class="text-[10px] text-text-main opacity-60">تحديث إيرادات الأطباء تلقائياً بناءً على كشفيات استشارياتهم المسجلة</p>
                 </div>
                 <span class="badge-success shadow-soft-out-sm">نشط</span>
             </div>

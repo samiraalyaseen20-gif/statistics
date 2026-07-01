@@ -192,30 +192,103 @@ class ReportController extends Controller
                 });
             }
 
-            $totalVisits = (clone $visitsQuery)->count();
-            $totalEyeTests = (clone $eyeTestsQuery)->count();
+            $labTestsQuery = LabTest::whereBetween('test_date', [$startDate, $endDate]);
+            if ($docId) {
+                $labTestsQuery->whereHas('visit', function($q) use ($docId) {
+                    $q->where('doctor_id', $docId);
+                });
+            }
+
+            // Totals
+            $totalVisits    = (clone $visitsQuery)->count();
+            $totalEyeTests  = (clone $eyeTestsQuery)->count();
             $totalSurgeries = (clone $surgeriesQuery)->count();
 
-            $surgeriesDetail = (clone $surgeriesQuery)
-                ->join('operation_names', 'surgeries.operation_name_id', '=', 'operation_names.id')
-                ->select('operation_names.name as op', 'operation_names.classification', DB::raw('count(*) as total'))
-                ->groupBy('operation_names.name', 'operation_names.classification')
-                ->orderByDesc('total')
-                ->get();
+            // جدول 1: الاستشاريات بالوحدة الطبية
+            $consultations = (clone $visitsQuery)
+                ->select('clinic_unit_id', DB::raw('count(*) as total'))
+                ->groupBy('clinic_unit_id')
+                ->get()->map(fn($v) => ['unit' => $v->clinicUnit->name ?? '—', 'total' => $v->total]);
 
-            $eyeTestsDetail = (clone $eyeTestsQuery)
-                ->join('test_types', 'eye_tests.test_type_id', '=', 'test_types.id')
-                ->select('test_types.name as type', DB::raw('count(*) as total'))
-                ->groupBy('test_types.name')
+            // جدول 2: مراجعو كل طبيب
+            $visitsByDoctor = (clone $visitsQuery)
+                ->select('doctor_id', DB::raw('count(*) as total'))
+                ->groupBy('doctor_id')
+                ->get()->map(fn($v) => ['doctor' => $v->doctor->name ?? '—', 'total' => $v->total]);
+
+            // جدول 3: داخل العراق
+            $visitsByGov = (clone $visitsQuery)
+                ->whereNotNull('governorate_id')
+                ->select('governorate_id', DB::raw('count(*) as total'))
+                ->groupBy('governorate_id')
+                ->get()->map(fn($v) => ['gov' => $v->governorate->name ?? '—', 'total' => $v->total]);
+
+            // جدول 4: خارج العراق
+            $visitsByCountry = (clone $visitsQuery)
+                ->whereNotNull('country_id')
+                ->select('country_id', DB::raw('count(*) as total'))
+                ->groupBy('country_id')
+                ->get()->map(fn($v) => ['country' => $v->country->name ?? '—', 'total' => $v->total]);
+
+            // جدول 5: الفحوصات البصرية
+            $eyeTestsByType = (clone $eyeTestsQuery)
+                ->select('test_type_id', DB::raw('count(*) as total'))
+                ->groupBy('test_type_id')
+                ->get()->map(fn($v) => ['type' => $v->testType->name ?? '—', 'total' => $v->total]);
+
+            // جدول 6: التحاليل المختبرية
+            $labTestsByType = (clone $labTestsQuery)
+                ->select('lab_test_type_id', DB::raw('count(*) as total'))
+                ->groupBy('lab_test_type_id')
+                ->get()->map(fn($v) => ['type' => $v->labTestType->name ?? '—', 'total' => $v->total]);
+
+            // جدول 7: تصنيف العمليات
+            $surgeriesByCat = (clone $surgeriesQuery)
+                ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
+                ->select('operation_names.classification', DB::raw('count(*) as total'))
+                ->groupBy('operation_names.classification')
+                ->get()->map(fn($v) => ['classification' => $v->classification, 'total' => $v->total]);
+
+            // جدول 10: عمليات كل طبيب (الإجمالي)
+            $surgsByDoctor = (clone $surgeriesQuery)
+                ->join('doctors','surgeries.doctor_id','=','doctors.id')
+                ->select('doctors.name as doctor', DB::raw('count(*) as total'))
+                ->groupBy('doctors.name')
                 ->orderByDesc('total')
-                ->get();
+                ->get()->map(fn($v) => ['doctor' => $v->doctor, 'total' => $v->total]);
+
+            // تفصيلي: اسم العملية لكل طبيب
+            $surgDetailByDoctor = (clone $surgeriesQuery)
+                ->join('doctors','surgeries.doctor_id','=','doctors.id')
+                ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
+                ->select('doctors.name as doctor','operation_names.name as op','operation_names.classification', DB::raw('count(*) as total'))
+                ->groupBy('doctors.name','operation_names.name','operation_names.classification')
+                ->get()->groupBy('doctor')
+                ->map(fn($group) => $group->sortByDesc('total')->values());
+
+            // إجمالي التفصيلي (كل الأطباء مجمعة)
+            $combinedOps = $surgDetailByDoctor->flatten(1)
+                ->groupBy('op')
+                ->map(fn($g) => (object)[
+                    'op'             => $g->first()['op'],
+                    'classification' => $g->first()['classification'],
+                    'total'          => $g->sum('total'),
+                ])->sortByDesc('total')->values();
 
             return [
-                'total_visits' => $totalVisits,
-                'total_eye_tests' => $totalEyeTests,
-                'total_surgeries' => $totalSurgeries,
-                'surgeries_detail' => $surgeriesDetail,
-                'eye_tests_detail' => $eyeTestsDetail,
+                'total_visits'      => $totalVisits,
+                'total_eye_tests'   => $totalEyeTests,
+                'total_surgeries'   => $totalSurgeries,
+                'consultations'     => $consultations,
+                'visits_by_doctor'  => $visitsByDoctor,
+                'visits_by_gov'     => $visitsByGov,
+                'visits_by_country' => $visitsByCountry,
+                'eye_tests_by_type' => $eyeTestsByType,
+                'lab_tests_by_type' => $labTestsByType,
+                'surgeries_by_cat'  => $surgeriesByCat,
+                'surgs_by_doctor'   => $surgsByDoctor,
+                'surg_detail'       => $surgDetailByDoctor,
+                'combined_ops'      => $combinedOps,
             ];
         };
 

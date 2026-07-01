@@ -178,11 +178,11 @@
                     <input type="text" placeholder="أدخل اسم المريض..." class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main placeholder-text-main opacity-70" id="modal-patient-name">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">الطبيب المعالج والعيادة</label>
+                    <label class="block text-[11px] font-bold text-text-main opacity-80 mb-2">الطبيب المعالج والاستشارية</label>
                     <select class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-2.5 px-4 text-xs font-medium text-text-main" id="modal-doctor">
-                        <option value="د. أحمد سليمان - العيادة الباطنية">د. أحمد سليمان - العيادة الباطنية ($120)</option>
-                        <option value="د. سارة العلي - عيادة الأطفال">د. سارة العلي - عيادة الأطفال ($90)</option>
-                        <option value="د. سمر الياسين - عيادة النساء">د. سمر الياسين - عيادة النساء ($150)</option>
+                        <option value="د. أحمد سليمان - الباطنية">د. أحمد سليمان - الباطنية ($120)</option>
+                        <option value="د. سارة العلي - الأطفال">د. سارة العلي - الأطفال ($90)</option>
+                        <option value="د. سمر الياسين - النساء">د. سمر الياسين - النساء ($150)</option>
                     </select>
                 </div>
                 <div>
@@ -573,17 +573,17 @@
             dataLabels: { enabled: false },
             fill: { opacity: 0.8 },
             series: [{
-                name: 'عيادة الباطنية',
+                name: 'الباطنية',
                 data: [
                     [25, 8, 120], [35, 12, 240], [45, 5, 100], [55, 14, 320]
                 ]
             }, {
-                name: 'عيادة الأطفال',
+                name: 'الأطفال',
                 data: [
                     [22, 15, 350], [28, 7, 90], [32, 11, 210], [40, 4, 80]
                 ]
             }, {
-                name: 'عيادة النساء والولادة',
+                name: 'النساء والولادة',
                 data: [
                     [26, 6, 180], [34, 10, 300], [42, 13, 390], [50, 8, 240]
                 ]
@@ -744,16 +744,16 @@
         // ================= DYNAMIC DATA GRID CLIENT-SIDE CONTROLLER =================
 
         const transactions = [
-            { id: '#TX-1092', name: 'محمد خالد العتيبي', doctor: 'د. أحمد سليمان - العيادة الباطنية', fee: '$120.00', paid: true, date: '2026-06-29' },
-            { id: '#TX-1093', name: 'سارة عبد الرحمن العلي', doctor: 'د. سارة العلي - عيادة الأطفال', fee: '$90.00', paid: true, date: '2026-06-29' },
-            { id: '#TX-1094', name: 'عبد الله عمر الفهيد', doctor: 'د. أحمد سليمان - العيادة الباطنية', fee: '$120.00', paid: false, date: '2026-06-28' },
-            { id: '#TX-1095', name: 'ريما محمد الشمري', doctor: 'د. سمر الياسين - عيادة النساء', fee: '$150.00', paid: true, date: '2026-06-28' },
-            { id: '#TX-1088', name: 'سعدون ناصر الجاسم', doctor: 'د. سمر الياسين - عيادة النساء', fee: '$150.00', paid: true, date: '2026-06-27' },
-            { id: '#TX-1089', name: 'فاطمة علي الكواري', doctor: 'د. سارة العلي - عيادة الأطفال', fee: '$90.00', paid: false, date: '2026-06-27' },
-            { id: '#TX-1090', name: 'يوسف محمد القحطاني', doctor: 'د. أحمد سليمان - العيادة الباطنية', fee: '$120.00', paid: true, date: '2026-06-26' },
-            { id: '#TX-1091', name: 'ليلى أحمد الحربي', doctor: 'د. سمر الياسين - عيادة النساء', fee: '$150.00', paid: true, date: '2026-06-26' },
-            { id: '#TX-1084', name: 'فهد فيصل السديري', doctor: 'د. أحمد سليمان - العيادة الباطنية', fee: '$120.00', paid: true, date: '2026-06-25' },
-            { id: '#TX-1085', name: 'منى إبراهيم الدوسري', doctor: 'د. سمر الياسين - عيادة النساء', fee: '$150.00', paid: true, date: '2026-06-25' }
+            { id: '#TX-1092', name: 'محمد خالد العتيبي', doctor: 'د. أحمد سليمان - الباطنية', fee: '$120.00', paid: true, date: '2026-06-29' },
+            { id: '#TX-1093', name: 'سارة عبد الرحمن العلي', doctor: 'د. سارة العلي - الأطفال', fee: '$90.00', paid: true, date: '2026-06-29' },
+            { id: '#TX-1094', name: 'عبد الله عمر الفهيد', doctor: 'د. أحمد سليمان - الباطنية', fee: '$120.00', paid: false, date: '2026-06-28' },
+            { id: '#TX-1095', name: 'ريما محمد الشمري', doctor: 'د. سمر الياسين - النساء', fee: '$150.00', paid: true, date: '2026-06-28' },
+            { id: '#TX-1088', name: 'سعدون ناصر الجاسم', doctor: 'د. سمر الياسين - النساء', fee: '$150.00', paid: true, date: '2026-06-27' },
+            { id: '#TX-1089', name: 'فاطمة علي الكواري', doctor: 'د. سارة العلي - الأطفال', fee: '$90.00', paid: false, date: '2026-06-27' },
+            { id: '#TX-1090', name: 'يوسف محمد القحطاني', doctor: 'د. أحمد سليمان - الباطنية', fee: '$120.00', paid: true, date: '2026-06-26' },
+            { id: '#TX-1091', name: 'ليلى أحمد الحربي', doctor: 'د. سمر الياسين - النساء', fee: '$150.00', paid: true, date: '2026-06-26' },
+            { id: '#TX-1084', name: 'فهد فيصل السديري', doctor: 'د. أحمد سليمان - الباطنية', fee: '$120.00', paid: true, date: '2026-06-25' },
+            { id: '#TX-1085', name: 'منى إبراهيم الدوسري', doctor: 'د. سمر الياسين - النساء', fee: '$150.00', paid: true, date: '2026-06-25' }
         ];
 
         let currentPage = 1;

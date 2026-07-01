@@ -11,7 +11,7 @@
         <div class="alert-box alert-warning">
             <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500 shrink-0"></i>
             <div>
-                <span class="font-bold">تنبيه النظام:</span> يوجد طبيب واحد متاح حالياً في عيادة الباطنية، يرجى تدقيق الطابور.
+                <span class="font-bold">تنبيه النظام:</span> يوجد طبيب واحد متاح حالياً في الباطنية، يرجى تدقيق الطابور.
             </div>
         </div>
     </div>
@@ -218,7 +218,7 @@
             <div class="flex justify-between items-center mb-6">
                 <div>
                     <h2 class="text-lg font-bold text-text-main">تحليل فئات المرضى وإنفاقهم</h2>
-                    <span class="text-xs text-text-main opacity-60">الزيارات والإنفاق حسب العمر والعيادة</span>
+                    <span class="text-xs text-text-main opacity-60">الزيارات والإنفاق حسب العمر والاستشارية</span>
                 </div>
                 <button class="w-8 h-8 rounded-full custom-card flex items-center justify-center text-text-main opacity-70">
                     <i data-lucide="scatter-chart" class="w-4 h-4"></i>
@@ -330,8 +330,8 @@
                     <div class="relative">
                         <select class="w-full custom-inset border-none focus:outline-none focus:ring-0 rounded-xl py-3 px-4 text-xs font-medium text-text-main">
                             <option>اختر الطبيب المعالج...</option>
-                            <option>د. أحمد سليمان - العيادة الباطنية</option>
-                            <option>د. سارة العلي - عيادة الأطفال</option>
+                            <option>د. أحمد سليمان - الباطنية</option>
+                            <option>د. سارة العلي - الأطفال</option>
                         </select>
                     </div>
                 </div>

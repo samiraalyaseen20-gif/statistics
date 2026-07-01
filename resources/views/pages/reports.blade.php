@@ -48,9 +48,9 @@
                 </div>
                 <!-- 2. Clinic Unit Select -->
                 <div class="flex flex-col gap-1">
-                    <label class="text-[9px] font-bold text-slate-400 font-['Tajawal']">العيادة الاستشارية:</label>
+                    <label class="text-[9px] font-bold text-slate-400 font-['Tajawal']">الاستشارية:</label>
                     <select id="filter-clinic-unit-id" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
-                        <option value="">كل العيادات</option>
+                        <option value="">كل الاستشاريات</option>
                         @foreach($filterClinicUnits as $unit)
                         <option value="{{ $unit->id }}" {{ isset($clinic_unit_id) && $clinic_unit_id == $unit->id ? 'selected' : '' }}>{{ $unit->name }}</option>
                         @endforeach

@@ -1,16 +1,16 @@
 {{-- PAGE: CLINICAL COMPARISON DASHBOARD (لوحة المفاضلة السريرية) --}}
 <section id="page-comparison" class="page-section space-y-6 hidden">
 
-    {{-- ══ Header Bar ══ --}}
+    {{-- ══ Header / Filter Bar ══ --}}
     <div class="custom-card p-4 rounded-2xl">
-        <div class="flex flex-wrap items-center justify-between gap-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-500">
                     <i data-lucide="git-compare" class="w-4 h-4"></i>
                 </div>
                 <div>
                     <h2 class="text-xs font-bold text-text-main">لوحة المفاضلة السريرية</h2>
-                    <p class="text-[9px] text-slate-400 mt-0.5">مقارنة تفاعلية ثنائية بين طبيبين أو فترتين زمنيتين مختلفتين</p>
+                    <p class="text-[9px] text-slate-400 mt-0.5">مقارنة تفاعلية شاملة بين طبيبين أو فترتين زمنيتين</p>
                 </div>
             </div>
             <button onclick="runComparison()" id="cmp-run-btn"
@@ -19,230 +19,367 @@
                 <span>تنفيذ المقارنة</span>
             </button>
         </div>
-    </div>
 
-    {{-- ══ Side-by-Side Filter Cards ══ --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-        {{-- Side A --}}
-        <div class="custom-card p-5 rounded-2xl border-2 border-blue-400/30">
-            <div class="flex items-center gap-2 mb-4">
-                <div class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-[9px] font-black">أ</div>
-                <h3 class="text-xs font-bold text-blue-600">الجهة الأولى (أ)</h3>
+        {{-- Filter Panels --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {{-- Side A --}}
+            <div class="bg-blue-500/5 border border-blue-400/20 rounded-xl p-4 space-y-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-[9px] font-black">أ</div>
+                    <span class="text-[10px] font-bold text-blue-600">الجهة الأولى (أ)</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">الطبيب:</label>
+                        <select id="cmp-doc-a" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
+                            <option value="">كل الأطباء</option>
+                            @foreach($filterDoctors as $doc)
+                            <option value="{{ $doc->id }}">{{ $doc->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">من:</label>
+                        <input type="date" id="cmp-from-a" value="{{ $start_date ?? '2026-05-01' }}"
+                            class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main custom-date-input">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
+                        <input type="date" id="cmp-to-a" value="{{ $end_date ?? '2026-05-31' }}"
+                            class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main custom-date-input">
+                    </div>
+                </div>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div class="flex flex-col gap-1">
-                    <label class="text-[9px] font-bold text-slate-400">الطبيب:</label>
-                    <select id="cmp-doc-a" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
-                        <option value="">كل الأطباء</option>
-                        @foreach($filterDoctors as $doc)
-                        <option value="{{ $doc->id }}">{{ $doc->name }}</option>
-                        @endforeach
-                    </select>
+            {{-- Side B --}}
+            <div class="bg-rose-500/5 border border-rose-400/20 rounded-xl p-4 space-y-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center text-white text-[9px] font-black">ب</div>
+                    <span class="text-[10px] font-bold text-rose-600">الجهة الثانية (ب)</span>
                 </div>
-                <div class="flex flex-col gap-1">
-                    <label class="text-[9px] font-bold text-slate-400">من تاريخ:</label>
-                    <input type="date" id="cmp-from-a" value="{{ $start_date ?? '2026-05-01' }}"
-                        class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
-                </div>
-                <div class="flex flex-col gap-1">
-                    <label class="text-[9px] font-bold text-slate-400">إلى تاريخ:</label>
-                    <input type="date" id="cmp-to-a" value="{{ $end_date ?? '2026-05-31' }}"
-                        class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
-                </div>
-            </div>
-        </div>
-
-        {{-- Side B --}}
-        <div class="custom-card p-5 rounded-2xl border-2 border-rose-400/30">
-            <div class="flex items-center gap-2 mb-4">
-                <div class="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center text-white text-[9px] font-black">ب</div>
-                <h3 class="text-xs font-bold text-rose-600">الجهة الثانية (ب)</h3>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div class="flex flex-col gap-1">
-                    <label class="text-[9px] font-bold text-slate-400">الطبيب:</label>
-                    <select id="cmp-doc-b" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
-                        <option value="">كل الأطباء</option>
-                        @foreach($filterDoctors as $doc)
-                        <option value="{{ $doc->id }}">{{ $doc->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="flex flex-col gap-1">
-                    <label class="text-[9px] font-bold text-slate-400">من تاريخ:</label>
-                    <input type="date" id="cmp-from-b" value="{{ $start_date ?? '2026-05-01' }}"
-                        class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
-                </div>
-                <div class="flex flex-col gap-1">
-                    <label class="text-[9px] font-bold text-slate-400">إلى تاريخ:</label>
-                    <input type="date" id="cmp-to-b" value="{{ $end_date ?? '2026-05-31' }}"
-                        class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">الطبيب:</label>
+                        <select id="cmp-doc-b" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
+                            <option value="">كل الأطباء</option>
+                            @foreach($filterDoctors as $doc)
+                            <option value="{{ $doc->id }}">{{ $doc->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">من:</label>
+                        <input type="date" id="cmp-from-b" value="{{ $start_date ?? '2026-05-01' }}"
+                            class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main custom-date-input">
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
+                        <input type="date" id="cmp-to-b" value="{{ $end_date ?? '2026-05-31' }}"
+                            class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main custom-date-input">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- ══ Loading Spinner ══ --}}
-    <div id="cmp-loading" class="hidden flex items-center justify-center py-16">
-        <div class="flex flex-col items-center gap-3">
-            <div class="w-10 h-10 border-4 border-violet-500/30 border-t-violet-500 rounded-full animate-spin"></div>
-            <p class="text-xs text-slate-400 font-bold">جاري تحليل البيانات...</p>
+    {{-- Loading Spinner --}}
+    <div id="cmp-loading" class="hidden">
+        <div class="flex flex-col items-center justify-center py-16 gap-3">
+            <div class="w-10 h-10 border-4 border-violet-400/30 border-t-violet-500 rounded-full animate-spin"></div>
+            <p class="text-xs text-slate-400 font-bold">جاري تحليل ومقارنة البيانات...</p>
         </div>
     </div>
 
-    {{-- ══ Results Area (hidden until first comparison) ══ --}}
+    {{-- ══ RESULTS (hidden until first run) ══ --}}
     <div id="cmp-results" class="hidden space-y-6">
 
-        {{-- 1. KPI Summary Cards --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {{-- Visits --}}
-            <div class="custom-card p-5 rounded-2xl space-y-3">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
-                    <span class="text-xs font-bold text-text-main">إجمالي الزيارات</span>
+        {{-- ═══ KPI Summary Row ═══ --}}
+        <div class="grid grid-cols-3 gap-4">
+            <div class="custom-card p-4 rounded-2xl text-center space-y-2">
+                <div class="flex items-center justify-center gap-1.5 mb-2">
+                    <i data-lucide="users" class="w-3.5 h-3.5 text-emerald-500"></i>
+                    <span class="text-[10px] font-bold text-text-main">الزيارات</span>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div class="bg-blue-50 rounded-xl p-3 text-center">
-                        <div class="text-[9px] font-bold text-blue-400 mb-1">الجهة (أ)</div>
-                        <div id="kpi-visits-a" class="text-xl font-black text-blue-600">—</div>
+                <div class="flex gap-2 justify-center">
+                    <div class="flex-1 bg-blue-50 rounded-lg py-2">
+                        <div class="text-[8px] text-blue-400 font-bold mb-0.5">أ</div>
+                        <div id="kpi-v-a" class="text-base font-black text-blue-600">—</div>
                     </div>
-                    <div class="bg-rose-50 rounded-xl p-3 text-center">
-                        <div class="text-[9px] font-bold text-rose-400 mb-1">الجهة (ب)</div>
-                        <div id="kpi-visits-b" class="text-xl font-black text-rose-600">—</div>
+                    <div class="flex-1 bg-rose-50 rounded-lg py-2">
+                        <div class="text-[8px] text-rose-400 font-bold mb-0.5">ب</div>
+                        <div id="kpi-v-b" class="text-base font-black text-rose-600">—</div>
                     </div>
                 </div>
-                <div id="kpi-visits-diff" class="text-center text-[10px] font-bold text-slate-400">—</div>
+                <div id="kpi-v-diff" class="text-[9px] font-bold text-slate-400">—</div>
             </div>
-            {{-- Eye Tests --}}
-            <div class="custom-card p-5 rounded-2xl space-y-3">
-                <div class="flex items-center gap-2">
+            <div class="custom-card p-4 rounded-2xl text-center space-y-2">
+                <div class="flex items-center justify-center gap-1.5 mb-2">
+                    <i data-lucide="eye" class="w-3.5 h-3.5 text-orange-500"></i>
+                    <span class="text-[10px] font-bold text-text-main">الفحوصات</span>
+                </div>
+                <div class="flex gap-2 justify-center">
+                    <div class="flex-1 bg-blue-50 rounded-lg py-2">
+                        <div class="text-[8px] text-blue-400 font-bold mb-0.5">أ</div>
+                        <div id="kpi-t-a" class="text-base font-black text-blue-600">—</div>
+                    </div>
+                    <div class="flex-1 bg-rose-50 rounded-lg py-2">
+                        <div class="text-[8px] text-rose-400 font-bold mb-0.5">ب</div>
+                        <div id="kpi-t-b" class="text-base font-black text-rose-600">—</div>
+                    </div>
+                </div>
+                <div id="kpi-t-diff" class="text-[9px] font-bold text-slate-400">—</div>
+            </div>
+            <div class="custom-card p-4 rounded-2xl text-center space-y-2">
+                <div class="flex items-center justify-center gap-1.5 mb-2">
+                    <i data-lucide="scissors" class="w-3.5 h-3.5 text-rose-500"></i>
+                    <span class="text-[10px] font-bold text-text-main">العمليات</span>
+                </div>
+                <div class="flex gap-2 justify-center">
+                    <div class="flex-1 bg-blue-50 rounded-lg py-2">
+                        <div class="text-[8px] text-blue-400 font-bold mb-0.5">أ</div>
+                        <div id="kpi-s-a" class="text-base font-black text-blue-600">—</div>
+                    </div>
+                    <div class="flex-1 bg-rose-50 rounded-lg py-2">
+                        <div class="text-[8px] text-rose-400 font-bold mb-0.5">ب</div>
+                        <div id="kpi-s-b" class="text-base font-black text-rose-600">—</div>
+                    </div>
+                </div>
+                <div id="kpi-s-diff" class="text-[9px] font-bold text-slate-400">—</div>
+            </div>
+        </div>
+
+        {{-- ═══ جدول 1: الاستشاريات ═══ --}}
+        <div class="custom-card p-6 rounded-2xl">
+            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
+                جدول (1): مقارنة أعداد المراجعين في الاستشاريات
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                    <div class="cmp-side-label-a mb-3"></div>
+                    <div class="flex justify-center"><svg id="cmp-svg-1-a" viewBox="0 0 350 200" class="w-full max-w-[320px] h-auto overflow-visible"></svg></div>
+                    <div class="overflow-x-auto mt-3">
+                        <table class="custom-table text-xs w-full"><thead><tr><th>الوحدة</th><th class="text-center">العدد</th></tr></thead>
+                        <tbody id="cmp-tbl-1-a"><tr><td colspan="2" class="text-center text-slate-300 py-4 text-[10px]">في انتظار البيانات...</td></tr></tbody></table>
+                    </div>
+                </div>
+                <div>
+                    <div class="cmp-side-label-b mb-3"></div>
+                    <div class="flex justify-center"><svg id="cmp-svg-1-b" viewBox="0 0 350 200" class="w-full max-w-[320px] h-auto overflow-visible"></svg></div>
+                    <div class="overflow-x-auto mt-3">
+                        <table class="custom-table text-xs w-full"><thead><tr><th>الوحدة</th><th class="text-center">العدد</th></tr></thead>
+                        <tbody id="cmp-tbl-1-b"><tr><td colspan="2" class="text-center text-slate-300 py-4 text-[10px]">في انتظار البيانات...</td></tr></tbody></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ═══ جدول 2: مراجعو كل طبيب ═══ --}}
+        <div class="custom-card p-6 rounded-2xl">
+            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
+                جدول (2): مقارنة مراجعي الاستشارية لكل طبيب اختصاص
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                    <div class="cmp-side-label-a mb-2"></div>
+                    <div class="w-full overflow-x-auto py-2">
+                        <svg id="cmp-svg-2-a" viewBox="0 0 900 240" class="w-full min-w-[600px] h-[240px] overflow-visible"></svg>
+                    </div>
+                </div>
+                <div>
+                    <div class="cmp-side-label-b mb-2"></div>
+                    <div class="w-full overflow-x-auto py-2">
+                        <svg id="cmp-svg-2-b" viewBox="0 0 900 240" class="w-full min-w-[600px] h-[240px] overflow-visible"></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ═══ جداول 3 & 4: التوزيع الجغرافي ═══ --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {{-- داخل العراق --}}
+            <div class="custom-card p-6 rounded-2xl">
+                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                    <i data-lucide="flag" class="w-4 h-4 text-sky-500"></i>
+                    جدول (3): مقارنة التوزيع الجغرافي داخل العراق
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div>
+                        <div class="cmp-side-label-a mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-3-a" viewBox="0 0 450 180" class="w-full min-w-[300px] h-[180px] overflow-visible"></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="cmp-side-label-b mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-3-b" viewBox="0 0 450 180" class="w-full min-w-[300px] h-[180px] overflow-visible"></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- خارج العراق --}}
+            <div class="custom-card p-6 rounded-2xl">
+                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                    <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
+                    جدول (4): مقارنة المراجعين من خارج العراق
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div>
+                        <div class="cmp-side-label-a mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-4-a" viewBox="0 0 450 180" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="cmp-side-label-b mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-4-b" viewBox="0 0 450 180" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ═══ جداول 5 & 6: الفحوصات والتحاليل ═══ --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {{-- فحوصات بصرية --}}
+            <div class="custom-card p-6 rounded-2xl">
+                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                     <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
-                    <span class="text-xs font-bold text-text-main">إجمالي الفحوصات البصرية</span>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div class="bg-blue-50 rounded-xl p-3 text-center">
-                        <div class="text-[9px] font-bold text-blue-400 mb-1">الجهة (أ)</div>
-                        <div id="kpi-tests-a" class="text-xl font-black text-blue-600">—</div>
+                    جدول (5): مقارنة الفحوصات البصرية والساندة
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div>
+                        <div class="cmp-side-label-a mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-5-a" viewBox="0 0 450 200" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
+                        </div>
                     </div>
-                    <div class="bg-rose-50 rounded-xl p-3 text-center">
-                        <div class="text-[9px] font-bold text-rose-400 mb-1">الجهة (ب)</div>
-                        <div id="kpi-tests-b" class="text-xl font-black text-rose-600">—</div>
+                    <div>
+                        <div class="cmp-side-label-b mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-5-b" viewBox="0 0 450 200" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
+                        </div>
                     </div>
                 </div>
-                <div id="kpi-tests-diff" class="text-center text-[10px] font-bold text-slate-400">—</div>
             </div>
-            {{-- Surgeries --}}
-            <div class="custom-card p-5 rounded-2xl space-y-3">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
-                    <span class="text-xs font-bold text-text-main">إجمالي العمليات الجراحية</span>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div class="bg-blue-50 rounded-xl p-3 text-center">
-                        <div class="text-[9px] font-bold text-blue-400 mb-1">الجهة (أ)</div>
-                        <div id="kpi-surgs-a" class="text-xl font-black text-blue-600">—</div>
+            {{-- تحاليل مختبرية --}}
+            <div class="custom-card p-6 rounded-2xl">
+                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                    <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
+                    جدول (6): مقارنة التحاليل المختبرية
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div>
+                        <div class="cmp-side-label-a mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-6-a" viewBox="0 0 450 180" class="w-full min-w-[300px] h-[180px] overflow-visible"></svg>
+                        </div>
                     </div>
-                    <div class="bg-rose-50 rounded-xl p-3 text-center">
-                        <div class="text-[9px] font-bold text-rose-400 mb-1">الجهة (ب)</div>
-                        <div id="kpi-surgs-b" class="text-xl font-black text-rose-600">—</div>
+                    <div>
+                        <div class="cmp-side-label-b mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-6-b" viewBox="0 0 450 180" class="w-full min-w-[300px] h-[180px] overflow-visible"></svg>
+                        </div>
                     </div>
                 </div>
-                <div id="kpi-surgs-diff" class="text-center text-[10px] font-bold text-slate-400">—</div>
             </div>
         </div>
 
-        {{-- 2. Surgical Operations Detail Side-by-Side Charts --}}
+        {{-- ═══ جدول 7: تصنيف العمليات ═══ --}}
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                <i data-lucide="bar-chart-horizontal" class="w-4 h-4 text-violet-500"></i>
-                مقارنة تفصيلية للعمليات الجراحية (الجهة أ مقابل الجهة ب)
+                <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
+                جدول (7): مقارنة أعداد وتصنيف العمليات الجراحية للعيون
             </h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-                        <span id="cmp-label-a" class="text-[10px] font-bold text-blue-600">الجهة (أ)</span>
+                    <div class="cmp-side-label-a mb-3"></div>
+                    <div class="flex justify-center">
+                        <svg id="cmp-svg-7-a" viewBox="0 0 520 220" class="w-full max-w-[480px] h-[220px] overflow-visible"></svg>
                     </div>
-                    <div class="w-full overflow-x-auto">
-                        <svg id="cmp-svg-surgs-a" viewBox="0 0 450 50" class="w-full h-auto overflow-visible"></svg>
+                    <div class="overflow-x-auto mt-3">
+                        <table class="custom-table text-xs"><thead><tr><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
+                        <tbody id="cmp-tbl-7-a"><tr><td colspan="2" class="text-center text-slate-300 py-4 text-[10px]">—</td></tr></tbody></table>
                     </div>
                 </div>
                 <div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-3 h-3 rounded-full bg-rose-500"></div>
-                        <span id="cmp-label-b" class="text-[10px] font-bold text-rose-600">الجهة (ب)</span>
+                    <div class="cmp-side-label-b mb-3"></div>
+                    <div class="flex justify-center">
+                        <svg id="cmp-svg-7-b" viewBox="0 0 520 220" class="w-full max-w-[480px] h-[220px] overflow-visible"></svg>
                     </div>
-                    <div class="w-full overflow-x-auto">
-                        <svg id="cmp-svg-surgs-b" viewBox="0 0 450 50" class="w-full h-auto overflow-visible"></svg>
+                    <div class="overflow-x-auto mt-3">
+                        <table class="custom-table text-xs"><thead><tr><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
+                        <tbody id="cmp-tbl-7-b"><tr><td colspan="2" class="text-center text-slate-300 py-4 text-[10px]">—</td></tr></tbody></table>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- 3. Eye Tests Detail Side-by-Side Charts --}}
+        {{-- ═══ جدول 10: عمليات كل طبيب (إجمالي) ═══ --}}
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
-                مقارنة تفصيلية للفحوصات البصرية (الجهة أ مقابل الجهة ب)
+                <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
+                جدول (10): مقارنة إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص
             </h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-                        <span class="text-[10px] font-bold text-blue-600">الجهة (أ)</span>
-                    </div>
-                    <div class="w-full overflow-x-auto">
-                        <svg id="cmp-svg-tests-a" viewBox="0 0 450 50" class="w-full h-auto overflow-visible"></svg>
+                    <div class="cmp-side-label-a mb-2"></div>
+                    <div class="w-full overflow-x-auto py-2">
+                        <svg id="cmp-svg-10-a" viewBox="0 0 900 240" class="w-full min-w-[600px] h-[240px] overflow-visible"></svg>
                     </div>
                 </div>
                 <div>
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-3 h-3 rounded-full bg-rose-500"></div>
-                        <span class="text-[10px] font-bold text-rose-600">الجهة (ب)</span>
-                    </div>
-                    <div class="w-full overflow-x-auto">
-                        <svg id="cmp-svg-tests-b" viewBox="0 0 450 50" class="w-full h-auto overflow-visible"></svg>
+                    <div class="cmp-side-label-b mb-2"></div>
+                    <div class="w-full overflow-x-auto py-2">
+                        <svg id="cmp-svg-10-b" viewBox="0 0 900 240" class="w-full min-w-[600px] h-[240px] overflow-visible"></svg>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- 4. Side-by-Side Data Tables --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {{-- Table A --}}
-            <div class="custom-card p-5 rounded-2xl">
-                <div class="flex items-center gap-2 mb-3">
-                    <div class="w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center text-white text-[8px] font-black">أ</div>
-                    <span id="tbl-label-a" class="text-xs font-bold text-blue-600">الجهة (أ) — العمليات التفصيلية</span>
+        {{-- ═══ الإحصائية التفصيلية للعمليات ═══ --}}
+        <div class="custom-card p-6 rounded-2xl">
+            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                <i data-lucide="user-cog" class="w-4 h-4 text-violet-500"></i>
+                مقارنة الإحصائية التفصيلية للعمليات الجراحية
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {{-- Side A Detail --}}
+                <div>
+                    <div class="cmp-side-label-a mb-3"></div>
+                    <div class="flex flex-col gap-4">
+                        <div class="w-full overflow-x-auto">
+                            <svg id="cmp-svg-detail-a" viewBox="0 0 450 50" class="w-full h-auto overflow-visible"></svg>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="custom-table text-xs w-full">
+                                <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
+                                <tbody id="cmp-tbl-detail-a"><tr><td colspan="4" class="text-center text-slate-300 py-6 text-[10px]">—</td></tr></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="custom-table text-xs w-full">
-                        <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
-                        <tbody id="cmp-tbl-surgs-a">
-                            <tr><td colspan="4" class="text-center text-slate-300 py-6 text-[10px]">لم يتم تنفيذ المقارنة بعد</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            {{-- Table B --}}
-            <div class="custom-card p-5 rounded-2xl">
-                <div class="flex items-center gap-2 mb-3">
-                    <div class="w-4 h-4 rounded-full bg-rose-500 flex items-center justify-center text-white text-[8px] font-black">ب</div>
-                    <span id="tbl-label-b" class="text-xs font-bold text-rose-600">الجهة (ب) — العمليات التفصيلية</span>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="custom-table text-xs w-full">
-                        <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
-                        <tbody id="cmp-tbl-surgs-b">
-                            <tr><td colspan="4" class="text-center text-slate-300 py-6 text-[10px]">لم يتم تنفيذ المقارنة بعد</td></tr>
-                        </tbody>
-                    </table>
+                {{-- Side B Detail --}}
+                <div>
+                    <div class="cmp-side-label-b mb-3"></div>
+                    <div class="flex flex-col gap-4">
+                        <div class="w-full overflow-x-auto">
+                            <svg id="cmp-svg-detail-b" viewBox="0 0 450 50" class="w-full h-auto overflow-visible"></svg>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="custom-table text-xs w-full">
+                                <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
+                                <tbody id="cmp-tbl-detail-b"><tr><td colspan="4" class="text-center text-slate-300 py-6 text-[10px]">—</td></tr></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        {{-- 5. Footer Signature --}}
+        {{-- ═══ Footer ═══ --}}
         <div class="custom-card p-5 rounded-2xl">
             <div class="grid grid-cols-2 gap-4 text-center text-xs text-text-main">
                 <div class="border-l border-slate-200/20 pl-4 space-y-1.5">
@@ -262,15 +399,28 @@
 
 </section>
 
+<style>
+.cmp-side-badge-a {
+    display:inline-flex; align-items:center; gap:5px;
+    background:#3b82f6; color:#fff; font-size:9px; font-weight:800;
+    padding:2px 10px; border-radius:20px; font-family:'Outfit',sans-serif;
+}
+.cmp-side-badge-b {
+    display:inline-flex; align-items:center; gap:5px;
+    background:#f43f5e; color:#fff; font-size:9px; font-weight:800;
+    padding:2px 10px; border-radius:20px; font-family:'Outfit',sans-serif;
+}
+</style>
+
 <script>
-// ═══════════════════════════════════════════════════
-//  COMPARISON PAGE ENGINE
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════
+//  COMPARISON PAGE ENGINE — Full Mirror of Reports Page
+// ═══════════════════════════════════════════════════════════════
 
-const CMP_COLORS_A = ['#3b82f6','#0ea5e9','#06b6d4','#38bdf8','#93c5fd','#bfdbfe'];
-const CMP_COLORS_B = ['#f43f5e','#e11d48','#fb7185','#fda4af','#fecdd3','#ffe4e6'];
+const CMP_COLORS_A = ['#3b82f6','#0ea5e9','#06b6d4','#38bdf8','#60a5fa','#93c5fd','#bfdbfe','#2563eb','#1d4ed8','#1e40af','#1e3a8a','#172554'];
+const CMP_COLORS_B = ['#f43f5e','#e11d48','#fb7185','#fda4af','#f87171','#fca5a5','#ef4444','#dc2626','#b91c1c','#991b1b','#7f1d1d','#450a0a'];
 
-const CMP_BADGE_CLASSES = {
+const CMP_BADGE = {
     'خاصة':       'bg-purple-100 text-purple-700',
     'فوق الكبرى': 'bg-rose-100 text-rose-700',
     'كبرى':       'bg-orange-100 text-orange-700',
@@ -281,54 +431,291 @@ const CMP_BADGE_CLASSES = {
     'ليزر':       'bg-cyan-100 text-cyan-700',
 };
 
-function buildSideLabel(docId, fromDate, toDate) {
-    const docSelect = docId
-        ? document.getElementById('cmp-doc-a')  // placeholder, resolved below
-        : null;
-    return `${fromDate} → ${toDate}`;
+// ── Helpers ──────────────────────────────────────────────────
+function cmpDiff(elId, a, b) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const d = Number(a) - Number(b);
+    if (d === 0) { el.textContent = 'متساويان'; el.className = 'text-[9px] font-bold text-slate-400'; }
+    else if (d > 0) { el.textContent = `(أ) أعلى بـ ${Math.abs(d).toLocaleString()}`; el.className = 'text-[9px] font-bold text-blue-500'; }
+    else { el.textContent = `(ب) أعلى بـ ${Math.abs(d).toLocaleString()}`; el.className = 'text-[9px] font-bold text-rose-500'; }
 }
 
+// Inject side labels into all .cmp-side-label-a and .cmp-side-label-b placeholders
+function cmpInjectLabels(labelA, labelB) {
+    document.querySelectorAll('.cmp-side-label-a').forEach(el => {
+        el.innerHTML = `<span class="cmp-side-badge-a">● ${labelA}</span>`;
+    });
+    document.querySelectorAll('.cmp-side-label-b').forEach(el => {
+        el.innerHTML = `<span class="cmp-side-badge-b">● ${labelB}</span>`;
+    });
+}
+
+// ── Draw Branching Arrow (Table 1 consultations) ──────────────
+function cmpDrawBranching(svgId, items, totalVal, colors) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    svg.innerHTML = '';
+
+    const val1 = items[0]?.total || 0;
+    const val2 = items[1]?.total || 0;
+    const label1 = items[0]?.unit || '—';
+    const label2 = items[1]?.unit || '—';
+    const cx = 175;
+    const cy = 180;
+    const col1 = colors[0] || '#3b82f6';
+    const col2 = colors[1] || '#ec4899';
+
+    const leftPath = document.createElementNS("http://www.w3.org/2000/svg","path");
+    leftPath.setAttribute('d',`M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+    leftPath.setAttribute('fill', col1);
+    svg.appendChild(leftPath);
+
+    const rightPath = document.createElementNS("http://www.w3.org/2000/svg","path");
+    rightPath.setAttribute('d',`M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+    rightPath.setAttribute('fill', col2);
+    rightPath.setAttribute('transform',`translate(${cx},0) scale(-1,1) translate(-${cx},0)`);
+    svg.appendChild(rightPath);
+
+    const totalStr = totalVal.toLocaleString();
+    const tpW = Math.max(36, totalStr.length * 6.5 + 10);
+    const tp = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    tp.setAttribute('x', cx - tpW/2); tp.setAttribute('y', cy-12);
+    tp.setAttribute('width', tpW); tp.setAttribute('height',16);
+    tp.setAttribute('rx','8'); tp.setAttribute('fill','#334155');
+    svg.appendChild(tp);
+    const tt = document.createElementNS("http://www.w3.org/2000/svg","text");
+    tt.setAttribute('x',cx); tt.setAttribute('y',cy-0.5);
+    tt.setAttribute('font-family','Outfit'); tt.setAttribute('font-size','10px');
+    tt.setAttribute('font-weight','black'); tt.setAttribute('fill','#ffffff');
+    tt.setAttribute('text-anchor','middle'); tt.textContent = totalStr;
+    svg.appendChild(tt);
+
+    [[val1, label1, cx-80, col1],[val2, label2, cx+80, col2]].forEach(([v,l,bx,bc]) => {
+        const s = `${l}: ${v.toLocaleString()}`;
+        const bw = s.length*6+12;
+        const b = document.createElementNS("http://www.w3.org/2000/svg","rect");
+        b.setAttribute('x', bx-bw/2); b.setAttribute('y',cy-145);
+        b.setAttribute('width',bw); b.setAttribute('height',18);
+        b.setAttribute('rx','9'); b.setAttribute('fill',bc);
+        svg.appendChild(b);
+        const bt = document.createElementNS("http://www.w3.org/2000/svg","text");
+        bt.setAttribute('x',bx); bt.setAttribute('y',cy-133);
+        bt.setAttribute('font-family','Tajawal'); bt.setAttribute('font-size','9px');
+        bt.setAttribute('font-weight','bold'); bt.setAttribute('fill','#ffffff');
+        bt.setAttribute('text-anchor','middle'); bt.textContent = s;
+        svg.appendChild(bt);
+    });
+}
+
+// ── Draw Vertical Arrows ──────────────────────────────────────
+function cmpDrawVertical(svgId, values, labels, colors) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    svg.innerHTML = '';
+    if (!values.length) { cmpDrawEmptySvg(svgId, 'لا بيانات'); return; }
+
+    const maxVal = Math.max(...values, 1);
+    const n = values.length;
+    const viewBoxStr = svg.getAttribute('viewBox') || "0 0 900 240";
+    const width  = parseInt(viewBoxStr.split(' ')[2]);
+    const height = parseInt(viewBoxStr.split(' ')[3]);
+    const marginL = 40, marginR = 40;
+    const availableW = width - marginL - marginR;
+    const spacing = n > 1 ? availableW / (n-1) : availableW;
+    const floorY = n > 6 ? height-50 : height-30;
+
+    const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute('x1',marginL-15); line.setAttribute('y1',floorY);
+    line.setAttribute('x2',width-marginR+15); line.setAttribute('y2',floorY);
+    line.setAttribute('stroke','#cbd5e1'); line.setAttribute('stroke-width','1.5');
+    svg.appendChild(line);
+
+    values.forEach((val, i) => {
+        const x = marginL + i * spacing;
+        const color = colors[i % colors.length];
+        const minH = 20, maxH = floorY - 55;
+        const scaleVal = maxVal > 1 ? Math.sqrt(val) / Math.sqrt(maxVal) : 1;
+        const H = minH + (maxH - minH) * scaleVal;
+
+        const g = document.createElementNS("http://www.w3.org/2000/svg","g");
+        g.setAttribute('class','arrow-grp cursor-pointer');
+
+        const dashed = document.createElementNS("http://www.w3.org/2000/svg","line");
+        dashed.setAttribute('x1',x); dashed.setAttribute('y1',floorY-H-12);
+        dashed.setAttribute('x2',x); dashed.setAttribute('y2',floorY-H-26);
+        dashed.setAttribute('stroke',color); dashed.setAttribute('stroke-width','1');
+        dashed.setAttribute('stroke-dasharray','2 2');
+        g.appendChild(dashed);
+
+        const valStr = val.toLocaleString();
+        const pillW = Math.max(20, valStr.length*6+6);
+        const pill = document.createElementNS("http://www.w3.org/2000/svg","rect");
+        pill.setAttribute('x',x-pillW/2); pill.setAttribute('y',floorY-H-36);
+        pill.setAttribute('width',pillW); pill.setAttribute('height',14);
+        pill.setAttribute('rx','7'); pill.setAttribute('fill',color);
+        g.appendChild(pill);
+
+        const tVal = document.createElementNS("http://www.w3.org/2000/svg","text");
+        tVal.setAttribute('x',x); tVal.setAttribute('y',floorY-H-25.5);
+        tVal.setAttribute('font-family','Outfit'); tVal.setAttribute('font-size','8.5px');
+        tVal.setAttribute('font-weight','bold'); tVal.setAttribute('fill','#ffffff');
+        tVal.setAttribute('text-anchor','middle'); tVal.textContent = valStr;
+        g.appendChild(tVal);
+
+        const body = document.createElementNS("http://www.w3.org/2000/svg","rect");
+        body.setAttribute('x',x-8); body.setAttribute('y',floorY-H);
+        body.setAttribute('width','16'); body.setAttribute('height',H);
+        body.setAttribute('fill',color); body.setAttribute('rx','1');
+        g.appendChild(body);
+
+        const head = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+        head.setAttribute('points',`${x-12},${floorY-H} ${x+12},${floorY-H} ${x},${floorY-H-10}`);
+        head.setAttribute('fill',color);
+        g.appendChild(head);
+
+        const label = document.createElementNS("http://www.w3.org/2000/svg","text");
+        label.setAttribute('x', x-4);
+        label.setAttribute('font-family','Tajawal'); label.setAttribute('font-weight','bold');
+        label.setAttribute('fill','#64748b');
+
+        let labelText = labels[i] || '';
+        if (n > 6) {
+            label.setAttribute('y', floorY+10);
+            label.setAttribute('font-size','8.5px');
+            label.setAttribute('text-anchor','end');
+            label.setAttribute('transform',`rotate(28, ${x-4}, ${floorY+10})`);
+            if (labelText.length > 25) labelText = labelText.substring(0,23)+'..';
+        } else {
+            label.setAttribute('x', x);
+            label.setAttribute('y', floorY+16);
+            label.setAttribute('font-size','9.5px');
+            label.setAttribute('text-anchor','middle');
+            if (labelText.length > 30) labelText = labelText.substring(0,27)+'..';
+        }
+        label.textContent = labelText;
+        g.appendChild(label);
+
+        g.style.transitionDelay = `${i*30}ms`;
+        svg.appendChild(g);
+        setTimeout(() => g.classList.add('show'), 50);
+    });
+}
+
+// ── Draw Horizontal Chevrons ──────────────────────────────────
+function cmpDrawChevrons(svgId, values, labels, colors) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    svg.innerHTML = '';
+    if (!values.length) { cmpDrawEmptySvg(svgId, 'لا بيانات'); return; }
+
+    const n = values.length;
+    const spacing = 42, marginT = 16, marginB = 16;
+    const dynamicHeight = marginT + marginB + (n-1)*spacing + 22;
+    svg.setAttribute('viewBox', `0 0 450 ${dynamicHeight}`);
+    svg.style.height = `${dynamicHeight}px`;
+
+    const maxVal = Math.max(...values, 1);
+    const startX = 435, chartStartX = 10;
+    const maxL = startX - chartStartX - 45;
+
+    values.forEach((val, i) => {
+        const labelY = marginT + i*spacing;
+        const barY = labelY + 16;
+        const color = colors[i % colors.length];
+        const L = 15 + maxL * (val / maxVal);
+        const endX = startX - L;
+
+        const g = document.createElementNS("http://www.w3.org/2000/svg","g");
+        g.setAttribute('class','arrow-grp cursor-pointer');
+
+        const label = document.createElementNS("http://www.w3.org/2000/svg","text");
+        label.setAttribute('x',startX); label.setAttribute('y',labelY+4);
+        label.setAttribute('font-family','Tajawal'); label.setAttribute('font-size','10.5px');
+        label.setAttribute('font-weight','bold'); label.setAttribute('fill','#475569');
+        label.setAttribute('text-anchor','end');
+        label.textContent = labels[i] || '';
+        g.appendChild(label);
+
+        const body = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+        body.setAttribute('points',`${startX},${barY-6} ${endX+6},${barY-6} ${endX},${barY} ${endX+6},${barY+6} ${startX},${barY+6}`);
+        body.setAttribute('fill',color);
+        g.appendChild(body);
+
+        const valStr = val.toLocaleString();
+        const pillW = Math.max(18, valStr.length*6+6);
+        const pill = document.createElementNS("http://www.w3.org/2000/svg","rect");
+        pill.setAttribute('x',endX-pillW-6); pill.setAttribute('y',barY-7);
+        pill.setAttribute('width',pillW); pill.setAttribute('height',14);
+        pill.setAttribute('rx','7'); pill.setAttribute('fill',color);
+        g.appendChild(pill);
+
+        const tVal = document.createElementNS("http://www.w3.org/2000/svg","text");
+        tVal.setAttribute('x',endX-pillW/2-6); tVal.setAttribute('y',barY+4);
+        tVal.setAttribute('font-family','Outfit'); tVal.setAttribute('font-size','8.5px');
+        tVal.setAttribute('font-weight','bold'); tVal.setAttribute('fill','#ffffff');
+        tVal.setAttribute('text-anchor','middle'); tVal.textContent = valStr;
+        g.appendChild(tVal);
+
+        g.style.transitionDelay = `${i*25}ms`;
+        svg.appendChild(g);
+        setTimeout(() => g.classList.add('show'), 50);
+    });
+}
+
+function cmpDrawEmptySvg(svgId, msg) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    svg.setAttribute('viewBox','0 0 450 60');
+    svg.style.height = '60px';
+    svg.innerHTML = `<text x="225" y="35" font-family="Tajawal" font-size="11" font-weight="bold" fill="#94a3b8" text-anchor="middle">${msg}</text>`;
+}
+
+function cmpRenderTable(tbodyId, rows, cols, emptyMsg) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="${cols}" class="text-center text-slate-300 py-4 text-[10px]">${emptyMsg || 'لا بيانات'}</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = rows;
+}
+
+// ── Main run function ─────────────────────────────────────────
 async function runComparison() {
-    const docAId    = document.getElementById('cmp-doc-a').value;
-    const fromA     = document.getElementById('cmp-from-a').value;
-    const toA       = document.getElementById('cmp-to-a').value;
-    const docBId    = document.getElementById('cmp-doc-b').value;
-    const fromB     = document.getElementById('cmp-from-b').value;
-    const toB       = document.getElementById('cmp-to-b').value;
+    const docAId = document.getElementById('cmp-doc-a').value;
+    const fromA  = document.getElementById('cmp-from-a').value;
+    const toA    = document.getElementById('cmp-to-a').value;
+    const docBId = document.getElementById('cmp-doc-b').value;
+    const fromB  = document.getElementById('cmp-from-b').value;
+    const toB    = document.getElementById('cmp-to-b').value;
 
     if (!fromA || !toA || !fromB || !toB) {
-        showToast('يرجى تحديد تواريخ المقارنة لكلتا الجهتين', 'error');
+        showToast('يرجى تحديد التواريخ لكلتا الجهتين', 'error');
         return;
     }
 
-    // Build human labels for A & B
-    const selectA = document.getElementById('cmp-doc-a');
-    const selectB = document.getElementById('cmp-doc-b');
-    const docNameA = selectA.options[selectA.selectedIndex].text;
-    const docNameB = selectB.options[selectB.selectedIndex].text;
+    const selA = document.getElementById('cmp-doc-a');
+    const selB = document.getElementById('cmp-doc-b');
+    const docNameA = selA.options[selA.selectedIndex].text;
+    const docNameB = selB.options[selB.selectedIndex].text;
     const labelA = `${docNameA} (${fromA} : ${toA})`;
     const labelB = `${docNameB} (${fromB} : ${toB})`;
 
-    // Show loading
     document.getElementById('cmp-loading').classList.remove('hidden');
     document.getElementById('cmp-results').classList.add('hidden');
     document.getElementById('cmp-run-btn').disabled = true;
 
     try {
         const params = new URLSearchParams({
-            doctor_id_a: docAId,
-            start_date_a: fromA,
-            end_date_a: toA,
-            doctor_id_b: docBId,
-            start_date_b: fromB,
-            end_date_b: toB,
+            doctor_id_a: docAId, start_date_a: fromA, end_date_a: toA,
+            doctor_id_b: docBId, start_date_b: fromB, end_date_b: toB,
         });
-
         const data = await fetch(`/api/comparison-data?${params}`, {
             headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content }
         }).then(r => r.json());
 
-        renderComparisonResults(data, labelA, labelB);
+        renderAllCmpCharts(data, labelA, labelB);
     } catch(e) {
         showToast('فشل جلب البيانات، يرجى المحاولة مجدداً', 'error');
         console.error(e);
@@ -338,198 +725,107 @@ async function runComparison() {
     }
 }
 
-function renderComparisonResults(data, labelA, labelB) {
+function renderAllCmpCharts(data, labelA, labelB) {
     const A = data.side_a;
     const B = data.side_b;
 
-    // ─── Update labels ───
-    document.getElementById('cmp-label-a').textContent  = labelA;
-    document.getElementById('cmp-label-b').textContent  = labelB;
-    document.getElementById('tbl-label-a').textContent  = `${labelA} — العمليات التفصيلية`;
-    document.getElementById('tbl-label-b').textContent  = `${labelB} — العمليات التفصيلية`;
+    // ─ Inject labels ─
+    cmpInjectLabels(labelA, labelB);
 
-    // ─── KPI Cards ───
-    function setKpiDiff(elId, valA, valB) {
-        const el = document.getElementById(elId);
-        if (!el) return;
-        const diff = valA - valB;
-        if (diff === 0) {
-            el.textContent = 'متساويان';
-            el.className = 'text-center text-[10px] font-bold text-slate-400';
-        } else if (diff > 0) {
-            el.textContent = `الجهة (أ) أعلى بـ ${Math.abs(diff).toLocaleString()}`;
-            el.className = 'text-center text-[10px] font-bold text-blue-500';
-        } else {
-            el.textContent = `الجهة (ب) أعلى بـ ${Math.abs(diff).toLocaleString()}`;
-            el.className = 'text-center text-[10px] font-bold text-rose-500';
-        }
-    }
+    // ─ KPI ─
+    document.getElementById('kpi-v-a').textContent = Number(A.total_visits  || 0).toLocaleString();
+    document.getElementById('kpi-v-b').textContent = Number(B.total_visits  || 0).toLocaleString();
+    cmpDiff('kpi-v-diff', A.total_visits, B.total_visits);
 
-    document.getElementById('kpi-visits-a').textContent = (A.total_visits || 0).toLocaleString();
-    document.getElementById('kpi-visits-b').textContent = (B.total_visits || 0).toLocaleString();
-    setKpiDiff('kpi-visits-diff', A.total_visits, B.total_visits);
+    document.getElementById('kpi-t-a').textContent = Number(A.total_eye_tests || 0).toLocaleString();
+    document.getElementById('kpi-t-b').textContent = Number(B.total_eye_tests || 0).toLocaleString();
+    cmpDiff('kpi-t-diff', A.total_eye_tests, B.total_eye_tests);
 
-    document.getElementById('kpi-tests-a').textContent = (A.total_eye_tests || 0).toLocaleString();
-    document.getElementById('kpi-tests-b').textContent = (B.total_eye_tests || 0).toLocaleString();
-    setKpiDiff('kpi-tests-diff', A.total_eye_tests, B.total_eye_tests);
+    document.getElementById('kpi-s-a').textContent = Number(A.total_surgeries || 0).toLocaleString();
+    document.getElementById('kpi-s-b').textContent = Number(B.total_surgeries || 0).toLocaleString();
+    cmpDiff('kpi-s-diff', A.total_surgeries, B.total_surgeries);
 
-    document.getElementById('kpi-surgs-a').textContent = (A.total_surgeries || 0).toLocaleString();
-    document.getElementById('kpi-surgs-b').textContent = (B.total_surgeries || 0).toLocaleString();
-    setKpiDiff('kpi-surgs-diff', A.total_surgeries, B.total_surgeries);
+    // ─ جدول 1: الاستشاريات ─
+    const consA = A.consultations || [];
+    const consB = B.consultations || [];
+    cmpDrawBranching('cmp-svg-1-a', consA, A.total_visits, CMP_COLORS_A);
+    cmpDrawBranching('cmp-svg-1-b', consB, B.total_visits, CMP_COLORS_B);
+    cmpRenderTable('cmp-tbl-1-a', consA.map((r,i) => `<tr class="table-row"><td>${r.unit}</td><td class="text-center font-bold">${r.total.toLocaleString()}</td></tr>`).join('') + (consA.length ? `<tr class="table-row font-extrabold text-theme-pink"><td class="text-center">الإجمالي</td><td class="text-center">${A.total_visits.toLocaleString()}</td></tr>` : ''), 2, 'لا بيانات');
+    cmpRenderTable('cmp-tbl-1-b', consB.map((r,i) => `<tr class="table-row"><td>${r.unit}</td><td class="text-center font-bold">${r.total.toLocaleString()}</td></tr>`).join('') + (consB.length ? `<tr class="table-row font-extrabold text-theme-pink"><td class="text-center">الإجمالي</td><td class="text-center">${B.total_visits.toLocaleString()}</td></tr>` : ''), 2, 'لا بيانات');
 
-    // ─── Surgeries Detail Charts ───
-    const surgsA = A.surgeries_detail || [];
-    const surgsB = B.surgeries_detail || [];
+    // ─ جدول 2: مراجعو كل طبيب ─
+    const vdA = A.visits_by_doctor || [];
+    const vdB = B.visits_by_doctor || [];
+    cmpDrawVertical('cmp-svg-2-a', vdA.map(r => r.total), vdA.map(r => r.doctor.replace('د. ','')), CMP_COLORS_A);
+    cmpDrawVertical('cmp-svg-2-b', vdB.map(r => r.total), vdB.map(r => r.doctor.replace('د. ','')), CMP_COLORS_B);
 
-    if (surgsA.length > 0) {
-        cmpDrawHorizontalChevrons('cmp-svg-surgs-a', surgsA.map(s => s.total), surgsA.map(s => s.op), CMP_COLORS_A);
-    } else {
-        cmpDrawEmpty('cmp-svg-surgs-a', 'لا توجد عمليات للجهة (أ)');
-    }
-    if (surgsB.length > 0) {
-        cmpDrawHorizontalChevrons('cmp-svg-surgs-b', surgsB.map(s => s.total), surgsB.map(s => s.op), CMP_COLORS_B);
-    } else {
-        cmpDrawEmpty('cmp-svg-surgs-b', 'لا توجد عمليات للجهة (ب)');
-    }
+    // ─ جدول 3: داخل العراق ─
+    const gvA = A.visits_by_gov || [];
+    const gvB = B.visits_by_gov || [];
+    cmpDrawVertical('cmp-svg-3-a', gvA.map(r => r.total), gvA.map(r => r.gov), ['#0284c7','#0369a1','#075985','#0c4a6e','#082f49']);
+    cmpDrawVertical('cmp-svg-3-b', gvB.map(r => r.total), gvB.map(r => r.gov), ['#e11d48','#be123c','#9f1239','#881337','#4c0519']);
 
-    // ─── Eye Tests Detail Charts ───
-    const testsA = A.eye_tests_detail || [];
-    const testsB = B.eye_tests_detail || [];
+    // ─ جدول 4: خارج العراق ─
+    const cvA = A.visits_by_country || [];
+    const cvB = B.visits_by_country || [];
+    cmpDrawChevrons('cmp-svg-4-a', cvA.map(r => r.total), cvA.map(r => r.country), CMP_COLORS_A);
+    cmpDrawChevrons('cmp-svg-4-b', cvB.map(r => r.total), cvB.map(r => r.country), CMP_COLORS_B);
 
-    if (testsA.length > 0) {
-        cmpDrawHorizontalChevrons('cmp-svg-tests-a', testsA.map(t => t.total), testsA.map(t => t.type), CMP_COLORS_A);
-    } else {
-        cmpDrawEmpty('cmp-svg-tests-a', 'لا توجد فحوصات للجهة (أ)');
-    }
-    if (testsB.length > 0) {
-        cmpDrawHorizontalChevrons('cmp-svg-tests-b', testsB.map(t => t.total), testsB.map(t => t.type), CMP_COLORS_B);
-    } else {
-        cmpDrawEmpty('cmp-svg-tests-b', 'لا توجد فحوصات للجهة (ب)');
-    }
+    // ─ جدول 5: الفحوصات البصرية ─
+    const etA = A.eye_tests_by_type || [];
+    const etB = B.eye_tests_by_type || [];
+    cmpDrawChevrons('cmp-svg-5-a', etA.map(r => r.total), etA.map(r => r.type), ['#f97316','#ea580c','#c2410c','#9a3412','#7c2d12']);
+    cmpDrawChevrons('cmp-svg-5-b', etB.map(r => r.total), etB.map(r => r.type), ['#e11d48','#be123c','#9f1239','#881337','#4c0519']);
 
-    // ─── Surgeries Tables ───
-    cmpRenderSurgTable('cmp-tbl-surgs-a', surgsA);
-    cmpRenderSurgTable('cmp-tbl-surgs-b', surgsB);
+    // ─ جدول 6: التحاليل المختبرية ─
+    const ltA = A.lab_tests_by_type || [];
+    const ltB = B.lab_tests_by_type || [];
+    cmpDrawVertical('cmp-svg-6-a', ltA.map(r => r.total), ltA.map(r => r.type), ['#3b82f6','#6366f1','#8b5cf6','#a855f7','#d946ef']);
+    cmpDrawVertical('cmp-svg-6-b', ltB.map(r => r.total), ltB.map(r => r.type), ['#f43f5e','#e11d48','#fb923c','#f59e0b','#84cc16']);
 
-    // ─── Show results ───
-    document.getElementById('cmp-results').classList.remove('hidden');
+    // ─ جدول 7: تصنيف العمليات ─
+    const scA = A.surgeries_by_cat || [];
+    const scB = B.surgeries_by_cat || [];
+    const catOrder = ['صغرى','ليزر','كبرى','خاصة','فوق الكبرى','وسطى'];
+    const catColors = ['#0ea5e9','#db2777','#d97706','#475569','#6d28d9','#e11d48'];
+    const scAOrdered = catOrder.map(c => scA.find(r => r.classification === c)?.total || 0);
+    const scBOrdered = catOrder.map(c => scB.find(r => r.classification === c)?.total || 0);
+    cmpDrawVertical('cmp-svg-7-a', scAOrdered, catOrder, catColors);
+    cmpDrawVertical('cmp-svg-7-b', scBOrdered, catOrder, catColors);
+    cmpRenderTable('cmp-tbl-7-a', scA.map(r => `<tr class="table-row"><td>${r.classification}</td><td class="text-center font-bold text-rose-600">${r.total.toLocaleString()}</td></tr>`).join(''), 2, 'لا عمليات');
+    cmpRenderTable('cmp-tbl-7-b', scB.map(r => `<tr class="table-row"><td>${r.classification}</td><td class="text-center font-bold text-rose-600">${r.total.toLocaleString()}</td></tr>`).join(''), 2, 'لا عمليات');
 
-    // Re-init lucide icons (for newly injected icons)
-    setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 100);
-}
+    // ─ جدول 10: عمليات كل طبيب (إجمالي) ─
+    const sdA = A.surgs_by_doctor || [];
+    const sdB = B.surgs_by_doctor || [];
+    cmpDrawVertical('cmp-svg-10-a', sdA.map(r => r.total), sdA.map(r => r.doctor.replace('د. ','')), CMP_COLORS_A);
+    cmpDrawVertical('cmp-svg-10-b', sdB.map(r => r.total), sdB.map(r => r.doctor.replace('د. ','')), CMP_COLORS_B);
 
-// Reuse the same draw2DFlatHorizontalChevrons engine from reports page
-function cmpDrawHorizontalChevrons(svgId, values, labels, colors) {
-    const svg = document.getElementById(svgId);
-    if (!svg) return;
-    svg.innerHTML = '';
+    // ─ التفصيلي (combined_ops) ─
+    const coA = A.combined_ops || [];
+    const coB = B.combined_ops || [];
+    cmpDrawChevrons('cmp-svg-detail-a', coA.map(r => r.total), coA.map(r => r.op), CMP_COLORS_A);
+    cmpDrawChevrons('cmp-svg-detail-b', coB.map(r => r.total), coB.map(r => r.op), CMP_COLORS_B);
 
-    const n = values.length;
-    if (n === 0) return;
-
-    const spacing = 42;
-    const marginT = 16;
-    const marginB = 16;
-    const dynamicHeight = marginT + marginB + (n - 1) * spacing + 22;
-
-    svg.setAttribute('viewBox', `0 0 450 ${dynamicHeight}`);
-    svg.style.height = `${dynamicHeight}px`;
-
-    const maxVal = Math.max(...values, 1);
-    const startX = 435;
-    const chartStartX = 10;
-    const maxL = startX - chartStartX - 45;
-
-    values.forEach((val, i) => {
-        const labelY = marginT + i * spacing;
-        const barY = labelY + 16;
-        const color = colors[i % colors.length];
-
-        const scaleVal = maxVal > 0 ? val / maxVal : 0;
-        const L = 15 + maxL * scaleVal;
-        const endX = startX - L;
-
-        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        g.setAttribute('class', 'arrow-grp cursor-pointer');
-
-        // Label above bar
-        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        label.setAttribute('x', startX);
-        label.setAttribute('y', labelY + 4);
-        label.setAttribute('font-family', 'Tajawal');
-        label.setAttribute('font-size', '10.5px');
-        label.setAttribute('font-weight', 'bold');
-        label.setAttribute('fill', '#475569');
-        label.setAttribute('text-anchor', 'end');
-        label.textContent = labels[i] || '';
-        g.appendChild(label);
-
-        // Chevron body
-        const body = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        body.setAttribute('points', `${startX},${barY-6} ${endX+6},${barY-6} ${endX},${barY} ${endX+6},${barY+6} ${startX},${barY+6}`);
-        body.setAttribute('fill', color);
-        g.appendChild(body);
-
-        // Value pill
-        const valStr = val.toLocaleString();
-        const pillW = Math.max(18, valStr.length * 6 + 6);
-        const pillH = 14;
-
-        const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        pill.setAttribute('x', endX - pillW - 6);
-        pill.setAttribute('y', barY - pillH / 2);
-        pill.setAttribute('width', pillW);
-        pill.setAttribute('height', pillH);
-        pill.setAttribute('rx', '7');
-        pill.setAttribute('fill', color);
-        g.appendChild(pill);
-
-        const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tVal.setAttribute('x', endX - pillW / 2 - 6);
-        tVal.setAttribute('y', barY + 4);
-        tVal.setAttribute('font-family', 'Outfit');
-        tVal.setAttribute('font-size', '8.5px');
-        tVal.setAttribute('font-weight', 'bold');
-        tVal.setAttribute('fill', '#ffffff');
-        tVal.setAttribute('text-anchor', 'middle');
-        tVal.textContent = valStr;
-        g.appendChild(tVal);
-
-        g.style.transitionDelay = `${i * 25}ms`;
-        svg.appendChild(g);
-        setTimeout(() => g.classList.add('show'), 50);
-    });
-}
-
-function cmpDrawEmpty(svgId, message) {
-    const svg = document.getElementById(svgId);
-    if (!svg) return;
-    svg.setAttribute('viewBox', '0 0 450 60');
-    svg.style.height = '60px';
-    svg.innerHTML = `<text x="225" y="35" font-family="Tajawal" font-size="11" font-weight="bold" fill="#94a3b8" text-anchor="middle">${message}</text>`;
-}
-
-function cmpRenderSurgTable(tbodyId, surgeries) {
-    const tbody = document.getElementById(tbodyId);
-    if (!tbody) return;
-    if (!surgeries || surgeries.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="text-center text-slate-300 py-6 text-[10px]">لا توجد عمليات مسجلة في هذه الفترة</td></tr>`;
-        return;
-    }
-    tbody.innerHTML = surgeries.map((op, i) => {
-        const cls = CMP_BADGE_CLASSES[op.classification] || 'bg-slate-100 text-slate-600';
+    const detailRowHtml = (ops) => ops.map((op,i) => {
+        const cls = CMP_BADGE[op.classification] || 'bg-slate-100 text-slate-600';
         return `<tr class="table-row">
-            <td class="w-8 text-center">${i + 1}</td>
+            <td class="w-8 text-center">${i+1}</td>
             <td>${op.op}</td>
             <td><span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${cls}">${op.classification}</span></td>
             <td class="text-center font-bold text-violet-600 text-xs">${op.total.toLocaleString()}</td>
         </tr>`;
     }).join('');
+    cmpRenderTable('cmp-tbl-detail-a', detailRowHtml(coA), 4, 'لا عمليات مسجلة');
+    cmpRenderTable('cmp-tbl-detail-b', detailRowHtml(coB), 4, 'لا عمليات مسجلة');
+
+    // ─ Show results ─
+    document.getElementById('cmp-results').classList.remove('hidden');
+    setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 100);
 }
 
-// Page init hook (called by navigateToPage in main_screen)
+// Page init hook
 window.initComparisonPage = function() {
-    // Re-init lucide icons when page is shown
     setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 100);
 };
 </script>
