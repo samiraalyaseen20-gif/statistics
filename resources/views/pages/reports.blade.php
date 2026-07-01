@@ -149,7 +149,7 @@
                 جدول (4): المراجعون من خارج العراق
             </h3>
             <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-4" viewBox="0 0 450 180" class="w-full min-w-[400px] h-[180px] overflow-visible"></svg>
+                <svg id="svg-report-4" viewBox="0 0 450 180" class="w-full min-w-[400px] h-auto overflow-visible"></svg>
             </div>
         </div>
     </div>
@@ -163,7 +163,7 @@
                 جدول (5): الفحوصات البصرية والساندة
             </h3>
             <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-5" viewBox="0 0 450 200" class="w-full min-w-[420px] h-[200px] overflow-visible"></svg>
+                <svg id="svg-report-5" viewBox="0 0 450 200" class="w-full min-w-[420px] h-auto overflow-visible"></svg>
             </div>
         </div>
         <!-- Lab Tests (Flat Arrow Columns) -->
@@ -331,7 +331,7 @@
             </div>
             <div class="flex flex-col lg:flex-row gap-6 items-start">
                 <div class="w-full lg:w-2/5 flex-shrink-0">
-                    <svg id="svg-doc-{{ $id }}" viewBox="0 0 450 200" class="w-full h-[200px] overflow-visible"></svg>
+                    <svg id="svg-doc-{{ $id }}" viewBox="0 0 450 200" class="w-full h-auto overflow-visible"></svg>
                 </div>
                 <div class="w-full lg:w-3/5">
                     <table class="custom-table text-xs">
@@ -620,45 +620,71 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
     const svg = document.getElementById(svgId);
     if (!svg) return;
     svg.innerHTML = '';
-    const maxVal = Math.max(...values, 1);
-    const n = values.length;
-    const viewBoxStr = svg.getAttribute('viewBox') || "0 0 450 200";
-    const width = parseInt(viewBoxStr.split(' ')[2]);
-    const height = parseInt(viewBoxStr.split(' ')[3]);
     
+    const n = values.length;
+    if (n === 0) return;
+
+    // Calculate dynamic height based on number of items (prevent overlaps)
+    const spacing = 24;
     const marginT = 18;
     const marginB = 18;
-    const availableH = height - marginT - marginB;
-    const spacing = n > 1 ? availableH / (n - 1) : availableH;
+    const dynamicHeight = marginT + marginB + (n - 1) * spacing;
     
+    svg.setAttribute('viewBox', `0 0 450 ${dynamicHeight}`);
+    svg.style.height = `${dynamicHeight}px`;
+
+    const maxVal = Math.max(...values, 1);
     const colors = presetColors || ['#db2777', '#d97706', '#10b981', '#475569', '#3b82f6', '#8b5cf6'];
     
+    // Column coordinates configuration
+    const labelEndX = 150; // Right boundary of label column
+    const chartStartX = 160; // Left boundary of chart column
+    const chartEndX = 410; // Right boundary of chart column (leaving margin)
+    const maxL = chartEndX - chartStartX - 45; // Max length of chevron body, leaving room for pill
+
     values.forEach((val, i) => {
         const y = marginT + i * spacing;
         const color = colors[i % colors.length];
         
-        const startX = width - 20;
-        const maxL = width - 130;
         const scaleVal = maxVal > 0 ? val / maxVal : 0;
-        const L = 30 + maxL * scaleVal;
-        const endX = startX - L;
+        const L = 15 + maxL * scaleVal;
+        const endX = chartStartX + L;
         
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         g.setAttribute('class', 'arrow-grp cursor-pointer');
 
-        // Draw body of chevron
+        // 1. Draw Label on the Left (dark text, fully visible)
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute('x', labelEndX);
+        label.setAttribute('y', y + 3);
+        label.setAttribute('font-family', 'Tajawal');
+        label.setAttribute('font-size', '9px');
+        label.setAttribute('font-weight', 'bold');
+        label.setAttribute('fill', '#334155');
+        label.setAttribute('text-anchor', 'end');
+        
+        // Truncate label if it is too long (over 24 chars) to prevent overflow
+        let labelText = labels[i] || '';
+        if (labelText.length > 25) {
+            labelText = labelText.substring(0, 23) + '..';
+        }
+        label.textContent = labelText;
+        g.appendChild(label);
+
+        // 2. Draw Chevron Body pointing to the right
         const body = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        body.setAttribute('points', `${startX},${y-8} ${endX+8},${y-8} ${endX},${y} ${endX+8},${y+8} ${startX},${y+8}`);
+        // Chevron shape: LTR pointing right
+        body.setAttribute('points', `${chartStartX},${y-7} ${endX-6},${y-7} ${endX},${y} ${endX-6},${y+7} ${chartStartX},${y+7}`);
         body.setAttribute('fill', color);
         g.appendChild(body);
 
-        // Value dynamic pill
+        // 3. Draw Value pill to the right of the chevron
         const valStr = val.toLocaleString();
         const pillW = Math.max(18, valStr.length * 6 + 6);
         const pillH = 14;
 
         const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        pill.setAttribute('x', endX - pillW - 6);
+        pill.setAttribute('x', endX + 6);
         pill.setAttribute('y', y - pillH / 2);
         pill.setAttribute('width', pillW);
         pill.setAttribute('height', pillH);
@@ -667,7 +693,7 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         g.appendChild(pill);
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tVal.setAttribute('x', endX - pillW / 2 - 6);
+        tVal.setAttribute('x', endX + 6 + pillW / 2);
         tVal.setAttribute('y', y + 4);
         tVal.setAttribute('font-family', 'Outfit');
         tVal.setAttribute('font-size', '8.5px');
@@ -676,18 +702,6 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         tVal.setAttribute('text-anchor', 'middle');
         tVal.textContent = valStr;
         g.appendChild(tVal);
-
-        // Chevron label
-        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        label.setAttribute('x', startX - 12);
-        label.setAttribute('y', y + 3);
-        label.setAttribute('font-family', 'Tajawal');
-        label.setAttribute('font-size', '8.5px');
-        label.setAttribute('font-weight', 'bold');
-        label.setAttribute('fill', '#ffffff');
-        label.setAttribute('text-anchor', 'end');
-        label.textContent = labels[i];
-        g.appendChild(label);
 
         g.style.transitionDelay = `${i * 30}ms`;
         svg.appendChild(g);
