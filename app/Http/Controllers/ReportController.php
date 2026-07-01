@@ -172,4 +172,68 @@ class ReportController extends Controller
             'filterDoctors','filterClinicUnits','filterSectors','filterGovernorates','filterCountries'
         ));
     }
+
+    public function comparisonData(Request $r)
+    {
+        $getSideStats = function($docId, $startDate, $endDate) {
+            $startDate = $startDate ?: '2026-05-01';
+            $endDate   = $endDate ?: '2026-05-31';
+
+            $visitsQuery = Visit::whereBetween('visit_date', [$startDate, $endDate]);
+            if ($docId) $visitsQuery->where('doctor_id', $docId);
+
+            $surgeriesQuery = Surgery::whereBetween('op_date', [$startDate, $endDate]);
+            if ($docId) $surgeriesQuery->where('doctor_id', $docId);
+
+            $eyeTestsQuery = EyeTest::whereBetween('test_date', [$startDate, $endDate]);
+            if ($docId) {
+                $eyeTestsQuery->whereHas('visit', function($q) use ($docId) {
+                    $q->where('doctor_id', $docId);
+                });
+            }
+
+            $totalVisits = (clone $visitsQuery)->count();
+            $totalEyeTests = (clone $eyeTestsQuery)->count();
+            $totalSurgeries = (clone $surgeriesQuery)->count();
+
+            $surgeriesDetail = (clone $surgeriesQuery)
+                ->join('operation_names', 'surgeries.operation_name_id', '=', 'operation_names.id')
+                ->select('operation_names.name as op', 'operation_names.classification', DB::raw('count(*) as total'))
+                ->groupBy('operation_names.name', 'operation_names.classification')
+                ->orderByDesc('total')
+                ->get();
+
+            $eyeTestsDetail = (clone $eyeTestsQuery)
+                ->join('test_types', 'eye_tests.test_type_id', '=', 'test_types.id')
+                ->select('test_types.name as type', DB::raw('count(*) as total'))
+                ->groupBy('test_types.name')
+                ->orderByDesc('total')
+                ->get();
+
+            return [
+                'total_visits' => $totalVisits,
+                'total_eye_tests' => $totalEyeTests,
+                'total_surgeries' => $totalSurgeries,
+                'surgeries_detail' => $surgeriesDetail,
+                'eye_tests_detail' => $eyeTestsDetail,
+            ];
+        };
+
+        $sideA = $getSideStats(
+            $r->get('doctor_id_a'),
+            $r->get('start_date_a'),
+            $r->get('end_date_a')
+        );
+
+        $sideB = $getSideStats(
+            $r->get('doctor_id_b'),
+            $r->get('start_date_b'),
+            $r->get('end_date_b')
+        );
+
+        return response()->json([
+            'side_a' => $sideA,
+            'side_b' => $sideB,
+        ]);
+    }
 }

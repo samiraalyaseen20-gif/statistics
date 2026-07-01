@@ -16,6 +16,7 @@ Route::middleware('auth')->group(function () {
 
     // Main SPA view (passes report data)
     Route::get('/', [ReportController::class, 'index']);
+    Route::get('api/comparison-data', [ReportController::class, 'comparisonData']);
 
     // ── Lookups JSON API ──────────────────────────────────────────
     Route::prefix('api')->group(function () {

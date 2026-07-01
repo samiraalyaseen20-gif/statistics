@@ -101,6 +101,12 @@
                 </div>
 
                 <div class="border-t border-slate-200/10 my-2"></div>
+                <button onclick="navigateToPage('comparison')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-comparison">
+                    <i data-lucide="git-compare" class="w-3.5 h-3.5 shrink-0 text-violet-500"></i>
+                    <span>المفاضلة السريرية</span>
+                </button>
+
+                <div class="border-t border-slate-200/10 my-2"></div>
                 <button onclick="navigateToPage('settings')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-settings">
                     <i data-lucide="settings" class="w-3.5 h-3.5 shrink-0"></i>
                     <span>الإعدادات</span>
@@ -138,6 +144,7 @@
             <!-- CONTENT AREA (يسكرول هنا فقط) -->
             <main class="flex-1 overflow-y-auto p-4">
                 @include('pages.reports')
+                @include('pages.comparison')
                 @include('pages.doctors')
                 @include('pages.countries')
                 @include('pages.governorates')
@@ -950,6 +957,7 @@
             const titles = {
                 dashboard: 'الرئيسية',
                 reports: 'التقارير',
+                comparison: 'لوحة المفاضلة السريرية',
                 doctors: 'الأطباء',
                 countries: 'الدول',
                 governorates: 'المحافظات',
@@ -979,6 +987,7 @@
             if (pageId === 'sectors' && typeof window.initSectorsPage === 'function') window.initSectorsPage();
             if (pageId === 'clinic_units' && typeof window.initClinicUnitsPage === 'function') window.initClinicUnitsPage();
             if (pageId === 'lab_test_types' && typeof window.initLabTestTypesPage === 'function') window.initLabTestTypesPage();
+            if (pageId === 'comparison' && typeof window.initComparisonPage === 'function') window.initComparisonPage();
 
             setTimeout(() => {
                 if (window.lucide) lucide.createIcons();
