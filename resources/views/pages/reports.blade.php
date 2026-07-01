@@ -245,11 +245,11 @@ if (file_exists(base_path('iraq.svg'))) {
                         <th rowspan="2" class="text-theme-pink font-extrabold">المجموع</th>
                     </tr>
                     <tr>
-                        <th>ص</th><th>خ</th><th>ع</th>
-                        <th>ص</th><th>خ</th><th>ع</th>
-                        <th>ص</th><th>خ</th><th>ع</th>
-                        <th>ص</th><th>خ</th><th>ع</th>
-                        <th>ص</th><th>خ</th><th>ع</th>
+                        <th>صحة</th><th>عتبة خاص</th><th>عتبة عام</th>
+                        <th>صحة</th><th>عتبة خاص</th><th>عتبة عام</th>
+                        <th>صحة</th><th>عتبة خاص</th><th>عتبة عام</th>
+                        <th>صحة</th><th>عتبة خاص</th><th>عتبة عام</th>
+                        <th>صحة</th><th>عتبة خاص</th><th>عتبة عام</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -446,21 +446,7 @@ if (file_exists(base_path('iraq.svg'))) {
         @endforeach
     </div>
 
-    <!-- 8. التواقيع والاعتماد (تذييل الصفحة) -->
-    <div class="custom-card p-5 rounded-2xl">
-        <div class="grid grid-cols-2 gap-4 text-center text-xs text-text-main">
-            <div class="border-l border-slate-200/20 pl-4 space-y-1.5">
-                <p class="font-bold opacity-60">المهندسة</p>
-                <p class="font-extrabold text-sm">سميره علي ياسين</p>
-                <p class="opacity-50 text-[10px]">مسؤول الإحصاء الطبي</p>
-            </div>
-            <div class="pr-4 space-y-1.5">
-                <p class="font-bold opacity-60">الطبيب الاستشاري</p>
-                <p class="font-extrabold text-sm">د. عدي عبد الحسين السالمي</p>
-                <p class="opacity-50 text-[10px]">مدير مركز السيدة زينب(ع) الجراحي التخصصي للعيون</p>
-            </div>
-        </div>
-    </div>
+
 
 </section>
 

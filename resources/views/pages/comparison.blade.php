@@ -19,7 +19,6 @@ if (file_exists(base_path('iraq.svg'))) {
                 </div>
                 <div>
                     <h2 class="text-xs font-bold text-text-main">لوحة المفاضلة السريرية</h2>
-                    <p class="text-[9px] text-slate-400 mt-0.5">مقارنة تفاعلية شاملة بين طبيبين أو فترتين زمنيتين</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
@@ -405,21 +404,7 @@ if (file_exists(base_path('iraq.svg'))) {
             </div>
         </div>
 
-        {{-- ═══ Footer ═══ --}}
-        <div class="custom-card p-5 rounded-2xl">
-            <div class="grid grid-cols-2 gap-4 text-center text-xs text-text-main">
-                <div class="border-l border-slate-200/20 pl-4 space-y-1.5">
-                    <p class="font-bold opacity-60">المهندسة</p>
-                    <p class="font-extrabold text-sm">سميره علي ياسين</p>
-                    <p class="opacity-50 text-[10px]">مسؤول الإحصاء الطبي</p>
-                </div>
-                <div class="pr-4 space-y-1.5">
-                    <p class="font-bold opacity-60">الطبيب الاستشاري</p>
-                    <p class="font-extrabold text-sm">د. عدي عبد الحسين السالمي</p>
-                    <p class="opacity-50 text-[10px]">مدير مركز السيدة زينب(ع) الجراحي التخصصي للعيون</p>
-                </div>
-            </div>
-        </div>
+
 
     </div>{{-- end #cmp-results --}}
 

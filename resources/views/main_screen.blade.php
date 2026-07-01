@@ -952,6 +952,9 @@
         // ================= SPA VIEW STATE MANAGER =================
 
         function navigateToPage(pageId) {
+            // تحديث الهاش في الرابط لحفظ حالة الصفحة عند إعادة التحميل (Reload)
+            window.location.hash = pageId;
+
             // Hide all pages
             document.querySelectorAll('.page-section').forEach(sec => {
                 sec.classList.add('hidden');
