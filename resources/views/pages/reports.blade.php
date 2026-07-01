@@ -454,6 +454,24 @@ if (file_exists(base_path('iraq.svg'))) {
 </style>
 
 <script>
+// ── Scroll-triggered chart animation registry ──────────────────
+const _svgDrawFns = new Map();
+const _svgScrollObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const fn = _svgDrawFns.get(entry.target.id);
+            if (fn) fn();
+        }
+    });
+}, { threshold: 0.15 });
+
+function watchChart(svgId, drawFn) {
+    _svgDrawFns.set(svgId, drawFn);
+    const el = document.getElementById(svgId);
+    if (el) _svgScrollObserver.observe(el);
+}
+// ───────────────────────────────────────────────────────────────
+
 // Toggle Stats panel for active doctor
 function showDocStats(id) {
     document.querySelectorAll('.stats-panel').forEach(p => p.classList.add('hidden'));
@@ -575,10 +593,10 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
     const marginR = 40;
     const availableW = width - marginL - marginR;
     const spacing = n > 1 ? availableW / (n - 1) : availableW;
-    
+
     // Dynamic floor to allow more space for rotated labels when items count is large
     const floorY = n > 6 ? height - 50 : height - 30;
-    
+
     // Baseline
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line.setAttribute('x1', marginL - 15);
@@ -594,16 +612,66 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
     values.forEach((val, i) => {
         const x = marginL + i * spacing;
         const color = colors[i % colors.length];
-        
+
         const minH = 20;
-        const maxH = floorY - 55; // Ensure arrows scale within boundaries
+        const maxH = floorY - 55;
         const scaleVal = maxVal > 1 ? Math.sqrt(val) / Math.sqrt(maxVal) : 1;
         const H = minH + (maxH - minH) * scaleVal;
-        
-        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        g.setAttribute('class', 'arrow-grp cursor-pointer');
 
-        // Dashed connector
+        // stagger delay per bar
+        const startDelay = (i * 80) + 'ms';
+        const dur = '0.65s';
+
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+        // ── Arrow Body (grows from floorY upwards) ──
+        const body = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        body.setAttribute('x', x - 8);
+        body.setAttribute('y', floorY - H);
+        body.setAttribute('width', '16');
+        body.setAttribute('height', H);
+        body.setAttribute('fill', color);
+        body.setAttribute('rx', '1');
+
+        // scaleY from 0→1 anchored at bottom (floorY)
+        const animBody = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
+        animBody.setAttribute('attributeName', 'transform');
+        animBody.setAttribute('type', 'scale');
+        animBody.setAttribute('additive', 'sum');
+        animBody.setAttribute('from', `1 0`);
+        animBody.setAttribute('to', `1 1`);
+        animBody.setAttribute('dur', dur);
+        animBody.setAttribute('begin', startDelay);
+        animBody.setAttribute('fill', 'freeze');
+        animBody.setAttribute('calcMode', 'spline');
+        animBody.setAttribute('keySplines', '0.25 0.46 0.45 0.94');
+        body.appendChild(animBody);
+
+        // anchor transform-origin at bottom of the bar
+        body.setAttribute('transform', `translate(0, ${floorY}) scale(1, 0) translate(0, ${-floorY})`);
+        const animOrigin = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
+        animOrigin.setAttribute('attributeName', 'transform');
+        animOrigin.setAttribute('type', 'translate');
+        animOrigin.setAttribute('from', `0 0`);
+        animOrigin.setAttribute('to', `0 0`);
+        animOrigin.setAttribute('dur', dur);
+        animOrigin.setAttribute('begin', startDelay);
+        animOrigin.setAttribute('fill', 'freeze');
+        body.setAttribute('transform-origin', `${x} ${floorY}`);
+        body.style.transformOrigin = `${x}px ${floorY}px`;
+        body.style.transform = 'scaleY(0)';
+        body.style.transition = `transform ${dur} cubic-bezier(0.25,0.46,0.45,0.94) ${startDelay}`;
+        g.appendChild(body);
+
+        // ── Arrow Head ──
+        const head = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        head.setAttribute('points', `${x-12},${floorY-H} ${x+12},${floorY-H} ${x},${floorY-H-10}`);
+        head.setAttribute('fill', color);
+        head.style.opacity = '0';
+        head.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+        g.appendChild(head);
+
+        // ── Dashed Connector ──
         const dashed = document.createElementNS("http://www.w3.org/2000/svg", "line");
         dashed.setAttribute('x1', x);
         dashed.setAttribute('y1', floorY - H - 12);
@@ -612,9 +680,11 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
         dashed.setAttribute('stroke', color);
         dashed.setAttribute('stroke-width', '1');
         dashed.setAttribute('stroke-dasharray', '2 2');
+        dashed.style.opacity = '0';
+        dashed.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(dashed);
 
-        // Value dynamic pill
+        // ── Value Pill ──
         const valStr = val.toLocaleString();
         const pillW = Math.max(20, valStr.length * 6 + 6);
         const pillH = 14;
@@ -626,6 +696,8 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
         pill.setAttribute('height', pillH);
         pill.setAttribute('rx', '7');
         pill.setAttribute('fill', color);
+        pill.style.opacity = '0';
+        pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(pill);
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -637,25 +709,11 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
         tVal.setAttribute('fill', '#ffffff');
         tVal.setAttribute('text-anchor', 'middle');
         tVal.textContent = valStr;
+        tVal.style.opacity = '0';
+        tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(tVal);
 
-        // Rect Arrow Body
-        const body = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        body.setAttribute('x', x - 8);
-        body.setAttribute('y', floorY - H);
-        body.setAttribute('width', '16');
-        body.setAttribute('height', H);
-        body.setAttribute('fill', color);
-        body.setAttribute('rx', '1');
-        g.appendChild(body);
-
-        // Pointed Cap
-        const head = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        head.setAttribute('points', `${x-12},${floorY-H} ${x+12},${floorY-H} ${x},${floorY-H-10}`);
-        head.setAttribute('fill', color);
-        g.appendChild(head);
-
-        // Label Text (Dynamic angle & positioning to display full names)
+        // ── Label ──
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
         label.setAttribute('x', x - 4);
         label.setAttribute('font-family', 'Tajawal');
@@ -664,35 +722,34 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
 
         let labelText = labels[i] || '';
         if (n > 6) {
-            // Rotate labels clockwise by 28 degrees so they slope downwards (away from the chart columns)
             label.setAttribute('y', floorY + 10);
             label.setAttribute('font-size', '8.5px');
             label.setAttribute('text-anchor', 'end');
             label.setAttribute('transform', `rotate(28, ${x - 4}, ${floorY + 10})`);
-            if (labelText.length > 25) {
-                labelText = labelText.substring(0, 23) + '..';
-            }
+            if (labelText.length > 25) labelText = labelText.substring(0, 23) + '..';
         } else {
-            // Keep horizontal for sparse columns
             label.setAttribute('x', x);
             label.setAttribute('y', floorY + 16);
             label.setAttribute('font-size', '9.5px');
             label.setAttribute('text-anchor', 'middle');
-            if (labelText.length > 30) {
-                labelText = labelText.substring(0, 27) + '..';
-            }
+            if (labelText.length > 30) labelText = labelText.substring(0, 27) + '..';
         }
         label.textContent = labelText;
         g.appendChild(label);
 
-        g.style.transitionDelay = `${i * 30}ms`;
         svg.appendChild(g);
 
-        setTimeout(() => {
-            g.classList.add('show');
-        }, 50);
+        // trigger CSS animation on next paint
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            body.style.transform = 'scaleY(1)';
+            head.style.opacity  = '1';
+            dashed.style.opacity = '1';
+            pill.style.opacity  = '1';
+            tVal.style.opacity  = '1';
+        }));
     });
 }
+
 
 // 3. Horizontal Flat Chevron Lists (Premium Labels-Above-Bars Layout)
 function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null) {
@@ -722,17 +779,19 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
 
     values.forEach((val, i) => {
         const labelY = marginT + i * spacing;
-        const barY = labelY + 16; // Bar is drawn 16px below the label
+        const barY = labelY + 16;
         const color = colors[i % colors.length];
-        
+
         const scaleVal = maxVal > 0 ? val / maxVal : 0;
         const L = 15 + maxL * scaleVal;
-        const endX = startX - L; // Grows to the left
-        
-        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        g.setAttribute('class', 'arrow-grp cursor-pointer');
+        const endX = startX - L;
 
-        // 1. Draw Label ABOVE the bar (dark text, fully visible, right-aligned)
+        const startDelay = (i * 80) + 'ms';
+        const dur = '0.65s';
+
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+        // ── Label ──
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
         label.setAttribute('x', startX);
         label.setAttribute('y', labelY + 4);
@@ -744,14 +803,17 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         label.textContent = labels[i] || '';
         g.appendChild(label);
 
-        // 2. Draw Chevron Body pointing to the left
+        // ── Chevron Body — grows from startX leftwards via scaleX ──
         const body = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        // Chevron shape: Flat on right (startX), pointed tip on left (endX)
         body.setAttribute('points', `${startX},${barY-6} ${endX+6},${barY-6} ${endX},${barY} ${endX+6},${barY+6} ${startX},${barY+6}`);
         body.setAttribute('fill', color);
+        // anchor scale at right edge (startX)
+        body.style.transformOrigin = `${startX}px ${barY}px`;
+        body.style.transform = 'scaleX(0)';
+        body.style.transition = `transform ${dur} cubic-bezier(0.25,0.46,0.45,0.94) ${startDelay}`;
         g.appendChild(body);
 
-        // 3. Draw Value pill to the left of the chevron tip
+        // ── Pill & value ──
         const valStr = val.toLocaleString();
         const pillW = Math.max(18, valStr.length * 6 + 6);
         const pillH = 14;
@@ -763,6 +825,8 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         pill.setAttribute('height', pillH);
         pill.setAttribute('rx', '7');
         pill.setAttribute('fill', color);
+        pill.style.opacity = '0';
+        pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(pill);
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -774,16 +838,25 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         tVal.setAttribute('fill', '#ffffff');
         tVal.setAttribute('text-anchor', 'middle');
         tVal.textContent = valStr;
+        tVal.style.opacity = '0';
+        tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(tVal);
 
-        g.style.transitionDelay = `${i * 30}ms`;
         svg.appendChild(g);
 
-        setTimeout(() => {
-            g.classList.add('show');
-        }, 50);
+        // trigger on next paint
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            body.style.transform = 'scaleX(1)';
+            // show pill + value after bar animation completes
+            const totalDelay = (parseFloat(startDelay) || 0) + parseFloat(dur) * 1000;
+            setTimeout(() => {
+                pill.style.opacity = '1';
+                tVal.style.opacity = '1';
+            }, totalDelay);
+        }));
     });
 }
+
 
 // ── Draw Interactive Iraq Governorates Map ───────────────────
 const GOV_TITLE_MAP = {
@@ -831,104 +904,106 @@ const GOV_COORDS = {
 function drawIraqMap(svgId, values, labels, colorTheme) {
     const svg = document.getElementById(svgId);
     if (!svg) return;
-    
+
     const pathsGroup = document.getElementById(svgId + '-paths');
     const nodesGroup = document.getElementById(svgId + '-nodes');
     if (!pathsGroup || !nodesGroup) return;
-    
+
     nodesGroup.innerHTML = '';
-    
+
     const dataMap = {};
-    labels.forEach((label, idx) => {
-        dataMap[label] = values[idx] || 0;
+    labels.forEach((label, idx) => { dataMap[label] = values[idx] || 0; });
+    const maxVal = Math.max(...Object.values(dataMap), 1);
+
+    // ── Step 1: colour each path using getAttribute('id') ──
+    // querySelector('#IQ-DA') fails silently because '-' has special meaning in CSS selectors
+    pathsGroup.querySelectorAll('path').forEach(path => {
+        const pid = path.getAttribute('id');          // e.g. 'IQ-DA'
+        const govName = Object.keys(GOV_COORDS).find(n => GOV_COORDS[n].pathId === pid);
+        const val = govName ? (dataMap[govName] || 0) : 0;
+        if (val > 0) {
+            path.setAttribute('fill', 'rgba(2,132,199,0.18)');
+            path.setAttribute('stroke', colorTheme || '#0ea5e9');
+            path.setAttribute('stroke-width', '1.8');
+        } else {
+            path.setAttribute('fill', 'rgba(148,163,184,0.04)');
+            path.setAttribute('stroke', '#cbd5e1');
+            path.setAttribute('stroke-width', '0.9');
+        }
     });
-    
-    const maxVal = Math.max(...values, 1);
-    
+
+    // ── Step 2: draw labels at fixed calibrated coordinates ──
     Object.keys(GOV_COORDS).forEach((govArabicName, i) => {
         const info = GOV_COORDS[govArabicName];
-        const val = dataMap[govArabicName] || 0;
-        
-        // Style SVG Path
-        if (info.pathId) {
-            const path = pathsGroup.querySelector('#' + info.pathId);
-            if (path) {
-                if (val > 0) {
-                    path.setAttribute('fill', 'rgba(2, 132, 199, 0.15)');
-                    path.setAttribute('stroke', colorTheme || '#0ea5e9');
-                    path.setAttribute('stroke-width', '1.6');
-                } else {
-                    path.setAttribute('fill', 'rgba(148, 163, 184, 0.03)');
-                    path.setAttribute('stroke', '#cbd5e1');
-                    path.setAttribute('stroke-width', '0.8');
-                }
-            }
-        }
-        
-        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        g.setAttribute('class', 'arrow-grp cursor-pointer');
-        g.setAttribute('transform', `translate(${info.x}, ${info.y})`);
-        
+        const val  = dataMap[govArabicName] || 0;
+        const delay = i * 55; // stagger delay ms
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        // Start below final position — CSS transform drives the animation
+        g.style.opacity    = '0';
+        g.style.transform  = `translate(${info.x}px, ${info.y + 35}px)`;
+        g.style.transition = `opacity 0.5s ease ${delay}ms, transform 0.55s cubic-bezier(0.34,1.56,0.64,1) ${delay}ms`;
+
         if (val > 0) {
-            // Pulse circle
-            const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            pulse.setAttribute('r', 8 + (val / maxVal) * 8);
-            pulse.setAttribute('fill', colorTheme || '#0ea5e9');
-            pulse.setAttribute('opacity', '0.2');
-            
-            const animate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-            animate.setAttribute('attributeName', 'r');
-            animate.setAttribute('values', `${8 + (val / maxVal) * 6};${16 + (val / maxVal) * 12};${8 + (val / maxVal) * 6}`);
-            animate.setAttribute('dur', '2.5s');
-            animate.setAttribute('repeatCount', 'indefinite');
-            pulse.appendChild(animate);
-            g.appendChild(pulse);
-            
-            // Center solid dot
-            const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            dot.setAttribute('r', 3.5 + (val / maxVal) * 3);
+            // pulsing halo
+            const halo = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            const r0 = 6 + (val / maxVal) * 6;
+            halo.setAttribute('r', r0);
+            halo.setAttribute('fill', colorTheme || '#0ea5e9');
+            halo.setAttribute('opacity', '0.18');
+            const anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+            anim.setAttribute('attributeName', 'r');
+            anim.setAttribute('values', `${r0};${r0 * 1.9};${r0}`);
+            anim.setAttribute('dur', '2.4s');
+            anim.setAttribute('repeatCount', 'indefinite');
+            halo.appendChild(anim);
+            g.appendChild(halo);
+            // solid dot
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            dot.setAttribute('r', 3 + (val / maxVal) * 2.5);
             dot.setAttribute('fill', colorTheme || '#0ea5e9');
             g.appendChild(dot);
         } else {
-            // Inactive node tiny dot
-            const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            dot.setAttribute('r', '2.5');
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            dot.setAttribute('r', '2');
             dot.setAttribute('fill', '#94a3b8');
-            dot.setAttribute('opacity', '0.6');
+            dot.setAttribute('opacity', '0.5');
             g.appendChild(dot);
         }
-        
-        // Permanent Text Box
-        const textG = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        const valStr = val.toLocaleString();
-        const textStr = `${govArabicName}: ${valStr}`;
-        const textW = textStr.length * 5.2 + 8;
-        
-        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        rect.setAttribute('x', -textW / 2);
-        rect.setAttribute('y', val > 0 ? -22 : -17);
-        rect.setAttribute('width', textW);
-        rect.setAttribute('height', '13');
-        rect.setAttribute('rx', '3.5');
-        rect.setAttribute('fill', val > 0 ? (colorTheme || '#0ea5e9') : '#64748b');
-        rect.setAttribute('opacity', val > 0 ? '0.9' : '0.65');
-        textG.appendChild(rect);
-        
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute('x', 0);
-        text.setAttribute('y', val > 0 ? -13 : -8);
-        text.setAttribute('font-family', 'Tajawal');
-        text.setAttribute('font-size', '8px');
-        text.setAttribute('font-weight', 'bold');
-        text.setAttribute('fill', '#ffffff');
-        text.setAttribute('text-anchor', 'middle');
-        text.textContent = textStr;
-        textG.appendChild(text);
-        
-        g.appendChild(textG);
-        g.style.transitionDelay = `${i * 15}ms`;
+
+        // label chip
+        const textStr = `${govArabicName}: ${val.toLocaleString()}`;
+        const chipW   = textStr.length * 5.0 + 10;
+        const chipY   = val > 0 ? -(3 + (val / maxVal) * 2.5) - 15 : -15;
+
+        const chip = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        chip.setAttribute('x', -chipW / 2);
+        chip.setAttribute('y', chipY - 11);
+        chip.setAttribute('width', chipW);
+        chip.setAttribute('height', '12');
+        chip.setAttribute('rx', '3');
+        chip.setAttribute('fill', val > 0 ? (colorTheme || '#0ea5e9') : '#64748b');
+        chip.setAttribute('opacity', val > 0 ? '0.92' : '0.6');
+        g.appendChild(chip);
+
+        const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lbl.setAttribute('x', '0');
+        lbl.setAttribute('y', chipY - 2);
+        lbl.setAttribute('font-family', 'Tajawal, sans-serif');
+        lbl.setAttribute('font-size', '7.5');
+        lbl.setAttribute('font-weight', 'bold');
+        lbl.setAttribute('fill', '#fff');
+        lbl.setAttribute('text-anchor', 'middle');
+        lbl.textContent = textStr;
+        g.appendChild(lbl);
+
         nodesGroup.appendChild(g);
-        setTimeout(() => g.classList.add('show'), 50);
+
+        // trigger entrance animation on next frame
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            g.style.opacity   = '1';
+            g.style.transform = `translate(${info.x}px, ${info.y}px)`;
+        }));
     });
 }
 
@@ -937,40 +1012,24 @@ function drawIraqMap(svgId, values, labels, colorTheme) {
 
 // Global page initialization hook triggers drawing of all elements
 function renderAll2DArrowCharts() {
-    // 1. Branching Split Arrow for consultations
+    // Pre-compute all PHP-rendered data once
     @php
     $cGeneral = $consultations->firstWhere('unit', 'استشارية العيون العامة')['total'] ?? 0;
     $cSpecial = $consultations->firstWhere('unit', 'استشارية التخصصات الدقيقة')['total'] ?? 0;
+    $docSurgs = $surgeriesByDoctorCatSector->groupBy('doctor')->map(fn($group) => $group->sum('total'));
     @endphp
-    draw2DBranchingArrow('svg-report-1', {{ $cGeneral }}, {{ $cSpecial }}, 'العيون العامة', 'التخصصات الدقيقة', {{ $totalVisits }});
 
-    // 2. Doctor visits -> 2D Flat Columns
-    const docVisitsData = @json($visitsByDoctor->pluck('total'));
-    const docVisitsLabels = @json($visitsByDoctor->pluck('doctor')->map(fn($name) => str_replace('د. ', '', $name)));
-    draw2DFlatVerticalArrows('svg-report-2', docVisitsData, docVisitsLabels);
-
-    // 3. Inside Iraq (Governorates) -> Iraq Map
-    const govData = @json($visitsByGov->pluck('total'));
-    const govLabels = @json($visitsByGov->pluck('gov'));
-    drawIraqMap('svg-report-3', govData, govLabels, '#0284c7');
-
-    // 4. Outside Iraq (Countries) -> Horizontal Chevrons
-    const countryData = @json($visitsByCountry->pluck('total'));
-    const countryLabels = @json($visitsByCountry->pluck('country'));
-    draw2DFlatHorizontalChevrons('svg-report-4', countryData, countryLabels);
-
-    // 5. Visual test types -> Horizontal Chevrons
-    const visualData = @json($eyeTestsByType->pluck('total'));
-    const visualLabels = @json($eyeTestsByType->pluck('type'));
-    draw2DFlatHorizontalChevrons('svg-report-5', visualData, visualLabels, ['#f97316','#ea580c','#c2410c','#ea580c','#f97316','#c2410c']);
-
-    // 6. Lab tests -> 2D Flat Columns
-    const labTestData = @json($labTestsByType->pluck('total'));
-    const labTestLabels = @json($labTestsByType->pluck('type'));
-    draw2DFlatVerticalArrows('svg-report-6', labTestData, labTestLabels, ['#8b5cf6','#a855f7','#c084fc','#d8b4fe','#f3e8ff']);
-
-    // 7. Surgery Classification -> 2D Flat Columns
-    const surgClassData = [
+    const docVisitsData   = @json($visitsByDoctor->pluck('total'));
+    const docVisitsLabels = @json($visitsByDoctor->pluck('doctor')->map(fn($n) => str_replace('د. ', '', $n)));
+    const govData         = @json($visitsByGov->pluck('total'));
+    const govLabels       = @json($visitsByGov->pluck('gov'));
+    const countryData     = @json($visitsByCountry->pluck('total'));
+    const countryLabels   = @json($visitsByCountry->pluck('country'));
+    const visualData      = @json($eyeTestsByType->pluck('total'));
+    const visualLabels    = @json($eyeTestsByType->pluck('type'));
+    const labTestData     = @json($labTestsByType->pluck('total'));
+    const labTestLabels   = @json($labTestsByType->pluck('type'));
+    const surgClassData   = [
         {{ $surgeriesByCatSector->where('classification', 'صغرى')->sum('total') }},
         {{ $surgeriesByCatSector->where('classification', 'ليزر')->sum('total') }},
         {{ $surgeriesByCatSector->where('classification', 'كبرى')->sum('total') }},
@@ -979,21 +1038,23 @@ function renderAll2DArrowCharts() {
         {{ $surgeriesByCatSector->where('classification', 'وسطى')->sum('total') }}
     ];
     const surgClassLabels = ['صغرى', 'ليزر', 'كبرى', 'خاصة', 'فوق كبرى', 'حقن/وسطى'];
-    draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#0ea5e9','#db2777','#d97706','#475569','#6d28d9','#e11d48']);
+    const docSurgData     = @json($docSurgs->values());
+    const docSurgLabels   = @json($docSurgs->keys()->map(fn($n) => str_replace('د. ', '', $n)));
 
-    // 10. Surgeries total (16 doctors) -> 2D Flat Columns
-    @php
-    $docSurgs = $surgeriesByDoctorCatSector->groupBy('doctor')->map(fn($group) => $group->sum('total'));
-    @endphp
-    const docSurgData = @json($docSurgs->values());
-    const docSurgLabels = @json($docSurgs->keys()->map(fn($name) => str_replace('د. ', '', $name)));
-    draw2DFlatVerticalArrows('svg-report-10', docSurgData, docSurgLabels);
+    // Register each chart with the scroll observer.
+    // The draw fn will be called immediately (first view) and replayed on every scroll-into-view.
+    watchChart('svg-report-1',  () => draw2DBranchingArrow('svg-report-1', {{ $cGeneral }}, {{ $cSpecial }}, 'العيون العامة', 'التخصصات الدقيقة', {{ $totalVisits }}));
+    watchChart('svg-report-2',  () => draw2DFlatVerticalArrows('svg-report-2', docVisitsData, docVisitsLabels));
+    watchChart('svg-report-3',  () => drawIraqMap('svg-report-3', govData, govLabels, '#0284c7'));
+    watchChart('svg-report-4',  () => draw2DFlatHorizontalChevrons('svg-report-4', countryData, countryLabels));
+    watchChart('svg-report-5',  () => draw2DFlatHorizontalChevrons('svg-report-5', visualData, visualLabels, ['#f97316','#ea580c','#c2410c','#ea580c','#f97316','#c2410c']));
+    watchChart('svg-report-6',  () => draw2DFlatVerticalArrows('svg-report-6', labTestData, labTestLabels, ['#8b5cf6','#a855f7','#c084fc','#d8b4fe','#f3e8ff']));
+    watchChart('svg-report-7',  () => draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#0ea5e9','#db2777','#d97706','#475569','#6d28d9','#e11d48']));
+    watchChart('svg-report-10', () => draw2DFlatVerticalArrows('svg-report-10', docSurgData, docSurgLabels));
 
     // Initialize switcher single doctor stats
     const selector = document.getElementById('doc-active-selector');
-    if (selector) {
-        renderSingleDocChart(selector.value);
-    }
+    if (selector) renderSingleDocChart(selector.value);
 }
 
 // switcher individual doctor operations details -> Horizontal Chevrons

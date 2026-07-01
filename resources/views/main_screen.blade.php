@@ -101,6 +101,12 @@
                 </div>
 
                 <div class="border-t border-slate-200/10 my-2"></div>
+                <button onclick="navigateToPage('entry')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-entry">
+                    <i data-lucide="plus-circle" class="w-3.5 h-3.5 shrink-0 text-pink-500"></i>
+                    <span>إدخال البيانات</span>
+                </button>
+
+                <div class="border-t border-slate-200/10 my-2"></div>
                 <button onclick="navigateToPage('comparison')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-comparison">
                     <i data-lucide="git-compare" class="w-3.5 h-3.5 shrink-0 text-violet-500"></i>
                     <span>المفاضلة السريرية</span>
@@ -144,6 +150,7 @@
             <!-- CONTENT AREA (يسكرول هنا فقط) -->
             <main class="flex-1 overflow-y-auto p-4">
                 @include('pages.reports')
+                @include('pages.entry')
                 @include('pages.comparison')
                 @include('pages.doctors')
                 @include('pages.countries')
@@ -957,6 +964,7 @@
             const titles = {
                 dashboard: 'الرئيسية',
                 reports: 'التقارير',
+                entry: 'إدخال البيانات الإحصائية',
                 comparison: 'لوحة المفاضلة السريرية',
                 doctors: 'الأطباء',
                 countries: 'الدول',
@@ -979,6 +987,7 @@
             }
 
             // Trigger hooks for each page
+            if (pageId === 'entry' && typeof window.initEntryPage === 'function') window.initEntryPage();
             if (pageId === 'doctors' && typeof window.initDoctorsPage === 'function') window.initDoctorsPage();
             if (pageId === 'countries' && typeof window.initCountriesPage === 'function') window.initCountriesPage();
             if (pageId === 'governorates' && typeof window.initGovernoratesPage === 'function') window.initGovernoratesPage();

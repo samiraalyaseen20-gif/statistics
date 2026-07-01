@@ -436,8 +436,27 @@ if (file_exists(base_path('iraq.svg'))) {
 //  COMPARISON PAGE ENGINE — Full Mirror of Reports Page
 // ═══════════════════════════════════════════════════════════════
 
-const CMP_COLORS_A = ['#3b82f6','#0ea5e9','#06b6d4','#38bdf8','#60a5fa','#93c5fd','#bfdbfe','#2563eb','#1d4ed8','#1e40af','#1e3a8a','#172554'];
+const CMP_COLORS_A = ['#3b82f6','#2563eb','#60a5fa','#93c5fd','#bfdbfe','#dbeafe','#1d4ed8','#1e40af','#1e3a8a','#172554','#3730a3','#312e81'];
 const CMP_COLORS_B = ['#f43f5e','#e11d48','#fb7185','#fda4af','#f87171','#fca5a5','#ef4444','#dc2626','#b91c1c','#991b1b','#7f1d1d','#450a0a'];
+
+// ── Scroll-triggered chart animation registry (comparison) ──
+const _cmpSvgDrawFns = new Map();
+const _cmpScrollObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const fn = _cmpSvgDrawFns.get(entry.target.id);
+            if (fn) fn();
+        }
+    });
+}, { threshold: 0.15 });
+
+function cmpWatchChart(svgId, drawFn) {
+    _cmpSvgDrawFns.set(svgId, drawFn);
+    const el = document.getElementById(svgId);
+    if (el) _cmpScrollObserver.observe(el);
+    else drawFn(); // fallback: draw immediately if SVG not found yet
+}
+// ───────────────────────────────────────────────────────────────
 
 const CMP_BADGE = {
     'خاصة':       'bg-purple-100 text-purple-700',
@@ -556,15 +575,37 @@ function cmpDrawVertical(svgId, values, labels, colors) {
         const minH = 20, maxH = floorY - 55;
         const scaleVal = maxVal > 1 ? Math.sqrt(val) / Math.sqrt(maxVal) : 1;
         const H = minH + (maxH - minH) * scaleVal;
+        const startDelay = (i * 80) + 'ms';
+        const dur = '0.65s';
 
         const g = document.createElementNS("http://www.w3.org/2000/svg","g");
-        g.setAttribute('class','arrow-grp cursor-pointer');
 
+        // ── Arrow Body — grows from floorY upwards ──
+        const body = document.createElementNS("http://www.w3.org/2000/svg","rect");
+        body.setAttribute('x',x-8); body.setAttribute('y',floorY-H);
+        body.setAttribute('width','16'); body.setAttribute('height',H);
+        body.setAttribute('fill',color); body.setAttribute('rx','1');
+        body.style.transformOrigin = `${x}px ${floorY}px`;
+        body.style.transform = 'scaleY(0)';
+        body.style.transition = `transform ${dur} cubic-bezier(0.25,0.46,0.45,0.94) ${startDelay}`;
+        g.appendChild(body);
+
+        // ── Arrow Head ──
+        const head = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+        head.setAttribute('points',`${x-12},${floorY-H} ${x+12},${floorY-H} ${x},${floorY-H-10}`);
+        head.setAttribute('fill',color);
+        head.style.opacity = '0';
+        head.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+        g.appendChild(head);
+
+        // ── Dashed + Pill + Value (appear after body finishes) ──
         const dashed = document.createElementNS("http://www.w3.org/2000/svg","line");
         dashed.setAttribute('x1',x); dashed.setAttribute('y1',floorY-H-12);
         dashed.setAttribute('x2',x); dashed.setAttribute('y2',floorY-H-26);
         dashed.setAttribute('stroke',color); dashed.setAttribute('stroke-width','1');
         dashed.setAttribute('stroke-dasharray','2 2');
+        dashed.style.opacity = '0';
+        dashed.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(dashed);
 
         const valStr = val.toLocaleString();
@@ -573,6 +614,8 @@ function cmpDrawVertical(svgId, values, labels, colors) {
         pill.setAttribute('x',x-pillW/2); pill.setAttribute('y',floorY-H-36);
         pill.setAttribute('width',pillW); pill.setAttribute('height',14);
         pill.setAttribute('rx','7'); pill.setAttribute('fill',color);
+        pill.style.opacity = '0';
+        pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(pill);
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg","text");
@@ -580,18 +623,9 @@ function cmpDrawVertical(svgId, values, labels, colors) {
         tVal.setAttribute('font-family','Outfit'); tVal.setAttribute('font-size','8.5px');
         tVal.setAttribute('font-weight','bold'); tVal.setAttribute('fill','#ffffff');
         tVal.setAttribute('text-anchor','middle'); tVal.textContent = valStr;
+        tVal.style.opacity = '0';
+        tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(tVal);
-
-        const body = document.createElementNS("http://www.w3.org/2000/svg","rect");
-        body.setAttribute('x',x-8); body.setAttribute('y',floorY-H);
-        body.setAttribute('width','16'); body.setAttribute('height',H);
-        body.setAttribute('fill',color); body.setAttribute('rx','1');
-        g.appendChild(body);
-
-        const head = document.createElementNS("http://www.w3.org/2000/svg","polygon");
-        head.setAttribute('points',`${x-12},${floorY-H} ${x+12},${floorY-H} ${x},${floorY-H-10}`);
-        head.setAttribute('fill',color);
-        g.appendChild(head);
 
         const label = document.createElementNS("http://www.w3.org/2000/svg","text");
         label.setAttribute('x', x-4);
@@ -615,9 +649,18 @@ function cmpDrawVertical(svgId, values, labels, colors) {
         label.textContent = labelText;
         g.appendChild(label);
 
-        g.style.transitionDelay = `${i*30}ms`;
         svg.appendChild(g);
-        setTimeout(() => g.classList.add('show'), 50);
+        // trigger entrance animation
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            body.style.transform = 'scaleY(1)';
+            const totalMs = (parseFloat(startDelay) || 0) + parseFloat(dur) * 1000;
+            setTimeout(() => {
+                head.style.opacity = '1';
+                dashed.style.opacity = '1';
+                pill.style.opacity = '1';
+                tVal.style.opacity = '1';
+            }, totalMs);
+        }));
     });
 }
 
@@ -644,10 +687,12 @@ function cmpDrawChevrons(svgId, values, labels, colors) {
         const color = colors[i % colors.length];
         const L = 15 + maxL * (val / maxVal);
         const endX = startX - L;
+        const startDelay = (i * 80) + 'ms';
+        const dur = '0.65s';
 
         const g = document.createElementNS("http://www.w3.org/2000/svg","g");
-        g.setAttribute('class','arrow-grp cursor-pointer');
 
+        // ── Label ──
         const label = document.createElementNS("http://www.w3.org/2000/svg","text");
         label.setAttribute('x',startX); label.setAttribute('y',labelY+4);
         label.setAttribute('font-family','Tajawal'); label.setAttribute('font-size','10.5px');
@@ -656,17 +701,24 @@ function cmpDrawChevrons(svgId, values, labels, colors) {
         label.textContent = labels[i] || '';
         g.appendChild(label);
 
+        // ── Chevron Body — grows from startX leftwards via scaleX ──
         const body = document.createElementNS("http://www.w3.org/2000/svg","polygon");
         body.setAttribute('points',`${startX},${barY-6} ${endX+6},${barY-6} ${endX},${barY} ${endX+6},${barY+6} ${startX},${barY+6}`);
         body.setAttribute('fill',color);
+        body.style.transformOrigin = `${startX}px ${barY}px`;
+        body.style.transform = 'scaleX(0)';
+        body.style.transition = `transform ${dur} cubic-bezier(0.25,0.46,0.45,0.94) ${startDelay}`;
         g.appendChild(body);
 
+        // ── Pill & value (appear after bar) ──
         const valStr = val.toLocaleString();
         const pillW = Math.max(18, valStr.length*6+6);
         const pill = document.createElementNS("http://www.w3.org/2000/svg","rect");
         pill.setAttribute('x',endX-pillW-6); pill.setAttribute('y',barY-7);
         pill.setAttribute('width',pillW); pill.setAttribute('height',14);
         pill.setAttribute('rx','7'); pill.setAttribute('fill',color);
+        pill.style.opacity = '0';
+        pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(pill);
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg","text");
@@ -674,11 +726,19 @@ function cmpDrawChevrons(svgId, values, labels, colors) {
         tVal.setAttribute('font-family','Outfit'); tVal.setAttribute('font-size','8.5px');
         tVal.setAttribute('font-weight','bold'); tVal.setAttribute('fill','#ffffff');
         tVal.setAttribute('text-anchor','middle'); tVal.textContent = valStr;
+        tVal.style.opacity = '0';
+        tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(tVal);
 
-        g.style.transitionDelay = `${i*25}ms`;
         svg.appendChild(g);
-        setTimeout(() => g.classList.add('show'), 50);
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            body.style.transform = 'scaleX(1)';
+            const totalMs = (parseFloat(startDelay) || 0) + parseFloat(dur) * 1000;
+            setTimeout(() => {
+                pill.style.opacity = '1';
+                tVal.style.opacity = '1';
+            }, totalMs);
+        }));
     });
 }
 
@@ -733,92 +793,93 @@ function cmpDrawIraqMap(svgId, values, labels, colorTheme) {
     nodesGroup.innerHTML = '';
 
     const dataMap = {};
-    labels.forEach((label, idx) => {
-        dataMap[label] = values[idx] || 0;
+    labels.forEach((label, idx) => { dataMap[label] = values[idx] || 0; });
+    const maxVal = Math.max(...Object.values(dataMap), 1);
+
+    // colour each path using getAttribute('id') — querySelector('#IQ-XX') fails silently
+    pathsGroup.querySelectorAll('path').forEach(path => {
+        const pid = path.getAttribute('id');
+        const govName = Object.keys(CMP_GOV_COORDS).find(n => CMP_GOV_COORDS[n].pathId === pid);
+        const val = govName ? (dataMap[govName] || 0) : 0;
+        if (val > 0) {
+            path.setAttribute('fill', 'rgba(2,132,199,0.18)');
+            path.setAttribute('stroke', colorTheme || '#0ea5e9');
+            path.setAttribute('stroke-width', '1.8');
+        } else {
+            path.setAttribute('fill', 'rgba(148,163,184,0.04)');
+            path.setAttribute('stroke', '#cbd5e1');
+            path.setAttribute('stroke-width', '0.9');
+        }
     });
 
-    const maxVal = Math.max(...values, 1);
-
+    // draw labels at fixed calibrated coordinates
     Object.keys(CMP_GOV_COORDS).forEach((govArabicName, i) => {
         const info = CMP_GOV_COORDS[govArabicName];
-        const val = dataMap[govArabicName] || 0;
+        const val  = dataMap[govArabicName] || 0;
 
-        // Style the matching SVG path by ID
-        if (info.pathId) {
-            const path = pathsGroup.querySelector('#' + info.pathId);
-            if (path) {
-                if (val > 0) {
-                    path.setAttribute('fill', 'rgba(2,132,199,0.15)');
-                    path.setAttribute('stroke', colorTheme || '#0ea5e9');
-                    path.setAttribute('stroke-width', '1.6');
-                } else {
-                    path.setAttribute('fill', 'rgba(148,163,184,0.03)');
-                    path.setAttribute('stroke', '#cbd5e1');
-                    path.setAttribute('stroke-width', '0.8');
-                }
-            }
-        }
-
-        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        g.setAttribute('class', 'arrow-grp cursor-pointer');
-        g.setAttribute('transform', `translate(${info.x},${info.y})`);
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        const delay = i * 55;
+        g.style.opacity    = '0';
+        g.style.transform  = `translate(${info.x}px, ${info.y + 35}px)`;
+        g.style.transition = `opacity 0.5s ease ${delay}ms, transform 0.55s cubic-bezier(0.34,1.56,0.64,1) ${delay}ms`;
 
         if (val > 0) {
-            const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            pulse.setAttribute('r', 8 + (val / maxVal) * 8);
-            pulse.setAttribute('fill', colorTheme || '#0ea5e9');
-            pulse.setAttribute('opacity', '0.2');
-            const animate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-            animate.setAttribute('attributeName', 'r');
-            animate.setAttribute('values', `${8 + (val/maxVal)*6};${16 + (val/maxVal)*12};${8 + (val/maxVal)*6}`);
-            animate.setAttribute('dur', '2.5s');
-            animate.setAttribute('repeatCount', 'indefinite');
-            pulse.appendChild(animate);
-            g.appendChild(pulse);
-
-            const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            dot.setAttribute('r', 3.5 + (val / maxVal) * 3);
+            const halo = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            const r0 = 6 + (val / maxVal) * 6;
+            halo.setAttribute('r', r0);
+            halo.setAttribute('fill', colorTheme || '#0ea5e9');
+            halo.setAttribute('opacity', '0.18');
+            const anim = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+            anim.setAttribute('attributeName', 'r');
+            anim.setAttribute('values', `${r0};${r0 * 1.9};${r0}`);
+            anim.setAttribute('dur', '2.4s');
+            anim.setAttribute('repeatCount', 'indefinite');
+            halo.appendChild(anim);
+            g.appendChild(halo);
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            dot.setAttribute('r', 3 + (val / maxVal) * 2.5);
             dot.setAttribute('fill', colorTheme || '#0ea5e9');
             g.appendChild(dot);
         } else {
-            const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            dot.setAttribute('r', '2.5');
+            const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            dot.setAttribute('r', '2');
             dot.setAttribute('fill', '#94a3b8');
-            dot.setAttribute('opacity', '0.6');
+            dot.setAttribute('opacity', '0.5');
             g.appendChild(dot);
         }
 
-        // Label box
-        const textG = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        const valStr = val.toLocaleString();
-        const textStr = `${govArabicName}: ${valStr}`;
-        const textW = textStr.length * 5.2 + 8;
+        const textStr = `${govArabicName}: ${val.toLocaleString()}`;
+        const chipW   = textStr.length * 5.0 + 10;
+        const chipY   = val > 0 ? -(3 + (val / maxVal) * 2.5) - 15 : -15;
 
-        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        rect.setAttribute('x', -textW / 2);
-        rect.setAttribute('y', val > 0 ? -22 : -17);
-        rect.setAttribute('width', textW);
-        rect.setAttribute('height', '13');
-        rect.setAttribute('rx', '3.5');
-        rect.setAttribute('fill', val > 0 ? (colorTheme || '#0ea5e9') : '#64748b');
-        rect.setAttribute('opacity', val > 0 ? '0.9' : '0.65');
-        textG.appendChild(rect);
+        const chip = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        chip.setAttribute('x', -chipW / 2);
+        chip.setAttribute('y', chipY - 11);
+        chip.setAttribute('width', chipW);
+        chip.setAttribute('height', '12');
+        chip.setAttribute('rx', '3');
+        chip.setAttribute('fill', val > 0 ? (colorTheme || '#0ea5e9') : '#64748b');
+        chip.setAttribute('opacity', val > 0 ? '0.92' : '0.6');
+        g.appendChild(chip);
 
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute('x', 0);
-        text.setAttribute('y', val > 0 ? -13 : -8);
-        text.setAttribute('font-family', 'Tajawal');
-        text.setAttribute('font-size', '8px');
-        text.setAttribute('font-weight', 'bold');
-        text.setAttribute('fill', '#ffffff');
-        text.setAttribute('text-anchor', 'middle');
-        text.textContent = textStr;
-        textG.appendChild(text);
+        const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        lbl.setAttribute('x', '0');
+        lbl.setAttribute('y', chipY - 2);
+        lbl.setAttribute('font-family', 'Tajawal, sans-serif');
+        lbl.setAttribute('font-size', '7.5');
+        lbl.setAttribute('font-weight', 'bold');
+        lbl.setAttribute('fill', '#fff');
+        lbl.setAttribute('text-anchor', 'middle');
+        lbl.textContent = textStr;
+        g.appendChild(lbl);
 
-        g.appendChild(textG);
-        g.style.transitionDelay = `${i * 15}ms`;
         nodesGroup.appendChild(g);
-        setTimeout(() => g.classList.add('show'), 50);
+
+        // trigger entrance animation on next paint
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            g.style.opacity   = '1';
+            g.style.transform = `translate(${info.x}px, ${info.y}px)`;
+        }));
     });
 }
 
@@ -895,34 +956,35 @@ function renderAllCmpCharts(data, labelA, labelB) {
     cmpRenderTable('cmp-tbl-1-b', consB.map((r,i) => `<tr class="table-row"><td>${r.unit}</td><td class="text-center font-bold">${r.total.toLocaleString()}</td></tr>`).join('') + (consB.length ? `<tr class="table-row font-extrabold text-theme-pink"><td class="text-center">الإجمالي</td><td class="text-center">${B.total_visits.toLocaleString()}</td></tr>` : ''), 2, 'لا بيانات');
 
     // ─ جدول 2: مراجعو كل طبيب ─
+    // ─ جدول 2: مراجعو كل طبيب ─
     const vdA = A.visits_by_doctor || [];
     const vdB = B.visits_by_doctor || [];
-    cmpDrawVertical('cmp-svg-2-a', vdA.map(r => r.total), vdA.map(r => r.doctor.replace('د. ','')), CMP_COLORS_A);
-    cmpDrawVertical('cmp-svg-2-b', vdB.map(r => r.total), vdB.map(r => r.doctor.replace('د. ','')), CMP_COLORS_B);
+    cmpWatchChart('cmp-svg-2-a', () => cmpDrawVertical('cmp-svg-2-a', vdA.map(r => r.total), vdA.map(r => r.doctor.replace('د. ','')), CMP_COLORS_A));
+    cmpWatchChart('cmp-svg-2-b', () => cmpDrawVertical('cmp-svg-2-b', vdB.map(r => r.total), vdB.map(r => r.doctor.replace('د. ','')), CMP_COLORS_B));
 
     // ─ جدول 3: داخل العراق ─
     const gvA = A.visits_by_gov || [];
     const gvB = B.visits_by_gov || [];
-    cmpDrawIraqMap('cmp-svg-3-a', gvA.map(r => r.total), gvA.map(r => r.gov), '#3b82f6');
-    cmpDrawIraqMap('cmp-svg-3-b', gvB.map(r => r.total), gvB.map(r => r.gov), '#f43f5e');
+    cmpWatchChart('cmp-svg-3-a', () => cmpDrawIraqMap('cmp-svg-3-a', gvA.map(r => r.total), gvA.map(r => r.gov), '#3b82f6'));
+    cmpWatchChart('cmp-svg-3-b', () => cmpDrawIraqMap('cmp-svg-3-b', gvB.map(r => r.total), gvB.map(r => r.gov), '#f43f5e'));
 
     // ─ جدول 4: خارج العراق ─
     const cvA = A.visits_by_country || [];
     const cvB = B.visits_by_country || [];
-    cmpDrawChevrons('cmp-svg-4-a', cvA.map(r => r.total), cvA.map(r => r.country), CMP_COLORS_A);
-    cmpDrawChevrons('cmp-svg-4-b', cvB.map(r => r.total), cvB.map(r => r.country), CMP_COLORS_B);
+    cmpWatchChart('cmp-svg-4-a', () => cmpDrawChevrons('cmp-svg-4-a', cvA.map(r => r.total), cvA.map(r => r.country), CMP_COLORS_A));
+    cmpWatchChart('cmp-svg-4-b', () => cmpDrawChevrons('cmp-svg-4-b', cvB.map(r => r.total), cvB.map(r => r.country), CMP_COLORS_B));
 
     // ─ جدول 5: الفحوصات البصرية ─
     const etA = A.eye_tests_by_type || [];
     const etB = B.eye_tests_by_type || [];
-    cmpDrawChevrons('cmp-svg-5-a', etA.map(r => r.total), etA.map(r => r.type), ['#f97316','#ea580c','#c2410c','#9a3412','#7c2d12']);
-    cmpDrawChevrons('cmp-svg-5-b', etB.map(r => r.total), etB.map(r => r.type), ['#e11d48','#be123c','#9f1239','#881337','#4c0519']);
+    cmpWatchChart('cmp-svg-5-a', () => cmpDrawChevrons('cmp-svg-5-a', etA.map(r => r.total), etA.map(r => r.type), ['#f97316','#ea580c','#c2410c','#9a3412','#7c2d12']));
+    cmpWatchChart('cmp-svg-5-b', () => cmpDrawChevrons('cmp-svg-5-b', etB.map(r => r.total), etB.map(r => r.type), ['#e11d48','#be123c','#9f1239','#881337','#4c0519']));
 
     // ─ جدول 6: التحاليل المختبرية ─
     const ltA = A.lab_tests_by_type || [];
     const ltB = B.lab_tests_by_type || [];
-    cmpDrawVertical('cmp-svg-6-a', ltA.map(r => r.total), ltA.map(r => r.type), ['#3b82f6','#6366f1','#8b5cf6','#a855f7','#d946ef']);
-    cmpDrawVertical('cmp-svg-6-b', ltB.map(r => r.total), ltB.map(r => r.type), ['#f43f5e','#e11d48','#fb923c','#f59e0b','#84cc16']);
+    cmpWatchChart('cmp-svg-6-a', () => cmpDrawVertical('cmp-svg-6-a', ltA.map(r => r.total), ltA.map(r => r.type), ['#3b82f6','#6366f1','#8b5cf6','#a855f7','#d946ef']));
+    cmpWatchChart('cmp-svg-6-b', () => cmpDrawVertical('cmp-svg-6-b', ltB.map(r => r.total), ltB.map(r => r.type), ['#f43f5e','#e11d48','#fb923c','#f59e0b','#84cc16']));
 
     // ─ جدول 7: تصنيف العمليات ─
     const scA = A.surgeries_by_cat || [];
@@ -931,22 +993,22 @@ function renderAllCmpCharts(data, labelA, labelB) {
     const catColors = ['#0ea5e9','#db2777','#d97706','#475569','#6d28d9','#e11d48'];
     const scAOrdered = catOrder.map(c => scA.find(r => r.classification === c)?.total || 0);
     const scBOrdered = catOrder.map(c => scB.find(r => r.classification === c)?.total || 0);
-    cmpDrawVertical('cmp-svg-7-a', scAOrdered, catOrder, catColors);
-    cmpDrawVertical('cmp-svg-7-b', scBOrdered, catOrder, catColors);
+    cmpWatchChart('cmp-svg-7-a', () => cmpDrawVertical('cmp-svg-7-a', scAOrdered, catOrder, catColors));
+    cmpWatchChart('cmp-svg-7-b', () => cmpDrawVertical('cmp-svg-7-b', scBOrdered, catOrder, catColors));
     cmpRenderTable('cmp-tbl-7-a', scA.map(r => `<tr class="table-row"><td>${r.classification}</td><td class="text-center font-bold text-rose-600">${r.total.toLocaleString()}</td></tr>`).join(''), 2, 'لا عمليات');
     cmpRenderTable('cmp-tbl-7-b', scB.map(r => `<tr class="table-row"><td>${r.classification}</td><td class="text-center font-bold text-rose-600">${r.total.toLocaleString()}</td></tr>`).join(''), 2, 'لا عمليات');
 
     // ─ جدول 10: عمليات كل طبيب (إجمالي) ─
     const sdA = A.surgs_by_doctor || [];
     const sdB = B.surgs_by_doctor || [];
-    cmpDrawVertical('cmp-svg-10-a', sdA.map(r => r.total), sdA.map(r => r.doctor.replace('د. ','')), CMP_COLORS_A);
-    cmpDrawVertical('cmp-svg-10-b', sdB.map(r => r.total), sdB.map(r => r.doctor.replace('د. ','')), CMP_COLORS_B);
+    cmpWatchChart('cmp-svg-10-a', () => cmpDrawVertical('cmp-svg-10-a', sdA.map(r => r.total), sdA.map(r => r.doctor.replace('د. ','')), CMP_COLORS_A));
+    cmpWatchChart('cmp-svg-10-b', () => cmpDrawVertical('cmp-svg-10-b', sdB.map(r => r.total), sdB.map(r => r.doctor.replace('د. ','')), CMP_COLORS_B));
 
     // ─ التفصيلي (combined_ops) ─
     const coA = A.combined_ops || [];
     const coB = B.combined_ops || [];
-    cmpDrawChevrons('cmp-svg-detail-a', coA.map(r => r.total), coA.map(r => r.op), CMP_COLORS_A);
-    cmpDrawChevrons('cmp-svg-detail-b', coB.map(r => r.total), coB.map(r => r.op), CMP_COLORS_B);
+    cmpWatchChart('cmp-svg-detail-a', () => cmpDrawChevrons('cmp-svg-detail-a', coA.map(r => r.total), coA.map(r => r.op), CMP_COLORS_A));
+    cmpWatchChart('cmp-svg-detail-b', () => cmpDrawChevrons('cmp-svg-detail-b', coB.map(r => r.total), coB.map(r => r.op), CMP_COLORS_B));
 
     const detailRowHtml = (ops) => ops.map((op,i) => {
         const cls = CMP_BADGE[op.classification] || 'bg-slate-100 text-slate-600';
