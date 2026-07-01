@@ -288,9 +288,25 @@
             الإحصائية التفصيلية للعمليات الجراحية لكل طبيب
         </h3>
         
+        @php
+        // Prepare combined operations list for "All Doctors"
+        $allOps = collect();
+        foreach($surgeryDetailByDoctor as $docName => $docOps) {
+            foreach($docOps as $op) {
+                $allOps->push($op);
+            }
+        }
+        $combinedOps = $allOps->groupBy('op')->map(fn($group) => (object)[
+            'op' => $group->first()->op,
+            'classification' => $group->first()->classification,
+            'total' => $group->sum('total')
+        ])->sortByDesc('total')->values();
+        @endphp
+
         <div class="flex items-center gap-3 mb-6 bg-slate-200/20 p-3 rounded-xl">
             <span class="text-xs font-bold text-slate-500">اختيار الطبيب:</span>
             <select id="doc-active-selector" onchange="showDocStats(this.value)" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
+                <option value="all">كل الأطباء ({{ $totalSurgeries }} عملية)</option>
                 @foreach($filterDoctors as $doc)
                     @php
                     $docOps = $surgeryDetailByDoctor->get($doc->name) ?? collect();
@@ -314,12 +330,45 @@
         ];
         @endphp
 
+        <!-- Combined Panel for All Doctors -->
+        <div id="stats-panel-all" class="stats-panel transition-opacity duration-300">
+            <div class="flex items-center justify-between gap-3 mb-4">
+                <h4 class="text-xs font-bold text-slate-800">كل الأطباء - إجمالي العمليات</h4>
+                <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $totalSurgeries }} عملية</span>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-6 items-start">
+                <div class="w-full lg:w-2/5 flex-shrink-0">
+                    <svg id="svg-doc-all" viewBox="0 0 450 200" class="w-full h-auto overflow-visible"></svg>
+                </div>
+                <div class="w-full lg:w-3/5">
+                    <table class="custom-table text-xs">
+                        <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
+                        <tbody>
+                            @forelse($combinedOps as $i => $op)
+                            <tr class="table-row">
+                                <td class="w-8 text-center">{{ $i + 1 }}</td>
+                                <td>{{ $op->op }}</td>
+                                <td><span class="text-[9px] font-bold px-2 py-0.5 rounded-full {{ $bc[$op->classification] ?? '' }}">{{ $op->classification }}</span></td>
+                                <td class="text-center font-bold text-violet-600 text-xs">{{ $op->total }}</td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center text-slate-400 py-4">لا توجد عمليات مسجلة</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Individual Doctor Panels -->
         @foreach($filterDoctors as $doc)
         @php
         $docOps = $surgeryDetailByDoctor->get($doc->name) ?? collect();
         $docTotal = $docOps->sum('total');
         @endphp
-        <div id="stats-panel-{{ $doc->id }}" class="stats-panel {{ $doc->id == $filterDoctors->first()->id ? '' : 'hidden' }} transition-opacity duration-300">
+        <div id="stats-panel-{{ $doc->id }}" class="stats-panel hidden transition-opacity duration-300">
             <div class="flex items-center justify-between gap-3 mb-4">
                 <h4 class="text-xs font-bold text-slate-800">{{ $doc->name }}</h4>
                 <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $docTotal }} عملية</span>
@@ -770,6 +819,7 @@ function renderAll2DArrowCharts() {
 
 // switcher individual doctor operations details -> Horizontal Chevrons
 const docOpsData = {
+    "all": @json($combinedOps->pluck('total')),
     @foreach($surgeryDetailByDoctor as $docName => $ops)
         @php
         $docModel = $filterDoctors->firstWhere('name', $docName);
@@ -781,6 +831,7 @@ const docOpsData = {
     @endforeach
 };
 const docNamesData = {
+    "all": @json($combinedOps->pluck('op')),
     @foreach($surgeryDetailByDoctor as $docName => $ops)
         @php
         $docModel = $filterDoctors->firstWhere('name', $docName);
