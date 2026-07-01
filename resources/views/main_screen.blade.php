@@ -58,11 +58,7 @@
 
             <!-- Navigation (يسكرول داخل السايدبار لو طال) -->
             <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-                <button onclick="navigateToPage('dashboard')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press active text-pink-500" id="nav-dashboard">
-                    <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 shrink-0"></i>
-                    <span>الرئيسية</span>
-                </button>
-                <button onclick="navigateToPage('reports')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-reports">
+                <button onclick="navigateToPage('reports')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press active text-pink-500" id="nav-reports">
                     <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 shrink-0"></i>
                     <span>التقارير</span>
                 </button>
@@ -141,7 +137,6 @@
 
             <!-- CONTENT AREA (يسكرول هنا فقط) -->
             <main class="flex-1 overflow-y-auto p-4">
-                @include('pages.dashboard')
                 @include('pages.reports')
                 @include('pages.doctors')
                 @include('pages.countries')
@@ -1017,7 +1012,11 @@
 
             // Hash or Query Parameter routing on load
             const hash = window.location.hash.substring(1);
-            if (hash === 'reports' || window.location.search.includes('start_date')) {
+            if (hash && hash !== 'dashboard') {
+                setTimeout(() => {
+                    navigateToPage(hash);
+                }, 100);
+            } else {
                 setTimeout(() => {
                     navigateToPage('reports');
                 }, 100);
