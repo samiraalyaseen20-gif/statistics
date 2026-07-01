@@ -2,7 +2,7 @@
 <section id="page-users" class="page-section space-y-6 hidden">
 
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        
+
         {{-- Column 1: Add New User Form --}}
         <div class="custom-card p-5 rounded-2xl space-y-4 h-fit">
             <h3 class="text-xs font-black text-text-main flex items-center gap-2 pb-2 border-b border-slate-200/10">
@@ -49,7 +49,7 @@
             </form>
         </div>
 
-        {{-- Column 2: Users List & Permissions --}}
+        {{-- Column 2: Users List (Responsive Cards) --}}
         <div class="custom-card p-5 rounded-2xl space-y-4 xl:col-span-2">
             <div class="flex items-center justify-between">
                 <h3 class="text-xs font-black text-text-main flex items-center gap-2">
@@ -63,23 +63,29 @@
                 </button>
             </div>
 
-            <div class="overflow-x-auto">
+            {{-- Desktop Table (hidden on small screens) --}}
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full text-right border-collapse">
                     <thead>
                         <tr class="border-b border-slate-200/10 text-[9px] font-bold text-slate-400">
                             <th class="pb-2">المستخدم</th>
                             <th class="pb-2">الدور</th>
-                            <th class="pb-2 text-center">رؤية التقارير</th>
-                            <th class="pb-2 text-center">إدخال البيانات</th>
-                            <th class="pb-2 text-center">إدارة التعريفات</th>
-                            <th class="pb-2 text-center">إدارة المستخدمين</th>
-                            <th class="pb-2 text-center">الإجراءات</th>
+                            <th class="pb-2 text-center">التقارير</th>
+                            <th class="pb-2 text-center">إدخال</th>
+                            <th class="pb-2 text-center">إدارة</th>
+                            <th class="pb-2 text-center">مستخدمون</th>
+                            <th class="pb-2 text-center">حذف</th>
                         </tr>
                     </thead>
                     <tbody id="tbody-users-list" class="divide-y divide-slate-200/5 text-[10px] font-bold text-text-main">
                         {{-- Populated dynamically via AJAX --}}
                     </tbody>
                 </table>
+            </div>
+
+            {{-- Mobile Cards (hidden on md+ screens) --}}
+            <div id="users-cards-mobile" class="md:hidden space-y-3">
+                {{-- Populated dynamically via AJAX --}}
             </div>
         </div>
 
@@ -105,11 +111,13 @@ async function loadUsersList() {
         if (!response.ok) return;
         const users = await response.json();
         renderUsersTable(users);
+        renderUsersMobile(users);
     } catch(e) {
         console.error("Failed to load users", e);
     }
 }
 
+// ─ Desktop Table Render ─
 function renderUsersTable(users) {
     const tbody = document.getElementById('tbody-users-list');
     if (!tbody) return;
@@ -120,7 +128,7 @@ function renderUsersTable(users) {
     users.forEach(u => {
         let roleBadge = '';
         if (u.role === 'admin') {
-            roleBadge = '<span class="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-500 text-[8px]">مدير عام</span>';
+            roleBadge = '<span class="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-500 text-[8px]">مدير</span>';
         } else if (u.role === 'visitor') {
             roleBadge = '<span class="px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-500 text-[8px]">زائر</span>';
         } else {
@@ -138,8 +146,6 @@ function renderUsersTable(users) {
                     <div class="text-[9px] text-slate-400 font-normal">@${u.username}</div>
                 </td>
                 <td>${roleBadge}</td>
-                
-                <!-- Permissions Toggles -->
                 <td class="text-center">
                     <input type="checkbox" ${u.can_view_reports ? 'checked' : ''} ${disabledAttr}
                         onchange="toggleUserPermission(${u.id}, 'can_view_reports', this.checked)"
@@ -160,14 +166,86 @@ function renderUsersTable(users) {
                         onchange="toggleUserPermission(${u.id}, 'can_manage_users', this.checked)"
                         class="w-4 h-4 accent-pink-500 cursor-pointer ${opacityClass}">
                 </td>
-
                 <td class="text-center">
-                    ${u.id === currentUserId 
-                        ? '<span class="text-[9px] text-slate-400">حسابك الحالي</span>' 
+                    ${u.id === currentUserId
+                        ? '<span class="text-[9px] text-slate-400">أنت</span>'
                         : `<button onclick="deleteUser(${u.id})" class="text-rose-500 hover:text-rose-700 hover-press p-1"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`
                     }
                 </td>
             </tr>
+        `;
+    });
+
+    if (window.lucide) lucide.createIcons();
+}
+
+// ─ Mobile Cards Render ─
+function renderUsersMobile(users) {
+    const container = document.getElementById('users-cards-mobile');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const currentUserId = {{ auth()->id() }};
+
+    users.forEach(u => {
+        let roleColor = 'violet';
+        let roleLabel = 'موظف';
+        if (u.role === 'admin') { roleColor = 'rose'; roleLabel = 'مدير نظام'; }
+        else if (u.role === 'visitor') { roleColor = 'sky'; roleLabel = 'زائر'; }
+
+        const isEmp = u.role === 'employee';
+        const disabledAttr = isEmp ? '' : 'disabled';
+        const opacityClass = isEmp ? '' : 'opacity-40 pointer-events-none';
+
+        const permRows = isEmp ? `
+            <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-slate-200/10">
+                <label class="flex items-center gap-2 text-[10px] font-bold text-text-main ${opacityClass}">
+                    <input type="checkbox" ${u.can_view_reports ? 'checked' : ''} ${disabledAttr}
+                        onchange="toggleUserPermission(${u.id}, 'can_view_reports', this.checked)"
+                        class="w-4 h-4 accent-pink-500">
+                    <span>التقارير</span>
+                </label>
+                <label class="flex items-center gap-2 text-[10px] font-bold text-text-main ${opacityClass}">
+                    <input type="checkbox" ${u.can_enter_data ? 'checked' : ''} ${disabledAttr}
+                        onchange="toggleUserPermission(${u.id}, 'can_enter_data', this.checked)"
+                        class="w-4 h-4 accent-pink-500">
+                    <span>إدخال بيانات</span>
+                </label>
+                <label class="flex items-center gap-2 text-[10px] font-bold text-text-main ${opacityClass}">
+                    <input type="checkbox" ${u.can_manage_lookups ? 'checked' : ''} ${disabledAttr}
+                        onchange="toggleUserPermission(${u.id}, 'can_manage_lookups', this.checked)"
+                        class="w-4 h-4 accent-pink-500">
+                    <span>إدارة التعريفات</span>
+                </label>
+                <label class="flex items-center gap-2 text-[10px] font-bold text-text-main ${opacityClass}">
+                    <input type="checkbox" ${u.can_manage_users ? 'checked' : ''} ${disabledAttr}
+                        onchange="toggleUserPermission(${u.id}, 'can_manage_users', this.checked)"
+                        class="w-4 h-4 accent-pink-500">
+                    <span>إدارة المستخدمين</span>
+                </label>
+            </div>
+        ` : `<p class="text-[9px] text-slate-400 mt-2">الصلاحيات تُحدد تلقائياً حسب الدور.</p>`;
+
+        const deleteBtn = u.id === currentUserId
+            ? `<span class="text-[9px] text-slate-400 font-bold">حسابك الحالي</span>`
+            : `<button onclick="deleteUser(${u.id})" class="flex items-center gap-1 text-[10px] font-bold text-rose-500 hover-press">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> حذف
+               </button>`;
+
+        container.innerHTML += `
+            <div class="p-3 rounded-xl border border-slate-200/10 bg-slate-200/5 space-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-black text-text-main">${u.name}</div>
+                        <div class="text-[9px] text-slate-400">@${u.username}</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 rounded-full bg-${roleColor}-500/10 text-${roleColor}-500 text-[8px] font-bold">${roleLabel}</span>
+                        ${deleteBtn}
+                    </div>
+                </div>
+                ${permRows}
+            </div>
         `;
     });
 
@@ -208,12 +286,16 @@ async function createUser(e) {
 
 // Toggle Employee Permissions (AJAX PUT)
 async function toggleUserPermission(userId, permissionField, isChecked) {
-    // 1. Get current checkbox states
-    const row = event.target.closest('tr');
-    const canView = row.querySelector('input[onchange*="can_view_reports"]').checked;
-    const canEnter = row.querySelector('input[onchange*="can_enter_data"]').checked;
-    const canLookups = row.querySelector('input[onchange*="can_manage_lookups"]').checked;
-    const canUsers = row.querySelector('input[onchange*="can_manage_users"]').checked;
+    // Gather current values from the visible interface (desktop or mobile)
+    const allRows = document.querySelectorAll(`input[onchange*="toggleUserPermission(${userId}"]`);
+    let canView = false, canEnter = false, canLookups = false, canUsers = false;
+    allRows.forEach(inp => {
+        const fn = inp.getAttribute('onchange') || '';
+        if (fn.includes('can_view_reports')) canView = inp.checked;
+        else if (fn.includes('can_enter_data')) canEnter = inp.checked;
+        else if (fn.includes('can_manage_lookups')) canLookups = inp.checked;
+        else if (fn.includes('can_manage_users')) canUsers = inp.checked;
+    });
 
     try {
         const response = await fetch(`/api/users/${userId}/permissions`, {
@@ -231,10 +313,10 @@ async function toggleUserPermission(userId, permissionField, isChecked) {
         });
 
         if (response.ok) {
-            showToast('تم تحديث صلاحية الموظف بنجاح', 'success');
+            showToast('تم تحديث الصلاحية بنجاح', 'success');
         } else {
             showToast('فشل تحديث الصلاحيات', 'error');
-            loadUsersList(); // rollback values
+            loadUsersList();
         }
     } catch(e) {
         showToast('خطأ بالاتصال', 'error');

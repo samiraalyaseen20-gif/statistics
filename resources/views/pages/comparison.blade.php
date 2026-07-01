@@ -43,7 +43,7 @@ if (file_exists(base_path('iraq.svg'))) {
                     <div class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-[9px] font-black">أ</div>
                     <span class="text-[10px] font-bold text-blue-600">الجهة الأولى (أ)</span>
                 </div>
-                <div class="grid grid-cols-3 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <div class="flex flex-col gap-1">
                         <label class="text-[9px] font-bold text-slate-400">الطبيب:</label>
                         <select id="cmp-doc-a" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
@@ -71,7 +71,7 @@ if (file_exists(base_path('iraq.svg'))) {
                     <div class="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center text-white text-[9px] font-black">ب</div>
                     <span class="text-[10px] font-bold text-rose-600">الجهة الثانية (ب)</span>
                 </div>
-                <div class="grid grid-cols-3 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     <div class="flex flex-col gap-1">
                         <label class="text-[9px] font-bold text-slate-400">الطبيب:</label>
                         <select id="cmp-doc-b" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
@@ -108,7 +108,7 @@ if (file_exists(base_path('iraq.svg'))) {
     <div id="cmp-results" class="hidden space-y-6">
 
         {{-- ═══ KPI Summary Row ═══ --}}
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div class="custom-card p-4 rounded-2xl text-center space-y-2">
                 <div class="flex items-center justify-center gap-1.5 mb-2">
                     <i data-lucide="users" class="w-3.5 h-3.5 text-emerald-500"></i>
@@ -166,7 +166,8 @@ if (file_exists(base_path('iraq.svg'))) {
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
-                جدول (1): مقارنة أعداد المراجعين في الاستشاريات
+                جدول (1): مقارنة أعداد المرضى في الاستشاريات
+                <span id="cmp-total-1" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
             </h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
@@ -192,7 +193,8 @@ if (file_exists(base_path('iraq.svg'))) {
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
-                جدول (2): مقارنة مراجعي الاستشارية لكل طبيب اختصاص
+                جدول (2): مقارنة مرضى كل طبيب اختصاص
+                <span id="cmp-total-2" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
             </h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
@@ -217,6 +219,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                     <i data-lucide="flag" class="w-4 h-4 text-sky-500"></i>
                     جدول (3): مقارنة التوزيع الجغرافي داخل العراق
+                    <span id="cmp-total-3" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div>
@@ -247,7 +250,8 @@ if (file_exists(base_path('iraq.svg'))) {
             <div class="custom-card p-6 rounded-2xl">
                 <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                     <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                    جدول (4): مقارنة المراجعين من خارج العراق
+                    جدول (4): المرضى من خارج العراق
+                    <span id="cmp-total-4" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div>
@@ -273,6 +277,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                     <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
                     جدول (5): مقارنة الفحوصات البصرية والساندة
+                    <span id="cmp-total-5" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div>
@@ -294,6 +299,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                     <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
                     جدول (6): مقارنة التحاليل المختبرية
+                    <span id="cmp-total-6" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div>
@@ -317,6 +323,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
                 جدول (7): مقارنة أعداد وتصنيف العمليات الجراحية للعيون
+                <span id="cmp-total-7" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
             </h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
@@ -347,6 +354,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
                 جدول (10): مقارنة إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص
+                <span id="cmp-total-10" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
             </h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
@@ -369,6 +377,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="user-cog" class="w-4 h-4 text-violet-500"></i>
                 مقارنة الإحصائية التفصيلية للعمليات الجراحية
+                <span id="cmp-total-detail" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
             </h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {{-- Side A Detail --}}
@@ -1013,6 +1022,24 @@ function renderAllCmpCharts(data, labelA, labelB) {
     }).join('');
     cmpRenderTable('cmp-tbl-detail-a', detailRowHtml(coA), 4, 'لا عمليات مسجلة');
     cmpRenderTable('cmp-tbl-detail-b', detailRowHtml(coB), 4, 'لا عمليات مسجلة');
+
+    // ─ تحديث شارات المجاميع في عناوين الجداول ─
+    const cmpSetTotal = (id, a, b) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const total = Number(a || 0) + Number(b || 0);
+        el.textContent = 'المجموع الكلي: ' + total.toLocaleString();
+        el.classList.remove('hidden');
+    };
+    cmpSetTotal('cmp-total-1',  A.total_visits,    B.total_visits);
+    cmpSetTotal('cmp-total-2',  A.total_visits,    B.total_visits);
+    cmpSetTotal('cmp-total-3',  (A.visits_by_gov    || []).reduce((s,r)=>s+r.total,0), (B.visits_by_gov    || []).reduce((s,r)=>s+r.total,0));
+    cmpSetTotal('cmp-total-4',  (A.visits_by_country|| []).reduce((s,r)=>s+r.total,0), (B.visits_by_country|| []).reduce((s,r)=>s+r.total,0));
+    cmpSetTotal('cmp-total-5',  A.total_eye_tests,  B.total_eye_tests);
+    cmpSetTotal('cmp-total-6',  (A.lab_tests_by_type|| []).reduce((s,r)=>s+r.total,0), (B.lab_tests_by_type|| []).reduce((s,r)=>s+r.total,0));
+    cmpSetTotal('cmp-total-7',  A.total_surgeries,  B.total_surgeries);
+    cmpSetTotal('cmp-total-10', A.total_surgeries,  B.total_surgeries);
+    cmpSetTotal('cmp-total-detail', A.total_surgeries, B.total_surgeries);
 
     // ─ Show results ─
     document.getElementById('cmp-results').classList.remove('hidden');

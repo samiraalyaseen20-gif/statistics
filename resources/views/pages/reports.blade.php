@@ -110,7 +110,8 @@ if (file_exists(base_path('iraq.svg'))) {
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
-            جدول (1): أعداد المراجعين في الاستشاريات
+            جدول (1): أعداد المرضى في الاستشاريات
+            <span id="cmp-total-1" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalVisits) }}</span>
         </h3>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <!-- Branching/Split Arrow Infographic -->
@@ -135,7 +136,8 @@ if (file_exists(base_path('iraq.svg'))) {
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
-            جدول (2): أعداد مراجعي الاستشارية لكل طبيب اختصاص
+            جدول (2): أعداد مرضى كل طبيب اختصاص
+            <span id="cmp-total-2" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalVisits) }}</span>
         </h3>
         <div class="w-full overflow-x-auto py-2">
             <svg id="svg-report-2" viewBox="0 0 900 240" class="w-full min-w-[850px] h-[240px] overflow-visible"></svg>
@@ -149,6 +151,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="flag" class="w-4 h-4 text-sky-500"></i>
                 جدول (3): التوزيع الجغرافي داخل العراق
+                <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($visitsByGov->sum('total')) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
                 <svg id="svg-report-3" viewBox="0 0 584 594" class="w-full max-w-[480px] h-[480px] overflow-visible mx-auto">
@@ -163,7 +166,8 @@ if (file_exists(base_path('iraq.svg'))) {
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                جدول (4): المراجعون من خارج العراق
+                جدول (4): المرضى من خارج العراق
+                <span id="cmp-total-4" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($visitsByCountry->sum('total')) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
                 <svg id="svg-report-4" viewBox="0 0 450 180" class="w-full min-w-[400px] h-auto overflow-visible"></svg>
@@ -178,6 +182,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
                 جدول (5): الفحوصات البصرية والساندة
+                <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalEyeTests) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
                 <svg id="svg-report-5" viewBox="0 0 450 200" class="w-full min-w-[420px] h-auto overflow-visible"></svg>
@@ -187,7 +192,8 @@ if (file_exists(base_path('iraq.svg'))) {
         <div class="custom-card p-6 rounded-2xl flex flex-col justify-between">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
-                جدول (6): الفحوصات والتحاليل المختبرية المنجزة (المجموع: 4,566 مراجع)
+                جدول (6): الفحوصات والتحاليل المختبرية المنجزة
+                <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($labTestsByType->sum('total')) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
                 <svg id="svg-report-6" viewBox="0 0 450 180" class="w-full min-w-[420px] h-[180px] overflow-visible"></svg>
@@ -200,6 +206,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
             جدول (7): أعداد وتصنيف العمليات الجراحية للعيون
+            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalSurgeries) }}</span>
         </h3>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
             <!-- 2D Arrow Columns -->
@@ -227,6 +234,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
             جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص (بيانات حقيقية)
+            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalSurgeries) }}</span>
         </h3>
         <div class="w-full overflow-x-auto py-2 mb-4">
             <svg id="svg-report-10" viewBox="0 0 900 240" class="w-full min-w-[850px] h-[240px] overflow-visible"></svg>
@@ -331,6 +339,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="user-cog" class="w-4 h-4 text-violet-500"></i>
             الإحصائية التفصيلية للعمليات الجراحية لكل طبيب
+            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalSurgeries) }}</span>
         </h3>
         
         @php

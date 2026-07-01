@@ -28,12 +28,12 @@
     {{-- ══════════════════ TAB 1: VISITS BY DOCTORS ══════════════════ --}}
     <div id="entry-tab-content-visit" class="entry-tab-panel space-y-6">
         <div class="custom-card p-5 rounded-2xl space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <h3 class="text-xs font-black text-text-main flex items-center gap-2">
                     <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
-                    <span>جدول إدخال أعداد مراجعي الأطباء والاستشاريات</span>
+                    <span>جدول إدخال أعداد مرضى الأطباء والاستشاريات</span>
                 </h3>
-                <div class="flex items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2">
                     <label class="text-[10px] font-bold text-slate-400">تاريخ الإدخال:</label>
                     <input type="date" id="date-visit-doctors" required
                         class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
@@ -50,10 +50,8 @@
                     <thead>
                         <tr class="border-b border-slate-200/10 text-[10px] font-bold text-slate-400">
                             <th class="pb-2">اسم الطبيب الاستشاري</th>
-                            <th class="pb-2 text-center bg-blue-500/5 rounded-t-lg">العيون العامة (خاص)</th>
-                            <th class="pb-2 text-center bg-blue-500/5">العيون العامة (عام)</th>
-                            <th class="pb-2 text-center bg-purple-500/5 rounded-t-lg">التخصصات الدقيقة (خاص)</th>
-                            <th class="pb-2 text-center bg-purple-500/5">التخصصات الدقيقة (عام)</th>
+                            <th class="pb-2 text-center bg-blue-500/5 rounded-t-lg">العيون العامة</th>
+                            <th class="pb-2 text-center bg-purple-500/5 rounded-t-lg">التخصصات الدقيقة</th>
                         </tr>
                     </thead>
                     <tbody id="tbody-visits-doctors" class="divide-y divide-slate-200/5 text-[11px] font-bold text-text-main">
@@ -70,12 +68,12 @@
             
             {{-- Governorates Table --}}
             <div class="custom-card p-5 rounded-2xl space-y-4">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <h3 class="text-xs font-black text-text-main flex items-center gap-2">
                         <i data-lucide="map-pin" class="w-4 h-4 text-emerald-500"></i>
-                        <span>مراجعو المحافظات (داخل العراق)</span>
+                        <span>مرضى المحافظات (داخل العراق)</span>
                     </h3>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
                         <input type="date" id="date-geo-gov" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="saveGovsVisits()"
@@ -87,7 +85,7 @@
                         <thead>
                             <tr class="border-b border-slate-200/10 text-[9px] font-bold text-slate-400">
                                 <th class="pb-1">المحافظة</th>
-                                <th class="pb-1">عدد المراجعين</th>
+                                <th class="pb-1">عدد المرضى</th>
                             </tr>
                         </thead>
                         <tbody id="tbody-geo-govs" class="divide-y divide-slate-200/5 text-[10px] font-bold text-text-main">
@@ -99,12 +97,12 @@
 
             {{-- Countries Table --}}
             <div class="custom-card p-5 rounded-2xl space-y-4">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <h3 class="text-xs font-black text-text-main flex items-center gap-2">
                         <i data-lucide="globe" class="w-4 h-4 text-sky-500"></i>
-                        <span>مراجعو الدول (خارج العراق)</span>
+                        <span>مرضى الدول (خارج العراق)</span>
                     </h3>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
                         <input type="date" id="date-geo-country" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="saveCountriesVisits()"
@@ -116,7 +114,7 @@
                         <thead>
                             <tr class="border-b border-slate-200/10 text-[9px] font-bold text-slate-400">
                                 <th class="pb-1">الدولة</th>
-                                <th class="pb-1">عدد المراجعين</th>
+                                <th class="pb-1">عدد المرضى</th>
                             </tr>
                         </thead>
                         <tbody id="tbody-geo-countries" class="divide-y divide-slate-200/5 text-[10px] font-bold text-text-main">
@@ -135,12 +133,12 @@
 
             {{-- Operations Types Table --}}
             <div class="custom-card p-5 rounded-2xl space-y-4">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <h3 class="text-xs font-black text-text-main flex items-center gap-2">
                         <i data-lucide="scissors" class="w-4 h-4 text-purple-500"></i>
                         <span>أعداد العمليات الجراحية المنفذة (حسب النوع)</span>
                     </h3>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
                         <input type="date" id="date-surg-op" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="saveSurgeriesOps()"
@@ -165,12 +163,12 @@
 
             {{-- Doctors Surgeries Table --}}
             <div class="custom-card p-5 rounded-2xl space-y-4">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <h3 class="text-xs font-black text-text-main flex items-center gap-2">
                         <i data-lucide="stethoscope" class="w-4 h-4 text-indigo-500"></i>
                         <span>إجمالي العمليات المنفذة لكل طبيب</span>
                     </h3>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
                         <input type="date" id="date-surg-doc" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="saveSurgeriesDocs()"
@@ -201,12 +199,12 @@
 
             {{-- Eye Tests --}}
             <div class="custom-card p-5 rounded-2xl space-y-4">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <h3 class="text-xs font-black text-text-main flex items-center gap-2">
                         <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
                         <span>الفحوصات البصرية اليومية</span>
                     </h3>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
                         <input type="date" id="date-tests-eye" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="saveEyeTestsGrid()"
@@ -230,12 +228,12 @@
 
             {{-- Lab Tests --}}
             <div class="custom-card p-5 rounded-2xl space-y-4">
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <h3 class="text-xs font-black text-text-main flex items-center gap-2">
                         <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
                         <span>التحاليل المختبرية اليومية</span>
                     </h3>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-2">
                         <input type="date" id="date-tests-lab" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="saveLabTestsGrid()"
@@ -333,20 +331,14 @@ function populateDirectGrids() {
                 <tr class="table-row" data-doctor-id="${doc.id}">
                     <td class="font-bold py-3">${doc.name}</td>
                     <td class="bg-blue-500/5 text-center">
-                        <input type="number" min="0" value="0" data-unit-id="${unitGeneral ? unitGeneral.id : 1}" data-status="مدفوع"
-                            class="w-16 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 text-xs font-bold text-text-main">
-                    </td>
-                    <td class="bg-blue-500/5 text-center">
-                        <input type="number" min="0" value="0" data-unit-id="${unitGeneral ? unitGeneral.id : 1}" data-status="غير مدفوع"
-                            class="w-16 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 text-xs font-bold text-text-main">
+                        <input type="number" min="0" value="0"
+                            data-unit-id="${unitGeneral ? unitGeneral.id : 1}"
+                            class="w-20 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 text-xs font-bold text-text-main">
                     </td>
                     <td class="bg-purple-500/5 text-center">
-                        <input type="number" min="0" value="0" data-unit-id="${unitSpecial ? unitSpecial.id : 2}" data-status="مدفوع"
-                            class="w-16 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 text-xs font-bold text-text-main">
-                    </td>
-                    <td class="bg-purple-500/5 text-center">
-                        <input type="number" min="0" value="0" data-unit-id="${unitSpecial ? unitSpecial.id : 2}" data-status="غير مدفوع"
-                            class="w-16 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 text-xs font-bold text-text-main">
+                        <input type="number" min="0" value="0"
+                            data-unit-id="${unitSpecial ? unitSpecial.id : 2}"
+                            class="w-20 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 text-xs font-bold text-text-main">
                     </td>
                 </tr>
             `;
@@ -469,7 +461,7 @@ function populateDirectGrids() {
 // 1. Save Doctors Visits
 async function saveVisitsDoctors() {
     const date = document.getElementById('date-visit-doctors').value;
-    if (!date) { showToast('حدد تاريخ مراجعين الأطباء', 'error'); return; }
+    if (!date) { showToast('حدد تاريخ بيانات الأطباء', 'error'); return; }
 
     const promises = [];
     const rows = document.querySelectorAll('#tbody-visits-doctors tr');
@@ -482,7 +474,6 @@ async function saveVisitsDoctors() {
             const count = parseInt(input.value) || 0;
             if (count > 0) {
                 const unitId = input.getAttribute('data-unit-id');
-                const status = input.getAttribute('data-status');
 
                 promises.push(
                     fetch('/api/visits', {
@@ -494,7 +485,6 @@ async function saveVisitsDoctors() {
                         body: JSON.stringify({
                             doctor_id: docId,
                             clinic_unit_id: unitId,
-                            status: status,
                             visit_date: date,
                             quantity: count
                         })
@@ -510,7 +500,7 @@ async function saveVisitsDoctors() {
     try {
         const results = await Promise.all(promises);
         if (results.every(r => r.ok)) {
-            showToast('تم حفظ مراجعين الأطباء الإحصائية بنجاح', 'success');
+            showToast('تم حفظ بيانات الأطباء بنجاح', 'success');
             lastUsedDate = date;
             loadEntryLookups();
         } else {
@@ -564,7 +554,7 @@ async function saveGovsVisits() {
     try {
         const results = await Promise.all(promises);
         if (results.every(r => r.ok)) {
-            showToast('تم حفظ أعداد مراجعي المحافظات بنجاح', 'success');
+            showToast('تم حفظ أعداد مرضى المحافظات بنجاح', 'success');;
             lastUsedDate = date;
             loadEntryLookups();
         }
@@ -615,7 +605,7 @@ async function saveCountriesVisits() {
     try {
         const results = await Promise.all(promises);
         if (results.every(r => r.ok)) {
-            showToast('تم حفظ أعداد مراجعي الدول بنجاح', 'success');
+            showToast('تم حفظ أعداد مرضى الدول بنجاح', 'success');
             lastUsedDate = date;
             loadEntryLookups();
         }
