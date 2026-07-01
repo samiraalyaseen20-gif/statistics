@@ -36,6 +36,9 @@ if (file_exists(base_path('iraq.svg'))) {
                 <button onclick="applyDateRangeFilter()" class="py-2 px-5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-pink-400 hover-press flex items-center gap-2">
                     <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i><span>تطبيق التصفية</span>
                 </button>
+                <button onclick="resetAllFilters()" class="py-2 px-4 rounded-xl text-xs font-bold bg-slate-200/20 text-slate-400 hover:bg-slate-200/40 hover-press flex items-center gap-1.5">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i><span>تصفير الفلتر</span>
+                </button>
                 <button onclick="window.print()" class="py-2 px-4 rounded-xl text-xs font-bold bg-slate-200/20 text-slate-400 hover:bg-slate-200/40 hover-press">
                     <i data-lucide="printer" class="w-3.5 h-3.5"></i>
                 </button>
@@ -223,7 +226,7 @@ if (file_exists(base_path('iraq.svg'))) {
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
-            جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص
+            جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص (بيانات حقيقية)
         </h3>
         <div class="w-full overflow-x-auto py-2 mb-4">
             <svg id="svg-report-10" viewBox="0 0 900 240" class="w-full min-w-[850px] h-[240px] overflow-visible"></svg>
@@ -233,7 +236,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <thead>
                     <tr>
                         <th rowspan="2" class="w-6">ت</th>
-                        <th rowspan="2" class="text-right pr-2">اسم الطبيب</th>
+                        <th rowspan="2" class="text-right pr-2 font-['Tajawal']">اسم الطبيب</th>
                         <th colspan="3" class="bg-yellow-400/20">صغرى</th>
                         <th colspan="3" class="bg-blue-400/20">وسطى</th>
                         <th colspan="3" class="bg-orange-400/20">كبرى</th>
@@ -251,48 +254,76 @@ if (file_exists(base_path('iraq.svg'))) {
                 </thead>
                 <tbody>
                     @php
-                    $d10=[
-                        [1,'د. غياث الدين ثجيل نعمه',[2,1,0,31,0,0,3,6,0,3,10,0,1,28,0],85],
-                        [2,'د. حمزة صادق علوان الشريفي',[0,1,0,0,11,4,0,27,9,0,55,8,0,50,0],165],
-                        [3,'د. ذو الفقار غني عبد',[0,0,0,0,2,1,0,4,0,0,5,0,0,10,0],22],
-                        [4,'د. منتصر محمد عرب',[1,1,0,101,0,0,1,0,0,15,1,0,0,0,0],120],
-                        [5,'د. افراح عبدالزهرة القصير',[0,0,0,0,2,0,0,0,0,0,7,0,0,1,0],10],
-                        [6,'د. مؤيد عبد اللطيف صبار',[3,4,0,86,1,0,4,9,0,27,12,0,0,0,0],146],
-                        [7,'د. بشرى سليمان علي الصقر',[0,2,7,0,1,11,0,0,6,0,28,107,0,0,0],162],
-                        [8,'د. علاء صبري الغانمي',[1,0,0,128,0,0,1,0,0,13,4,0,0,0,0],147],
-                        [9,'د. نور رعد كريم',[0,0,0,151,3,0,2,5,0,11,17,0,0,0,0],189],
-                        [10,'د. حيدر حسين علي الموسوي',[3,1,0,751,14,0,4,0,0,29,37,0,0,0,0],839],
-                        [11,'د. حذيفه سامي جواد العبايجي',[0,0,0,31,6,0,2,0,0,10,8,0,0,0,0],57],
-                        [12,'د. اريج هادي كريم',[0,1,0,1,0,0,0,0,0,8,2,0,0,0,0],12],
-                        [13,'د. خلدون خليل نايف',[0,0,0,1,0,0,0,0,0,4,1,0,0,0,0],6],
-                        [14,'د. ايات معتز محمد',[1,2,0,22,0,0,2,0,0,6,2,0,0,0,0],35],
-                        [15,'د. محمد بدر الجريان',[0,0,0,0,0,0,0,0,0,0,0,2,0,0,0],2],
-                        [16,'د. زهراء علوان الحمداني',[2,0,0,0,1,0,0,0,0,2,0,0,0,0,0],5],
-                    ];
+                    $classifications = ['صغرى', 'وسطى', 'كبرى', 'فوق الكبرى', 'خاصة'];
+                    $sectorsList = ['قطاع الصحة', 'عتبة الخاص', 'عتبة العام'];
+                    
+                    // 1. تجميع البيانات لكل طبيب ديناميكياً
+                    $dynamicD10 = $filterDoctors->map(function($doc, $index) use ($surgeriesByDoctorCatSector, $classifications, $sectorsList) {
+                        $docSurgeries = $surgeriesByDoctorCatSector->where('doctor', $doc->name);
+                        
+                        $vals = [];
+                        $total = 0;
+                        
+                        foreach ($classifications as $cls) {
+                            foreach ($sectorsList as $sec) {
+                                $match = $docSurgeries->filter(function($item) use ($cls, $sec) {
+                                    if ($cls === 'وسطى') {
+                                        return (str_contains($item->classification, 'وسطى') || str_contains($item->classification, 'حقن') || str_contains($item->classification, 'ليزر')) 
+                                               && $item->sector === $sec;
+                                    }
+                                    return $item->classification === $cls && $item->sector === $sec;
+                                })->sum('total');
+                                
+                                $vals[] = $match;
+                                $total += $match;
+                            }
+                        }
+                        
+                        return [
+                            'name' => $doc->name,
+                            'vals' => $vals,
+                            'total' => $total
+                        ];
+                    })->filter(fn($d) => $d['total'] > 0)->values();
+
+                    // حساب مجاميع الأعمدة الفرعية للأسفل
+                    $columnTotals = array_fill(0, 15, 0);
+                    foreach ($dynamicD10 as $doc) {
+                        foreach ($doc['vals'] as $idx => $val) {
+                            $columnTotals[$idx] += $val;
+                        }
+                    }
+                    $grandTotal = array_sum($columnTotals);
                     @endphp
-                    @foreach($d10 as [$num,$name,$vals,$total])
+
+                    @forelse($dynamicD10 as $num => $doc)
                     <tr class="table-row">
-                        <td>{{ $num }}</td>
-                        <td class="text-right pr-2 font-bold whitespace-nowrap">{{ $name }}</td>
-                        @foreach($vals as $v)
-                        <td class="{{ $v==0?'opacity-20':'' }}">{{ $v }}</td>
+                        <td>{{ $num + 1 }}</td>
+                        <td class="text-right pr-2 font-bold whitespace-nowrap">{{ $doc['name'] }}</td>
+                        @foreach($doc['vals'] as $v)
+                        <td class="{{ $v == 0 ? 'opacity-20' : '' }}">{{ $v }}</td>
                         @endforeach
-                        <td class="font-extrabold text-theme-pink text-xs">{{ $total }}</td>
+                        <td class="font-extrabold text-theme-pink text-xs">{{ $doc['total'] }}</td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="18" class="text-center py-4 text-slate-400 font-bold">لا توجد عمليات جراحية مسجلة لهذه الفترة</td>
+                    </tr>
+                    @endforelse
+
+                    @if($dynamicD10->count() > 0)
                     <tr class="table-row font-extrabold text-rose-600 text-xs">
                         <td colspan="2" class="text-right pr-2">المجموع</td>
-                        <td>13</td><td>13</td><td>7</td>
-                        <td>1303</td><td>41</td><td>16</td>
-                        <td>19</td><td>51</td><td>15</td>
-                        <td>128</td><td>189</td><td>117</td>
-                        <td>1</td><td>89</td><td>0</td>
-                        <td class="text-sm font-black">2,002</td>
+                        @foreach($columnTotals as $total)
+                        <td>{{ $total }}</td>
+                        @endforeach
+                        <td class="text-sm font-black">{{ number_format($grandTotal) }}</td>
                     </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
-        <p class="text-[8px] text-slate-400 mt-2">ص = قطاع الصحة &nbsp;|&nbsp; خ = عتبة الخاص &nbsp;|&nbsp; ع = عتبة العام</p>
+        <p class="text-[8px] text-slate-400 mt-2">ص = قطاع الصحة (حكومي) &nbsp;|&nbsp; خ = عتبة الخاص &nbsp;|&nbsp; ع = عتبة العام</p>
     </div>
 
     <!-- 7. الإحصائية التفصيلية لكل طبيب -->

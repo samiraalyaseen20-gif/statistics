@@ -19,6 +19,10 @@ class UserSeeder extends Seeder
                 'name' => 'مدير النظام',
                 'password' => Hash::make('123456'),
                 'role' => 'admin',
+                'can_view_reports'   => true,
+                'can_enter_data'     => true,
+                'can_manage_lookups' => true,
+                'can_manage_users'   => true,
             ]
         );
 
@@ -28,6 +32,10 @@ class UserSeeder extends Seeder
                 'name' => 'موظف الاستقبال',
                 'password' => Hash::make('123456'),
                 'role' => 'employee',
+                'can_view_reports'   => false,
+                'can_enter_data'     => false,
+                'can_manage_lookups' => false,
+                'can_manage_users'   => false,
             ]
         );
 
@@ -37,6 +45,10 @@ class UserSeeder extends Seeder
                 'name' => 'زائر',
                 'password' => Hash::make('123456'),
                 'role' => 'visitor',
+                'can_view_reports'   => true,
+                'can_enter_data'     => false,
+                'can_manage_lookups' => false,
+                'can_manage_users'   => false,
             ]
         );
     }

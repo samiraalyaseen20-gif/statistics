@@ -58,12 +58,15 @@
 
             <!-- Navigation (يسكرول داخل السايدبار لو طال) -->
             <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+                @if(auth()->user()->role === 'admin' || auth()->user()->role === 'visitor' || auth()->user()->can_view_reports)
                 <button onclick="navigateToPage('reports')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press active text-pink-500" id="nav-reports">
                     <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 shrink-0"></i>
                     <span>التقارير</span>
                 </button>
+                @endif
 
                 <!-- Management Dropdown -->
+                @if(auth()->user()->role === 'admin' || auth()->user()->can_manage_lookups)
                 <div class="mt-1">
                     <button onclick="toggleMgmtMenu()" id="btn-mgmt" class="w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center justify-between text-text-main hover:bg-slate-200/10 hover-press">
                         <span class="flex items-center gap-2">
@@ -92,25 +95,38 @@
                             <i data-lucide="building-2" class="w-3 h-3 shrink-0 text-amber-500"></i><span>القطاعات</span>
                         </button>
                         <button onclick="navigateToPage('clinic_units')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-clinic_units">
-                            <i data-lucide="layout-list" class="w-3 h-3 shrink-0 text-indigo-500"></i><span>الوحدات</span>
+                            <i data-lucide="layout-list" class="w-3.5 h-3.5 shrink-0 text-indigo-500"></i><span>الوحدات</span>
                         </button>
                         <button onclick="navigateToPage('lab_test_types')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-lab_test_types">
                             <i data-lucide="test-tube" class="w-3 h-3 shrink-0 text-purple-500"></i><span>التحاليل</span>
                         </button>
                     </div>
                 </div>
+                @endif
 
+                @if(auth()->user()->role === 'admin' || auth()->user()->can_enter_data)
                 <div class="border-t border-slate-200/10 my-2"></div>
                 <button onclick="navigateToPage('entry')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-entry">
                     <i data-lucide="plus-circle" class="w-3.5 h-3.5 shrink-0 text-pink-500"></i>
                     <span>إدخال البيانات</span>
                 </button>
+                @endif
 
+                @if(auth()->user()->role === 'admin' || auth()->user()->role === 'visitor' || auth()->user()->can_view_reports)
                 <div class="border-t border-slate-200/10 my-2"></div>
                 <button onclick="navigateToPage('comparison')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-comparison">
                     <i data-lucide="git-compare" class="w-3.5 h-3.5 shrink-0 text-violet-500"></i>
                     <span>المفاضلة السريرية</span>
                 </button>
+                @endif
+
+                @if(auth()->user()->role === 'admin' || auth()->user()->can_manage_users)
+                <div class="border-t border-slate-200/10 my-2"></div>
+                <button onclick="navigateToPage('users')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-users">
+                    <i data-lucide="users" class="w-3.5 h-3.5 shrink-0 text-indigo-500"></i>
+                    <span>إدارة المستخدمين</span>
+                </button>
+                @endif
 
                 <div class="border-t border-slate-200/10 my-2"></div>
                 <button onclick="navigateToPage('settings')" class="nav-link w-full py-2 px-3 rounded-xl text-[11px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-settings">
@@ -160,6 +176,7 @@
                 @include('pages.sectors')
                 @include('pages.clinic_units')
                 @include('pages.lab_test_types')
+                @include('pages.users')
                 @include('pages.settings')
             </main>
 
@@ -974,6 +991,7 @@
                 sectors: 'القطاعات',
                 clinic_units: 'الوحدات',
                 lab_test_types: 'التحاليل',
+                users: 'إدارة المستخدمين والصلاحيات',
                 settings: 'الإعدادات',
             };
             if (pageTitleEl) pageTitleEl.innerText = titles[pageId] || pageId;
@@ -997,6 +1015,7 @@
             if (pageId === 'clinic_units' && typeof window.initClinicUnitsPage === 'function') window.initClinicUnitsPage();
             if (pageId === 'lab_test_types' && typeof window.initLabTestTypesPage === 'function') window.initLabTestTypesPage();
             if (pageId === 'comparison' && typeof window.initComparisonPage === 'function') window.initComparisonPage();
+            if (pageId === 'users' && typeof window.initUsersPage === 'function') window.initUsersPage();
 
             setTimeout(() => {
                 if (window.lucide) lucide.createIcons();

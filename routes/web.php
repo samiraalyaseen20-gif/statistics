@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LookupController;
 use App\Http\Controllers\EntryController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 
 // ─── Auth ───
 Route::get('/login',  [AuthController::class, 'showLogin'])->name('login');
@@ -14,11 +15,11 @@ Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
 // ─── Protected ───
 Route::middleware('auth')->group(function () {
 
-    // Main SPA view (passes report data)
+    // Main SPA view
     Route::get('/', [ReportController::class, 'index']);
     Route::get('api/comparison-data', [ReportController::class, 'comparisonData']);
 
-    // ── Lookups JSON API ──────────────────────────────────────────
+    // ── JSON API ──────────────────────────────────────────
     Route::prefix('api')->group(function () {
 
         // Doctors
@@ -62,7 +63,7 @@ Route::middleware('auth')->group(function () {
         Route::post  ('lab-test-types',               [LookupController::class, 'labTestTypesStore']);
         Route::delete('lab-test-types/{labTestType}', [LookupController::class, 'labTestTypesDestroy']);
 
-        // ── Entry JSON API ────────────────────────────────────────
+        // Entry API
         Route::get   ('form-data',           [EntryController::class, 'formData']);
 
         // Visits
@@ -82,5 +83,11 @@ Route::middleware('auth')->group(function () {
         Route::get   ('surgeries',             [EntryController::class, 'surgeriesIndex']);
         Route::post  ('surgeries',             [EntryController::class, 'surgeriesStore']);
         Route::delete('surgeries/{surgery}',   [EntryController::class, 'surgeriesDestroy']);
+
+        // Users & Permissions Management
+        Route::get   ('users',                 [UserController::class, 'index']);
+        Route::post  ('users',                 [UserController::class, 'store']);
+        Route::put   ('users/{user}/permissions', [UserController::class, 'updatePermissions']);
+        Route::delete('users/{user}',          [UserController::class, 'destroy']);
     });
 });

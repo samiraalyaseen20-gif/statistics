@@ -15,9 +15,17 @@ use App\Models\TestType;
 use App\Models\LabTestType;
 use App\Models\OperationName;
 use App\Models\Sector;
+use Illuminate\Support\Facades\Auth;
 
 class EntryController extends Controller
 {
+    private function checkPermission() {
+        $user = Auth::user();
+        if ($user->role !== 'admin' && !$user->can_enter_data) {
+            abort(response()->json(['error' => 'غير مصرح لك بإدخال أو حذف البيانات الإحصائية'], 403));
+        }
+    }
+
     // ========== VISITS ==========
     public function visitsIndex(Request $r)
     {
@@ -29,6 +37,7 @@ class EntryController extends Controller
 
     public function visitsStore(Request $r)
     {
+        $this->checkPermission();
         $r->validate([
             'patient_name'   => 'nullable|string|max:255',
             'doctor_id'      => 'required|exists:doctors,id',
@@ -61,12 +70,14 @@ class EntryController extends Controller
 
     public function visitsDestroy(Visit $visit)
     {
+        $this->checkPermission();
         $visit->delete(); return response()->json(['ok'=>true]);
     }
 
     // ========== EYE TESTS ==========
     public function eyeTestsStore(Request $r)
     {
+        $this->checkPermission();
         $r->validate([
             'test_type_id'  => 'required|exists:test_types,id',
             'test_date'     => 'required|date',
@@ -75,13 +86,11 @@ class EntryController extends Controller
 
         $qty = $r->get('quantity', 1);
 
-        // Get default doctor and clinic unit to link the dummy visits
         $defaultDoc = Doctor::first();
         $defaultUnit = ClinicUnit::first();
 
         $lastTest = null;
         for ($i = 0; $i < $qty; $i++) {
-            // Create a dummy visit
             $visit = Visit::create([
                 'patient_name'   => 'قيد إحصائي فحص',
                 'doctor_id'      => $defaultDoc ? $defaultDoc->id : 1,
@@ -102,7 +111,7 @@ class EntryController extends Controller
 
     public function eyeTestsDestroy(EyeTest $eyeTest)
     {
-        // Delete the dummy visit associated if it has default text
+        $this->checkPermission();
         $visit = $eyeTest->visit;
         $eyeTest->delete();
         if ($visit && $visit->patient_name === 'قيد إحصائي فحص') {
@@ -114,6 +123,7 @@ class EntryController extends Controller
     // ========== LAB TESTS ==========
     public function labTestsStore(Request $r)
     {
+        $this->checkPermission();
         $r->validate([
             'lab_test_type_id' => 'required|exists:lab_test_types,id',
             'test_date'        => 'required|date',
@@ -147,6 +157,7 @@ class EntryController extends Controller
 
     public function labTestsDestroy(LabTest $labTest)
     {
+        $this->checkPermission();
         $visit = $labTest->visit;
         $labTest->delete();
         if ($visit && $visit->patient_name === 'قيد إحصائي تحليل') {
@@ -166,6 +177,7 @@ class EntryController extends Controller
 
     public function surgeriesStore(Request $r)
     {
+        $this->checkPermission();
         $r->validate([
             'patient_name'      => 'nullable|string|max:255',
             'doctor_id'         => 'required|exists:doctors,id',
@@ -198,6 +210,7 @@ class EntryController extends Controller
 
     public function surgeriesDestroy(Surgery $surgery)
     {
+        $this->checkPermission();
         $surgery->delete(); return response()->json(['ok'=>true]);
     }
 

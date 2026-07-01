@@ -22,11 +22,18 @@ if (file_exists(base_path('iraq.svg'))) {
                     <p class="text-[9px] text-slate-400 mt-0.5">مقارنة تفاعلية شاملة بين طبيبين أو فترتين زمنيتين</p>
                 </div>
             </div>
-            <button onclick="runComparison()" id="cmp-run-btn"
-                class="py-2 px-5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-violet-500 to-purple-500 hover-press flex items-center gap-2 shadow-md">
-                <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-                <span>تنفيذ المقارنة</span>
-            </button>
+            <div class="flex items-center gap-2">
+                <button onclick="runComparison()" id="cmp-run-btn"
+                    class="py-2 px-5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-violet-500 to-purple-500 hover-press flex items-center gap-2 shadow-md">
+                    <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+                    <span>تنفيذ المقارنة</span>
+                </button>
+                <button onclick="resetComparisonFilters()"
+                    class="py-2 px-4 rounded-xl text-xs font-bold bg-slate-200/20 text-slate-400 hover:bg-slate-200/40 hover-press flex items-center gap-1.5 border border-slate-200/10">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    <span>تصفير المقارنة</span>
+                </button>
+            </div>
         </div>
 
         {{-- Filter Panels --}}
@@ -1025,6 +1032,27 @@ function renderAllCmpCharts(data, labelA, labelB) {
     // ─ Show results ─
     document.getElementById('cmp-results').classList.remove('hidden');
     setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 100);
+}
+
+function resetComparisonFilters() {
+    // تصفير القيم في فلاتر المقارنة
+    document.getElementById('cmp-doc-a').value = '';
+    document.getElementById('cmp-doc-b').value = '';
+    
+    const defaultStart = '2026-05-01';
+    const defaultEnd = '2026-05-31';
+    
+    document.getElementById('cmp-from-a').value = defaultStart;
+    document.getElementById('cmp-to-a').value = defaultEnd;
+    document.getElementById('cmp-from-b').value = defaultStart;
+    document.getElementById('cmp-to-b').value = defaultEnd;
+    
+    // إخفاء النتائج
+    document.getElementById('cmp-results').classList.add('hidden');
+    
+    if (typeof showToast === 'function') {
+        showToast('تم تصفير فلاتر المقارنة بنجاح', 'info');
+    }
 }
 
 // Page init hook

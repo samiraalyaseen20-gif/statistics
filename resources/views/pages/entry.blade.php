@@ -50,10 +50,10 @@
                     <thead>
                         <tr class="border-b border-slate-200/10 text-[10px] font-bold text-slate-400">
                             <th class="pb-2">اسم الطبيب الاستشاري</th>
-                            <th class="pb-2 text-center bg-blue-500/5 rounded-t-lg">العيون العامة (مدفوع)</th>
-                            <th class="pb-2 text-center bg-blue-500/5">العيون العامة (غير مدفوع)</th>
-                            <th class="pb-2 text-center bg-purple-500/5 rounded-t-lg">التخصصات الدقيقة (مدفوع)</th>
-                            <th class="pb-2 text-center bg-purple-500/5">التخصصات الدقيقة (غير مدفوع)</th>
+                            <th class="pb-2 text-center bg-blue-500/5 rounded-t-lg">العيون العامة (خاص)</th>
+                            <th class="pb-2 text-center bg-blue-500/5">العيون العامة (عام)</th>
+                            <th class="pb-2 text-center bg-purple-500/5 rounded-t-lg">التخصصات الدقيقة (خاص)</th>
+                            <th class="pb-2 text-center bg-purple-500/5">التخصصات الدقيقة (عام)</th>
                         </tr>
                     </thead>
                     <tbody id="tbody-visits-doctors" class="divide-y divide-slate-200/5 text-[11px] font-bold text-text-main">
