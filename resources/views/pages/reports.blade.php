@@ -636,11 +636,11 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
     const maxVal = Math.max(...values, 1);
     const colors = presetColors || ['#db2777', '#d97706', '#10b981', '#475569', '#3b82f6', '#8b5cf6'];
     
-    // Column coordinates configuration
-    const labelEndX = 150; // Right boundary of label column
-    const chartStartX = 160; // Left boundary of chart column
-    const chartEndX = 410; // Right boundary of chart column (leaving margin)
-    const maxL = chartEndX - chartStartX - 45; // Max length of chevron body, leaving room for pill
+    // RTL Layout coordinates configuration (chevrons grow right-to-left)
+    const labelEndX = 140; // Right edge of label column
+    const chartStartX = 150; // Left-most boundary of chart area
+    const startX = 430; // Right baseline where chevrons start growing
+    const maxL = startX - chartStartX - 45; // Max length of chevron, leaving room for pill on the left
 
     values.forEach((val, i) => {
         const y = marginT + i * spacing;
@@ -648,12 +648,12 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         
         const scaleVal = maxVal > 0 ? val / maxVal : 0;
         const L = 15 + maxL * scaleVal;
-        const endX = chartStartX + L;
+        const endX = startX - L; // Grows to the left
         
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         g.setAttribute('class', 'arrow-grp cursor-pointer');
 
-        // 1. Draw Label on the Left (dark text, fully visible)
+        // 1. Draw Label on the Left (dark text, fully visible, right-aligned)
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
         label.setAttribute('x', labelEndX);
         label.setAttribute('y', y + 3);
@@ -671,20 +671,20 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         label.textContent = labelText;
         g.appendChild(label);
 
-        // 2. Draw Chevron Body pointing to the right
+        // 2. Draw Chevron Body (RTL pointing to the left)
         const body = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        // Chevron shape: LTR pointing right
-        body.setAttribute('points', `${chartStartX},${y-7} ${endX-6},${y-7} ${endX},${y} ${endX-6},${y+7} ${chartStartX},${y+7}`);
+        // Chevron shape: Flat on right (startX), pointed tip on left (endX)
+        body.setAttribute('points', `${startX},${y-7} ${endX+6},${y-7} ${endX},${y} ${endX+6},${y+7} ${startX},${y+7}`);
         body.setAttribute('fill', color);
         g.appendChild(body);
 
-        // 3. Draw Value pill to the right of the chevron
+        // 3. Draw Value pill to the left of the chevron tip
         const valStr = val.toLocaleString();
         const pillW = Math.max(18, valStr.length * 6 + 6);
         const pillH = 14;
 
         const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        pill.setAttribute('x', endX + 6);
+        pill.setAttribute('x', endX - pillW - 6);
         pill.setAttribute('y', y - pillH / 2);
         pill.setAttribute('width', pillW);
         pill.setAttribute('height', pillH);
@@ -693,7 +693,7 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         g.appendChild(pill);
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tVal.setAttribute('x', endX + 6 + pillW / 2);
+        tVal.setAttribute('x', endX - pillW / 2 - 6);
         tVal.setAttribute('y', y + 4);
         tVal.setAttribute('font-family', 'Outfit');
         tVal.setAttribute('font-size', '8.5px');
