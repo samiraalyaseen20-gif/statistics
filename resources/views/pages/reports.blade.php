@@ -1,3 +1,12 @@
+@php
+$pathsHtml = '';
+if (file_exists(base_path('iraq.svg'))) {
+    $svgContent = file_get_contents(base_path('iraq.svg'));
+    if (preg_match_all('/<path[^>]+>/i', $svgContent, $matches)) {
+        $pathsHtml = implode("\n", $matches[0]);
+    }
+}
+@endphp
 <!-- PAGE 2: REPORTS PAGE SECTION (Unified Scrollable Dashboard with Flat Arrow Infographics) -->
 <section id="page-reports" class="page-section space-y-6 hidden">
 
@@ -139,7 +148,12 @@
                 جدول (3): التوزيع الجغرافي داخل العراق
             </h3>
             <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-3" viewBox="0 0 450 180" class="w-full min-w-[420px] h-[180px] overflow-visible"></svg>
+                <svg id="svg-report-3" viewBox="0 0 584 594" class="w-full max-w-[480px] h-[480px] overflow-visible mx-auto">
+                    <g id="svg-report-3-paths" fill="rgba(14, 165, 233, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
+                        {!! $pathsHtml !!}
+                    </g>
+                    <g id="svg-report-3-nodes"></g>
+                </svg>
             </div>
         </div>
         <!-- Outside Iraq (Horizontal Chevrons) -->
@@ -771,6 +785,154 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
     });
 }
 
+// ── Draw Interactive Iraq Governorates Map ───────────────────
+const GOV_TITLE_MAP = {
+    'Babil': 'بابل',
+    'Al-Anbar': 'الأنبار',
+    'Diyala': 'ديالى',
+    'As-Sulaymaniyah': 'السليمانية',
+    'Wasit': 'واسط',
+    'Maysan': 'ميسان',
+    'Dhi-Qar': 'ذي قار',
+    'Al-Qadisiyah': 'القادسية',
+    'Al-Muthannia': 'المثنى',
+    'Al-Basrah': 'البصرة',
+    'Baghdad': 'بغداد',
+    'Karbala': 'كربلاء',
+    'An-Najaf': 'النجف',
+    'Sala ad-Din': 'صلاح الدين',
+    'Ninawa': 'نينوى',
+    'Arbil': 'أربيل',
+    'Kirkuk': 'كركوك',
+    'Dohuk': 'دهوك'
+};
+
+const GOV_COORDS = {
+    'دهوك':       { x: 258, y:  50, pathId: 'IQ-DA' },
+    'أربيل':      { x: 358, y:  65, pathId: 'IQ-AR' },
+    'السليمانية': { x: 415, y: 150, pathId: 'IQ-SU' },
+    'نينوى':      { x: 195, y: 185, pathId: 'IQ-NI' },
+    'كركوك':      { x: 370, y: 165, pathId: 'IQ-KI' },
+    'صلاح الدين': { x: 285, y: 225, pathId: 'IQ-SD' },
+    'ديالى':      { x: 385, y: 260, pathId: 'IQ-DI' },
+    'بغداد':      { x: 348, y: 307, pathId: 'IQ-BG' },
+    'الأنبار':    { x: 148, y: 305, pathId: 'IQ-AN' },
+    'بابل':       { x: 322, y: 338, pathId: 'IQ-BB' },
+    'كربلاء':     { x: 305, y: 358, pathId: 'IQ-KA' },
+    'واسط':       { x: 422, y: 362, pathId: 'IQ-WA' },
+    'النجف':      { x: 280, y: 465, pathId: 'IQ-NA' },
+    'القادسية':   { x: 383, y: 408, pathId: 'IQ-QA' },
+    'ميسان':      { x: 490, y: 412, pathId: 'IQ-MA' },
+    'ذي قار':     { x: 455, y: 475, pathId: 'IQ-DQ' },
+    'المثنى':     { x: 348, y: 485, pathId: 'IQ-MU' },
+    'البصرة':     { x: 532, y: 492, pathId: 'IQ-BA' }
+};
+
+function drawIraqMap(svgId, values, labels, colorTheme) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    
+    const pathsGroup = document.getElementById(svgId + '-paths');
+    const nodesGroup = document.getElementById(svgId + '-nodes');
+    if (!pathsGroup || !nodesGroup) return;
+    
+    nodesGroup.innerHTML = '';
+    
+    const dataMap = {};
+    labels.forEach((label, idx) => {
+        dataMap[label] = values[idx] || 0;
+    });
+    
+    const maxVal = Math.max(...values, 1);
+    
+    Object.keys(GOV_COORDS).forEach((govArabicName, i) => {
+        const info = GOV_COORDS[govArabicName];
+        const val = dataMap[govArabicName] || 0;
+        
+        // Style SVG Path
+        if (info.pathId) {
+            const path = pathsGroup.querySelector('#' + info.pathId);
+            if (path) {
+                if (val > 0) {
+                    path.setAttribute('fill', 'rgba(2, 132, 199, 0.15)');
+                    path.setAttribute('stroke', colorTheme || '#0ea5e9');
+                    path.setAttribute('stroke-width', '1.6');
+                } else {
+                    path.setAttribute('fill', 'rgba(148, 163, 184, 0.03)');
+                    path.setAttribute('stroke', '#cbd5e1');
+                    path.setAttribute('stroke-width', '0.8');
+                }
+            }
+        }
+        
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        g.setAttribute('class', 'arrow-grp cursor-pointer');
+        g.setAttribute('transform', `translate(${info.x}, ${info.y})`);
+        
+        if (val > 0) {
+            // Pulse circle
+            const pulse = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            pulse.setAttribute('r', 8 + (val / maxVal) * 8);
+            pulse.setAttribute('fill', colorTheme || '#0ea5e9');
+            pulse.setAttribute('opacity', '0.2');
+            
+            const animate = document.createElementNS("http://www.w3.org/2000/svg", "animate");
+            animate.setAttribute('attributeName', 'r');
+            animate.setAttribute('values', `${8 + (val / maxVal) * 6};${16 + (val / maxVal) * 12};${8 + (val / maxVal) * 6}`);
+            animate.setAttribute('dur', '2.5s');
+            animate.setAttribute('repeatCount', 'indefinite');
+            pulse.appendChild(animate);
+            g.appendChild(pulse);
+            
+            // Center solid dot
+            const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            dot.setAttribute('r', 3.5 + (val / maxVal) * 3);
+            dot.setAttribute('fill', colorTheme || '#0ea5e9');
+            g.appendChild(dot);
+        } else {
+            // Inactive node tiny dot
+            const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            dot.setAttribute('r', '2.5');
+            dot.setAttribute('fill', '#94a3b8');
+            dot.setAttribute('opacity', '0.6');
+            g.appendChild(dot);
+        }
+        
+        // Permanent Text Box
+        const textG = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        const valStr = val.toLocaleString();
+        const textStr = `${govArabicName}: ${valStr}`;
+        const textW = textStr.length * 5.2 + 8;
+        
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect.setAttribute('x', -textW / 2);
+        rect.setAttribute('y', val > 0 ? -22 : -17);
+        rect.setAttribute('width', textW);
+        rect.setAttribute('height', '13');
+        rect.setAttribute('rx', '3.5');
+        rect.setAttribute('fill', val > 0 ? (colorTheme || '#0ea5e9') : '#64748b');
+        rect.setAttribute('opacity', val > 0 ? '0.9' : '0.65');
+        textG.appendChild(rect);
+        
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute('x', 0);
+        text.setAttribute('y', val > 0 ? -13 : -8);
+        text.setAttribute('font-family', 'Tajawal');
+        text.setAttribute('font-size', '8px');
+        text.setAttribute('font-weight', 'bold');
+        text.setAttribute('fill', '#ffffff');
+        text.setAttribute('text-anchor', 'middle');
+        text.textContent = textStr;
+        textG.appendChild(text);
+        
+        g.appendChild(textG);
+        g.style.transitionDelay = `${i * 15}ms`;
+        nodesGroup.appendChild(g);
+        setTimeout(() => g.classList.add('show'), 50);
+    });
+}
+
+
 
 
 // Global page initialization hook triggers drawing of all elements
@@ -787,10 +949,10 @@ function renderAll2DArrowCharts() {
     const docVisitsLabels = @json($visitsByDoctor->pluck('doctor')->map(fn($name) => str_replace('د. ', '', $name)));
     draw2DFlatVerticalArrows('svg-report-2', docVisitsData, docVisitsLabels);
 
-    // 3. Inside Iraq (Governorates) -> 2D Flat Columns
+    // 3. Inside Iraq (Governorates) -> Iraq Map
     const govData = @json($visitsByGov->pluck('total'));
     const govLabels = @json($visitsByGov->pluck('gov'));
-    draw2DFlatVerticalArrows('svg-report-3', govData, govLabels, ['#0284c7']);
+    drawIraqMap('svg-report-3', govData, govLabels, '#0284c7');
 
     // 4. Outside Iraq (Countries) -> Horizontal Chevrons
     const countryData = @json($visitsByCountry->pluck('total'));
