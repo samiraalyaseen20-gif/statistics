@@ -547,7 +547,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
     svg.appendChild(tVal2);
 }
 
-// 2. Vertical Flat Arrow Columns
+// 2. Vertical Flat Arrow Columns (With Rotation Support for Large Data)
 function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
     const svg = document.getElementById(svgId);
     if (!svg) return;
@@ -557,11 +557,13 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
     const viewBoxStr = svg.getAttribute('viewBox') || "0 0 900 240";
     const width = parseInt(viewBoxStr.split(' ')[2]);
     const height = parseInt(viewBoxStr.split(' ')[3]);
-    const marginL = 35;
-    const marginR = 35;
+    const marginL = 40;
+    const marginR = 40;
     const availableW = width - marginL - marginR;
     const spacing = n > 1 ? availableW / (n - 1) : availableW;
-    const floorY = height - 30;
+    
+    // Dynamic floor to allow more space for rotated labels when items count is large
+    const floorY = n > 6 ? height - 50 : height - 30;
     
     // Baseline
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -580,7 +582,7 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
         const color = colors[i % colors.length];
         
         const minH = 20;
-        const maxH = height - 85;
+        const maxH = floorY - 55; // Ensure arrows scale within boundaries
         const scaleVal = maxVal > 1 ? Math.sqrt(val) / Math.sqrt(maxVal) : 1;
         const H = minH + (maxH - minH) * scaleVal;
         
@@ -639,18 +641,32 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
         head.setAttribute('fill', color);
         g.appendChild(head);
 
-        // Label
+        // Label Text (Dynamic angle & positioning to display full names)
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
         label.setAttribute('x', x);
-        label.setAttribute('y', floorY + 15);
         label.setAttribute('font-family', 'Tajawal');
-        label.setAttribute('font-size', '8px');
         label.setAttribute('font-weight', 'bold');
         label.setAttribute('fill', '#64748b');
-        label.setAttribute('text-anchor', 'middle');
-        
-        let labelText = labels[i];
-        if (labelText.length > 7) labelText = labelText.substring(0, 6) + '..';
+
+        let labelText = labels[i] || '';
+        if (n > 6) {
+            // Rotate labels when columns are dense to prevent overlapping
+            label.setAttribute('y', floorY + 12);
+            label.setAttribute('font-size', '8px');
+            label.setAttribute('text-anchor', 'end');
+            label.setAttribute('transform', `rotate(-28, ${x}, ${floorY + 12})`);
+            if (labelText.length > 25) {
+                labelText = labelText.substring(0, 23) + '..';
+            }
+        } else {
+            // Keep horizontal for sparse columns
+            label.setAttribute('y', floorY + 16);
+            label.setAttribute('font-size', '9.5px');
+            label.setAttribute('text-anchor', 'middle');
+            if (labelText.length > 30) {
+                labelText = labelText.substring(0, 27) + '..';
+            }
+        }
         label.textContent = labelText;
         g.appendChild(label);
 
