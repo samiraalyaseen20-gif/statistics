@@ -205,7 +205,7 @@ class EntryController extends Controller
     public function formData()
     {
         return response()->json([
-            'doctors'        => Doctor::all(['id','name','fee']),
+            'doctors'        => Doctor::all(['id','name']),
             'clinicUnits'    => ClinicUnit::all(['id','name']),
             'governorates'   => Governorate::all(['id','name']),
             'countries'      => Country::all(['id','name']),
