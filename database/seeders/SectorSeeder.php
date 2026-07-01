@@ -8,7 +8,7 @@ class SectorSeeder extends Seeder
     public function run(): void
     {
         foreach (['قطاع الصحة', 'عتبة الخاص', 'عتبة العام'] as $s) {
-            Sector::create(['name' => $s]);
+            Sector::firstOrCreate(['name' => $s]);
         }
     }
 }

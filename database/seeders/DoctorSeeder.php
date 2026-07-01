@@ -25,6 +25,6 @@ class DoctorSeeder extends Seeder
             ['name' => 'د. ايات معتز محمد'],
             ['name' => 'د. محمد بدر محمد الجريان'],
         ];
-        foreach ($doctors as $d) { Doctor::create($d); }
+        foreach ($doctors as $d) { Doctor::firstOrCreate($d); }
     }
 }

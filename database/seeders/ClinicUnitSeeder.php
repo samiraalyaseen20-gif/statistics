@@ -8,7 +8,7 @@ class ClinicUnitSeeder extends Seeder
     public function run(): void
     {
         foreach (['استشارية العيون العامة', 'استشارية التخصصات الدقيقة'] as $u) {
-            ClinicUnit::create(['name' => $u]);
+            ClinicUnit::firstOrCreate(['name' => $u]);
         }
     }
 }

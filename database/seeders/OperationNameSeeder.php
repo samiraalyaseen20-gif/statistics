@@ -45,6 +45,6 @@ class OperationNameSeeder extends Seeder
             ['name' => 'فحص تحت التخدير العام',                   'classification' => 'صغرى'],
             ['name' => 'رفع ثالول',                                'classification' => 'صغرى'],
         ];
-        foreach ($ops as $op) { OperationName::create($op); }
+        foreach ($ops as $op) { OperationName::firstOrCreate($op); }
     }
 }

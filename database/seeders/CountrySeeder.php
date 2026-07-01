@@ -8,6 +8,6 @@ class CountrySeeder extends Seeder
     public function run(): void
     {
         $countries = ['ايران','افغانستان','سوريا','مصر','نيجيريا','باكستان','لبنان'];
-        foreach ($countries as $c) { Country::create(['name' => $c]); }
+        foreach ($countries as $c) { Country::firstOrCreate(['name' => $c]); }
     }
 }

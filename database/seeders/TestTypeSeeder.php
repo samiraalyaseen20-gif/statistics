@@ -18,6 +18,6 @@ class TestTypeSeeder extends Seeder
             'فحص صبغة الفلورسين',
             'فحص الساحة البصرية FDT',
         ];
-        foreach ($types as $t) { TestType::create(['name' => $t]); }
+        foreach ($types as $t) { TestType::firstOrCreate(['name' => $t]); }
     }
 }

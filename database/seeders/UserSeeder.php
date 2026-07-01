@@ -13,25 +13,31 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'مدير النظام',
-            'username' => 'admin',
-            'password' => Hash::make('123456'),
-            'role' => 'admin',
-        ]);
+        User::updateOrCreate(
+            ['username' => 'admin'],
+            [
+                'name' => 'مدير النظام',
+                'password' => Hash::make('123456'),
+                'role' => 'admin',
+            ]
+        );
 
-        User::create([
-            'name' => 'موظف الاستقبال',
-            'username' => 'employee',
-            'password' => Hash::make('123456'),
-            'role' => 'employee',
-        ]);
+        User::updateOrCreate(
+            ['username' => 'employee'],
+            [
+                'name' => 'موظف الاستقبال',
+                'password' => Hash::make('123456'),
+                'role' => 'employee',
+            ]
+        );
 
-        User::create([
-            'name' => 'زائر',
-            'username' => 'visitor',
-            'password' => Hash::make('123456'),
-            'role' => 'visitor',
-        ]);
+        User::updateOrCreate(
+            ['username' => 'visitor'],
+            [
+                'name' => 'زائر',
+                'password' => Hash::make('123456'),
+                'role' => 'visitor',
+            ]
+        );
     }
 }
