@@ -44,7 +44,7 @@ class EntryController extends Controller
             'clinic_unit_id' => 'required|exists:clinic_units,id',
             'governorate_id' => 'nullable|exists:governorates,id',
             'country_id'     => 'nullable|exists:countries,id',
-            'status'         => 'required|in:مدفوع,غير مدفوع',
+            'status'         => 'nullable|in:مدفوع,غير مدفوع',
             'visit_date'     => 'required|date',
             'quantity'       => 'nullable|integer|min:1'
         ]);
@@ -60,7 +60,7 @@ class EntryController extends Controller
                 'clinic_unit_id' => $r->clinic_unit_id,
                 'governorate_id' => $r->governorate_id,
                 'country_id'     => $r->country_id,
-                'status'         => $r->status,
+                'status'         => $r->get('status', 'مدفوع'),
                 'visit_date'     => $r->visit_date
             ]);
         }

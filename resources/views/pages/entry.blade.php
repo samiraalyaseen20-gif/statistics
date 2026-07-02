@@ -34,9 +34,12 @@
                     <span>جدول إدخال أعداد مرضى الأطباء والاستشاريات</span>
                 </h3>
                 <div class="flex flex-wrap items-center gap-2">
-                    <label class="text-[10px] font-bold text-slate-400">تاريخ الإدخال:</label>
+                    <label class="text-[9px] font-bold text-slate-400">من:</label>
                     <input type="date" id="date-visit-doctors" required
-                        class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
+                        class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-2 text-xs font-bold text-text-main custom-date-input">
+                    <label class="text-[9px] font-bold text-slate-400">إلى:</label>
+                    <input type="date" id="date-visit-doctors-to"
+                        class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                     <button onclick="saveVisitsDoctors()"
                         class="py-1.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 hover-press flex items-center gap-1.5 shadow-md">
                         <i data-lucide="save" class="w-4 h-4"></i>
@@ -74,8 +77,12 @@
                         <span>مرضى المحافظات (داخل العراق)</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
+                        <label class="text-[9px] font-bold text-slate-400">من:</label>
                         <input type="date" id="date-geo-gov" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
+                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
+                        <input type="date" id="date-geo-gov-to"
+                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="saveGovsVisits()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-emerald-500 hover-press">حفظ المحافظات</button>
                     </div>
@@ -103,8 +110,12 @@
                         <span>مرضى الدول (خارج العراق)</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
+                        <label class="text-[9px] font-bold text-slate-400">من:</label>
                         <input type="date" id="date-geo-country" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
+                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
+                        <input type="date" id="date-geo-country-to"
+                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="saveCountriesVisits()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-sky-500 hover-press">حفظ الدول</button>
                     </div>
@@ -139,8 +150,12 @@
                         <span>أعداد العمليات الجراحية المنفذة (حسب النوع)</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
+                        <label class="text-[9px] font-bold text-slate-400">من:</label>
                         <input type="date" id="date-surg-op" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
+                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
+                        <input type="date" id="date-surg-op-to"
+                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="saveSurgeriesOps()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-purple-500 hover-press">حفظ العمليات</button>
                     </div>
@@ -169,8 +184,12 @@
                         <span>إجمالي العمليات المنفذة لكل طبيب</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
+                        <label class="text-[9px] font-bold text-slate-400">من:</label>
                         <input type="date" id="date-surg-doc" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
+                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
+                        <input type="date" id="date-surg-doc-to"
+                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="saveSurgeriesDocs()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-indigo-500 hover-press">حفظ الأطباء</button>
                     </div>
@@ -205,8 +224,12 @@
                         <span>الفحوصات البصرية اليومية</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
+                        <label class="text-[9px] font-bold text-slate-400">من:</label>
                         <input type="date" id="date-tests-eye" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
+                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
+                        <input type="date" id="date-tests-eye-to"
+                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="saveEyeTestsGrid()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-orange-500 hover-press">حفظ الفحوصات</button>
                     </div>
@@ -234,8 +257,12 @@
                         <span>التحاليل المختبرية اليومية</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
+                        <label class="text-[9px] font-bold text-slate-400">من:</label>
                         <input type="date" id="date-tests-lab" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
+                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
+                        <input type="date" id="date-tests-lab-to"
+                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="saveLabTestsGrid()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-purple-500 hover-press">حفظ التحاليل</button>
                     </div>
@@ -458,39 +485,56 @@ function populateDirectGrids() {
 
 // ── SAVE BULK ACTIONS ──
 
+function getDatesRange(startDate, endDate) {
+    if (!endDate || startDate === endDate) return [startDate];
+    const dates = [];
+    let current = new Date(startDate);
+    const end = new Date(endDate);
+    if (current > end) return [startDate];
+    while (current <= end) {
+        dates.push(current.toISOString().split('T')[0]);
+        current.setDate(current.getDate() + 1);
+    }
+    return dates;
+}
+
 // 1. Save Doctors Visits
 async function saveVisitsDoctors() {
-    const date = document.getElementById('date-visit-doctors').value;
-    if (!date) { showToast('حدد تاريخ بيانات الأطباء', 'error'); return; }
+    const fromDate = document.getElementById('date-visit-doctors').value;
+    const toDate = document.getElementById('date-visit-doctors-to').value;
+    if (!fromDate) { showToast('حدد تاريخ بيانات الأطباء', 'error'); return; }
 
+    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-visits-doctors tr');
 
-    rows.forEach(tr => {
-        const docId = tr.getAttribute('data-doctor-id');
-        const inputs = tr.querySelectorAll('input[type="number"]');
+    dates.forEach(date => {
+        rows.forEach(tr => {
+            const docId = tr.getAttribute('data-doctor-id');
+            const inputs = tr.querySelectorAll('input[type="number"]');
 
-        inputs.forEach(input => {
-            const count = parseInt(input.value) || 0;
-            if (count > 0) {
-                const unitId = input.getAttribute('data-unit-id');
+            inputs.forEach(input => {
+                const count = parseInt(input.value) || 0;
+                if (count > 0) {
+                    const unitId = input.getAttribute('data-unit-id');
 
-                promises.push(
-                    fetch('/api/visits', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            doctor_id: docId,
-                            clinic_unit_id: unitId,
-                            visit_date: date,
-                            quantity: count
+                    promises.push(
+                        fetch('/api/visits', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: JSON.stringify({
+                                doctor_id: docId,
+                                clinic_unit_id: unitId,
+                                visit_date: date,
+                                quantity: count
+                            })
                         })
-                    })
-                );
-            }
+                    );
+                }
+            });
         });
     });
 
@@ -501,7 +545,7 @@ async function saveVisitsDoctors() {
         const results = await Promise.all(promises);
         if (results.every(r => r.ok)) {
             showToast('تم حفظ بيانات الأطباء بنجاح', 'success');
-            lastUsedDate = date;
+            lastUsedDate = fromDate;
             loadEntryLookups();
         } else {
             showToast('فشل حفظ بعض القيود', 'error');
@@ -513,9 +557,11 @@ async function saveVisitsDoctors() {
 
 // 2. Save Governorates Visits
 async function saveGovsVisits() {
-    const date = document.getElementById('date-geo-gov').value;
-    if (!date) { showToast('حدد التاريخ', 'error'); return; }
+    const fromDate = document.getElementById('date-geo-gov').value;
+    const toDate = document.getElementById('date-geo-gov-to').value;
+    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
 
+    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-geo-govs tr');
     
@@ -523,29 +569,31 @@ async function saveGovsVisits() {
     const defaultDoc = entryLookups?.doctors[0]?.id || 1;
     const defaultUnit = entryLookups?.clinicUnits[0]?.id || 1;
 
-    rows.forEach(tr => {
-        const govId = tr.getAttribute('data-gov-id');
-        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    dates.forEach(date => {
+        rows.forEach(tr => {
+            const govId = tr.getAttribute('data-gov-id');
+            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-        if (count > 0) {
-            promises.push(
-                fetch('/api/visits', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        doctor_id: defaultDoc,
-                        clinic_unit_id: defaultUnit,
-                        governorate_id: govId,
-                        status: 'مدفوع',
-                        visit_date: date,
-                        quantity: count
+            if (count > 0) {
+                promises.push(
+                    fetch('/api/visits', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            doctor_id: defaultDoc,
+                            clinic_unit_id: defaultUnit,
+                            governorate_id: govId,
+                            status: 'مدفوع',
+                            visit_date: date,
+                            quantity: count
+                        })
                     })
-                })
-            );
-        }
+                );
+            }
+        });
     });
 
     if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -555,7 +603,7 @@ async function saveGovsVisits() {
         const results = await Promise.all(promises);
         if (results.every(r => r.ok)) {
             showToast('تم حفظ أعداد مرضى المحافظات بنجاح', 'success');;
-            lastUsedDate = date;
+            lastUsedDate = fromDate;
             loadEntryLookups();
         }
     } catch(e) {
@@ -565,38 +613,42 @@ async function saveGovsVisits() {
 
 // 3. Save Countries Visits
 async function saveCountriesVisits() {
-    const date = document.getElementById('date-geo-country').value;
-    if (!date) { showToast('حدد التاريخ', 'error'); return; }
+    const fromDate = document.getElementById('date-geo-country').value;
+    const toDate = document.getElementById('date-geo-country-to').value;
+    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
 
+    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-geo-countries tr');
 
     const defaultDoc = entryLookups?.doctors[0]?.id || 1;
     const defaultUnit = entryLookups?.clinicUnits[0]?.id || 1;
 
-    rows.forEach(tr => {
-        const countryId = tr.getAttribute('data-country-id');
-        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    dates.forEach(date => {
+        rows.forEach(tr => {
+            const countryId = tr.getAttribute('data-country-id');
+            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-        if (count > 0) {
-            promises.push(
-                fetch('/api/visits', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        doctor_id: defaultDoc,
-                        clinic_unit_id: defaultUnit,
-                        country_id: countryId,
-                        status: 'مدفوع',
-                        visit_date: date,
-                        quantity: count
+            if (count > 0) {
+                promises.push(
+                    fetch('/api/visits', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            doctor_id: defaultDoc,
+                            clinic_unit_id: defaultUnit,
+                            country_id: countryId,
+                            status: 'مدفوع',
+                            visit_date: date,
+                            quantity: count
+                        })
                     })
-                })
-            );
-        }
+                );
+            }
+        });
     });
 
     if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -606,7 +658,7 @@ async function saveCountriesVisits() {
         const results = await Promise.all(promises);
         if (results.every(r => r.ok)) {
             showToast('تم حفظ أعداد مرضى الدول بنجاح', 'success');
-            lastUsedDate = date;
+            lastUsedDate = fromDate;
             loadEntryLookups();
         }
     } catch(e) {
@@ -616,37 +668,41 @@ async function saveCountriesVisits() {
 
 // 4. Save Surgeries by Operation Names
 async function saveSurgeriesOps() {
-    const date = document.getElementById('date-surg-op').value;
-    if (!date) { showToast('حدد التاريخ', 'error'); return; }
+    const fromDate = document.getElementById('date-surg-op').value;
+    const toDate = document.getElementById('date-surg-op-to').value;
+    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
 
+    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-surg-ops tr');
 
     const defaultDoc = entryLookups?.doctors[0]?.id || 1;
 
-    rows.forEach(tr => {
-        const opId = tr.getAttribute('data-op-id');
-        const sectorId = tr.querySelector('select').value;
-        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    dates.forEach(date => {
+        rows.forEach(tr => {
+            const opId = tr.getAttribute('data-op-id');
+            const sectorId = tr.querySelector('select').value;
+            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-        if (count > 0) {
-            promises.push(
-                fetch('/api/surgeries', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        doctor_id: defaultDoc,
-                        operation_name_id: opId,
-                        sector_id: sectorId,
-                        op_date: date,
-                        quantity: count
+            if (count > 0) {
+                promises.push(
+                    fetch('/api/surgeries', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            doctor_id: defaultDoc,
+                            operation_name_id: opId,
+                            sector_id: sectorId,
+                            op_date: date,
+                            quantity: count
+                        })
                     })
-                })
-            );
-        }
+                );
+            }
+        });
     });
 
     if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -656,7 +712,7 @@ async function saveSurgeriesOps() {
         const results = await Promise.all(promises);
         if (results.every(r => r.ok)) {
             showToast('تم حفظ أعداد العمليات بنجاح', 'success');
-            lastUsedDate = date;
+            lastUsedDate = fromDate;
             loadEntryLookups();
         }
     } catch(e) {
@@ -666,37 +722,41 @@ async function saveSurgeriesOps() {
 
 // 5. Save Surgeries by Doctors
 async function saveSurgeriesDocs() {
-    const date = document.getElementById('date-surg-doc').value;
-    if (!date) { showToast('حدد التاريخ', 'error'); return; }
+    const fromDate = document.getElementById('date-surg-doc').value;
+    const toDate = document.getElementById('date-surg-doc-to').value;
+    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
 
+    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-surg-docs tr');
 
     const defaultOp = entryLookups?.operationNames[0]?.id || 1;
     const defaultSector = entryLookups?.sectors[0]?.id || 1;
 
-    rows.forEach(tr => {
-        const docId = tr.getAttribute('data-doctor-id');
-        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    dates.forEach(date => {
+        rows.forEach(tr => {
+            const docId = tr.getAttribute('data-doctor-id');
+            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-        if (count > 0) {
-            promises.push(
-                fetch('/api/surgeries', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        doctor_id: docId,
-                        operation_name_id: defaultOp,
-                        sector_id: defaultSector,
-                        op_date: date,
-                        quantity: count
+            if (count > 0) {
+                promises.push(
+                    fetch('/api/surgeries', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            doctor_id: docId,
+                            operation_name_id: defaultOp,
+                            sector_id: defaultSector,
+                            op_date: date,
+                            quantity: count
+                        })
                     })
-                })
-            );
-        }
+                );
+            }
+        });
     });
 
     if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -706,7 +766,7 @@ async function saveSurgeriesDocs() {
         const results = await Promise.all(promises);
         if (results.every(r => r.ok)) {
             showToast('تم حفظ إجمالي العمليات للأطباء بنجاح', 'success');
-            lastUsedDate = date;
+            lastUsedDate = fromDate;
             loadEntryLookups();
         }
     } catch(e) {
@@ -716,32 +776,36 @@ async function saveSurgeriesDocs() {
 
 // 6. Save Eye Tests
 async function saveEyeTestsGrid() {
-    const date = document.getElementById('date-tests-eye').value;
-    if (!date) { showToast('حدد التاريخ', 'error'); return; }
+    const fromDate = document.getElementById('date-tests-eye').value;
+    const toDate = document.getElementById('date-tests-eye-to').value;
+    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
 
+    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-tests-eye tr');
 
-    rows.forEach(tr => {
-        const testTypeId = tr.getAttribute('data-test-type-id');
-        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    dates.forEach(date => {
+        rows.forEach(tr => {
+            const testTypeId = tr.getAttribute('data-test-type-id');
+            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-        if (count > 0) {
-            promises.push(
-                fetch('/api/eye-tests', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        test_type_id: testTypeId,
-                        test_date: date,
-                        quantity: count
+            if (count > 0) {
+                promises.push(
+                    fetch('/api/eye-tests', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            test_type_id: testTypeId,
+                            test_date: date,
+                            quantity: count
+                        })
                     })
-                })
-            );
-        }
+                );
+            }
+        });
     });
 
     if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -751,7 +815,7 @@ async function saveEyeTestsGrid() {
         const results = await Promise.all(promises);
         if (results.every(r => r.ok)) {
             showToast('تم حفظ الفحوصات البصرية بنجاح', 'success');
-            lastUsedDate = date;
+            lastUsedDate = fromDate;
             loadEntryLookups();
         }
     } catch(e) {
@@ -761,32 +825,36 @@ async function saveEyeTestsGrid() {
 
 // 7. Save Lab Tests
 async function saveLabTestsGrid() {
-    const date = document.getElementById('date-tests-lab').value;
-    if (!date) { showToast('حدد التاريخ', 'error'); return; }
+    const fromDate = document.getElementById('date-tests-lab').value;
+    const toDate = document.getElementById('date-tests-lab-to').value;
+    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
 
+    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-tests-lab tr');
 
-    rows.forEach(tr => {
-        const labTestTypeId = tr.getAttribute('data-lab-test-type-id');
-        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    dates.forEach(date => {
+        rows.forEach(tr => {
+            const labTestTypeId = tr.getAttribute('data-lab-test-type-id');
+            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-        if (count > 0) {
-            promises.push(
-                fetch('/api/lab-tests', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        lab_test_type_id: labTestTypeId,
-                        test_date: date,
-                        quantity: count
+            if (count > 0) {
+                promises.push(
+                    fetch('/api/lab-tests', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            lab_test_type_id: labTestTypeId,
+                            test_date: date,
+                            quantity: count
+                        })
                     })
-                })
-            );
-        }
+                );
+            }
+        });
     });
 
     if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -796,7 +864,7 @@ async function saveLabTestsGrid() {
         const results = await Promise.all(promises);
         if (results.every(r => r.ok)) {
             showToast('تم حفظ التحاليل المختبرية بنجاح', 'success');
-            lastUsedDate = date;
+            lastUsedDate = fromDate;
             loadEntryLookups();
         }
     } catch(e) {
