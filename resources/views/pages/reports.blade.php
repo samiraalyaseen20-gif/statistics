@@ -1,6 +1,8 @@
 @php
-$cGeneral = $consultations->firstWhere('unit', 'استشارية العيون العامة')['total'] ?? 0;
-$cSpecial = $consultations->firstWhere('unit', 'استشارية التخصصات الدقيقة')['total'] ?? 0;
+$cGeneral = $consultations->firstWhere('unit', 'استشارية العيون العامة')['total'] ?? ($consultations[0]['total'] ?? 0);
+$cSpecial = $consultations->firstWhere('unit', 'استشارية التخصصات الدقيقة')['total'] ?? ($consultations[1]['total'] ?? 0);
+$generalLabel = $consultations->firstWhere('unit', 'استشارية العيون العامة')['unit'] ?? ($consultations[0]['unit'] ?? 'العامة');
+$specialLabel = $consultations->firstWhere('unit', 'استشارية التخصصات الدقيقة')['unit'] ?? ($consultations[1]['unit'] ?? 'التخصصات');
 $pathsHtml = '';
 if (file_exists(base_path('iraq.svg'))) {
     $svgContent = file_get_contents(base_path('iraq.svg'));

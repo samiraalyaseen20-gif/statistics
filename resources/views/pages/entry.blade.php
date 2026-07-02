@@ -56,10 +56,8 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-right border-collapse">
                     <thead>
-                        <tr class="border-b border-slate-200/10 text-[10px] font-bold text-slate-400">
+                        <tr id="thead-visits-doctors" class="border-b border-slate-200/10 text-[10px] font-bold text-slate-400">
                             <th class="pb-2">اسم الطبيب الاستشاري</th>
-                            <th class="pb-2 text-center bg-blue-500/5 rounded-t-lg">العيون العامة</th>
-                            <th class="pb-2 text-center bg-purple-500/5 rounded-t-lg">التخصصات الدقيقة</th>
                         </tr>
                     </thead>
                     <tbody id="tbody-visits-doctors" class="divide-y divide-slate-200/5 text-[11px] font-bold text-text-main">
@@ -365,27 +363,29 @@ function populateDirectGrids() {
 
     // 1. Visits Doctors Table
     const tbodyVisits = document.getElementById('tbody-visits-doctors');
-    if (tbodyVisits && doctors.length && units.length) {
-        tbodyVisits.innerHTML = '';
-        const unitGeneral = units.find(u => u.name.includes('العامة')) || units[0];
-        const unitSpecial = units.find(u => u.name.includes('التخصصات')) || units[1] || units[0];
+    const theadVisits = document.getElementById('thead-visits-doctors');
+    if (tbodyVisits && theadVisits && doctors.length && units.length) {
+        theadVisits.innerHTML = '<th class="pb-2">اسم الطبيب الاستشاري</th>';
+        const bgColors = ['bg-blue-500/5', 'bg-purple-500/5', 'bg-emerald-500/5', 'bg-amber-500/5', 'bg-rose-500/5', 'bg-sky-500/5'];
+        units.forEach((unit, idx) => {
+            const bgClass = bgColors[idx % bgColors.length];
+            theadVisits.innerHTML += `<th class="pb-2 text-center ${bgClass} rounded-t-lg">${unit.name}</th>`;
+        });
 
+        tbodyVisits.innerHTML = '';
         doctors.forEach(doc => {
-            tbodyVisits.innerHTML += `
-                <tr class="table-row" data-doctor-id="${doc.id}">
-                    <td class="font-bold py-3">${doc.name}</td>
-                    <td class="bg-blue-500/5 text-center">
+            let cells = `<td class="font-bold py-3">${doc.name}</td>`;
+            units.forEach((unit, idx) => {
+                const bgClass = bgColors[idx % bgColors.length];
+                cells += `
+                    <td class="${bgClass} text-center">
                         <input type="number" min="0" value="0"
-                            data-unit-id="${unitGeneral ? unitGeneral.id : 1}"
+                            data-unit-id="${unit.id}"
                             class="w-20 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 text-xs font-bold text-text-main">
                     </td>
-                    <td class="bg-purple-500/5 text-center">
-                        <input type="number" min="0" value="0"
-                            data-unit-id="${unitSpecial ? unitSpecial.id : 2}"
-                            class="w-20 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 text-xs font-bold text-text-main">
-                    </td>
-                </tr>
-            `;
+                `;
+            });
+            tbodyVisits.innerHTML += `<tr class="table-row" data-doctor-id="${doc.id}">${cells}</tr>`;
         });
     }
 

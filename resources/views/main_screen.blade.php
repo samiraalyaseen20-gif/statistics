@@ -95,7 +95,7 @@
                             <i data-lucide="building-2" class="w-3 h-3 shrink-0 text-amber-500"></i><span>القطاعات</span>
                         </button>
                         <button onclick="navigateToPage('clinic_units')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-clinic_units">
-                            <i data-lucide="layout-list" class="w-3.5 h-3.5 shrink-0 text-indigo-500"></i><span>الوحدات</span>
+                            <i data-lucide="layout-list" class="w-3.5 h-3.5 shrink-0 text-indigo-500"></i><span>إدارة الاستشاريات العامة</span>
                         </button>
                         <button onclick="navigateToPage('lab_test_types')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-lab_test_types">
                             <i data-lucide="test-tube" class="w-3 h-3 shrink-0 text-purple-500"></i><span>التحاليل</span>
@@ -992,7 +992,7 @@
                 test_types: 'أنواع الفحص',
                 operations: 'العمليات',
                 sectors: 'القطاعات',
-                clinic_units: 'الوحدات',
+                clinic_units: 'إدارة الاستشاريات العامة',
                 lab_test_types: 'التحاليل',
                 users: 'إدارة المستخدمين والصلاحيات',
                 settings: 'الإعدادات',

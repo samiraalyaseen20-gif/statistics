@@ -89,14 +89,28 @@ class ReportController extends Controller
             ->whereNotNull('governorate_id')
             ->select('governorate_id', DB::raw('count(*) as total'))
             ->groupBy('governorate_id')
-            ->get()->map(fn($v) => ['gov' => $v->governorate->name ?? '—', 'total' => $v->total]);
+            ->get()
+            ->map(fn($v) => [
+                'gov' => $this->normalizeGovName($v->governorate->name ?? '—'),
+                'total' => $v->total
+            ])
+            ->groupBy('gov')
+            ->map(fn($g, $key) => ['gov' => $key, 'total' => $g->sum('total')])
+            ->values();
 
         // جدول (4): ديمغرافي خارج العراق (استشارية)
         $visitsByCountry = (clone $visitsQuery)
             ->whereNotNull('country_id')
             ->select('country_id', DB::raw('count(*) as total'))
             ->groupBy('country_id')
-            ->get()->map(fn($v) => ['country' => $v->country->name ?? '—', 'total' => $v->total]);
+            ->get()
+            ->map(fn($v) => [
+                'country' => $this->normalizeCountryName($v->country->name ?? '—'),
+                'total' => $v->total
+            ])
+            ->groupBy('country')
+            ->map(fn($g, $key) => ['country' => $key, 'total' => $g->sum('total')])
+            ->values();
 
         // جدول (5): الفحوصات البصرية بالنوع
         $eyeTestsByType = (clone $eyeTestsQuery)
@@ -124,14 +138,28 @@ class ReportController extends Controller
             ->whereNotNull('governorate_id')
             ->select('governorate_id', DB::raw('count(*) as total'))
             ->groupBy('governorate_id')
-            ->get()->map(fn($v) => ['gov' => $v->governorate->name ?? '—', 'total' => $v->total]);
+            ->get()
+            ->map(fn($v) => [
+                'gov' => $this->normalizeGovName($v->governorate->name ?? '—'),
+                'total' => $v->total
+            ])
+            ->groupBy('gov')
+            ->map(fn($g, $key) => ['gov' => $key, 'total' => $g->sum('total')])
+            ->values();
 
         // جدول (9): ديمغرافي خارج العراق (عمليات)
         $surgeriesByCountry = (clone $surgeriesQuery)
             ->whereNotNull('country_id')
             ->select('country_id', DB::raw('count(*) as total'))
             ->groupBy('country_id')
-            ->get()->map(fn($v) => ['country' => $v->country->name ?? '—', 'total' => $v->total]);
+            ->get()
+            ->map(fn($v) => [
+                'country' => $this->normalizeCountryName($v->country->name ?? '—'),
+                'total' => $v->total
+            ])
+            ->groupBy('country')
+            ->map(fn($g, $key) => ['country' => $key, 'total' => $g->sum('total')])
+            ->values();
 
         // جدول (10): عمليات لكل طبيب بالتصنيف والقطاع
         $surgeriesByDoctorCatSector = (clone $surgeriesQuery)
@@ -229,14 +257,28 @@ class ReportController extends Controller
                 ->whereNotNull('governorate_id')
                 ->select('governorate_id', DB::raw('count(*) as total'))
                 ->groupBy('governorate_id')
-                ->get()->map(fn($v) => ['gov' => $v->governorate->name ?? '—', 'total' => $v->total]);
+                ->get()
+                ->map(fn($v) => [
+                    'gov' => $this->normalizeGovName($v->governorate->name ?? '—'),
+                    'total' => $v->total
+                ])
+                ->groupBy('gov')
+                ->map(fn($g, $key) => ['gov' => $key, 'total' => $g->sum('total')])
+                ->values();
 
             // جدول 4: خارج العراق
             $visitsByCountry = (clone $visitsQuery)
                 ->whereNotNull('country_id')
                 ->select('country_id', DB::raw('count(*) as total'))
                 ->groupBy('country_id')
-                ->get()->map(fn($v) => ['country' => $v->country->name ?? '—', 'total' => $v->total]);
+                ->get()
+                ->map(fn($v) => [
+                    'country' => $this->normalizeCountryName($v->country->name ?? '—'),
+                    'total' => $v->total
+                ])
+                ->groupBy('country')
+                ->map(fn($g, $key) => ['country' => $key, 'total' => $g->sum('total')])
+                ->values();
 
 
 
@@ -308,5 +350,55 @@ class ReportController extends Controller
             'side_a' => $sideA,
             'side_b' => $sideB,
         ]);
+    }
+
+    private function normalizeGovName($name)
+    {
+        $name = trim($name);
+        $name = str_replace([' المقدسة', ' الأشرف'], '', $name);
+        $name = str_replace(['أ', 'إ', 'آ'], 'ا', $name);
+        $map = [
+            'دهوك' => 'دهوك',
+            'اربيل' => 'أربيل',
+            'سليمانية' => 'السليمانية',
+            'نينوى' => 'نينوى',
+            'كركوك' => 'كركوك',
+            'صلاح الدين' => 'صلاح الدين',
+            'ديالى' => 'ديالى',
+            'بغداد' => 'بغداد',
+            'الانبار' => 'الأنبار',
+            'بابل' => 'بابل',
+            'كربلاء' => 'كربلاء',
+            'واسط' => 'واسط',
+            'النجف' => 'النجف',
+            'القادسية' => 'القادسية',
+            'ميسان' => 'ميسان',
+            'ذي قار' => 'ذي قار',
+            'المثنى' => 'المثنى',
+            'البصرة' => 'البصرة',
+        ];
+        return $map[$name] ?? $map[trim($name)] ?? $name;
+    }
+
+    private function normalizeCountryName($name)
+    {
+        $name = trim($name);
+        $name = str_replace(['أ', 'إ', 'آ'], 'ا', $name);
+        $map = [
+            'سعودية' => 'السعودية',
+            'السعودية' => 'السعودية',
+            'ايران' => 'إيران',
+            'افغانستان' => 'أفغانستان',
+            'البحرين' => 'البحرين',
+            'باكستان' => 'باكستان',
+            'سوريا' => 'سوريا',
+            'لبنان' => 'لبنان',
+            'مصر' => 'مصر',
+            'الهند' => 'الهند',
+            'نيجيريا' => 'نيجيريا',
+            'اليمن' => 'اليمن',
+            'نعمانيه' => 'عُمان'
+        ];
+        return $map[$name] ?? $map[trim($name)] ?? $name;
     }
 }
