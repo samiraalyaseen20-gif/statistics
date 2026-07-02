@@ -592,7 +592,7 @@ async function toggleEditVisitsDoctors() {
     if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
     
     try {
-        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=visits_doctors');
         const data = await res.json();
         const items = data.data || data;
         
@@ -631,7 +631,7 @@ async function toggleEditGovsVisits() {
     const date = document.getElementById('date-geo-gov').value;
     if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
     try {
-        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=visits_govs');
         const data = await res.json();
         const items = data.data || data;
         resetGridInputs(type);
@@ -669,7 +669,7 @@ async function toggleEditCountriesVisits() {
     const date = document.getElementById('date-geo-country').value;
     if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
     try {
-        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=visits_countries');
         const data = await res.json();
         const items = data.data || data;
         resetGridInputs(type);
@@ -707,7 +707,7 @@ async function toggleEditSurgeriesOps() {
     const date = document.getElementById('date-surg-op').value;
     if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
     try {
-        const res = await fetch('/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const res = await fetch('/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=surgeries_ops');
         const data = await res.json();
         const items = data.data || data;
         resetGridInputs(type);
@@ -745,7 +745,7 @@ async function toggleEditSurgeriesDocs() {
     const date = document.getElementById('date-surg-doc').value;
     if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
     try {
-        const res = await fetch('/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const res = await fetch('/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=surgeries_docs');
         const data = await res.json();
         const items = data.data || data;
         resetGridInputs(type);

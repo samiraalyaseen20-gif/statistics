@@ -100,6 +100,14 @@ class EntryController extends Controller
         $q = Visit::with(['doctor','clinicUnit','governorate','country'])
             ->when($r->month, fn($q,$m) => $q->whereYear('visit_date', substr($m,0,4))->whereMonth('visit_date', substr($m,5,2)))
             ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('visit_date', [$r->start_date, $r->end_date]))
+            ->when($r->type === 'visits_doctors', function($q) {
+                $q->whereNull('governorate_id')
+                  ->whereNull('country_id')
+                  ->whereDoesntHave('eyeTests')
+                  ->whereDoesntHave('labTests');
+            })
+            ->when($r->type === 'visits_govs', fn($q) => $q->whereNotNull('governorate_id'))
+            ->when($r->type === 'visits_countries', fn($q) => $q->whereNotNull('country_id'))
             ->latest('id')->paginate($r->get('per_page', 20));
         return response()->json($q);
     }
@@ -299,9 +307,14 @@ class EntryController extends Controller
     // ========== SURGERIES ==========
     public function surgeriesIndex(Request $r)
     {
+        $defaultDoc = Doctor::first();
+        $defaultOp = OperationName::first();
+
         $q = Surgery::with(['doctor','operationName','sector','governorate','country'])
             ->when($r->month, fn($q,$m) => $q->whereYear('op_date', substr($m,0,4))->whereMonth('op_date', substr($m,5,2)))
             ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('op_date', [$r->start_date, $r->end_date]))
+            ->when($r->type === 'surgeries_ops' && $defaultDoc, fn($q) => $q->where('doctor_id', $defaultDoc->id))
+            ->when($r->type === 'surgeries_docs' && $defaultOp, fn($q) => $q->where('operation_name_id', $defaultOp->id))
             ->latest('id')->paginate($r->get('per_page', 20));
         return response()->json($q);
     }

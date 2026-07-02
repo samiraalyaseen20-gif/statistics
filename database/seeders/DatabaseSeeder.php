@@ -11,12 +11,12 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             // Users first
-            UserSeeder::class,
-            // Keep basic hardcoded seeders for units and sectors
-            SectorSeeder::class,
-            ClinicUnitSeeder::class,
-            // Run the dynamic Word Data Seeder
-            WordDataSeeder::class,
+            // UserSeeder::class,
+            // // Keep basic hardcoded seeders for units and sectors
+            // SectorSeeder::class,
+            // ClinicUnitSeeder::class,
+            // // Run the dynamic Word Data Seeder
+            // WordDataSeeder::class,
         ]);
     }
 }

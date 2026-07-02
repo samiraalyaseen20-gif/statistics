@@ -120,7 +120,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <!-- Branching/Split Arrow Infographic -->
             <div class="flex justify-center">
-                <svg id="svg-report-1" viewBox="0 0 350 200" class="w-full max-w-[320px] h-auto overflow-visible"></svg>
+                <svg id="svg-report-1" viewBox="0 0 520 220" class="w-full max-w-[480px] h-[220px] overflow-visible"></svg>
             </div>
             <!-- Data Table -->
             <div>
@@ -528,8 +528,8 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
     if (!svg) return;
     svg.innerHTML = '';
     
-    const cx = 175;
-    const cy = 180;
+    const cx = 260;
+    const cy = 200;
 
     // Draw left branch
     const leftPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -570,7 +570,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
 
     // Left branch badge
     const label1Text = `${label1}: ${val1.toLocaleString()}`;
-    const badge1W = label1Text.length * 6 + 12;
+    const badge1W = label1Text.length * 6.5 + 14;
     const badge1H = 18;
     const badge1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     badge1.setAttribute('x', cx - 80 - badge1W / 2);
@@ -594,7 +594,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
 
     // Right branch badge
     const label2Text = `${label2}: ${val2.toLocaleString()}`;
-    const badge2W = label2Text.length * 6 + 12;
+    const badge2W = label2Text.length * 6.5 + 14;
     const badge2H = 18;
     const badge2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     badge2.setAttribute('x', cx + 80 - badge2W / 2);

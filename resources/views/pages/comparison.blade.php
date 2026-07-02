@@ -486,8 +486,8 @@ function cmpDrawBranching(svgId, items, totalVal, colors) {
     const val2 = items[1]?.total || 0;
     const label1 = items[0]?.unit || '—';
     const label2 = items[1]?.unit || '—';
-    const cx = 175;
-    const cy = 180;
+    const cx = 260;
+    const cy = 200;
     const col1 = colors[0] || '#3b82f6';
     const col2 = colors[1] || '#ec4899';
 
@@ -518,7 +518,7 @@ function cmpDrawBranching(svgId, items, totalVal, colors) {
 
     [[val1, label1, cx-80, col1],[val2, label2, cx+80, col2]].forEach(([v,l,bx,bc]) => {
         const s = `${l}: ${v.toLocaleString()}`;
-        const bw = s.length*6+12;
+        const bw = s.length*6.5+14;
         const b = document.createElementNS("http://www.w3.org/2000/svg","rect");
         b.setAttribute('x', bx-bw/2); b.setAttribute('y',cy-145);
         b.setAttribute('width',bw); b.setAttribute('height',18);
