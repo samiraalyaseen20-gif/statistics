@@ -27,9 +27,9 @@ if (file_exists(base_path('iraq.svg'))) {
                 <!-- Date range pickers -->
                 <div class="flex items-center gap-1.5 bg-slate-200/20 px-3 py-1.5 rounded-xl border border-slate-200/10">
                     <span class="text-[9px] font-bold text-slate-400">من:</span>
-                    <input type="date" id="report-date-from" value="{{ $start_date ?? '2026-05-01' }}" class="bg-transparent border-none focus:outline-none text-[10px] font-bold text-text-main custom-date-input">
+                    <input type="month" id="report-date-from" value="{{ substr($start_date ?? '2026-05-01', 0, 7) }}" class="bg-transparent border-none focus:outline-none text-[10px] font-bold text-text-main custom-date-input">
                     <span class="text-[9px] font-bold text-slate-400">إلى:</span>
-                    <input type="date" id="report-date-to" value="{{ $end_date ?? '2026-05-31' }}" class="bg-transparent border-none focus:outline-none text-[10px] font-bold text-text-main custom-date-input">
+                    <input type="month" id="report-date-to" value="{{ substr($end_date ?? '2026-05-31', 0, 7) }}" class="bg-transparent border-none focus:outline-none text-[10px] font-bold text-text-main custom-date-input">
                 </div>
                 <!-- Advanced Toggle button -->
                 <button onclick="toggleAdvancedFilters()" class="py-2 px-4 rounded-xl text-xs font-bold text-text-main bg-slate-200/20 hover:bg-slate-200/40 border border-slate-200/10 hover-press flex items-center gap-1.5">

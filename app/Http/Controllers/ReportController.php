@@ -24,6 +24,13 @@ class ReportController extends Controller
         $start_date = $r->get('start_date', Visit::min('visit_date') ?: '2026-01-01');
         $end_date   = $r->get('end_date', Visit::max('visit_date') ?: date('Y-m-d'));
 
+        if (strlen($start_date) === 7) {
+            $start_date = $start_date . '-01';
+        }
+        if (strlen($end_date) === 7) {
+            $end_date = \Carbon\Carbon::parse($end_date)->endOfMonth()->toDateString();
+        }
+
         // Extract month and year for display
         $time = strtotime($start_date);
         $year  = date('Y', $time);
@@ -216,6 +223,13 @@ class ReportController extends Controller
         $getSideStats = function($docId, $startDate, $endDate, $opClass = null) {
             $startDate = $startDate ?: '2026-05-01';
             $endDate   = $endDate ?: '2026-05-31';
+
+            if (strlen($startDate) === 7) {
+                $startDate = $startDate . '-01';
+            }
+            if (strlen($endDate) === 7) {
+                $endDate = \Carbon\Carbon::parse($endDate)->endOfMonth()->toDateString();
+            }
 
             $visitsQuery = Visit::whereBetween('visit_date', [$startDate, $endDate]);
             if ($docId) $visitsQuery->where('doctor_id', $docId);

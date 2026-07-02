@@ -34,16 +34,13 @@
                     <span>جدول إدخال أعداد مرضى الأطباء والاستشاريات</span>
                 </h3>
                 <div class="flex flex-wrap items-center gap-2">
-                    <label class="text-[9px] font-bold text-slate-400">من:</label>
-                    <input type="date" id="date-visit-doctors" required
+                    <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
+                    <input type="month" id="date-visit-doctors" required
                         class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-2 text-xs font-bold text-text-main custom-date-input">
-                    <label class="text-[9px] font-bold text-slate-400">إلى:</label>
-                    <input type="date" id="date-visit-doctors-to"
-                        class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                     <button onclick="toggleEditVisitsDoctors()" id="btn-edit-visits-doctors"
                         class="py-1.5 px-3 rounded-xl text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
                         <i data-lucide="edit" class="w-3.5 h-3.5"></i>
-                        <span>تعديل يوم سابق</span>
+                        <span>تعديل شهر سابق</span>
                     </button>
                     <button onclick="saveVisitsDoctors()"
                         class="py-1.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 hover-press flex items-center gap-1.5 shadow-md">
@@ -80,14 +77,11 @@
                         <span>مرضى المحافظات (داخل العراق)</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
-                        <label class="text-[9px] font-bold text-slate-400">من:</label>
-                        <input type="date" id="date-geo-gov" required
+                        <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
+                        <input type="month" id="date-geo-gov" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
-                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
-                        <input type="date" id="date-geo-gov-to"
-                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="toggleEditGovsVisits()" id="btn-edit-geo-gov"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
                         <button onclick="saveGovsVisits()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-emerald-500 hover-press">حفظ المحافظات</button>
                     </div>
@@ -115,14 +109,11 @@
                         <span>مرضى الدول (خارج العراق)</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
-                        <label class="text-[9px] font-bold text-slate-400">من:</label>
-                        <input type="date" id="date-geo-country" required
+                        <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
+                        <input type="month" id="date-geo-country" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
-                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
-                        <input type="date" id="date-geo-country-to"
-                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="toggleEditCountriesVisits()" id="btn-edit-geo-country"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
                         <button onclick="saveCountriesVisits()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-sky-500 hover-press">حفظ الدول</button>
                     </div>
@@ -157,14 +148,11 @@
                         <span>أعداد العمليات الجراحية المنفذة (حسب النوع)</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
-                        <label class="text-[9px] font-bold text-slate-400">من:</label>
-                        <input type="date" id="date-surg-op" required
+                        <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
+                        <input type="month" id="date-surg-op" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
-                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
-                        <input type="date" id="date-surg-op-to"
-                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="toggleEditSurgeriesOps()" id="btn-edit-surg-op"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
                         <button onclick="saveSurgeriesOps()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-purple-500 hover-press">حفظ العمليات</button>
                     </div>
@@ -193,14 +181,11 @@
                         <span>إجمالي العمليات المنفذة لكل طبيب</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
-                        <label class="text-[9px] font-bold text-slate-400">من:</label>
-                        <input type="date" id="date-surg-doc" required
+                        <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
+                        <input type="month" id="date-surg-doc" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
-                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
-                        <input type="date" id="date-surg-doc-to"
-                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="toggleEditSurgeriesDocs()" id="btn-edit-surg-doc"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
                         <button onclick="saveSurgeriesDocs()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-indigo-500 hover-press">حفظ الأطباء</button>
                     </div>
@@ -235,14 +220,11 @@
                         <span>الفحوصات البصرية اليومية</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
-                        <label class="text-[9px] font-bold text-slate-400">من:</label>
-                        <input type="date" id="date-tests-eye" required
+                        <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
+                        <input type="month" id="date-tests-eye" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
-                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
-                        <input type="date" id="date-tests-eye-to"
-                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="toggleEditEyeTests()" id="btn-edit-tests-eye"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
                         <button onclick="saveEyeTestsGrid()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-orange-500 hover-press">حفظ الفحوصات</button>
                     </div>
@@ -270,14 +252,11 @@
                         <span>التحاليل المختبرية اليومية</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
-                        <label class="text-[9px] font-bold text-slate-400">من:</label>
-                        <input type="date" id="date-tests-lab" required
+                        <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
+                        <input type="month" id="date-tests-lab" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
-                        <label class="text-[9px] font-bold text-slate-400">إلى:</label>
-                        <input type="date" id="date-tests-lab-to"
-                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
                         <button onclick="toggleEditLabTests()" id="btn-edit-tests-lab"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
                         <button onclick="saveLabTestsGrid()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-purple-500 hover-press">حفظ التحاليل</button>
                     </div>
@@ -324,9 +303,9 @@ function switchEntryTab(tabName) {
     }
 }
 
-// Global Memory
+// Global Memory (Year-Month format: YYYY-MM)
 let entryLookups = null;
-let lastUsedDate = new Date().toISOString().substring(0, 10);
+let lastUsedDate = new Date().toISOString().substring(0, 7);
 
 function syncAllFromDates(value) {
     lastUsedDate = value;
@@ -338,24 +317,6 @@ function syncAllFromDates(value) {
         'date-surg-doc',
         'date-tests-eye',
         'date-tests-lab'
-    ];
-    ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && el.value !== value) {
-            el.value = value;
-        }
-    });
-}
-
-function syncAllToDates(value) {
-    const ids = [
-        'date-visit-doctors-to',
-        'date-geo-gov-to',
-        'date-geo-country-to',
-        'date-surg-op-to',
-        'date-surg-doc-to',
-        'date-tests-eye-to',
-        'date-tests-lab-to'
     ];
     ids.forEach(id => {
         const el = document.getElementById(id);
@@ -381,25 +342,6 @@ function setupFormDates() {
             el.value = lastUsedDate;
             if (!el.dataset.listenerAttached) {
                 el.addEventListener('change', (e) => syncAllFromDates(e.target.value));
-                el.dataset.listenerAttached = 'true';
-            }
-        }
-    });
-
-    const toIds = [
-        'date-visit-doctors-to',
-        'date-geo-gov-to',
-        'date-geo-country-to',
-        'date-surg-op-to',
-        'date-surg-doc-to',
-        'date-tests-eye-to',
-        'date-tests-lab-to'
-    ];
-    toIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            if (!el.dataset.listenerAttached) {
-                el.addEventListener('change', (e) => syncAllToDates(e.target.value));
                 el.dataset.listenerAttached = 'true';
             }
         }
@@ -568,8 +510,6 @@ function populateDirectGrids() {
     }
 }
 
-// ── SAVE BULK ACTIONS ──
-
 // ── EDIT MODES STATE ──
 const editStates = {
     visits_doctors: { active: false, date: '' },
@@ -581,18 +521,13 @@ const editStates = {
     lab_tests: { active: false, date: '' }
 };
 
-function setEditButtonState(type, active, dateInputId, toInputId, buttonId) {
+function setEditButtonState(type, active, dateInputId, buttonId) {
     const btn = document.getElementById(buttonId);
     const dateInput = document.getElementById(dateInputId);
-    const toInput = document.getElementById(toInputId);
     
     if (active) {
         editStates[type].active = true;
         editStates[type].date = dateInput.value;
-        if (toInput) {
-            toInput.value = '';
-            toInput.disabled = true;
-        }
         btn.innerHTML = '<span>إلغاء التعديل</span>';
         btn.className = "py-1.5 px-3 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 hover-press flex items-center gap-1.5";
         if (buttonId !== 'btn-edit-visits-doctors') {
@@ -601,10 +536,7 @@ function setEditButtonState(type, active, dateInputId, toInputId, buttonId) {
     } else {
         editStates[type].active = false;
         editStates[type].date = '';
-        if (toInput) {
-            toInput.disabled = false;
-        }
-        btn.innerHTML = '<span>تعديل يوم سابق</span>';
+        btn.innerHTML = '<span>تعديل شهر سابق</span>';
         btn.className = "py-1.5 px-3 rounded-xl text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5";
         if (buttonId !== 'btn-edit-visits-doctors') {
             btn.className = "py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press";
@@ -652,12 +584,13 @@ async function clearDatabaseForEdit(type, date) {
 async function toggleEditVisitsDoctors() {
     const type = 'visits_doctors';
     if (editStates[type].active) {
-        setEditButtonState(type, false, 'date-visit-doctors', 'date-visit-doctors-to', 'btn-edit-visits-doctors');
+        setEditButtonState(type, false, 'date-visit-doctors', 'btn-edit-visits-doctors');
         showToast('تم إلغاء وضع التعديل', 'info');
         return;
     }
-    const date = document.getElementById('date-visit-doctors').value;
-    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    const monthVal = document.getElementById('date-visit-doctors').value;
+    if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
+    const date = monthVal + "-01";
     
     try {
         const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=visits_doctors');
@@ -679,10 +612,10 @@ async function toggleEditVisitsDoctors() {
         });
         
         if (found > 0) {
-            setEditButtonState(type, true, 'date-visit-doctors', 'date-visit-doctors-to', 'btn-edit-visits-doctors');
+            setEditButtonState(type, true, 'date-visit-doctors', 'btn-edit-visits-doctors');
             showToast('تم تحميل البيانات السابقة بنجاح للتعديل', 'success');
         } else {
-            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+            showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
         }
     } catch(e) {
         showToast('فشل جلب البيانات السابقة', 'error');
@@ -692,12 +625,13 @@ async function toggleEditVisitsDoctors() {
 async function toggleEditGovsVisits() {
     const type = 'visits_govs';
     if (editStates[type].active) {
-        setEditButtonState(type, false, 'date-geo-gov', 'date-geo-gov-to', 'btn-edit-geo-gov');
+        setEditButtonState(type, false, 'date-geo-gov', 'btn-edit-geo-gov');
         showToast('تم إلغاء وضع التعديل', 'info');
         return;
     }
-    const date = document.getElementById('date-geo-gov').value;
-    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    const monthVal = document.getElementById('date-geo-gov').value;
+    if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
+    const date = monthVal + "-01";
     try {
         const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=visits_govs');
         const data = await res.json();
@@ -717,10 +651,10 @@ async function toggleEditGovsVisits() {
             }
         });
         if (found > 0) {
-            setEditButtonState(type, true, 'date-geo-gov', 'date-geo-gov-to', 'btn-edit-geo-gov');
+            setEditButtonState(type, true, 'date-geo-gov', 'btn-edit-geo-gov');
             showToast('تم جلب أعداد المحافظات للتعديل', 'success');
         } else {
-            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+            showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
         }
     } catch(e) {
         showToast('فشل جلب البيانات السابقة', 'error');
@@ -730,12 +664,13 @@ async function toggleEditGovsVisits() {
 async function toggleEditCountriesVisits() {
     const type = 'visits_countries';
     if (editStates[type].active) {
-        setEditButtonState(type, false, 'date-geo-country', 'date-geo-country-to', 'btn-edit-geo-country');
+        setEditButtonState(type, false, 'date-geo-country', 'btn-edit-geo-country');
         showToast('تم إلغاء وضع التعديل', 'info');
         return;
     }
-    const date = document.getElementById('date-geo-country').value;
-    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    const monthVal = document.getElementById('date-geo-country').value;
+    if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
+    const date = monthVal + "-01";
     try {
         const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=visits_countries');
         const data = await res.json();
@@ -755,10 +690,10 @@ async function toggleEditCountriesVisits() {
             }
         });
         if (found > 0) {
-            setEditButtonState(type, true, 'date-geo-country', 'date-geo-country-to', 'btn-edit-geo-country');
+            setEditButtonState(type, true, 'date-geo-country', 'btn-edit-geo-country');
             showToast('تم جلب أعداد الدول للتعديل', 'success');
         } else {
-            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+            showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
         }
     } catch(e) {
         showToast('فشل جلب البيانات السابقة', 'error');
@@ -768,12 +703,13 @@ async function toggleEditCountriesVisits() {
 async function toggleEditSurgeriesOps() {
     const type = 'surgeries_ops';
     if (editStates[type].active) {
-        setEditButtonState(type, false, 'date-surg-op', 'date-surg-op-to', 'btn-edit-surg-op');
+        setEditButtonState(type, false, 'date-surg-op', 'btn-edit-surg-op');
         showToast('تم إلغاء وضع التعديل', 'info');
         return;
     }
-    const date = document.getElementById('date-surg-op').value;
-    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    const monthVal = document.getElementById('date-surg-op').value;
+    if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
+    const date = monthVal + "-01";
     try {
         const res = await fetch('/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=surgeries_ops');
         const data = await res.json();
@@ -793,10 +729,10 @@ async function toggleEditSurgeriesOps() {
             }
         });
         if (found > 0) {
-            setEditButtonState(type, true, 'date-surg-op', 'date-surg-op-to', 'btn-edit-surg-op');
+            setEditButtonState(type, true, 'date-surg-op', 'btn-edit-surg-op');
             showToast('تم جلب أعداد العمليات للتعديل', 'success');
         } else {
-            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+            showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
         }
     } catch(e) {
         showToast('فشل جلب البيانات السابقة', 'error');
@@ -806,12 +742,13 @@ async function toggleEditSurgeriesOps() {
 async function toggleEditSurgeriesDocs() {
     const type = 'surgeries_docs';
     if (editStates[type].active) {
-        setEditButtonState(type, false, 'date-surg-doc', 'date-surg-doc-to', 'btn-edit-surg-doc');
+        setEditButtonState(type, false, 'date-surg-doc', 'btn-edit-surg-doc');
         showToast('تم إلغاء وضع التعديل', 'info');
         return;
     }
-    const date = document.getElementById('date-surg-doc').value;
-    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    const monthVal = document.getElementById('date-surg-doc').value;
+    if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
+    const date = monthVal + "-01";
     try {
         const res = await fetch('/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=surgeries_docs');
         const data = await res.json();
@@ -829,10 +766,10 @@ async function toggleEditSurgeriesDocs() {
             }
         });
         if (found > 0) {
-            setEditButtonState(type, true, 'date-surg-doc', 'date-surg-doc-to', 'btn-edit-surg-doc');
+            setEditButtonState(type, true, 'date-surg-doc', 'btn-edit-surg-doc');
             showToast('تم جلب أعداد العمليات للأطباء للتعديل', 'success');
         } else {
-            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+            showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
         }
     } catch(e) {
         showToast('فشل جلب البيانات السابقة', 'error');
@@ -842,12 +779,13 @@ async function toggleEditSurgeriesDocs() {
 async function toggleEditEyeTests() {
     const type = 'eye_tests';
     if (editStates[type].active) {
-        setEditButtonState(type, false, 'date-tests-eye', 'date-tests-eye-to', 'btn-edit-tests-eye');
+        setEditButtonState(type, false, 'date-tests-eye', 'btn-edit-tests-eye');
         showToast('تم إلغاء وضع التعديل', 'info');
         return;
     }
-    const date = document.getElementById('date-tests-eye').value;
-    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    const monthVal = document.getElementById('date-tests-eye').value;
+    if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
+    const date = monthVal + "-01";
     try {
         const res = await fetch('/api/eye-tests?start_date=' + date + '&end_date=' + date + '&per_page=1000');
         const data = await res.json();
@@ -865,10 +803,10 @@ async function toggleEditEyeTests() {
             }
         });
         if (found > 0) {
-            setEditButtonState(type, true, 'date-tests-eye', 'date-tests-eye-to', 'btn-edit-tests-eye');
+            setEditButtonState(type, true, 'date-tests-eye', 'btn-edit-tests-eye');
             showToast('تم جلب أعداد الفحوصات للتعديل', 'success');
         } else {
-            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+            showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
         }
     } catch(e) {
         showToast('فشل جلب البيانات السابقة', 'error');
@@ -878,12 +816,13 @@ async function toggleEditEyeTests() {
 async function toggleEditLabTests() {
     const type = 'lab_tests';
     if (editStates[type].active) {
-        setEditButtonState(type, false, 'date-tests-lab', 'date-tests-lab-to', 'btn-edit-tests-lab');
+        setEditButtonState(type, false, 'date-tests-lab', 'btn-edit-tests-lab');
         showToast('تم إلغاء وضع التعديل', 'info');
         return;
     }
-    const date = document.getElementById('date-tests-lab').value;
-    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    const monthVal = document.getElementById('date-tests-lab').value;
+    if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
+    const date = monthVal + "-01";
     try {
         const res = await fetch('/api/lab-tests?start_date=' + date + '&end_date=' + date + '&per_page=1000');
         const data = await res.json();
@@ -901,10 +840,10 @@ async function toggleEditLabTests() {
             }
         });
         if (found > 0) {
-            setEditButtonState(type, true, 'date-tests-lab', 'date-tests-lab-to', 'btn-edit-tests-lab');
+            setEditButtonState(type, true, 'date-tests-lab', 'btn-edit-tests-lab');
             showToast('تم جلب أعداد التحاليل للتعديل', 'success');
         } else {
-            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+            showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
         }
     } catch(e) {
         showToast('فشل جلب البيانات السابقة', 'error');
@@ -913,63 +852,47 @@ async function toggleEditLabTests() {
 
 // ── SAVE BULK ACTIONS ──
 
-function getDatesRange(startDate, endDate) {
-    if (!endDate || startDate === endDate) return [startDate];
-    const dates = [];
-    let current = new Date(startDate);
-    const end = new Date(endDate);
-    if (current > end) return [startDate];
-    while (current <= end) {
-        dates.push(current.toISOString().split('T')[0]);
-        current.setDate(current.getDate() + 1);
-    }
-    return dates;
-}
-
 // 1. Save Doctors Visits
 async function saveVisitsDoctors() {
-    const fromDate = document.getElementById('date-visit-doctors').value;
-    const toDate = document.getElementById('date-visit-doctors-to').value;
-    if (!fromDate) { showToast('حدد تاريخ بيانات الأطباء', 'error'); return; }
+    const monthVal = document.getElementById('date-visit-doctors').value;
+    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    const date = monthVal + "-01";
 
     const isEdit = editStates['visits_doctors'].active;
     if (isEdit) {
         showToast('جاري تحديث البيانات القديمة...', 'info');
-        const cleared = await clearDatabaseForEdit('visits_doctors', editStates['visits_doctors'].date);
+        const cleared = await clearDatabaseForEdit('visits_doctors', editStates['visits_doctors'].date + "-01");
         if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
     }
 
-    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-visits-doctors tr');
 
-    dates.forEach(date => {
-        rows.forEach(tr => {
-            const docId = tr.getAttribute('data-doctor-id');
-            const inputs = tr.querySelectorAll('input[type="number"]');
+    rows.forEach(tr => {
+        const docId = tr.getAttribute('data-doctor-id');
+        const inputs = tr.querySelectorAll('input[type="number"]');
 
-            inputs.forEach(input => {
-                const count = parseInt(input.value) || 0;
-                if (count > 0) {
-                    const unitId = input.getAttribute('data-unit-id');
+        inputs.forEach(input => {
+            const count = parseInt(input.value) || 0;
+            if (count > 0) {
+                const unitId = input.getAttribute('data-unit-id');
 
-                    promises.push(
-                        fetch('/api/visits', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                            },
-                            body: JSON.stringify({
-                                doctor_id: docId,
-                                clinic_unit_id: unitId,
-                                visit_date: date,
-                                quantity: count
-                            })
+                promises.push(
+                    fetch('/api/visits', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            doctor_id: docId,
+                            clinic_unit_id: unitId,
+                            visit_date: date,
+                            quantity: count
                         })
-                    );
-                }
-            });
+                    })
+                );
+            }
         });
     });
 
@@ -989,9 +912,9 @@ async function saveVisitsDoctors() {
         }
         
         if (isEdit) {
-            setEditButtonState('visits_doctors', false, 'date-visit-doctors', 'date-visit-doctors-to', 'btn-edit-visits-doctors');
+            setEditButtonState('visits_doctors', false, 'date-visit-doctors', 'btn-edit-visits-doctors');
         }
-        lastUsedDate = fromDate;
+        lastUsedDate = monthVal;
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
@@ -1000,49 +923,46 @@ async function saveVisitsDoctors() {
 
 // 2. Save Governorates Visits
 async function saveGovsVisits() {
-    const fromDate = document.getElementById('date-geo-gov').value;
-    const toDate = document.getElementById('date-geo-gov-to').value;
-    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+    const monthVal = document.getElementById('date-geo-gov').value;
+    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    const date = monthVal + "-01";
 
     const isEdit = editStates['visits_govs'].active;
     if (isEdit) {
         showToast('جاري تحديث البيانات القديمة...', 'info');
-        const cleared = await clearDatabaseForEdit('visits_govs', editStates['visits_govs'].date);
+        const cleared = await clearDatabaseForEdit('visits_govs', editStates['visits_govs'].date + "-01");
         if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
     }
 
-    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-geo-govs tr');
     
     const defaultDoc = entryLookups?.doctors[0]?.id || 1;
     const defaultUnit = entryLookups?.clinicUnits[0]?.id || 1;
 
-    dates.forEach(date => {
-        rows.forEach(tr => {
-            const govId = tr.getAttribute('data-gov-id');
-            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    rows.forEach(tr => {
+        const govId = tr.getAttribute('data-gov-id');
+        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-            if (count > 0) {
-                promises.push(
-                    fetch('/api/visits', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            doctor_id: defaultDoc,
-                            clinic_unit_id: defaultUnit,
-                            governorate_id: govId,
-                            status: 'مدفوع',
-                            visit_date: date,
-                            quantity: count
-                        })
+        if (count > 0) {
+            promises.push(
+                fetch('/api/visits', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        doctor_id: defaultDoc,
+                        clinic_unit_id: defaultUnit,
+                        governorate_id: govId,
+                        status: 'مدفوع',
+                        visit_date: date,
+                        quantity: count
                     })
-                );
-            }
-        });
+                })
+            );
+        }
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -1061,9 +981,9 @@ async function saveGovsVisits() {
         }
         
         if (isEdit) {
-            setEditButtonState('visits_govs', false, 'date-geo-gov', 'date-geo-gov-to', 'btn-edit-geo-gov');
+            setEditButtonState('visits_govs', false, 'date-geo-gov', 'btn-edit-geo-gov');
         }
-        lastUsedDate = fromDate;
+        lastUsedDate = monthVal;
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
@@ -1072,49 +992,46 @@ async function saveGovsVisits() {
 
 // 3. Save Countries Visits
 async function saveCountriesVisits() {
-    const fromDate = document.getElementById('date-geo-country').value;
-    const toDate = document.getElementById('date-geo-country-to').value;
-    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+    const monthVal = document.getElementById('date-geo-country').value;
+    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    const date = monthVal + "-01";
 
     const isEdit = editStates['visits_countries'].active;
     if (isEdit) {
         showToast('جاري تحديث البيانات القديمة...', 'info');
-        const cleared = await clearDatabaseForEdit('visits_countries', editStates['visits_countries'].date);
+        const cleared = await clearDatabaseForEdit('visits_countries', editStates['visits_countries'].date + "-01");
         if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
     }
 
-    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-geo-countries tr');
 
     const defaultDoc = entryLookups?.doctors[0]?.id || 1;
     const defaultUnit = entryLookups?.clinicUnits[0]?.id || 1;
 
-    dates.forEach(date => {
-        rows.forEach(tr => {
-            const countryId = tr.getAttribute('data-country-id');
-            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    rows.forEach(tr => {
+        const countryId = tr.getAttribute('data-country-id');
+        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-            if (count > 0) {
-                promises.push(
-                    fetch('/api/visits', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            doctor_id: defaultDoc,
-                            clinic_unit_id: defaultUnit,
-                            country_id: countryId,
-                            status: 'مدفوع',
-                            visit_date: date,
-                            quantity: count
-                        })
+        if (count > 0) {
+            promises.push(
+                fetch('/api/visits', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        doctor_id: defaultDoc,
+                        clinic_unit_id: defaultUnit,
+                        country_id: countryId,
+                        status: 'مدفوع',
+                        visit_date: date,
+                        quantity: count
                     })
-                );
-            }
-        });
+                })
+            );
+        }
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -1133,9 +1050,9 @@ async function saveCountriesVisits() {
         }
         
         if (isEdit) {
-            setEditButtonState('visits_countries', false, 'date-geo-country', 'date-geo-country-to', 'btn-edit-geo-country');
+            setEditButtonState('visits_countries', false, 'date-geo-country', 'btn-edit-geo-country');
         }
-        lastUsedDate = fromDate;
+        lastUsedDate = monthVal;
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
@@ -1144,48 +1061,45 @@ async function saveCountriesVisits() {
 
 // 4. Save Surgeries by Operation Names
 async function saveSurgeriesOps() {
-    const fromDate = document.getElementById('date-surg-op').value;
-    const toDate = document.getElementById('date-surg-op-to').value;
-    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+    const monthVal = document.getElementById('date-surg-op').value;
+    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    const date = monthVal + "-01";
 
     const isEdit = editStates['surgeries_ops'].active;
     if (isEdit) {
         showToast('جاري تحديث البيانات القديمة...', 'info');
-        const cleared = await clearDatabaseForEdit('surgeries_ops', editStates['surgeries_ops'].date);
+        const cleared = await clearDatabaseForEdit('surgeries_ops', editStates['surgeries_ops'].date + "-01");
         if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
     }
 
-    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-surg-ops tr');
 
     const defaultDoc = entryLookups?.doctors[0]?.id || 1;
 
-    dates.forEach(date => {
-        rows.forEach(tr => {
-            const opId = tr.getAttribute('data-op-id');
-            const sectorId = tr.querySelector('select').value;
-            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    rows.forEach(tr => {
+        const opId = tr.getAttribute('data-op-id');
+        const sectorId = tr.querySelector('select').value;
+        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-            if (count > 0) {
-                promises.push(
-                    fetch('/api/surgeries', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            doctor_id: defaultDoc,
-                            operation_name_id: opId,
-                            sector_id: sectorId,
-                            op_date: date,
-                            quantity: count
-                        })
+        if (count > 0) {
+            promises.push(
+                fetch('/api/surgeries', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        doctor_id: defaultDoc,
+                        operation_name_id: opId,
+                        sector_id: sectorId,
+                        op_date: date,
+                        quantity: count
                     })
-                );
-            }
-        });
+                })
+            );
+        }
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -1204,9 +1118,9 @@ async function saveSurgeriesOps() {
         }
         
         if (isEdit) {
-            setEditButtonState('surgeries_ops', false, 'date-surg-op', 'date-surg-op-to', 'btn-edit-surg-op');
+            setEditButtonState('surgeries_ops', false, 'date-surg-op', 'btn-edit-surg-op');
         }
-        lastUsedDate = fromDate;
+        lastUsedDate = monthVal;
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
@@ -1215,48 +1129,45 @@ async function saveSurgeriesOps() {
 
 // 5. Save Surgeries by Doctors
 async function saveSurgeriesDocs() {
-    const fromDate = document.getElementById('date-surg-doc').value;
-    const toDate = document.getElementById('date-surg-doc-to').value;
-    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+    const monthVal = document.getElementById('date-surg-doc').value;
+    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    const date = monthVal + "-01";
 
     const isEdit = editStates['surgeries_docs'].active;
     if (isEdit) {
         showToast('جاري تحديث البيانات القديمة...', 'info');
-        const cleared = await clearDatabaseForEdit('surgeries_docs', editStates['surgeries_docs'].date);
+        const cleared = await clearDatabaseForEdit('surgeries_docs', editStates['surgeries_docs'].date + "-01");
         if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
     }
 
-    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-surg-docs tr');
 
     const defaultOp = entryLookups?.operationNames[0]?.id || 1;
     const defaultSector = entryLookups?.sectors[0]?.id || 1;
 
-    dates.forEach(date => {
-        rows.forEach(tr => {
-            const docId = tr.getAttribute('data-doctor-id');
-            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    rows.forEach(tr => {
+        const docId = tr.getAttribute('data-doctor-id');
+        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-            if (count > 0) {
-                promises.push(
-                    fetch('/api/surgeries', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            doctor_id: docId,
-                            operation_name_id: defaultOp,
-                            sector_id: defaultSector,
-                            op_date: date,
-                            quantity: count
-                        })
+        if (count > 0) {
+            promises.push(
+                fetch('/api/surgeries', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        doctor_id: docId,
+                        operation_name_id: defaultOp,
+                        sector_id: defaultSector,
+                        op_date: date,
+                        quantity: count
                     })
-                );
-            }
-        });
+                })
+            );
+        }
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -1275,9 +1186,9 @@ async function saveSurgeriesDocs() {
         }
         
         if (isEdit) {
-            setEditButtonState('surgeries_docs', false, 'date-surg-doc', 'date-surg-doc-to', 'btn-edit-surg-doc');
+            setEditButtonState('surgeries_docs', false, 'date-surg-doc', 'btn-edit-surg-doc');
         }
-        lastUsedDate = fromDate;
+        lastUsedDate = monthVal;
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
@@ -1286,43 +1197,40 @@ async function saveSurgeriesDocs() {
 
 // 6. Save Eye Tests
 async function saveEyeTestsGrid() {
-    const fromDate = document.getElementById('date-tests-eye').value;
-    const toDate = document.getElementById('date-tests-eye-to').value;
-    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+    const monthVal = document.getElementById('date-tests-eye').value;
+    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    const date = monthVal + "-01";
 
     const isEdit = editStates['eye_tests'].active;
     if (isEdit) {
         showToast('جاري تحديث البيانات القديمة...', 'info');
-        const cleared = await clearDatabaseForEdit('eye_tests', editStates['eye_tests'].date);
+        const cleared = await clearDatabaseForEdit('eye_tests', editStates['eye_tests'].date + "-01");
         if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
     }
 
-    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-tests-eye tr');
 
-    dates.forEach(date => {
-        rows.forEach(tr => {
-            const testTypeId = tr.getAttribute('data-test-type-id');
-            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    rows.forEach(tr => {
+        const testTypeId = tr.getAttribute('data-test-type-id');
+        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-            if (count > 0) {
-                promises.push(
-                    fetch('/api/eye-tests', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            test_type_id: testTypeId,
-                            test_date: date,
-                            quantity: count
-                        })
+        if (count > 0) {
+            promises.push(
+                fetch('/api/eye-tests', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        test_type_id: testTypeId,
+                        test_date: date,
+                        quantity: count
                     })
-                );
-            }
-        });
+                })
+            );
+        }
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -1341,9 +1249,9 @@ async function saveEyeTestsGrid() {
         }
         
         if (isEdit) {
-            setEditButtonState('eye_tests', false, 'date-tests-eye', 'date-tests-eye-to', 'btn-edit-tests-eye');
+            setEditButtonState('eye_tests', false, 'date-tests-eye', 'btn-edit-tests-eye');
         }
-        lastUsedDate = fromDate;
+        lastUsedDate = monthVal;
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ بالشبكة', 'error');
@@ -1352,43 +1260,40 @@ async function saveEyeTestsGrid() {
 
 // 7. Save Lab Tests
 async function saveLabTestsGrid() {
-    const fromDate = document.getElementById('date-tests-lab').value;
-    const toDate = document.getElementById('date-tests-lab-to').value;
-    if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+    const monthVal = document.getElementById('date-tests-lab').value;
+    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    const date = monthVal + "-01";
 
     const isEdit = editStates['lab_tests'].active;
     if (isEdit) {
         showToast('جاري تحديث البيانات القديمة...', 'info');
-        const cleared = await clearDatabaseForEdit('lab_tests', editStates['lab_tests'].date);
+        const cleared = await clearDatabaseForEdit('lab_tests', editStates['lab_tests'].date + "-01");
         if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
     }
 
-    const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-tests-lab tr');
 
-    dates.forEach(date => {
-        rows.forEach(tr => {
-            const labTestTypeId = tr.getAttribute('data-lab-test-type-id');
-            const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+    rows.forEach(tr => {
+        const labTestTypeId = tr.getAttribute('data-lab-test-type-id');
+        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-            if (count > 0) {
-                promises.push(
-                    fetch('/api/lab-tests', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            lab_test_type_id: labTestTypeId,
-                            test_date: date,
-                            quantity: count
-                        })
+        if (count > 0) {
+            promises.push(
+                fetch('/api/lab-tests', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        lab_test_type_id: labTestTypeId,
+                        test_date: date,
+                        quantity: count
                     })
-                );
-            }
-        });
+                })
+            );
+        }
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -1407,9 +1312,9 @@ async function saveLabTestsGrid() {
         }
         
         if (isEdit) {
-            setEditButtonState('lab_tests', false, 'date-tests-lab', 'date-tests-lab-to', 'btn-edit-tests-lab');
+            setEditButtonState('lab_tests', false, 'date-tests-lab', 'btn-edit-tests-lab');
         }
-        lastUsedDate = fromDate;
+        lastUsedDate = monthVal;
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ بالشبكة', 'error');

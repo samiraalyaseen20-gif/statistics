@@ -37,6 +37,8 @@ class EntryController extends Controller
 
         $start = $r->start_date;
         $end = $r->end_date;
+        if (strlen($start) === 7) $start = $start . '-01';
+        if (strlen($end) === 7) $end = \Carbon\Carbon::parse($end)->endOfMonth()->toDateString();
 
         switch ($r->type) {
             case 'visits_doctors':
@@ -127,8 +129,13 @@ class EntryController extends Controller
         $defaultUnit = ClinicUnit::first();
 
         $q = Visit::with(['doctor','clinicUnit','governorate','country'])
-            ->when($r->month, fn($q,$m) => $q->whereYear('visit_date', substr($m,0,4))->whereMonth('visit_date', substr($m,5,2)))
-            ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('visit_date', [$r->start_date, $r->end_date]))
+            ->when($r->start_date && $r->end_date, function($q) use ($r) {
+                $start = $r->start_date;
+                $end = $r->end_date;
+                if (strlen($start) === 7) $start = $start . '-01';
+                if (strlen($end) === 7) $end = \Carbon\Carbon::parse($end)->endOfMonth()->toDateString();
+                $q->whereBetween('visit_date', [$start, $end]);
+            })
             ->when($r->type === 'visits_doctors' && $defaultDoc && $defaultUnit, function($q) use ($defaultDoc, $defaultUnit) {
                 $q->where(function($query) use ($defaultDoc, $defaultUnit) {
                     $query->where(function($sub1) {
@@ -213,7 +220,13 @@ class EntryController extends Controller
     public function eyeTestsIndex(Request $r)
     {
         $q = EyeTest::with(['testType'])
-            ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('test_date', [$r->start_date, $r->end_date]))
+            ->when($r->start_date && $r->end_date, function($q) use ($r) {
+                $start = $r->start_date;
+                $end = $r->end_date;
+                if (strlen($start) === 7) $start = $start . '-01';
+                if (strlen($end) === 7) $end = \Carbon\Carbon::parse($end)->endOfMonth()->toDateString();
+                $q->whereBetween('test_date', [$start, $end]);
+            })
             ->latest('id');
 
         if ($r->get('per_page') == 1000) {
@@ -287,7 +300,13 @@ class EntryController extends Controller
     public function labTestsIndex(Request $r)
     {
         $q = LabTest::with(['labTestType','visit'])
-            ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('test_date', [$r->start_date, $r->end_date]))
+            ->when($r->start_date && $r->end_date, function($q) use ($r) {
+                $start = $r->start_date;
+                $end = $r->end_date;
+                if (strlen($start) === 7) $start = $start . '-01';
+                if (strlen($end) === 7) $end = \Carbon\Carbon::parse($end)->endOfMonth()->toDateString();
+                $q->whereBetween('test_date', [$start, $end]);
+            })
             ->latest('id');
 
         if ($r->get('per_page') == 1000) {
@@ -363,8 +382,13 @@ class EntryController extends Controller
         $defaultOp = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
 
         $q = Surgery::with(['doctor','operationName','sector','governorate','country'])
-            ->when($r->month, fn($q,$m) => $q->whereYear('op_date', substr($m,0,4))->whereMonth('op_date', substr($m,5,2)))
-            ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('op_date', [$r->start_date, $r->end_date]))
+            ->when($r->start_date && $r->end_date, function($q) use ($r) {
+                $start = $r->start_date;
+                $end = $r->end_date;
+                if (strlen($start) === 7) $start = $start . '-01';
+                if (strlen($end) === 7) $end = \Carbon\Carbon::parse($end)->endOfMonth()->toDateString();
+                $q->whereBetween('op_date', [$start, $end]);
+            })
             ->when($r->type === 'surgeries_ops' && $defaultDoc, function($q) use ($defaultDoc, $defaultOp) {
                 $q->where(function($query) use ($defaultDoc, $defaultOp) {
                     $query->where('doctor_id', $defaultDoc->id)

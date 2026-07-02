@@ -67,12 +67,12 @@ if (file_exists(base_path('iraq.svg'))) {
                     </div>
                     <div class="flex flex-col gap-1">
                         <label class="text-[9px] font-bold text-slate-400">من:</label>
-                        <input type="date" id="cmp-from-a" value="{{ $start_date ?? '2026-05-01' }}"
+                        <input type="month" id="cmp-from-a" value="{{ substr($start_date ?? '2026-05-01', 0, 7) }}"
                             class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main custom-date-input">
                     </div>
                     <div class="flex flex-col gap-1">
                         <label class="text-[9px] font-bold text-slate-400">إلى:</label>
-                        <input type="date" id="cmp-to-a" value="{{ $end_date ?? '2026-05-31' }}"
+                        <input type="month" id="cmp-to-a" value="{{ substr($end_date ?? '2026-05-31', 0, 7) }}"
                             class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main custom-date-input">
                     </div>
                 </div>
@@ -108,12 +108,12 @@ if (file_exists(base_path('iraq.svg'))) {
                     </div>
                     <div class="flex flex-col gap-1">
                         <label class="text-[9px] font-bold text-slate-400">من:</label>
-                        <input type="date" id="cmp-from-b" value="{{ $start_date ?? '2026-05-01' }}"
+                        <input type="month" id="cmp-from-b" value="{{ substr($start_date ?? '2026-05-01', 0, 7) }}"
                             class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main custom-date-input">
                     </div>
                     <div class="flex flex-col gap-1">
                         <label class="text-[9px] font-bold text-slate-400">إلى:</label>
-                        <input type="date" id="cmp-to-b" value="{{ $end_date ?? '2026-05-31' }}"
+                        <input type="month" id="cmp-to-b" value="{{ substr($end_date ?? '2026-05-31', 0, 7) }}"
                             class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main custom-date-input">
                     </div>
                 </div>
