@@ -145,8 +145,13 @@ class EntryController extends Controller
             })
             ->when($r->type === 'visits_govs', fn($q) => $q->whereNotNull('governorate_id'))
             ->when($r->type === 'visits_countries', fn($q) => $q->whereNotNull('country_id'))
-            ->latest('id')->paginate($r->get('per_page', 20));
-        return response()->json($q);
+            ->latest('id');
+
+        if ($r->get('per_page') == 1000) {
+            return response()->json(['data' => $q->get()]);
+        }
+
+        return response()->json($q->paginate($r->get('per_page', 20)));
     }
 
     public function visitsStore(Request $r)
@@ -209,8 +214,13 @@ class EntryController extends Controller
     {
         $q = EyeTest::with(['testType'])
             ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('test_date', [$r->start_date, $r->end_date]))
-            ->latest('id')->paginate($r->get('per_page', 20));
-        return response()->json($q);
+            ->latest('id');
+
+        if ($r->get('per_page') == 1000) {
+            return response()->json(['data' => $q->get()]);
+        }
+
+        return response()->json($q->paginate($r->get('per_page', 20)));
     }
 
     public function eyeTestsStore(Request $r)
@@ -278,8 +288,13 @@ class EntryController extends Controller
     {
         $q = LabTest::with(['labTestType','visit'])
             ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('test_date', [$r->start_date, $r->end_date]))
-            ->latest('id')->paginate($r->get('per_page', 20));
-        return response()->json($q);
+            ->latest('id');
+
+        if ($r->get('per_page') == 1000) {
+            return response()->json(['data' => $q->get()]);
+        }
+
+        return response()->json($q->paginate($r->get('per_page', 20)));
     }
 
     public function labTestsStore(Request $r)
@@ -368,8 +383,13 @@ class EntryController extends Controller
                           });
                 });
             })
-            ->latest('id')->paginate($r->get('per_page', 20));
-        return response()->json($q);
+            ->latest('id');
+
+        if ($r->get('per_page') == 1000) {
+            return response()->json(['data' => $q->get()]);
+        }
+
+        return response()->json($q->paginate($r->get('per_page', 20)));
     }
 
     public function surgeriesStore(Request $r)
