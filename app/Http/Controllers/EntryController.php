@@ -40,12 +40,24 @@ class EntryController extends Controller
 
         switch ($r->type) {
             case 'visits_doctors':
-                Visit::whereBetween('visit_date', [$start, $end])
-                    ->whereNull('governorate_id')
-                    ->whereNull('country_id')
-                    ->whereDoesntHave('eyeTests')
-                    ->whereDoesntHave('labTests')
-                    ->delete();
+                $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+                $defaultUnit = ClinicUnit::first();
+                if ($defaultDoc && $defaultUnit) {
+                    Visit::whereBetween('visit_date', [$start, $end])
+                        ->where(function($query) use ($defaultDoc, $defaultUnit) {
+                            $query->where(function($sub1) {
+                                $sub1->whereNull('governorate_id')
+                                     ->whereNull('country_id')
+                                     ->whereDoesntHave('eyeTests')
+                                     ->whereDoesntHave('labTests');
+                            })
+                            ->orWhere(function($sub2) use ($defaultDoc, $defaultUnit) {
+                                $sub2->where('doctor_id', '!=', $defaultDoc->id)
+                                     ->orWhere('clinic_unit_id', '!=', $defaultUnit->id);
+                            });
+                        })
+                        ->delete();
+                }
                 break;
             case 'visits_govs':
                 Visit::whereBetween('visit_date', [$start, $end])
@@ -59,17 +71,31 @@ class EntryController extends Controller
                 break;
             case 'surgeries_ops':
                 $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
-                if ($defaultDoc) {
+                $defaultOp = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+                if ($defaultDoc && $defaultOp) {
                     Surgery::whereBetween('op_date', [$start, $end])
-                        ->where('doctor_id', $defaultDoc->id)
+                        ->where(function($query) use ($defaultDoc, $defaultOp) {
+                            $query->where('doctor_id', $defaultDoc->id)
+                                  ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                                      $sub->where('doctor_id', '!=', $defaultDoc->id)
+                                          ->where('operation_name_id', '!=', $defaultOp->id);
+                                  });
+                        })
                         ->delete();
                 }
                 break;
             case 'surgeries_docs':
+                $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 $defaultOp = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
-                if ($defaultOp) {
+                if ($defaultDoc && $defaultOp) {
                     Surgery::whereBetween('op_date', [$start, $end])
-                        ->where('operation_name_id', $defaultOp->id)
+                        ->where(function($query) use ($defaultDoc, $defaultOp) {
+                            $query->where('operation_name_id', $defaultOp->id)
+                                  ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                                      $sub->where('doctor_id', '!=', $defaultDoc->id)
+                                          ->where('operation_name_id', '!=', $defaultOp->id);
+                                  });
+                        })
                         ->delete();
                 }
                 break;
@@ -97,14 +123,25 @@ class EntryController extends Controller
     // ========== VISITS ==========
     public function visitsIndex(Request $r)
     {
+        $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+        $defaultUnit = ClinicUnit::first();
+
         $q = Visit::with(['doctor','clinicUnit','governorate','country'])
             ->when($r->month, fn($q,$m) => $q->whereYear('visit_date', substr($m,0,4))->whereMonth('visit_date', substr($m,5,2)))
             ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('visit_date', [$r->start_date, $r->end_date]))
-            ->when($r->type === 'visits_doctors', function($q) {
-                $q->whereNull('governorate_id')
-                  ->whereNull('country_id')
-                  ->whereDoesntHave('eyeTests')
-                  ->whereDoesntHave('labTests');
+            ->when($r->type === 'visits_doctors' && $defaultDoc && $defaultUnit, function($q) use ($defaultDoc, $defaultUnit) {
+                $q->where(function($query) use ($defaultDoc, $defaultUnit) {
+                    $query->where(function($sub1) {
+                        $sub1->whereNull('governorate_id')
+                             ->whereNull('country_id')
+                             ->whereDoesntHave('eyeTests')
+                             ->whereDoesntHave('labTests');
+                    })
+                    ->orWhere(function($sub2) use ($defaultDoc, $defaultUnit) {
+                        $sub2->where('doctor_id', '!=', $defaultDoc->id)
+                             ->orWhere('clinic_unit_id', '!=', $defaultUnit->id);
+                    });
+                });
             })
             ->when($r->type === 'visits_govs', fn($q) => $q->whereNotNull('governorate_id'))
             ->when($r->type === 'visits_countries', fn($q) => $q->whereNotNull('country_id'))
@@ -313,8 +350,24 @@ class EntryController extends Controller
         $q = Surgery::with(['doctor','operationName','sector','governorate','country'])
             ->when($r->month, fn($q,$m) => $q->whereYear('op_date', substr($m,0,4))->whereMonth('op_date', substr($m,5,2)))
             ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('op_date', [$r->start_date, $r->end_date]))
-            ->when($r->type === 'surgeries_ops' && $defaultDoc, fn($q) => $q->where('doctor_id', $defaultDoc->id))
-            ->when($r->type === 'surgeries_docs' && $defaultOp, fn($q) => $q->where('operation_name_id', $defaultOp->id))
+            ->when($r->type === 'surgeries_ops' && $defaultDoc, function($q) use ($defaultDoc, $defaultOp) {
+                $q->where(function($query) use ($defaultDoc, $defaultOp) {
+                    $query->where('doctor_id', $defaultDoc->id)
+                          ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                              $sub->where('doctor_id', '!=', $defaultDoc->id)
+                                  ->where('operation_name_id', '!=', $defaultOp->id);
+                          });
+                });
+            })
+            ->when($r->type === 'surgeries_docs' && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
+                $q->where(function($query) use ($defaultDoc, $defaultOp) {
+                    $query->where('operation_name_id', $defaultOp->id)
+                          ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                              $sub->where('doctor_id', '!=', $defaultDoc->id)
+                                  ->where('operation_name_id', '!=', $defaultOp->id);
+                          });
+                });
+            })
             ->latest('id')->paginate($r->get('per_page', 20));
         return response()->json($q);
     }
