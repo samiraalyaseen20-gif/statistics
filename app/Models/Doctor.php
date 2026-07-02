@@ -3,7 +3,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Doctor extends Model {
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'display_order'];
     public function visits() { return $this->hasMany(Visit::class); }
     public function surgeries() { return $this->hasMany(Surgery::class); }
 }

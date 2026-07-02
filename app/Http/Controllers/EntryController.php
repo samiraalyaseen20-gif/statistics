@@ -366,13 +366,13 @@ class EntryController extends Controller
     public function formData()
     {
         return response()->json([
-            'doctors'        => Doctor::all(['id','name']),
+            'doctors'        => Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get(['id','name']),
             'clinicUnits'    => ClinicUnit::all(['id','name']),
             'governorates'   => Governorate::all(['id','name']),
             'countries'      => Country::all(['id','name']),
             'testTypes'      => TestType::all(['id','name']),
             'labTestTypes'   => LabTestType::all(['id','name']),
-            'operationNames' => OperationName::all(['id','name','classification']),
+            'operationNames' => OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get(['id','name','classification']),
             'sectors'        => Sector::all(['id','name']),
         ]);
     }

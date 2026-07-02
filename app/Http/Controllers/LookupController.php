@@ -23,16 +23,22 @@ class LookupController extends Controller
     }
 
     // ========== DOCTORS ==========
-    public function doctorsIndex()    { return response()->json(Doctor::all()); }
+    public function doctorsIndex()    { return response()->json(Doctor::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get()); }
     public function doctorsStore(Request $r) {
         $this->checkPermission();
-        $r->validate(['name'=>'required|string|max:255']);
-        return response()->json(Doctor::create(['name'=>$r->name]), 201);
+        $r->validate([
+            'name'=>'required|string|max:255',
+            'display_order'=>'nullable|integer'
+        ]);
+        return response()->json(Doctor::create(['name'=>$r->name, 'display_order'=>$r->get('display_order', 0)]), 201);
     }
     public function doctorsUpdate(Request $r, Doctor $doctor) {
         $this->checkPermission();
-        $r->validate(['name'=>'required|string|max:255']);
-        $doctor->update(['name'=>$r->name]);
+        $r->validate([
+            'name'=>'required|string|max:255',
+            'display_order'=>'nullable|integer'
+        ]);
+        $doctor->update(['name'=>$r->name, 'display_order'=>$r->get('display_order', 0)]);
         return response()->json($doctor);
     }
     public function doctorsDestroy(Doctor $doctor) {
@@ -77,14 +83,33 @@ class LookupController extends Controller
     }
 
     // ========== OPERATION NAMES ==========
-    public function operationNamesIndex()  { return response()->json(OperationName::all()); }
+    public function operationNamesIndex()  { return response()->json(OperationName::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get()); }
     public function operationNamesStore(Request $r) {
         $this->checkPermission();
         $r->validate([
             'name'           => 'required|string|max:255',
             'classification' => 'required|in:صغرى,وسطى (حقن),وسطى (ليزر),كبرى,فوق الكبرى,خاصة',
+            'display_order'  => 'nullable|integer'
         ]);
-        return response()->json(OperationName::create(['name'=>$r->name,'classification'=>$r->classification]), 201);
+        return response()->json(OperationName::create([
+            'name'=>$r->name,
+            'classification'=>$r->classification,
+            'display_order'=>$r->get('display_order', 0)
+        ]), 201);
+    }
+    public function operationNamesUpdate(Request $r, OperationName $operationName) {
+        $this->checkPermission();
+        $r->validate([
+            'name'           => 'required|string|max:255',
+            'classification' => 'required|in:صغرى,وسطى (حقن),وسطى (ليزر),كبرى,فوق الكبرى,خاصة',
+            'display_order'  => 'nullable|integer'
+        ]);
+        $operationName->update([
+            'name'           => $r->name,
+            'classification' => $r->classification,
+            'display_order'  => $r->get('display_order', 0)
+        ]);
+        return response()->json($operationName);
     }
     public function operationNamesDestroy(OperationName $operationName) {
         $this->checkPermission();

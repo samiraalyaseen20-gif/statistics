@@ -77,9 +77,12 @@ class ReportController extends Controller
 
         // جدول (2): مراجعي الاستشارية لكل طبيب
         $visitsByDoctor = (clone $visitsQuery)
-            ->select('doctor_id', DB::raw('count(*) as total'))
-            ->groupBy('doctor_id')
-            ->get()->map(fn($v) => ['doctor' => $v->doctor->name ?? '—', 'total' => $v->total]);
+            ->join('doctors', 'visits.doctor_id', '=', 'doctors.id')
+            ->select('visits.doctor_id', 'doctors.name as doctor', 'doctors.display_order', DB::raw('count(*) as total'))
+            ->groupBy('visits.doctor_id', 'doctors.name', 'doctors.display_order')
+            ->orderBy('doctors.display_order', 'asc')
+            ->orderBy('doctors.name', 'asc')
+            ->get()->map(fn($v) => ['doctor' => $v->doctor ?? '—', 'total' => $v->total]);
 
         // جدول (3): ديمغرافي داخل العراق (استشارية)
         $visitsByGov = (clone $visitsQuery)
@@ -135,16 +138,20 @@ class ReportController extends Controller
             ->join('doctors','surgeries.doctor_id','=','doctors.id')
             ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
             ->join('sectors','surgeries.sector_id','=','sectors.id')
-            ->select('doctors.name as doctor','operation_names.classification','sectors.name as sector', DB::raw('count(*) as total'))
-            ->groupBy('doctors.name','operation_names.classification','sectors.name')
+            ->select('doctors.name as doctor','doctors.display_order','operation_names.classification','sectors.name as sector', DB::raw('count(*) as total'))
+            ->groupBy('doctors.name','doctors.display_order','operation_names.classification','sectors.name')
+            ->orderBy('doctors.display_order', 'asc')
+            ->orderBy('doctors.name', 'asc')
             ->get();
 
         // الملف الثاني: تفصيلي لكل طبيب (اسم العملية + العدد)
         $surgeryDetailByDoctor = (clone $surgeriesQuery)
             ->join('doctors','surgeries.doctor_id','=','doctors.id')
             ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
-            ->select('doctors.name as doctor','operation_names.name as op','operation_names.classification', DB::raw('count(*) as total'))
-            ->groupBy('doctors.name','operation_names.name','operation_names.classification')
+            ->select('doctors.name as doctor','doctors.display_order as doc_order','operation_names.name as op','operation_names.display_order as op_order','operation_names.classification', DB::raw('count(*) as total'))
+            ->groupBy('doctors.name','doctors.display_order','operation_names.name','operation_names.display_order','operation_names.classification')
+            ->orderBy('doctors.display_order', 'asc')
+            ->orderBy('operation_names.display_order', 'asc')
             ->get()->groupBy('doctor');
 
         // Totals
@@ -153,7 +160,7 @@ class ReportController extends Controller
         $totalSurgeries = (clone $surgeriesQuery)->count();
 
         // Fetch lookup lists for page filters dropdowns
-        $filterDoctors      = Doctor::orderBy('name')->get();
+        $filterDoctors      = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get();
         $filterClinicUnits  = ClinicUnit::orderBy('name')->get();
         $filterSectors      = Sector::orderBy('name')->get();
         $filterGovernorates = Governorate::orderBy('name')->get();
@@ -205,9 +212,12 @@ class ReportController extends Controller
 
             // جدول 2: مراجعو كل طبيب
             $visitsByDoctor = (clone $visitsQuery)
-                ->select('doctor_id', DB::raw('count(*) as total'))
-                ->groupBy('doctor_id')
-                ->get()->map(fn($v) => ['doctor' => $v->doctor->name ?? '—', 'total' => $v->total]);
+                ->join('doctors', 'visits.doctor_id', '=', 'doctors.id')
+                ->select('visits.doctor_id', 'doctors.name as doctor', 'doctors.display_order', DB::raw('count(*) as total'))
+                ->groupBy('visits.doctor_id', 'doctors.name', 'doctors.display_order')
+                ->orderBy('doctors.display_order', 'asc')
+                ->orderBy('doctors.name', 'asc')
+                ->get()->map(fn($v) => ['doctor' => $v->doctor ?? '—', 'total' => $v->total]);
 
             // جدول 3: داخل العراق
             $visitsByGov = (clone $visitsQuery)
@@ -245,19 +255,20 @@ class ReportController extends Controller
             // جدول 10: عمليات كل طبيب (الإجمالي)
             $surgsByDoctor = (clone $surgeriesQuery)
                 ->join('doctors','surgeries.doctor_id','=','doctors.id')
-                ->select('doctors.name as doctor', DB::raw('count(*) as total'))
-                ->groupBy('doctors.name')
-                ->orderByDesc('total')
+                ->select('doctors.name as doctor', 'doctors.display_order', DB::raw('count(*) as total'))
+                ->groupBy('doctors.name', 'doctors.display_order')
+                ->orderBy('doctors.display_order', 'asc')
+                ->orderBy('doctors.name', 'asc')
                 ->get()->map(fn($v) => ['doctor' => $v->doctor, 'total' => $v->total]);
 
             // تفصيلي: اسم العملية لكل طبيب
             $surgDetailByDoctor = (clone $surgeriesQuery)
                 ->join('doctors','surgeries.doctor_id','=','doctors.id')
                 ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
-                ->select('doctors.name as doctor','operation_names.name as op','operation_names.classification', DB::raw('count(*) as total'))
-                ->groupBy('doctors.name','operation_names.name','operation_names.classification')
+                ->select('doctors.name as doctor','doctors.display_order as doc_order','operation_names.name as op','operation_names.display_order as op_order','operation_names.classification', DB::raw('count(*) as total'))
+                ->groupBy('doctors.name','doctors.display_order','operation_names.name','operation_names.display_order','operation_names.classification')
                 ->get()->groupBy('doctor')
-                ->map(fn($group) => $group->sortByDesc('total')->values());
+                ->map(fn($group) => $group->sortBy('op_order')->values());
 
             // إجمالي التفصيلي (كل الأطباء مجمعة)
             $combinedOps = $surgDetailByDoctor->flatten(1)

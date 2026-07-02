@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function () {
         // Operation Names
         Route::get   ('operation-names',                  [LookupController::class, 'operationNamesIndex']);
         Route::post  ('operation-names',                  [LookupController::class, 'operationNamesStore']);
+        Route::put   ('operation-names/{operationName}',  [LookupController::class, 'operationNamesUpdate']);
         Route::delete('operation-names/{operationName}',  [LookupController::class, 'operationNamesDestroy']);
 
         // Sectors
