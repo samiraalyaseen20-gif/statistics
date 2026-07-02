@@ -43,7 +43,7 @@ if (file_exists(base_path('iraq.svg'))) {
                     <div class="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-[9px] font-black">أ</div>
                     <span class="text-[10px] font-bold text-blue-600">الجهة الأولى (أ)</span>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
                     <div class="flex flex-col gap-1">
                         <label class="text-[9px] font-bold text-slate-400">الطبيب:</label>
                         <select id="cmp-doc-a" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
@@ -51,6 +51,18 @@ if (file_exists(base_path('iraq.svg'))) {
                             @foreach($filterDoctors as $doc)
                             <option value="{{ $doc->id }}">{{ $doc->name }}</option>
                             @endforeach
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">تصنيف العملية:</label>
+                        <select id="cmp-op-a" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
+                            <option value="">كل التصنيفات</option>
+                            <option value="صغرى">صغرى</option>
+                            <option value="وسطى (حقن)">وسطى (حقن)</option>
+                            <option value="وسطى (ليزر)">وسطى (ليزر)</option>
+                            <option value="كبرى">كبرى</option>
+                            <option value="فوق الكبرى">فوق الكبرى</option>
+                            <option value="خاصة">خاصة</option>
                         </select>
                     </div>
                     <div class="flex flex-col gap-1">
@@ -72,7 +84,7 @@ if (file_exists(base_path('iraq.svg'))) {
                     <div class="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center text-white text-[9px] font-black">ب</div>
                     <span class="text-[10px] font-bold text-rose-600">الجهة الثانية (ب)</span>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
                     <div class="flex flex-col gap-1">
                         <label class="text-[9px] font-bold text-slate-400">الطبيب:</label>
                         <select id="cmp-doc-b" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
@@ -80,6 +92,18 @@ if (file_exists(base_path('iraq.svg'))) {
                             @foreach($filterDoctors as $doc)
                             <option value="{{ $doc->id }}">{{ $doc->name }}</option>
                             @endforeach
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">تصنيف العملية:</label>
+                        <select id="cmp-op-b" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
+                            <option value="">كل التصنيفات</option>
+                            <option value="صغرى">صغرى</option>
+                            <option value="وسطى (حقن)">وسطى (حقن)</option>
+                            <option value="وسطى (ليزر)">وسطى (ليزر)</option>
+                            <option value="كبرى">كبرى</option>
+                            <option value="فوق الكبرى">فوق الكبرى</option>
+                            <option value="خاصة">خاصة</option>
                         </select>
                     </div>
                     <div class="flex flex-col gap-1">
@@ -110,7 +134,7 @@ if (file_exists(base_path('iraq.svg'))) {
     <div id="cmp-results" class="hidden space-y-6">
 
         {{-- ═══ KPI Summary Row ═══ --}}
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="custom-card p-4 rounded-2xl text-center space-y-2">
                 <div class="flex items-center justify-center gap-1.5 mb-2">
                     <i data-lucide="users" class="w-3.5 h-3.5 text-emerald-500"></i>
@@ -127,23 +151,6 @@ if (file_exists(base_path('iraq.svg'))) {
                     </div>
                 </div>
                 <div id="kpi-v-diff" class="text-[9px] font-bold text-slate-400">—</div>
-            </div>
-            <div class="custom-card p-4 rounded-2xl text-center space-y-2">
-                <div class="flex items-center justify-center gap-1.5 mb-2">
-                    <i data-lucide="eye" class="w-3.5 h-3.5 text-orange-500"></i>
-                    <span class="text-[10px] font-bold text-text-main">الفحوصات</span>
-                </div>
-                <div class="flex gap-2 justify-center">
-                    <div class="flex-1 bg-blue-50 rounded-lg py-2">
-                        <div class="text-[8px] text-blue-400 font-bold mb-0.5">أ</div>
-                        <div id="kpi-t-a" class="text-base font-black text-blue-600">—</div>
-                    </div>
-                    <div class="flex-1 bg-rose-50 rounded-lg py-2">
-                        <div class="text-[8px] text-rose-400 font-bold mb-0.5">ب</div>
-                        <div id="kpi-t-b" class="text-base font-black text-rose-600">—</div>
-                    </div>
-                </div>
-                <div id="kpi-t-diff" class="text-[9px] font-bold text-slate-400">—</div>
             </div>
             <div class="custom-card p-4 rounded-2xl text-center space-y-2">
                 <div class="flex items-center justify-center gap-1.5 mb-2">
@@ -272,49 +279,26 @@ if (file_exists(base_path('iraq.svg'))) {
             </div>
         </div>
 
-        {{-- ═══ جداول 5 & 6: الفحوصات والتحاليل ═══ --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {{-- فحوصات بصرية --}}
-            <div class="custom-card p-6 rounded-2xl">
-                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                    <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
-                    جدول (5): مقارنة البصرية والساندة
-                    <span id="cmp-total-5" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
-                </h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div>
-                        <div class="cmp-side-label-a mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-5-a" viewBox="0 0 450 200" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cmp-side-label-b mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-5-b" viewBox="0 0 450 200" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
-                        </div>
+
+        {{-- ═══ جدول 5: الفحوصات البصرية والساندة (مستقل - يعرض إجمالي الفترة بغض النظر عن باقي الفلاتر) ═══ --}}
+        <div class="custom-card p-6 rounded-2xl">
+            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
+                جدول (5): مقارنة البصرية والساندة
+                <span class="text-[9px] text-slate-400 font-normal mr-1">(مستقل — يعرض الفحوصات حسب الفترة فقط)</span>
+                <span id="cmp-total-5" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div>
+                    <div class="cmp-side-label-a mb-2"></div>
+                    <div class="w-full overflow-x-auto py-1">
+                        <svg id="cmp-svg-5-a" viewBox="0 0 450 200" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
                     </div>
                 </div>
-            </div>
-            {{-- تحاليل مختبرية --}}
-            <div class="custom-card p-6 rounded-2xl">
-                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                    <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
-                    جدول (6): مقارنة التحاليل المختبرية
-                    <span id="cmp-total-6" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
-                </h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div>
-                        <div class="cmp-side-label-a mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-6-a" viewBox="0 0 450 180" class="w-full min-w-[300px] h-[180px] overflow-visible"></svg>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cmp-side-label-b mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-6-b" viewBox="0 0 450 180" class="w-full min-w-[300px] h-[180px] overflow-visible"></svg>
-                        </div>
+                <div>
+                    <div class="cmp-side-label-b mb-2"></div>
+                    <div class="w-full overflow-x-auto py-1">
+                        <svg id="cmp-svg-5-b" viewBox="0 0 450 200" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
                     </div>
                 </div>
             </div>
@@ -889,10 +873,12 @@ function cmpDrawIraqMap(svgId, values, labels, colorTheme) {
 // ── Main run function ─────────────────────────────────────────
 async function runComparison() {
     const docAId = document.getElementById('cmp-doc-a').value;
+    const opAId  = document.getElementById('cmp-op-a').value;
     const fromA  = document.getElementById('cmp-from-a').value;
     const toA    = document.getElementById('cmp-to-a').value;
     
     const docBId = document.getElementById('cmp-doc-b').value;
+    const opBId  = document.getElementById('cmp-op-b').value;
     const fromB  = document.getElementById('cmp-from-b').value;
     const toB    = document.getElementById('cmp-to-b').value;
 
@@ -906,8 +892,22 @@ async function runComparison() {
     const docNameA = selA.options[selA.selectedIndex].text;
     const docNameB = selB.options[selB.selectedIndex].text;
 
-    const labelA = `${docNameA} (${fromA} : ${toA})`;
-    const labelB = `${docNameB} (${fromB} : ${toB})`;
+    const opSelA = document.getElementById('cmp-op-a');
+    const opSelB = document.getElementById('cmp-op-b');
+    const opNameA = opSelA.options[opSelA.selectedIndex].text;
+    const opNameB = opSelB.options[opSelB.selectedIndex].text;
+
+    let labelA = docNameA;
+    if (opAId) {
+        labelA += ` [${opNameA}]`;
+    }
+    labelA += ` (${fromA} : ${toA})`;
+
+    let labelB = docNameB;
+    if (opBId) {
+        labelB += ` [${opNameB}]`;
+    }
+    labelB += ` (${fromB} : ${toB})`;
 
     document.getElementById('cmp-loading').classList.remove('hidden');
     document.getElementById('cmp-results').classList.add('hidden');
@@ -915,8 +915,8 @@ async function runComparison() {
 
     try {
         const params = new URLSearchParams({
-            doctor_id_a: docAId, start_date_a: fromA, end_date_a: toA,
-            doctor_id_b: docBId, start_date_b: fromB, end_date_b: toB,
+            doctor_id_a: docAId, op_name_id_a: opAId, start_date_a: fromA, end_date_a: toA,
+            doctor_id_b: docBId, op_name_id_b: opBId, start_date_b: fromB, end_date_b: toB,
         });
         const data = await fetch(`/api/comparison-data?${params}`, {
             headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content }
@@ -944,9 +944,7 @@ function renderAllCmpCharts(data, labelA, labelB) {
     document.getElementById('kpi-v-b').textContent = Number(B.total_visits  || 0).toLocaleString();
     cmpDiff('kpi-v-diff', A.total_visits, B.total_visits);
 
-    document.getElementById('kpi-t-a').textContent = Number(A.total_eye_tests || 0).toLocaleString();
-    document.getElementById('kpi-t-b').textContent = Number(B.total_eye_tests || 0).toLocaleString();
-    cmpDiff('kpi-t-diff', A.total_eye_tests, B.total_eye_tests);
+
 
     document.getElementById('kpi-s-a').textContent = Number(A.total_surgeries || 0).toLocaleString();
     document.getElementById('kpi-s-b').textContent = Number(B.total_surgeries || 0).toLocaleString();
@@ -979,17 +977,11 @@ function renderAllCmpCharts(data, labelA, labelB) {
     cmpWatchChart('cmp-svg-4-a', () => cmpDrawChevrons('cmp-svg-4-a', cvA.map(r => r.total), cvA.map(r => r.country), CMP_COLORS_A));
     cmpWatchChart('cmp-svg-4-b', () => cmpDrawChevrons('cmp-svg-4-b', cvB.map(r => r.total), cvB.map(r => r.country), CMP_COLORS_B));
 
-    // ─ جدول 5: الفحوصات البصرية ─
+    // ─ جدول 5: الفحوصات البصرية والساندة (مستقل — حسب الفترة فقط) ─
     const etA = A.eye_tests_by_type || [];
     const etB = B.eye_tests_by_type || [];
     cmpWatchChart('cmp-svg-5-a', () => cmpDrawChevrons('cmp-svg-5-a', etA.map(r => r.total), etA.map(r => r.type), ['#f97316','#ea580c','#c2410c','#9a3412','#7c2d12']));
     cmpWatchChart('cmp-svg-5-b', () => cmpDrawChevrons('cmp-svg-5-b', etB.map(r => r.total), etB.map(r => r.type), ['#e11d48','#be123c','#9f1239','#881337','#4c0519']));
-
-    // ─ جدول 6: التحاليل المختبرية ─
-    const ltA = A.lab_tests_by_type || [];
-    const ltB = B.lab_tests_by_type || [];
-    cmpWatchChart('cmp-svg-6-a', () => cmpDrawVertical('cmp-svg-6-a', ltA.map(r => r.total), ltA.map(r => r.type), ['#3b82f6','#6366f1','#8b5cf6','#a855f7','#d946ef']));
-    cmpWatchChart('cmp-svg-6-b', () => cmpDrawVertical('cmp-svg-6-b', ltB.map(r => r.total), ltB.map(r => r.type), ['#f43f5e','#e11d48','#fb923c','#f59e0b','#84cc16']));
 
     // ─ جدول 7: تصنيف العمليات ─
     const scA = A.surgeries_by_cat || [];
@@ -1040,7 +1032,7 @@ function renderAllCmpCharts(data, labelA, labelB) {
     cmpSetTotal('cmp-total-3',  (A.visits_by_gov    || []).reduce((s,r)=>s+r.total,0), (B.visits_by_gov    || []).reduce((s,r)=>s+r.total,0));
     cmpSetTotal('cmp-total-4',  (A.visits_by_country|| []).reduce((s,r)=>s+r.total,0), (B.visits_by_country|| []).reduce((s,r)=>s+r.total,0));
     cmpSetTotal('cmp-total-5',  A.total_eye_tests,  B.total_eye_tests);
-    cmpSetTotal('cmp-total-6',  (A.lab_tests_by_type|| []).reduce((s,r)=>s+r.total,0), (B.lab_tests_by_type|| []).reduce((s,r)=>s+r.total,0));
+
     cmpSetTotal('cmp-total-7',  A.total_surgeries,  B.total_surgeries);
     cmpSetTotal('cmp-total-10', A.total_surgeries,  B.total_surgeries);
     cmpSetTotal('cmp-total-detail', A.total_surgeries, B.total_surgeries);
@@ -1054,6 +1046,8 @@ function resetComparisonFilters() {
     // تصفير القيم في فلاتر المقارنة
     document.getElementById('cmp-doc-a').value = '';
     document.getElementById('cmp-doc-b').value = '';
+    document.getElementById('cmp-op-a').value = '';
+    document.getElementById('cmp-op-b').value = '';
     
     const defaultStart = '2026-05-01';
     const defaultEnd = '2026-05-31';

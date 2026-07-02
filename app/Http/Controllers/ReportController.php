@@ -159,7 +159,6 @@ class ReportController extends Controller
         $totalEyeTests  = (clone $eyeTestsQuery)->count();
         $totalSurgeries = (clone $surgeriesQuery)->count();
 
-        // Fetch lookup lists for page filters dropdowns
         $filterDoctors      = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get();
         $filterClinicUnits  = ClinicUnit::orderBy('name')->get();
         $filterSectors      = Sector::orderBy('name')->get();
@@ -167,6 +166,7 @@ class ReportController extends Controller
         $filterCountries    = Country::orderBy('name')->get();
         $filterTestTypes    = \App\Models\TestType::orderBy('name')->get();
         $filterLabTestTypes = \App\Models\LabTestType::orderBy('name')->get();
+        $filterOperations   = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get();
 
         return view('main_screen', compact(
             'consultations','visitsByDoctor','visitsByGov','visitsByCountry',
@@ -177,13 +177,13 @@ class ReportController extends Controller
             'year','month','start_date','end_date',
             'doctor_id','clinic_unit_id','sector_id','governorate_id','country_id',
             'filterDoctors','filterClinicUnits','filterSectors','filterGovernorates','filterCountries',
-            'filterTestTypes','filterLabTestTypes'
+            'filterTestTypes','filterLabTestTypes', 'filterOperations'
         ));
     }
 
     public function comparisonData(Request $r)
     {
-        $getSideStats = function($docId, $startDate, $endDate, $eyeTestId = null, $labTestId = null) {
+        $getSideStats = function($docId, $startDate, $endDate, $opClass = null) {
             $startDate = $startDate ?: '2026-05-01';
             $endDate   = $endDate ?: '2026-05-31';
 
@@ -192,17 +192,22 @@ class ReportController extends Controller
 
             $surgeriesQuery = Surgery::whereBetween('op_date', [$startDate, $endDate]);
             if ($docId) $surgeriesQuery->where('doctor_id', $docId);
-
-            $eyeTestsQuery = EyeTest::whereBetween('test_date', [$startDate, $endDate]);
-            if ($eyeTestId) $eyeTestsQuery->where('test_type_id', $eyeTestId);
-
-            $labTestsQuery = LabTest::whereBetween('test_date', [$startDate, $endDate]);
-            if ($labTestId) $labTestsQuery->where('lab_test_type_id', $labTestId);
+            if ($opClass) {
+                $surgeriesQuery->join('operation_names as op_filter', 'surgeries.operation_name_id', '=', 'op_filter.id')
+                    ->where('op_filter.classification', $opClass);
+            }
 
             // Totals
             $totalVisits    = (clone $visitsQuery)->count();
-            $totalEyeTests  = (clone $eyeTestsQuery)->count();
             $totalSurgeries = (clone $surgeriesQuery)->count();
+
+            // فحوصات بصرية — مستقلة لا تتأثر بالطبيب أو تصنيف العملية
+            $eyeTestsQuery = \App\Models\EyeTest::whereBetween('test_date', [$startDate, $endDate]);
+            $totalEyeTests = (clone $eyeTestsQuery)->count();
+            $eyeTestsByType = (clone $eyeTestsQuery)
+                ->select('test_type_id', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+                ->groupBy('test_type_id')
+                ->get()->map(fn($v) => ['type' => $v->testType->name ?? '—', 'total' => $v->total]);
 
             // جدول 1: الاستشاريات بالوحدة الطبية
             $consultations = (clone $visitsQuery)
@@ -233,17 +238,7 @@ class ReportController extends Controller
                 ->groupBy('country_id')
                 ->get()->map(fn($v) => ['country' => $v->country->name ?? '—', 'total' => $v->total]);
 
-            // جدول 5: الفحوصات البصرية
-            $eyeTestsByType = (clone $eyeTestsQuery)
-                ->select('test_type_id', DB::raw('count(*) as total'))
-                ->groupBy('test_type_id')
-                ->get()->map(fn($v) => ['type' => $v->testType->name ?? '—', 'total' => $v->total]);
 
-            // جدول 6: التحاليل المختبرية
-            $labTestsByType = (clone $labTestsQuery)
-                ->select('lab_test_type_id', DB::raw('count(*) as total'))
-                ->groupBy('lab_test_type_id')
-                ->get()->map(fn($v) => ['type' => $v->labTestType->name ?? '—', 'total' => $v->total]);
 
             // جدول 7: تصنيف العمليات
             $surgeriesByCat = (clone $surgeriesQuery)
@@ -281,14 +276,13 @@ class ReportController extends Controller
 
             return [
                 'total_visits'      => $totalVisits,
-                'total_eye_tests'   => $totalEyeTests,
                 'total_surgeries'   => $totalSurgeries,
+                'total_eye_tests'   => $totalEyeTests,
                 'consultations'     => $consultations,
                 'visits_by_doctor'  => $visitsByDoctor,
                 'visits_by_gov'     => $visitsByGov,
                 'visits_by_country' => $visitsByCountry,
                 'eye_tests_by_type' => $eyeTestsByType,
-                'lab_tests_by_type' => $labTestsByType,
                 'surgeries_by_cat'  => $surgeriesByCat,
                 'surgs_by_doctor'   => $surgsByDoctor,
                 'surg_detail'       => $surgDetailByDoctor,
@@ -300,16 +294,14 @@ class ReportController extends Controller
             $r->get('doctor_id_a'),
             $r->get('start_date_a'),
             $r->get('end_date_a'),
-            $r->get('eye_test_a'),
-            $r->get('lab_test_a')
+            $r->get('op_class_a')
         );
 
         $sideB = $getSideStats(
             $r->get('doctor_id_b'),
             $r->get('start_date_b'),
             $r->get('end_date_b'),
-            $r->get('eye_test_b'),
-            $r->get('lab_test_b')
+            $r->get('op_class_b')
         );
 
         return response()->json([
