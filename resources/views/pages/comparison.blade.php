@@ -276,7 +276,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <div class="custom-card p-6 rounded-2xl">
                 <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                     <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
-                    جدول (5): مقارنة الفحوصات البصرية والساندة
+                    جدول (5): مقارنة البصرية والساندة
                     <span id="cmp-total-5" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">

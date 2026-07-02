@@ -198,6 +198,24 @@ class WordDataSeeder extends Seeder
             // Shuffle to randomize distribution later
             shuffle($visitsData);
             
+            // 1.5 Assign Clinic Units to the visits
+            $clinicIndex = 0;
+            if (isset($monthData['visits']['clinics_visits'])) {
+                foreach ($monthData['visits']['clinics_visits'] as $cv) {
+                    $clinicName = trim(str_replace('التخص صات', 'التخصصات', $cv['clinic']));
+                    $count = (int)$cv['count'];
+                    if ($count > 0 && !str_contains($clinicName, 'المجموع')) {
+                        $clinicUnit = ClinicUnit::firstOrCreate(['name' => $clinicName]);
+                        for ($i = 0; $i < $count; $i++) {
+                            if ($clinicIndex < count($visitsData)) {
+                                $visitsData[$clinicIndex]['clinic_unit_id'] = $clinicUnit->id;
+                                $clinicIndex++;
+                            }
+                        }
+                    }
+                }
+            }
+            
             // 2. Assign Governorates to the visits
             $govIndex = 0;
             foreach ($monthData['visits']['governorates_visits'] as $v) {

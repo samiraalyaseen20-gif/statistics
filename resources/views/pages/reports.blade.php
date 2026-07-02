@@ -1,4 +1,6 @@
 @php
+$cGeneral = $consultations->firstWhere('unit', 'استشارية العيون العامة')['total'] ?? 0;
+$cSpecial = $consultations->firstWhere('unit', 'استشارية التخصصات الدقيقة')['total'] ?? 0;
 $pathsHtml = '';
 if (file_exists(base_path('iraq.svg'))) {
     $svgContent = file_get_contents(base_path('iraq.svg'));
@@ -123,9 +125,9 @@ if (file_exists(base_path('iraq.svg'))) {
                 <table class="custom-table text-xs">
                     <thead><tr><th class="w-12 text-center">ت</th><th>الوحدة الطبية</th><th class="text-center font-bold">المجموع</th></tr></thead>
                     <tbody>
-                        <tr class="table-row"><td class="text-center">1</td><td>استشارية العيون العامة</td><td class="text-center font-bold">3,375</td></tr>
-                        <tr class="table-row"><td class="text-center">2</td><td>استشارية التخصصات الدقيقة</td><td class="text-center font-bold">1,091</td></tr>
-                        <tr class="table-row font-extrabold text-theme-pink"><td colspan="2" class="text-center">المجموع الكلي</td><td class="text-center text-sm font-extrabold">4,566</td></tr>
+                        <tr class="table-row"><td class="text-center">1</td><td>استشارية العيون العامة</td><td class="text-center font-bold">{{ number_format($cGeneral) }}</td></tr>
+                        <tr class="table-row"><td class="text-center">2</td><td>استشارية التخصصات الدقيقة</td><td class="text-center font-bold">{{ number_format($cSpecial) }}</td></tr>
+                        <tr class="table-row font-extrabold text-theme-pink"><td colspan="2" class="text-center">المجموع الكلي</td><td class="text-center text-sm font-extrabold">{{ number_format($cGeneral + $cSpecial) }}</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -181,7 +183,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
-                جدول (5): الفحوصات البصرية والساندة
+                جدول (5): البصرية والساندة
                 <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalEyeTests) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
@@ -192,7 +194,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <div class="custom-card p-6 rounded-2xl flex flex-col justify-between">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
-                جدول (6): الفحوصات والتحاليل المختبرية المنجزة
+                جدول (6): التحاليل المختبرية المنجزة
                 <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($labTestsByType->sum('total')) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">

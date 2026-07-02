@@ -23,6 +23,7 @@ def parse_type2(file_path):
     print(f"Parsing {file_path}")
     doc = docx.Document(file_path)
     data = {
+        "clinics_visits": [],
         "doctors_visits": [],
         "governorates_visits": [],
         "countries_visits": [],
@@ -36,6 +37,14 @@ def parse_type2(file_path):
         
         headers = [clean_text(c.text) for c in rows[0].cells]
         
+        
+        # 0. Clinics Visits
+        if "اسم الوحدة الطبية" in headers:
+            for r in rows[1:]:
+                cells = [clean_text(c.text) for c in r.cells]
+                if len(cells) >= 3 and cells[1] and cells[2].isdigit():
+                    data["clinics_visits"].append({"clinic": cells[1], "count": int(cells[2])})
+
         # 1. Doctors Visits
         if "اسم الطبيب" in headers and "عدد المراجعين" in headers:
             for r in rows[1:]:
