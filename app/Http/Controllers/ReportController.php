@@ -36,48 +36,47 @@ class ReportController extends Controller
         $governorate_id = $r->get('governorate_id');
         $country_id     = $r->get('country_id');
 
-        // 3. Build decoupled filtered base queries to prevent filter conflicts
-        // a. Visits by Doctor & Clinic Unit
-        $visitsDocQuery = Visit::whereBetween('visit_date', [$start_date, $end_date])
-            ->whereNull('governorate_id')
-            ->whereNull('country_id');
-        if ($doctor_id)      $visitsDocQuery->where('doctor_id', $doctor_id);
-        if ($clinic_unit_id) $visitsDocQuery->where('clinic_unit_id', $clinic_unit_id);
+        // 3. Build filtered base queries
+        $visitsQuery = Visit::whereBetween('visit_date', [$start_date, $end_date]);
+        if ($doctor_id)      $visitsQuery->where('doctor_id', $doctor_id);
+        if ($clinic_unit_id) $visitsQuery->where('clinic_unit_id', $clinic_unit_id);
+        if ($governorate_id) $visitsQuery->where('governorate_id', $governorate_id);
+        if ($country_id)     $visitsQuery->where('country_id', $country_id);
 
-        // b. Visits by Governorate & Country (Demographics)
-        $visitsGeoQuery = Visit::whereBetween('visit_date', [$start_date, $end_date])
-            ->where(function($q) {
-                $q->whereNotNull('governorate_id')->orWhereNotNull('country_id');
-            });
-        if ($governorate_id) $visitsGeoQuery->where('governorate_id', $governorate_id);
-        if ($country_id)     $visitsGeoQuery->where('country_id', $country_id);
+        $surgeriesQuery = Surgery::whereBetween('op_date', [$start_date, $end_date]);
+        if ($doctor_id)      $surgeriesQuery->where('doctor_id', $doctor_id);
+        if ($sector_id)      $surgeriesQuery->where('sector_id', $sector_id);
+        if ($governorate_id) $surgeriesQuery->where('governorate_id', $governorate_id);
+        if ($country_id)     $surgeriesQuery->where('country_id', $country_id);
 
-        // c. Surgeries by Doctor
-        $surgeriesDocQuery = Surgery::whereBetween('op_date', [$start_date, $end_date]);
-        if ($doctor_id)      $surgeriesDocQuery->where('doctor_id', $doctor_id);
-        if ($governorate_id) $surgeriesDocQuery->where('governorate_id', $governorate_id);
-        if ($country_id)     $surgeriesDocQuery->where('country_id', $country_id);
-
-        // d. Surgeries by Operation Category & Sector
-        $surgeriesCatQuery = Surgery::whereBetween('op_date', [$start_date, $end_date]);
-        if ($sector_id)      $surgeriesCatQuery->where('sector_id', $sector_id);
-        if ($governorate_id) $surgeriesCatQuery->where('governorate_id', $governorate_id);
-        if ($country_id)     $surgeriesCatQuery->where('country_id', $country_id);
-
-        // e. Tests (Ignore doctor/clinic filters as they are entered as aggregates)
         $eyeTestsQuery = EyeTest::whereBetween('test_date', [$start_date, $end_date]);
+        if ($clinic_unit_id || $governorate_id || $country_id) {
+            $eyeTestsQuery->whereHas('visit', function($q) use ($clinic_unit_id, $governorate_id, $country_id) {
+                if ($clinic_unit_id) $q->where('clinic_unit_id', $clinic_unit_id);
+                if ($governorate_id) $q->where('governorate_id', $governorate_id);
+                if ($country_id)     $q->where('country_id', $country_id);
+            });
+        }
+
         $labTestsQuery = LabTest::whereBetween('test_date', [$start_date, $end_date]);
+        if ($clinic_unit_id || $governorate_id || $country_id) {
+            $labTestsQuery->whereHas('visit', function($q) use ($clinic_unit_id, $governorate_id, $country_id) {
+                if ($clinic_unit_id) $q->where('clinic_unit_id', $clinic_unit_id);
+                if ($governorate_id) $q->where('governorate_id', $governorate_id);
+                if ($country_id)     $q->where('country_id', $country_id);
+            });
+        }
 
         // 4. Fetch statistics using clones of the base queries
 
         // جدول (1): الاستشاريات بالوحدة الطبية
-        $consultations = (clone $visitsDocQuery)
+        $consultations = (clone $visitsQuery)
             ->select('clinic_unit_id', DB::raw('count(*) as total'))
             ->groupBy('clinic_unit_id')
             ->get()->map(fn($v) => ['unit' => $v->clinicUnit->name ?? '—', 'total' => $v->total]);
 
         // جدول (2): مراجعي الاستشارية لكل طبيب
-        $visitsByDoctor = (clone $visitsDocQuery)
+        $visitsByDoctor = (clone $visitsQuery)
             ->join('doctors', 'visits.doctor_id', '=', 'doctors.id')
             ->select('visits.doctor_id', 'doctors.name as doctor', 'doctors.display_order', DB::raw('count(*) as total'))
             ->groupBy('visits.doctor_id', 'doctors.name', 'doctors.display_order')
@@ -86,7 +85,7 @@ class ReportController extends Controller
             ->get()->map(fn($v) => ['doctor' => $v->doctor ?? '—', 'total' => $v->total]);
 
         // جدول (3): ديمغرافي داخل العراق (استشارية)
-        $visitsByGov = (clone $visitsGeoQuery)
+        $visitsByGov = (clone $visitsQuery)
             ->whereNotNull('governorate_id')
             ->select('governorate_id', DB::raw('count(*) as total'))
             ->groupBy('governorate_id')
@@ -100,7 +99,7 @@ class ReportController extends Controller
             ->values();
 
         // جدول (4): ديمغرافي خارج العراق (استشارية)
-        $visitsByCountry = (clone $visitsGeoQuery)
+        $visitsByCountry = (clone $visitsQuery)
             ->whereNotNull('country_id')
             ->select('country_id', DB::raw('count(*) as total'))
             ->groupBy('country_id')
@@ -120,14 +119,14 @@ class ReportController extends Controller
             ->get()->map(fn($v) => ['type' => $v->testType->name ?? '—', 'total' => $v->total]);
 
         // جدول (6): مراجعو المختبر وتحاليله
-        $labVisitCount = (clone $visitsDocQuery)->count();
+        $labVisitCount = (clone $visitsQuery)->count();
         $labTestsByType = (clone $labTestsQuery)
             ->select('lab_test_type_id', DB::raw('count(*) as total'))
             ->groupBy('lab_test_type_id')
             ->get()->map(fn($v) => ['type' => $v->labTestType->name ?? '—', 'total' => $v->total]);
 
         // جدول (7): تصنيف العمليات × القطاع
-        $surgeriesByCatSector = (clone $surgeriesCatQuery)
+        $surgeriesByCatSector = (clone $surgeriesQuery)
             ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
             ->join('sectors','surgeries.sector_id','=','sectors.id')
             ->select('operation_names.classification','sectors.name as sector', DB::raw('count(*) as total'))
@@ -135,7 +134,7 @@ class ReportController extends Controller
             ->get();
 
         // جدول (8): ديمغرافي داخل العراق (عمليات)
-        $surgeriesByGov = (clone $surgeriesCatQuery)
+        $surgeriesByGov = (clone $surgeriesQuery)
             ->whereNotNull('governorate_id')
             ->select('governorate_id', DB::raw('count(*) as total'))
             ->groupBy('governorate_id')
@@ -149,7 +148,7 @@ class ReportController extends Controller
             ->values();
 
         // جدول (9): ديمغرافي خارج العراق (عمليات)
-        $surgeriesByCountry = (clone $surgeriesCatQuery)
+        $surgeriesByCountry = (clone $surgeriesQuery)
             ->whereNotNull('country_id')
             ->select('country_id', DB::raw('count(*) as total'))
             ->groupBy('country_id')
@@ -163,7 +162,7 @@ class ReportController extends Controller
             ->values();
 
         // جدول (10): عمليات لكل طبيب بالتصنيف والقطاع
-        $surgeriesByDoctorCatSector = (clone $surgeriesDocQuery)
+        $surgeriesByDoctorCatSector = (clone $surgeriesQuery)
             ->join('doctors','surgeries.doctor_id','=','doctors.id')
             ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
             ->join('sectors','surgeries.sector_id','=','sectors.id')
@@ -174,7 +173,7 @@ class ReportController extends Controller
             ->get();
 
         // الملف الثاني: تفصيلي لكل طبيب (اسم العملية + العدد)
-        $surgeryDetailByDoctor = (clone $surgeriesDocQuery)
+        $surgeryDetailByDoctor = (clone $surgeriesQuery)
             ->join('doctors','surgeries.doctor_id','=','doctors.id')
             ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
             ->select('doctors.name as doctor','doctors.display_order as doc_order','operation_names.name as op','operation_names.display_order as op_order','operation_names.classification', DB::raw('count(*) as total'))
@@ -184,9 +183,9 @@ class ReportController extends Controller
             ->get()->groupBy('doctor');
 
         // Totals
-        $totalVisits    = (clone $visitsDocQuery)->count();
+        $totalVisits    = (clone $visitsQuery)->count();
         $totalEyeTests  = (clone $eyeTestsQuery)->count();
-        $totalSurgeries = (clone $surgeriesDocQuery)->count();
+        $totalSurgeries = (clone $surgeriesQuery)->count();
 
         $filterDoctors      = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get();
         $filterClinicUnits  = ClinicUnit::orderBy('name')->get();
@@ -216,15 +215,8 @@ class ReportController extends Controller
             $startDate = $startDate ?: '2026-05-01';
             $endDate   = $endDate ?: '2026-05-31';
 
-            $visitsQuery = Visit::whereBetween('visit_date', [$startDate, $endDate])
-                ->whereNull('governorate_id')
-                ->whereNull('country_id');
+            $visitsQuery = Visit::whereBetween('visit_date', [$startDate, $endDate]);
             if ($docId) $visitsQuery->where('doctor_id', $docId);
-
-            $geoQuery = Visit::whereBetween('visit_date', [$startDate, $endDate])
-                ->where(function($q) {
-                    $q->whereNotNull('governorate_id')->orWhereNotNull('country_id');
-                });
 
             $surgeriesQuery = Surgery::whereBetween('op_date', [$startDate, $endDate]);
             if ($docId) $surgeriesQuery->where('doctor_id', $docId);
@@ -261,7 +253,7 @@ class ReportController extends Controller
                 ->get()->map(fn($v) => ['doctor' => $v->doctor ?? '—', 'total' => $v->total]);
 
             // جدول 3: داخل العراق
-            $visitsByGov = (clone $geoQuery)
+            $visitsByGov = (clone $visitsQuery)
                 ->whereNotNull('governorate_id')
                 ->select('governorate_id', DB::raw('count(*) as total'))
                 ->groupBy('governorate_id')
@@ -275,7 +267,7 @@ class ReportController extends Controller
                 ->values();
 
             // جدول 4: خارج العراق
-            $visitsByCountry = (clone $geoQuery)
+            $visitsByCountry = (clone $visitsQuery)
                 ->whereNotNull('country_id')
                 ->select('country_id', DB::raw('count(*) as total'))
                 ->groupBy('country_id')
