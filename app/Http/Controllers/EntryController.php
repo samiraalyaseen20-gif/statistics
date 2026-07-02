@@ -58,7 +58,7 @@ class EntryController extends Controller
                     ->delete();
                 break;
             case 'surgeries_ops':
-                $defaultDoc = Doctor::first();
+                $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 if ($defaultDoc) {
                     Surgery::whereBetween('op_date', [$start, $end])
                         ->where('doctor_id', $defaultDoc->id)
@@ -66,7 +66,7 @@ class EntryController extends Controller
                 }
                 break;
             case 'surgeries_docs':
-                $defaultOp = OperationName::first();
+                $defaultOp = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 if ($defaultOp) {
                     Surgery::whereBetween('op_date', [$start, $end])
                         ->where('operation_name_id', $defaultOp->id)
@@ -187,7 +187,7 @@ class EntryController extends Controller
 
         $qty = $r->get('quantity', 1);
 
-        $defaultDoc = Doctor::first();
+        $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
         $defaultUnit = ClinicUnit::first();
 
         $lastTest = null;
@@ -256,7 +256,7 @@ class EntryController extends Controller
 
         $qty = $r->get('quantity', 1);
 
-        $defaultDoc = Doctor::first();
+        $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
         $defaultUnit = ClinicUnit::first();
 
         $lastTest = null;
@@ -307,8 +307,8 @@ class EntryController extends Controller
     // ========== SURGERIES ==========
     public function surgeriesIndex(Request $r)
     {
-        $defaultDoc = Doctor::first();
-        $defaultOp = OperationName::first();
+        $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+        $defaultOp = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
 
         $q = Surgery::with(['doctor','operationName','sector','governorate','country'])
             ->when($r->month, fn($q,$m) => $q->whereYear('op_date', substr($m,0,4))->whereMonth('op_date', substr($m,5,2)))
