@@ -127,9 +127,17 @@ if (file_exists(base_path('iraq.svg'))) {
                 <table class="custom-table text-xs">
                     <thead><tr><th class="w-12 text-center">ت</th><th>الوحدة الطبية</th><th class="text-center font-bold">المجموع</th></tr></thead>
                     <tbody>
-                        <tr class="table-row"><td class="text-center">1</td><td>استشارية العيون العامة</td><td class="text-center font-bold">{{ number_format($cGeneral) }}</td></tr>
-                        <tr class="table-row"><td class="text-center">2</td><td>استشارية التخصصات الدقيقة</td><td class="text-center font-bold">{{ number_format($cSpecial) }}</td></tr>
-                        <tr class="table-row font-extrabold text-theme-pink"><td colspan="2" class="text-center">المجموع الكلي</td><td class="text-center text-sm font-extrabold">{{ number_format($cGeneral + $cSpecial) }}</td></tr>
+                        @foreach($consultations as $index => $c)
+                        <tr class="table-row">
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td>{{ $c['unit'] }}</td>
+                            <td class="text-center font-bold">{{ number_format($c['total']) }}</td>
+                        </tr>
+                        @endforeach
+                        <tr class="table-row font-extrabold text-theme-pink">
+                            <td colspan="2" class="text-center">المجموع الكلي</td>
+                            <td class="text-center text-sm font-extrabold">{{ number_format($consultations->sum('total')) }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -1073,7 +1081,7 @@ function renderAll2DArrowCharts() {
 
     // Register each chart with the scroll observer.
     // The draw fn will be called immediately (first view) and replayed on every scroll-into-view.
-    watchChart('svg-report-1',  () => draw2DBranchingArrow('svg-report-1', {{ $cGeneral }}, {{ $cSpecial }}, 'العيون العامة', 'التخصصات الدقيقة', {{ $totalVisits }}));
+    watchChart('svg-report-1',  () => draw2DBranchingArrow('svg-report-1', {{ $cGeneral }}, {{ $cSpecial }}, '{{ str_replace("استشارية ", "", $generalLabel) }}', '{{ str_replace("استشارية ", "", $specialLabel) }}', {{ $totalVisits }}));
     watchChart('svg-report-2',  () => draw2DFlatVerticalArrows('svg-report-2', docVisitsData, docVisitsLabels));
     watchChart('svg-report-3',  () => drawIraqMap('svg-report-3', govData, govLabels, '#0284c7'));
     watchChart('svg-report-4',  () => draw2DFlatHorizontalChevrons('svg-report-4', countryData, countryLabels));
