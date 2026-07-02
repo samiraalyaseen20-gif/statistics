@@ -12,17 +12,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // Users first
             UserSeeder::class,
-            // Reference/Lookup tables
-            DoctorSeeder::class,
-            CountrySeeder::class,
-            GovernorateSeeder::class,
-            TestTypeSeeder::class,
+            // Keep basic hardcoded seeders for units and sectors
             SectorSeeder::class,
             ClinicUnitSeeder::class,
-            LabTestTypeSeeder::class,
-            OperationNameSeeder::class,
-            // ── البيانات الحقيقية لمايو 2026 ──
-            RealReportSeeder::class,
+            // Run the dynamic Word Data Seeder
+            WordDataSeeder::class,
         ]);
     }
 }
