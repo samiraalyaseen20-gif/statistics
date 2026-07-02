@@ -20,9 +20,9 @@ class ReportController extends Controller
 {
     public function index(Request $r)
     {
-        // 1. Date Range Filters (Defaults to May 2026)
-        $start_date = $r->get('start_date', '2026-05-01');
-        $end_date   = $r->get('end_date', '2026-05-31');
+        // 1. Date Range Filters (Defaults to dynamic min/max date range)
+        $start_date = $r->get('start_date', Visit::min('visit_date') ?: '2026-01-01');
+        $end_date   = $r->get('end_date', Visit::max('visit_date') ?: date('Y-m-d'));
 
         // Extract month and year for display
         $time = strtotime($start_date);
@@ -50,8 +50,9 @@ class ReportController extends Controller
         if ($country_id)     $surgeriesQuery->where('country_id', $country_id);
 
         $eyeTestsQuery = EyeTest::whereBetween('test_date', [$start_date, $end_date]);
-        if ($clinic_unit_id || $governorate_id || $country_id) {
-            $eyeTestsQuery->whereHas('visit', function($q) use ($clinic_unit_id, $governorate_id, $country_id) {
+        if ($doctor_id || $clinic_unit_id || $governorate_id || $country_id) {
+            $eyeTestsQuery->whereHas('visit', function($q) use ($doctor_id, $clinic_unit_id, $governorate_id, $country_id) {
+                if ($doctor_id)      $q->where('doctor_id', $doctor_id);
                 if ($clinic_unit_id) $q->where('clinic_unit_id', $clinic_unit_id);
                 if ($governorate_id) $q->where('governorate_id', $governorate_id);
                 if ($country_id)     $q->where('country_id', $country_id);
@@ -59,8 +60,9 @@ class ReportController extends Controller
         }
 
         $labTestsQuery = LabTest::whereBetween('test_date', [$start_date, $end_date]);
-        if ($clinic_unit_id || $governorate_id || $country_id) {
-            $labTestsQuery->whereHas('visit', function($q) use ($clinic_unit_id, $governorate_id, $country_id) {
+        if ($doctor_id || $clinic_unit_id || $governorate_id || $country_id) {
+            $labTestsQuery->whereHas('visit', function($q) use ($doctor_id, $clinic_unit_id, $governorate_id, $country_id) {
+                if ($doctor_id)      $q->where('doctor_id', $doctor_id);
                 if ($clinic_unit_id) $q->where('clinic_unit_id', $clinic_unit_id);
                 if ($governorate_id) $q->where('governorate_id', $governorate_id);
                 if ($country_id)     $q->where('country_id', $country_id);
@@ -119,7 +121,7 @@ class ReportController extends Controller
             ->get()->map(fn($v) => ['type' => $v->testType->name ?? '—', 'total' => $v->total]);
 
         // جدول (6): مراجعو المختبر وتحاليله
-        $labVisitCount = (clone $visitsQuery)->count();
+        $labVisitCount = (clone $visitsQuery)->whereHas('labTests')->count();
         $labTestsByType = (clone $labTestsQuery)
             ->select('lab_test_type_id', DB::raw('count(*) as total'))
             ->groupBy('lab_test_type_id')
