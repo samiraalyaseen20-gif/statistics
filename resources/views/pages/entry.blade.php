@@ -328,14 +328,82 @@ function switchEntryTab(tabName) {
 let entryLookups = null;
 let lastUsedDate = new Date().toISOString().substring(0, 10);
 
+function syncAllFromDates(value) {
+    lastUsedDate = value;
+    const ids = [
+        'date-visit-doctors',
+        'date-geo-gov',
+        'date-geo-country',
+        'date-surg-op',
+        'date-surg-doc',
+        'date-tests-eye',
+        'date-tests-lab'
+    ];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.value !== value) {
+            el.value = value;
+        }
+    });
+}
+
+function syncAllToDates(value) {
+    const ids = [
+        'date-visit-doctors-to',
+        'date-geo-gov-to',
+        'date-geo-country-to',
+        'date-surg-op-to',
+        'date-surg-doc-to',
+        'date-tests-eye-to',
+        'date-tests-lab-to'
+    ];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.value !== value) {
+            el.value = value;
+        }
+    });
+}
+
 function setupFormDates() {
-    document.getElementById('date-visit-doctors').value = lastUsedDate;
-    document.getElementById('date-geo-gov').value = lastUsedDate;
-    document.getElementById('date-geo-country').value = lastUsedDate;
-    document.getElementById('date-surg-op').value = lastUsedDate;
-    document.getElementById('date-surg-doc').value = lastUsedDate;
-    document.getElementById('date-tests-eye').value = lastUsedDate;
-    document.getElementById('date-tests-lab').value = lastUsedDate;
+    const fromIds = [
+        'date-visit-doctors',
+        'date-geo-gov',
+        'date-geo-country',
+        'date-surg-op',
+        'date-surg-doc',
+        'date-tests-eye',
+        'date-tests-lab'
+    ];
+    fromIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.value = lastUsedDate;
+            if (!el.dataset.listenerAttached) {
+                el.addEventListener('change', (e) => syncAllFromDates(e.target.value));
+                el.dataset.listenerAttached = 'true';
+            }
+        }
+    });
+
+    const toIds = [
+        'date-visit-doctors-to',
+        'date-geo-gov-to',
+        'date-geo-country-to',
+        'date-surg-op-to',
+        'date-surg-doc-to',
+        'date-tests-eye-to',
+        'date-tests-lab-to'
+    ];
+    toIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (!el.dataset.listenerAttached) {
+                el.addEventListener('change', (e) => syncAllToDates(e.target.value));
+                el.dataset.listenerAttached = 'true';
+            }
+        }
+    });
 }
 
 // Load lookups & build grids
