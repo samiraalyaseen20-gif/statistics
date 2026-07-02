@@ -40,6 +40,11 @@
                     <label class="text-[9px] font-bold text-slate-400">إلى:</label>
                     <input type="date" id="date-visit-doctors-to"
                         class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
+                    <button onclick="toggleEditVisitsDoctors()" id="btn-edit-visits-doctors"
+                        class="py-1.5 px-3 rounded-xl text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
+                        <i data-lucide="edit" class="w-3.5 h-3.5"></i>
+                        <span>تعديل يوم سابق</span>
+                    </button>
                     <button onclick="saveVisitsDoctors()"
                         class="py-1.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 hover-press flex items-center gap-1.5 shadow-md">
                         <i data-lucide="save" class="w-4 h-4"></i>
@@ -83,6 +88,8 @@
                         <label class="text-[9px] font-bold text-slate-400">إلى:</label>
                         <input type="date" id="date-geo-gov-to"
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
+                        <button onclick="toggleEditGovsVisits()" id="btn-edit-geo-gov"
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
                         <button onclick="saveGovsVisits()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-emerald-500 hover-press">حفظ المحافظات</button>
                     </div>
@@ -116,6 +123,8 @@
                         <label class="text-[9px] font-bold text-slate-400">إلى:</label>
                         <input type="date" id="date-geo-country-to"
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
+                        <button onclick="toggleEditCountriesVisits()" id="btn-edit-geo-country"
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
                         <button onclick="saveCountriesVisits()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-sky-500 hover-press">حفظ الدول</button>
                     </div>
@@ -156,6 +165,8 @@
                         <label class="text-[9px] font-bold text-slate-400">إلى:</label>
                         <input type="date" id="date-surg-op-to"
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
+                        <button onclick="toggleEditSurgeriesOps()" id="btn-edit-surg-op"
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
                         <button onclick="saveSurgeriesOps()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-purple-500 hover-press">حفظ العمليات</button>
                     </div>
@@ -190,6 +201,8 @@
                         <label class="text-[9px] font-bold text-slate-400">إلى:</label>
                         <input type="date" id="date-surg-doc-to"
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
+                        <button onclick="toggleEditSurgeriesDocs()" id="btn-edit-surg-doc"
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
                         <button onclick="saveSurgeriesDocs()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-indigo-500 hover-press">حفظ الأطباء</button>
                     </div>
@@ -230,6 +243,8 @@
                         <label class="text-[9px] font-bold text-slate-400">إلى:</label>
                         <input type="date" id="date-tests-eye-to"
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
+                        <button onclick="toggleEditEyeTests()" id="btn-edit-tests-eye"
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
                         <button onclick="saveEyeTestsGrid()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-orange-500 hover-press">حفظ الفحوصات</button>
                     </div>
@@ -263,6 +278,8 @@
                         <label class="text-[9px] font-bold text-slate-400">إلى:</label>
                         <input type="date" id="date-tests-lab-to"
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input" placeholder="اختياري">
+                        <button onclick="toggleEditLabTests()" id="btn-edit-tests-lab"
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل يوم سابق</button>
                         <button onclick="saveLabTestsGrid()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-purple-500 hover-press">حفظ التحاليل</button>
                     </div>
@@ -485,6 +502,349 @@ function populateDirectGrids() {
 
 // ── SAVE BULK ACTIONS ──
 
+// ── EDIT MODES STATE ──
+const editStates = {
+    visits_doctors: { active: false, date: '' },
+    visits_govs: { active: false, date: '' },
+    visits_countries: { active: false, date: '' },
+    surgeries_ops: { active: false, date: '' },
+    surgeries_docs: { active: false, date: '' },
+    eye_tests: { active: false, date: '' },
+    lab_tests: { active: false, date: '' }
+};
+
+function setEditButtonState(type, active, dateInputId, toInputId, buttonId) {
+    const btn = document.getElementById(buttonId);
+    const dateInput = document.getElementById(dateInputId);
+    const toInput = document.getElementById(toInputId);
+    
+    if (active) {
+        editStates[type].active = true;
+        editStates[type].date = dateInput.value;
+        if (toInput) {
+            toInput.value = '';
+            toInput.disabled = true;
+        }
+        btn.innerHTML = '<span>إلغاء التعديل</span>';
+        btn.className = "py-1.5 px-3 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 hover-press flex items-center gap-1.5";
+        if (buttonId !== 'btn-edit-visits-doctors') {
+            btn.className = "py-1 px-2.5 rounded-lg text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 hover-press";
+        }
+    } else {
+        editStates[type].active = false;
+        editStates[type].date = '';
+        if (toInput) {
+            toInput.disabled = false;
+        }
+        btn.innerHTML = '<span>تعديل يوم سابق</span>';
+        btn.className = "py-1.5 px-3 rounded-xl text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5";
+        if (buttonId !== 'btn-edit-visits-doctors') {
+            btn.className = "py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press";
+        }
+        resetGridInputs(type);
+    }
+}
+
+function resetGridInputs(type) {
+    let selector = '';
+    if (type === 'visits_doctors') selector = '#tbody-visits-doctors input';
+    else if (type === 'visits_govs') selector = '#tbody-geo-govs input';
+    else if (type === 'visits_countries') selector = '#tbody-geo-countries input';
+    else if (type === 'surgeries_ops') selector = '#tbody-surg-ops input';
+    else if (type === 'surgeries_docs') selector = '#tbody-surg-docs input';
+    else if (type === 'eye_tests') selector = '#tbody-tests-eye input';
+    else if (type === 'lab_tests') selector = '#tbody-tests-lab input';
+    
+    document.querySelectorAll(selector).forEach(inp => inp.value = 0);
+}
+
+async function clearDatabaseForEdit(type, date) {
+    try {
+        const res = await fetch('/api/entry/clear', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                start_date: date,
+                end_date: date,
+                type: type
+            })
+        });
+        return res.ok;
+    } catch(e) {
+        console.error(e);
+        return false;
+    }
+}
+
+// ── TOGGLE EDIT FUNCTIONS ──
+
+async function toggleEditVisitsDoctors() {
+    const type = 'visits_doctors';
+    if (editStates[type].active) {
+        setEditButtonState(type, false, 'date-visit-doctors', 'date-visit-doctors-to', 'btn-edit-visits-doctors');
+        showToast('تم إلغاء وضع التعديل', 'info');
+        return;
+    }
+    const date = document.getElementById('date-visit-doctors').value;
+    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    
+    try {
+        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const data = await res.json();
+        const items = data.data || data;
+        
+        resetGridInputs(type);
+        let found = 0;
+        
+        items.forEach(v => {
+            const tr = document.querySelector('#tbody-visits-doctors tr[data-doctor-id="' + v.doctor_id + '"]');
+            if (tr) {
+                const inp = tr.querySelector('input[data-unit-id="' + v.clinic_unit_id + '"]');
+                if (inp) {
+                    inp.value = (parseInt(inp.value) || 0) + 1;
+                    found++;
+                }
+            }
+        });
+        
+        if (found > 0) {
+            setEditButtonState(type, true, 'date-visit-doctors', 'date-visit-doctors-to', 'btn-edit-visits-doctors');
+            showToast('تم تحميل البيانات السابقة بنجاح للتعديل', 'success');
+        } else {
+            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+        }
+    } catch(e) {
+        showToast('فشل جلب البيانات السابقة', 'error');
+    }
+}
+
+async function toggleEditGovsVisits() {
+    const type = 'visits_govs';
+    if (editStates[type].active) {
+        setEditButtonState(type, false, 'date-geo-gov', 'date-geo-gov-to', 'btn-edit-geo-gov');
+        showToast('تم إلغاء وضع التعديل', 'info');
+        return;
+    }
+    const date = document.getElementById('date-geo-gov').value;
+    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    try {
+        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const data = await res.json();
+        const items = data.data || data;
+        resetGridInputs(type);
+        let found = 0;
+        items.forEach(v => {
+            if (v.governorate_id) {
+                const tr = document.querySelector('#tbody-geo-govs tr[data-gov-id="' + v.governorate_id + '"]');
+                if (tr) {
+                    const inp = tr.querySelector('input');
+                    if (inp) {
+                        inp.value = (parseInt(inp.value) || 0) + 1;
+                        found++;
+                    }
+                }
+            }
+        });
+        if (found > 0) {
+            setEditButtonState(type, true, 'date-geo-gov', 'date-geo-gov-to', 'btn-edit-geo-gov');
+            showToast('تم جلب أعداد المحافظات للتعديل', 'success');
+        } else {
+            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+        }
+    } catch(e) {
+        showToast('فشل جلب البيانات السابقة', 'error');
+    }
+}
+
+async function toggleEditCountriesVisits() {
+    const type = 'visits_countries';
+    if (editStates[type].active) {
+        setEditButtonState(type, false, 'date-geo-country', 'date-geo-country-to', 'btn-edit-geo-country');
+        showToast('تم إلغاء وضع التعديل', 'info');
+        return;
+    }
+    const date = document.getElementById('date-geo-country').value;
+    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    try {
+        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const data = await res.json();
+        const items = data.data || data;
+        resetGridInputs(type);
+        let found = 0;
+        items.forEach(v => {
+            if (v.country_id) {
+                const tr = document.querySelector('#tbody-geo-countries tr[data-country-id="' + v.country_id + '"]');
+                if (tr) {
+                    const inp = tr.querySelector('input');
+                    if (inp) {
+                        inp.value = (parseInt(inp.value) || 0) + 1;
+                        found++;
+                    }
+                }
+            }
+        });
+        if (found > 0) {
+            setEditButtonState(type, true, 'date-geo-country', 'date-geo-country-to', 'btn-edit-geo-country');
+            showToast('تم جلب أعداد الدول للتعديل', 'success');
+        } else {
+            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+        }
+    } catch(e) {
+        showToast('فشل جلب البيانات السابقة', 'error');
+    }
+}
+
+async function toggleEditSurgeriesOps() {
+    const type = 'surgeries_ops';
+    if (editStates[type].active) {
+        setEditButtonState(type, false, 'date-surg-op', 'date-surg-op-to', 'btn-edit-surg-op');
+        showToast('تم إلغاء وضع التعديل', 'info');
+        return;
+    }
+    const date = document.getElementById('date-surg-op').value;
+    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    try {
+        const res = await fetch('/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const data = await res.json();
+        const items = data.data || data;
+        resetGridInputs(type);
+        let found = 0;
+        items.forEach(s => {
+            const tr = document.querySelector('#tbody-surg-ops tr[data-op-id="' + s.operation_name_id + '"]');
+            if (tr) {
+                const sel = tr.querySelector('select');
+                if (sel) sel.value = s.sector_id;
+                const inp = tr.querySelector('input');
+                if (inp) {
+                    inp.value = (parseInt(inp.value) || 0) + 1;
+                    found++;
+                }
+            }
+        });
+        if (found > 0) {
+            setEditButtonState(type, true, 'date-surg-op', 'date-surg-op-to', 'btn-edit-surg-op');
+            showToast('تم جلب أعداد العمليات للتعديل', 'success');
+        } else {
+            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+        }
+    } catch(e) {
+        showToast('فشل جلب البيانات السابقة', 'error');
+    }
+}
+
+async function toggleEditSurgeriesDocs() {
+    const type = 'surgeries_docs';
+    if (editStates[type].active) {
+        setEditButtonState(type, false, 'date-surg-doc', 'date-surg-doc-to', 'btn-edit-surg-doc');
+        showToast('تم إلغاء وضع التعديل', 'info');
+        return;
+    }
+    const date = document.getElementById('date-surg-doc').value;
+    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    try {
+        const res = await fetch('/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const data = await res.json();
+        const items = data.data || data;
+        resetGridInputs(type);
+        let found = 0;
+        items.forEach(s => {
+            const tr = document.querySelector('#tbody-surg-docs tr[data-doctor-id="' + s.doctor_id + '"]');
+            if (tr) {
+                const inp = tr.querySelector('input');
+                if (inp) {
+                    inp.value = (parseInt(inp.value) || 0) + 1;
+                    found++;
+                }
+            }
+        });
+        if (found > 0) {
+            setEditButtonState(type, true, 'date-surg-doc', 'date-surg-doc-to', 'btn-edit-surg-doc');
+            showToast('تم جلب أعداد العمليات للأطباء للتعديل', 'success');
+        } else {
+            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+        }
+    } catch(e) {
+        showToast('فشل جلب البيانات السابقة', 'error');
+    }
+}
+
+async function toggleEditEyeTests() {
+    const type = 'eye_tests';
+    if (editStates[type].active) {
+        setEditButtonState(type, false, 'date-tests-eye', 'date-tests-eye-to', 'btn-edit-tests-eye');
+        showToast('تم إلغاء وضع التعديل', 'info');
+        return;
+    }
+    const date = document.getElementById('date-tests-eye').value;
+    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    try {
+        const res = await fetch('/api/eye-tests?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const data = await res.json();
+        const items = data.data || data;
+        resetGridInputs(type);
+        let found = 0;
+        items.forEach(t => {
+            const tr = document.querySelector('#tbody-tests-eye tr[data-test-type-id="' + t.test_type_id + '"]');
+            if (tr) {
+                const inp = tr.querySelector('input');
+                if (inp) {
+                    inp.value = (parseInt(inp.value) || 0) + 1;
+                    found++;
+                }
+            }
+        });
+        if (found > 0) {
+            setEditButtonState(type, true, 'date-tests-eye', 'date-tests-eye-to', 'btn-edit-tests-eye');
+            showToast('تم جلب أعداد الفحوصات للتعديل', 'success');
+        } else {
+            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+        }
+    } catch(e) {
+        showToast('فشل جلب البيانات السابقة', 'error');
+    }
+}
+
+async function toggleEditLabTests() {
+    const type = 'lab_tests';
+    if (editStates[type].active) {
+        setEditButtonState(type, false, 'date-tests-lab', 'date-tests-lab-to', 'btn-edit-tests-lab');
+        showToast('تم إلغاء وضع التعديل', 'info');
+        return;
+    }
+    const date = document.getElementById('date-tests-lab').value;
+    if (!date) { showToast('يرجى تحديد التاريخ أولاً', 'error'); return; }
+    try {
+        const res = await fetch('/api/lab-tests?start_date=' + date + '&end_date=' + date + '&per_page=1000');
+        const data = await res.json();
+        const items = data.data || data;
+        resetGridInputs(type);
+        let found = 0;
+        items.forEach(t => {
+            const tr = document.querySelector('#tbody-tests-lab tr[data-lab-test-type-id="' + t.lab_test_type_id + '"]');
+            if (tr) {
+                const inp = tr.querySelector('input');
+                if (inp) {
+                    inp.value = (parseInt(inp.value) || 0) + 1;
+                    found++;
+                }
+            }
+        });
+        if (found > 0) {
+            setEditButtonState(type, true, 'date-tests-lab', 'date-tests-lab-to', 'btn-edit-tests-lab');
+            showToast('تم جلب أعداد التحاليل للتعديل', 'success');
+        } else {
+            showToast('لا توجد بيانات مسجلة في هذا التاريخ', 'warning');
+        }
+    } catch(e) {
+        showToast('فشل جلب البيانات السابقة', 'error');
+    }
+}
+
+// ── SAVE BULK ACTIONS ──
+
 function getDatesRange(startDate, endDate) {
     if (!endDate || startDate === endDate) return [startDate];
     const dates = [];
@@ -503,6 +863,13 @@ async function saveVisitsDoctors() {
     const fromDate = document.getElementById('date-visit-doctors').value;
     const toDate = document.getElementById('date-visit-doctors-to').value;
     if (!fromDate) { showToast('حدد تاريخ بيانات الأطباء', 'error'); return; }
+
+    const isEdit = editStates['visits_doctors'].active;
+    if (isEdit) {
+        showToast('جاري تحديث البيانات القديمة...', 'info');
+        const cleared = await clearDatabaseForEdit('visits_doctors', editStates['visits_doctors'].date);
+        if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
+    }
 
     const dates = getDatesRange(fromDate, toDate);
     const promises = [];
@@ -538,18 +905,26 @@ async function saveVisitsDoctors() {
         });
     });
 
-    if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
+    if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
     showToast('جاري حفظ أعداد الأطباء...', 'info');
     try {
-        const results = await Promise.all(promises);
-        if (results.every(r => r.ok)) {
-            showToast('تم حفظ بيانات الأطباء بنجاح', 'success');
-            lastUsedDate = fromDate;
-            loadEntryLookups();
+        if (promises.length > 0) {
+            const results = await Promise.all(promises);
+            if (results.every(r => r.ok)) {
+                showToast('تم حفظ بيانات الأطباء بنجاح', 'success');
+            } else {
+                showToast('فشل حفظ بعض القيود', 'error');
+            }
         } else {
-            showToast('فشل حفظ بعض القيود', 'error');
+            showToast('تم تحديث البيانات بنجاح', 'success');
         }
+        
+        if (isEdit) {
+            setEditButtonState('visits_doctors', false, 'date-visit-doctors', 'date-visit-doctors-to', 'btn-edit-visits-doctors');
+        }
+        lastUsedDate = fromDate;
+        loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
     }
@@ -561,11 +936,17 @@ async function saveGovsVisits() {
     const toDate = document.getElementById('date-geo-gov-to').value;
     if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
 
+    const isEdit = editStates['visits_govs'].active;
+    if (isEdit) {
+        showToast('جاري تحديث البيانات القديمة...', 'info');
+        const cleared = await clearDatabaseForEdit('visits_govs', editStates['visits_govs'].date);
+        if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
+    }
+
     const dates = getDatesRange(fromDate, toDate);
     const promises = [];
     const rows = document.querySelectorAll('#tbody-geo-govs tr');
     
-    // We bind default doctor & unit to bypass constraints
     const defaultDoc = entryLookups?.doctors[0]?.id || 1;
     const defaultUnit = entryLookups?.clinicUnits[0]?.id || 1;
 
@@ -596,16 +977,26 @@ async function saveGovsVisits() {
         });
     });
 
-    if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
+    if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
     showToast('جاري حفظ أعداد المحافظات...', 'info');
     try {
-        const results = await Promise.all(promises);
-        if (results.every(r => r.ok)) {
-            showToast('تم حفظ أعداد مرضى المحافظات بنجاح', 'success');;
-            lastUsedDate = fromDate;
-            loadEntryLookups();
+        if (promises.length > 0) {
+            const results = await Promise.all(promises);
+            if (results.every(r => r.ok)) {
+                showToast('تم حفظ أعداد مرضى المحافظات بنجاح', 'success');
+            } else {
+                showToast('فشل حفظ بعض القيود', 'error');
+            }
+        } else {
+            showToast('تم تحديث البيانات بنجاح', 'success');
         }
+        
+        if (isEdit) {
+            setEditButtonState('visits_govs', false, 'date-geo-gov', 'date-geo-gov-to', 'btn-edit-geo-gov');
+        }
+        lastUsedDate = fromDate;
+        loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
     }
@@ -616,6 +1007,13 @@ async function saveCountriesVisits() {
     const fromDate = document.getElementById('date-geo-country').value;
     const toDate = document.getElementById('date-geo-country-to').value;
     if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+
+    const isEdit = editStates['visits_countries'].active;
+    if (isEdit) {
+        showToast('جاري تحديث البيانات القديمة...', 'info');
+        const cleared = await clearDatabaseForEdit('visits_countries', editStates['visits_countries'].date);
+        if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
+    }
 
     const dates = getDatesRange(fromDate, toDate);
     const promises = [];
@@ -651,16 +1049,26 @@ async function saveCountriesVisits() {
         });
     });
 
-    if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
+    if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
     showToast('جاري حفظ أعداد الدول...', 'info');
     try {
-        const results = await Promise.all(promises);
-        if (results.every(r => r.ok)) {
-            showToast('تم حفظ أعداد مرضى الدول بنجاح', 'success');
-            lastUsedDate = fromDate;
-            loadEntryLookups();
+        if (promises.length > 0) {
+            const results = await Promise.all(promises);
+            if (results.every(r => r.ok)) {
+                showToast('تم حفظ أعداد مرضى الدول بنجاح', 'success');
+            } else {
+                showToast('فشل حفظ بعض القيود', 'error');
+            }
+        } else {
+            showToast('تم تحديث البيانات بنجاح', 'success');
         }
+        
+        if (isEdit) {
+            setEditButtonState('visits_countries', false, 'date-geo-country', 'date-geo-country-to', 'btn-edit-geo-country');
+        }
+        lastUsedDate = fromDate;
+        loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
     }
@@ -671,6 +1079,13 @@ async function saveSurgeriesOps() {
     const fromDate = document.getElementById('date-surg-op').value;
     const toDate = document.getElementById('date-surg-op-to').value;
     if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+
+    const isEdit = editStates['surgeries_ops'].active;
+    if (isEdit) {
+        showToast('جاري تحديث البيانات القديمة...', 'info');
+        const cleared = await clearDatabaseForEdit('surgeries_ops', editStates['surgeries_ops'].date);
+        if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
+    }
 
     const dates = getDatesRange(fromDate, toDate);
     const promises = [];
@@ -705,16 +1120,26 @@ async function saveSurgeriesOps() {
         });
     });
 
-    if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
+    if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
     showToast('جاري حفظ أعداد العمليات...', 'info');
     try {
-        const results = await Promise.all(promises);
-        if (results.every(r => r.ok)) {
-            showToast('تم حفظ أعداد العمليات بنجاح', 'success');
-            lastUsedDate = fromDate;
-            loadEntryLookups();
+        if (promises.length > 0) {
+            const results = await Promise.all(promises);
+            if (results.every(r => r.ok)) {
+                showToast('تم حفظ أعداد العمليات بنجاح', 'success');
+            } else {
+                showToast('فشل حفظ بعض القيود', 'error');
+            }
+        } else {
+            showToast('تم تحديث البيانات بنجاح', 'success');
         }
+        
+        if (isEdit) {
+            setEditButtonState('surgeries_ops', false, 'date-surg-op', 'date-surg-op-to', 'btn-edit-surg-op');
+        }
+        lastUsedDate = fromDate;
+        loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
     }
@@ -725,6 +1150,13 @@ async function saveSurgeriesDocs() {
     const fromDate = document.getElementById('date-surg-doc').value;
     const toDate = document.getElementById('date-surg-doc-to').value;
     if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+
+    const isEdit = editStates['surgeries_docs'].active;
+    if (isEdit) {
+        showToast('جاري تحديث البيانات القديمة...', 'info');
+        const cleared = await clearDatabaseForEdit('surgeries_docs', editStates['surgeries_docs'].date);
+        if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
+    }
 
     const dates = getDatesRange(fromDate, toDate);
     const promises = [];
@@ -759,16 +1191,26 @@ async function saveSurgeriesDocs() {
         });
     });
 
-    if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
+    if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
     showToast('جاري الحفظ...', 'info');
     try {
-        const results = await Promise.all(promises);
-        if (results.every(r => r.ok)) {
-            showToast('تم حفظ إجمالي العمليات للأطباء بنجاح', 'success');
-            lastUsedDate = fromDate;
-            loadEntryLookups();
+        if (promises.length > 0) {
+            const results = await Promise.all(promises);
+            if (results.every(r => r.ok)) {
+                showToast('تم حفظ إجمالي العمليات للأطباء بنجاح', 'success');
+            } else {
+                showToast('فشل حفظ بعض القيود', 'error');
+            }
+        } else {
+            showToast('تم تحديث البيانات بنجاح', 'success');
         }
+        
+        if (isEdit) {
+            setEditButtonState('surgeries_docs', false, 'date-surg-doc', 'date-surg-doc-to', 'btn-edit-surg-doc');
+        }
+        lastUsedDate = fromDate;
+        loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
     }
@@ -779,6 +1221,13 @@ async function saveEyeTestsGrid() {
     const fromDate = document.getElementById('date-tests-eye').value;
     const toDate = document.getElementById('date-tests-eye-to').value;
     if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+
+    const isEdit = editStates['eye_tests'].active;
+    if (isEdit) {
+        showToast('جاري تحديث البيانات القديمة...', 'info');
+        const cleared = await clearDatabaseForEdit('eye_tests', editStates['eye_tests'].date);
+        if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
+    }
 
     const dates = getDatesRange(fromDate, toDate);
     const promises = [];
@@ -808,16 +1257,26 @@ async function saveEyeTestsGrid() {
         });
     });
 
-    if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
+    if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
     showToast('جاري حفظ الفحوصات...', 'info');
     try {
-        const results = await Promise.all(promises);
-        if (results.every(r => r.ok)) {
-            showToast('تم حفظ الفحوصات البصرية بنجاح', 'success');
-            lastUsedDate = fromDate;
-            loadEntryLookups();
+        if (promises.length > 0) {
+            const results = await Promise.all(promises);
+            if (results.every(r => r.ok)) {
+                showToast('تم حفظ الفحوصات البصرية بنجاح', 'success');
+            } else {
+                showToast('فشل حفظ بعض القيود', 'error');
+            }
+        } else {
+            showToast('تم تحديث البيانات بنجاح', 'success');
         }
+        
+        if (isEdit) {
+            setEditButtonState('eye_tests', false, 'date-tests-eye', 'date-tests-eye-to', 'btn-edit-tests-eye');
+        }
+        lastUsedDate = fromDate;
+        loadEntryLookups();
     } catch(e) {
         showToast('خطأ بالشبكة', 'error');
     }
@@ -828,6 +1287,13 @@ async function saveLabTestsGrid() {
     const fromDate = document.getElementById('date-tests-lab').value;
     const toDate = document.getElementById('date-tests-lab-to').value;
     if (!fromDate) { showToast('حدد التاريخ', 'error'); return; }
+
+    const isEdit = editStates['lab_tests'].active;
+    if (isEdit) {
+        showToast('جاري تحديث البيانات القديمة...', 'info');
+        const cleared = await clearDatabaseForEdit('lab_tests', editStates['lab_tests'].date);
+        if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
+    }
 
     const dates = getDatesRange(fromDate, toDate);
     const promises = [];
@@ -857,16 +1323,26 @@ async function saveLabTestsGrid() {
         });
     });
 
-    if (promises.length === 0) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
+    if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
     showToast('جاري حفظ التحاليل...', 'info');
     try {
-        const results = await Promise.all(promises);
-        if (results.every(r => r.ok)) {
-            showToast('تم حفظ التحاليل المختبرية بنجاح', 'success');
-            lastUsedDate = fromDate;
-            loadEntryLookups();
+        if (promises.length > 0) {
+            const results = await Promise.all(promises);
+            if (results.every(r => r.ok)) {
+                showToast('تم حفظ التحاليل المختبرية بنجاح', 'success');
+            } else {
+                showToast('فشل حفظ بعض القيود', 'error');
+            }
+        } else {
+            showToast('تم تحديث البيانات بنجاح', 'success');
         }
+        
+        if (isEdit) {
+            setEditButtonState('lab_tests', false, 'date-tests-lab', 'date-tests-lab-to', 'btn-edit-tests-lab');
+        }
+        lastUsedDate = fromDate;
+        loadEntryLookups();
     } catch(e) {
         showToast('خطأ بالشبكة', 'error');
     }

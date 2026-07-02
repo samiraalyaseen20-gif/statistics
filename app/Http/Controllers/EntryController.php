@@ -26,12 +26,81 @@ class EntryController extends Controller
         }
     }
 
+    public function clearData(Request $r)
+    {
+        $this->checkPermission();
+        $r->validate([
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date',
+            'type'       => 'required|in:visits_doctors,visits_govs,visits_countries,surgeries_ops,surgeries_docs,eye_tests,lab_tests'
+        ]);
+
+        $start = $r->start_date;
+        $end = $r->end_date;
+
+        switch ($r->type) {
+            case 'visits_doctors':
+                Visit::whereBetween('visit_date', [$start, $end])
+                    ->whereNull('governorate_id')
+                    ->whereNull('country_id')
+                    ->whereDoesntHave('eyeTests')
+                    ->whereDoesntHave('labTests')
+                    ->delete();
+                break;
+            case 'visits_govs':
+                Visit::whereBetween('visit_date', [$start, $end])
+                    ->whereNotNull('governorate_id')
+                    ->delete();
+                break;
+            case 'visits_countries':
+                Visit::whereBetween('visit_date', [$start, $end])
+                    ->whereNotNull('country_id')
+                    ->delete();
+                break;
+            case 'surgeries_ops':
+                $defaultDoc = Doctor::first();
+                if ($defaultDoc) {
+                    Surgery::whereBetween('op_date', [$start, $end])
+                        ->where('doctor_id', $defaultDoc->id)
+                        ->delete();
+                }
+                break;
+            case 'surgeries_docs':
+                $defaultOp = OperationName::first();
+                if ($defaultOp) {
+                    Surgery::whereBetween('op_date', [$start, $end])
+                        ->where('operation_name_id', $defaultOp->id)
+                        ->delete();
+                }
+                break;
+            case 'eye_tests':
+                $eyeTests = EyeTest::whereBetween('test_date', [$start, $end])->get();
+                foreach ($eyeTests as $et) {
+                    $visit = $et->visit;
+                    $et->delete();
+                    if ($visit) $visit->delete();
+                }
+                break;
+            case 'lab_tests':
+                $labTests = LabTest::whereBetween('test_date', [$start, $end])->get();
+                foreach ($labTests as $lt) {
+                    $visit = $lt->visit;
+                    $lt->delete();
+                    if ($visit) $visit->delete();
+                }
+                break;
+        }
+
+        return response()->json(['ok' => true]);
+    }
+
     // ========== VISITS ==========
     public function visitsIndex(Request $r)
     {
         $q = Visit::with(['doctor','clinicUnit','governorate','country'])
             ->when($r->month, fn($q,$m) => $q->whereYear('visit_date', substr($m,0,4))->whereMonth('visit_date', substr($m,5,2)))
-            ->latest('id')->paginate(20);
+            ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('visit_date', [$r->start_date, $r->end_date]))
+            ->latest('id')->paginate($r->get('per_page', 20));
         return response()->json($q);
     }
 
@@ -74,7 +143,31 @@ class EntryController extends Controller
         $visit->delete(); return response()->json(['ok'=>true]);
     }
 
+    public function visitsUpdate(Request $r, Visit $visit)
+    {
+        $this->checkPermission();
+        $r->validate([
+            'patient_name'   => 'nullable|string|max:255',
+            'doctor_id'      => 'required|exists:doctors,id',
+            'clinic_unit_id' => 'required|exists:clinic_units,id',
+            'governorate_id' => 'nullable|exists:governorates,id',
+            'country_id'     => 'nullable|exists:countries,id',
+            'visit_date'     => 'required|date',
+        ]);
+        
+        $visit->update($r->only(['patient_name', 'doctor_id', 'clinic_unit_id', 'governorate_id', 'country_id', 'visit_date']));
+        return response()->json($visit->load(['doctor','clinicUnit','governorate','country']));
+    }
+
     // ========== EYE TESTS ==========
+    public function eyeTestsIndex(Request $r)
+    {
+        $q = EyeTest::with(['testType'])
+            ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('test_date', [$r->start_date, $r->end_date]))
+            ->latest('id')->paginate($r->get('per_page', 20));
+        return response()->json($q);
+    }
+
     public function eyeTestsStore(Request $r)
     {
         $this->checkPermission();
@@ -120,7 +213,30 @@ class EntryController extends Controller
         return response()->json(['ok'=>true]);
     }
 
+    public function eyeTestsUpdate(Request $r, EyeTest $eyeTest)
+    {
+        $this->checkPermission();
+        $r->validate([
+            'test_type_id'  => 'required|exists:test_types,id',
+            'test_date'     => 'required|date'
+        ]);
+        $eyeTest->update($r->only(['test_type_id', 'test_date']));
+        // Also update the parent visit date just in case
+        if ($eyeTest->visit) {
+            $eyeTest->visit->update(['visit_date' => $r->test_date]);
+        }
+        return response()->json($eyeTest->load('testType'));
+    }
+
     // ========== LAB TESTS ==========
+    public function labTestsIndex(Request $r)
+    {
+        $q = LabTest::with(['labTestType','visit'])
+            ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('test_date', [$r->start_date, $r->end_date]))
+            ->latest('id')->paginate($r->get('per_page', 20));
+        return response()->json($q);
+    }
+
     public function labTestsStore(Request $r)
     {
         $this->checkPermission();
@@ -166,12 +282,27 @@ class EntryController extends Controller
         return response()->json(['ok'=>true]);
     }
 
+    public function labTestsUpdate(Request $r, LabTest $labTest)
+    {
+        $this->checkPermission();
+        $r->validate([
+            'lab_test_type_id'  => 'required|exists:lab_test_types,id',
+            'test_date'         => 'required|date'
+        ]);
+        $labTest->update($r->only(['lab_test_type_id', 'test_date']));
+        if ($labTest->visit) {
+            $labTest->visit->update(['visit_date' => $r->test_date]);
+        }
+        return response()->json($labTest->load('labTestType'));
+    }
+
     // ========== SURGERIES ==========
     public function surgeriesIndex(Request $r)
     {
         $q = Surgery::with(['doctor','operationName','sector','governorate','country'])
             ->when($r->month, fn($q,$m) => $q->whereYear('op_date', substr($m,0,4))->whereMonth('op_date', substr($m,5,2)))
-            ->latest('id')->paginate(20);
+            ->when($r->start_date && $r->end_date, fn($q) => $q->whereBetween('op_date', [$r->start_date, $r->end_date]))
+            ->latest('id')->paginate($r->get('per_page', 20));
         return response()->json($q);
     }
 
@@ -212,6 +343,23 @@ class EntryController extends Controller
     {
         $this->checkPermission();
         $surgery->delete(); return response()->json(['ok'=>true]);
+    }
+
+    public function surgeriesUpdate(Request $r, Surgery $surgery)
+    {
+        $this->checkPermission();
+        $r->validate([
+            'patient_name'      => 'nullable|string|max:255',
+            'doctor_id'         => 'required|exists:doctors,id',
+            'operation_name_id' => 'required|exists:operation_names,id',
+            'sector_id'         => 'required|exists:sectors,id',
+            'governorate_id'    => 'nullable|exists:governorates,id',
+            'country_id'        => 'nullable|exists:countries,id',
+            'op_date'           => 'required|date',
+        ]);
+        
+        $surgery->update($r->only(['patient_name', 'doctor_id', 'operation_name_id', 'sector_id', 'governorate_id', 'country_id', 'op_date']));
+        return response()->json($surgery->load(['doctor','operationName','sector','governorate','country']));
     }
 
     // ========== FORM DATA (for dropdowns) ==========

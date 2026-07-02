@@ -65,23 +65,30 @@ Route::middleware('auth')->group(function () {
 
         // Entry API
         Route::get   ('form-data',           [EntryController::class, 'formData']);
+        Route::post  ('entry/clear',         [EntryController::class, 'clearData']);
 
         // Visits
         Route::get   ('visits',              [EntryController::class, 'visitsIndex']);
         Route::post  ('visits',              [EntryController::class, 'visitsStore']);
+        Route::put   ('visits/{visit}',      [EntryController::class, 'visitsUpdate']);
         Route::delete('visits/{visit}',      [EntryController::class, 'visitsDestroy']);
 
         // Eye Tests
+        Route::get   ('eye-tests',           [EntryController::class, 'eyeTestsIndex']);
         Route::post  ('eye-tests',           [EntryController::class, 'eyeTestsStore']);
+        Route::put   ('eye-tests/{eyeTest}', [EntryController::class, 'eyeTestsUpdate']);
         Route::delete('eye-tests/{eyeTest}', [EntryController::class, 'eyeTestsDestroy']);
 
         // Lab Tests
+        Route::get   ('lab-tests',           [EntryController::class, 'labTestsIndex']);
         Route::post  ('lab-tests',           [EntryController::class, 'labTestsStore']);
+        Route::put   ('lab-tests/{labTest}', [EntryController::class, 'labTestsUpdate']);
         Route::delete('lab-tests/{labTest}', [EntryController::class, 'labTestsDestroy']);
 
         // Surgeries
         Route::get   ('surgeries',             [EntryController::class, 'surgeriesIndex']);
         Route::post  ('surgeries',             [EntryController::class, 'surgeriesStore']);
+        Route::put   ('surgeries/{surgery}',   [EntryController::class, 'surgeriesUpdate']);
         Route::delete('surgeries/{surgery}',   [EntryController::class, 'surgeriesDestroy']);
 
         // Users & Permissions Management

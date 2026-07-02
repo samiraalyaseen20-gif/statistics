@@ -50,9 +50,8 @@ class ReportController extends Controller
         if ($country_id)     $surgeriesQuery->where('country_id', $country_id);
 
         $eyeTestsQuery = EyeTest::whereBetween('test_date', [$start_date, $end_date]);
-        if ($doctor_id || $clinic_unit_id || $governorate_id || $country_id) {
-            $eyeTestsQuery->whereHas('visit', function($q) use ($doctor_id, $clinic_unit_id, $governorate_id, $country_id) {
-                if ($doctor_id)      $q->where('doctor_id', $doctor_id);
+        if ($clinic_unit_id || $governorate_id || $country_id) {
+            $eyeTestsQuery->whereHas('visit', function($q) use ($clinic_unit_id, $governorate_id, $country_id) {
                 if ($clinic_unit_id) $q->where('clinic_unit_id', $clinic_unit_id);
                 if ($governorate_id) $q->where('governorate_id', $governorate_id);
                 if ($country_id)     $q->where('country_id', $country_id);
@@ -60,9 +59,8 @@ class ReportController extends Controller
         }
 
         $labTestsQuery = LabTest::whereBetween('test_date', [$start_date, $end_date]);
-        if ($doctor_id || $clinic_unit_id || $governorate_id || $country_id) {
-            $labTestsQuery->whereHas('visit', function($q) use ($doctor_id, $clinic_unit_id, $governorate_id, $country_id) {
-                if ($doctor_id)      $q->where('doctor_id', $doctor_id);
+        if ($clinic_unit_id || $governorate_id || $country_id) {
+            $labTestsQuery->whereHas('visit', function($q) use ($clinic_unit_id, $governorate_id, $country_id) {
                 if ($clinic_unit_id) $q->where('clinic_unit_id', $clinic_unit_id);
                 if ($governorate_id) $q->where('governorate_id', $governorate_id);
                 if ($country_id)     $q->where('country_id', $country_id);
@@ -160,6 +158,8 @@ class ReportController extends Controller
         $filterSectors      = Sector::orderBy('name')->get();
         $filterGovernorates = Governorate::orderBy('name')->get();
         $filterCountries    = Country::orderBy('name')->get();
+        $filterTestTypes    = \App\Models\TestType::orderBy('name')->get();
+        $filterLabTestTypes = \App\Models\LabTestType::orderBy('name')->get();
 
         return view('main_screen', compact(
             'consultations','visitsByDoctor','visitsByGov','visitsByCountry',
@@ -169,13 +169,14 @@ class ReportController extends Controller
             'totalVisits','totalEyeTests','totalSurgeries',
             'year','month','start_date','end_date',
             'doctor_id','clinic_unit_id','sector_id','governorate_id','country_id',
-            'filterDoctors','filterClinicUnits','filterSectors','filterGovernorates','filterCountries'
+            'filterDoctors','filterClinicUnits','filterSectors','filterGovernorates','filterCountries',
+            'filterTestTypes','filterLabTestTypes'
         ));
     }
 
     public function comparisonData(Request $r)
     {
-        $getSideStats = function($docId, $startDate, $endDate) {
+        $getSideStats = function($docId, $startDate, $endDate, $eyeTestId = null, $labTestId = null) {
             $startDate = $startDate ?: '2026-05-01';
             $endDate   = $endDate ?: '2026-05-31';
 
@@ -186,18 +187,10 @@ class ReportController extends Controller
             if ($docId) $surgeriesQuery->where('doctor_id', $docId);
 
             $eyeTestsQuery = EyeTest::whereBetween('test_date', [$startDate, $endDate]);
-            if ($docId) {
-                $eyeTestsQuery->whereHas('visit', function($q) use ($docId) {
-                    $q->where('doctor_id', $docId);
-                });
-            }
+            if ($eyeTestId) $eyeTestsQuery->where('test_type_id', $eyeTestId);
 
             $labTestsQuery = LabTest::whereBetween('test_date', [$startDate, $endDate]);
-            if ($docId) {
-                $labTestsQuery->whereHas('visit', function($q) use ($docId) {
-                    $q->where('doctor_id', $docId);
-                });
-            }
+            if ($labTestId) $labTestsQuery->where('lab_test_type_id', $labTestId);
 
             // Totals
             $totalVisits    = (clone $visitsQuery)->count();
@@ -295,13 +288,17 @@ class ReportController extends Controller
         $sideA = $getSideStats(
             $r->get('doctor_id_a'),
             $r->get('start_date_a'),
-            $r->get('end_date_a')
+            $r->get('end_date_a'),
+            $r->get('eye_test_a'),
+            $r->get('lab_test_a')
         );
 
         $sideB = $getSideStats(
             $r->get('doctor_id_b'),
             $r->get('start_date_b'),
-            $r->get('end_date_b')
+            $r->get('end_date_b'),
+            $r->get('eye_test_b'),
+            $r->get('lab_test_b')
         );
 
         return response()->json([

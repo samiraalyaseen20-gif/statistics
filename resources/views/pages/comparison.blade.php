@@ -64,6 +64,26 @@ if (file_exists(base_path('iraq.svg'))) {
                             class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main custom-date-input">
                     </div>
                 </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">الفحص البصري:</label>
+                        <select id="cmp-eye-test-a" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
+                            <option value="">كل الفحوصات</option>
+                            @foreach($filterTestTypes as $t)
+                            <option value="{{ $t->id }}">{{ $t->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">التحليل المختبري:</label>
+                        <select id="cmp-lab-test-a" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
+                            <option value="">كل التحاليل</option>
+                            @foreach($filterLabTestTypes as $t)
+                            <option value="{{ $t->id }}">{{ $t->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
             </div>
             {{-- Side B --}}
             <div class="bg-rose-500/5 border border-rose-400/20 rounded-xl p-4 space-y-3">
@@ -90,6 +110,26 @@ if (file_exists(base_path('iraq.svg'))) {
                         <label class="text-[9px] font-bold text-slate-400">إلى:</label>
                         <input type="date" id="cmp-to-b" value="{{ $end_date ?? '2026-05-31' }}"
                             class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main custom-date-input">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">الفحص البصري:</label>
+                        <select id="cmp-eye-test-b" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
+                            <option value="">كل الفحوصات</option>
+                            @foreach($filterTestTypes as $t)
+                            <option value="{{ $t->id }}">{{ $t->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[9px] font-bold text-slate-400">التحليل المختبري:</label>
+                        <select id="cmp-lab-test-b" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
+                            <option value="">كل التحاليل</option>
+                            @foreach($filterLabTestTypes as $t)
+                            <option value="{{ $t->id }}">{{ $t->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
@@ -889,9 +929,14 @@ async function runComparison() {
     const docAId = document.getElementById('cmp-doc-a').value;
     const fromA  = document.getElementById('cmp-from-a').value;
     const toA    = document.getElementById('cmp-to-a').value;
+    const eyeTestA = document.getElementById('cmp-eye-test-a').value;
+    const labTestA = document.getElementById('cmp-lab-test-a').value;
+    
     const docBId = document.getElementById('cmp-doc-b').value;
     const fromB  = document.getElementById('cmp-from-b').value;
     const toB    = document.getElementById('cmp-to-b').value;
+    const eyeTestB = document.getElementById('cmp-eye-test-b').value;
+    const labTestB = document.getElementById('cmp-lab-test-b').value;
 
     if (!fromA || !toA || !fromB || !toB) {
         showToast('يرجى تحديد التواريخ لكلتا الجهتين', 'error');
@@ -902,8 +947,22 @@ async function runComparison() {
     const selB = document.getElementById('cmp-doc-b');
     const docNameA = selA.options[selA.selectedIndex].text;
     const docNameB = selB.options[selB.selectedIndex].text;
-    const labelA = `${docNameA} (${fromA} : ${toA})`;
-    const labelB = `${docNameB} (${fromB} : ${toB})`;
+    
+    // Add specific test names to label if selected
+    const eyeSelA = document.getElementById('cmp-eye-test-a');
+    const labSelA = document.getElementById('cmp-lab-test-a');
+    let extraA = [];
+    if(eyeTestA) extraA.push(eyeSelA.options[eyeSelA.selectedIndex].text);
+    if(labTestA) extraA.push(labSelA.options[labSelA.selectedIndex].text);
+    
+    const eyeSelB = document.getElementById('cmp-eye-test-b');
+    const labSelB = document.getElementById('cmp-lab-test-b');
+    let extraB = [];
+    if(eyeTestB) extraB.push(eyeSelB.options[eyeSelB.selectedIndex].text);
+    if(labTestB) extraB.push(labSelB.options[labSelB.selectedIndex].text);
+
+    const labelA = `${docNameA} ${extraA.length ? '['+extraA.join(', ')+']' : ''} (${fromA} : ${toA})`;
+    const labelB = `${docNameB} ${extraB.length ? '['+extraB.join(', ')+']' : ''} (${fromB} : ${toB})`;
 
     document.getElementById('cmp-loading').classList.remove('hidden');
     document.getElementById('cmp-results').classList.add('hidden');
@@ -912,7 +971,9 @@ async function runComparison() {
     try {
         const params = new URLSearchParams({
             doctor_id_a: docAId, start_date_a: fromA, end_date_a: toA,
+            eye_test_a: eyeTestA, lab_test_a: labTestA,
             doctor_id_b: docBId, start_date_b: fromB, end_date_b: toB,
+            eye_test_b: eyeTestB, lab_test_b: labTestB,
         });
         const data = await fetch(`/api/comparison-data?${params}`, {
             headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content }
@@ -1050,6 +1111,10 @@ function resetComparisonFilters() {
     // تصفير القيم في فلاتر المقارنة
     document.getElementById('cmp-doc-a').value = '';
     document.getElementById('cmp-doc-b').value = '';
+    document.getElementById('cmp-eye-test-a').value = '';
+    document.getElementById('cmp-lab-test-a').value = '';
+    document.getElementById('cmp-eye-test-b').value = '';
+    document.getElementById('cmp-lab-test-b').value = '';
     
     const defaultStart = '2026-05-01';
     const defaultEnd = '2026-05-31';
