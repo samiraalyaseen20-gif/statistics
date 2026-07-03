@@ -216,6 +216,7 @@ class ReportController extends Controller
         $filterTestTypes    = \App\Models\TestType::orderBy('name')->get();
         $filterLabTestTypes = \App\Models\LabTestType::orderBy('name')->get();
         $filterOperations   = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get();
+        $filterClassifications = \App\Models\Classification::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
 
         return view('main_screen', compact(
             'consultations','visitsByDoctor','visitsByGov','visitsByCountry',
@@ -226,7 +227,7 @@ class ReportController extends Controller
             'year','month','start_date','end_date',
             'doctor_id','clinic_unit_id','sector_id','governorate_id','country_id',
             'filterDoctors','filterClinicUnits','filterSectors','filterGovernorates','filterCountries',
-            'filterTestTypes','filterLabTestTypes', 'filterOperations'
+            'filterTestTypes','filterLabTestTypes', 'filterOperations', 'filterClassifications'
         ));
     }
 

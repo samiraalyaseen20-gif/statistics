@@ -57,12 +57,9 @@ if (file_exists(base_path('iraq.svg'))) {
                         <label class="text-[9px] font-bold text-slate-400">تصنيف العملية:</label>
                         <select id="cmp-op-a" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
                             <option value="">كل التصنيفات</option>
-                            <option value="صغرى">صغرى</option>
-                            <option value="وسطى (حقن)">وسطى (حقن)</option>
-                            <option value="وسطى (ليزر)">وسطى (ليزر)</option>
-                            <option value="كبرى">كبرى</option>
-                            <option value="فوق الكبرى">فوق الكبرى</option>
-                            <option value="خاصة">خاصة</option>
+                            @foreach($filterClassifications as $cls)
+                            <option value="{{ $cls->name }}">{{ $cls->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="flex flex-col gap-1">
@@ -98,12 +95,9 @@ if (file_exists(base_path('iraq.svg'))) {
                         <label class="text-[9px] font-bold text-slate-400">تصنيف العملية:</label>
                         <select id="cmp-op-b" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-2 text-[10px] font-bold text-text-main font-['Tajawal']">
                             <option value="">كل التصنيفات</option>
-                            <option value="صغرى">صغرى</option>
-                            <option value="وسطى (حقن)">وسطى (حقن)</option>
-                            <option value="وسطى (ليزر)">وسطى (ليزر)</option>
-                            <option value="كبرى">كبرى</option>
-                            <option value="فوق الكبرى">فوق الكبرى</option>
-                            <option value="خاصة">خاصة</option>
+                            @foreach($filterClassifications as $cls)
+                            <option value="{{ $cls->name }}">{{ $cls->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="flex flex-col gap-1">
@@ -986,8 +980,8 @@ function renderAllCmpCharts(data, labelA, labelB) {
     // ─ جدول 7: تصنيف العمليات ─
     const scA = A.surgeries_by_cat || [];
     const scB = B.surgeries_by_cat || [];
-    const catOrder = ['صغرى','ليزر','كبرى','خاصة','فوق الكبرى','وسطى'];
-    const catColors = ['#0ea5e9','#db2777','#d97706','#475569','#6d28d9','#e11d48'];
+    const catOrder = @json($filterClassifications->pluck('name'));
+    const catColors = ['#0ea5e9','#db2777','#d97706','#475569','#6d28d9','#e11d48','#3b82f6','#10b981','#f59e0b'];
     const scAOrdered = catOrder.map(c => scA.find(r => r.classification === c)?.total || 0);
     const scBOrdered = catOrder.map(c => scB.find(r => r.classification === c)?.total || 0);
     cmpWatchChart('cmp-svg-7-a', () => cmpDrawVertical('cmp-svg-7-a', scAOrdered, catOrder, catColors));
