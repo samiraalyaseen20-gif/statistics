@@ -46,6 +46,8 @@ class EntryController extends Controller
                 $defaultUnit = ClinicUnit::first();
                 if ($defaultDoc && $defaultUnit) {
                     Visit::whereBetween('visit_date', [$start, $end])
+                        ->whereNull('governorate_id')
+                        ->whereNull('country_id')
                         ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل'])
                         ->where(function($query) use ($defaultDoc, $defaultUnit) {
                             $query->where(function($sub1) {
@@ -77,6 +79,8 @@ class EntryController extends Controller
                 $defaultOp = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 if ($defaultDoc && $defaultOp) {
                     Surgery::whereBetween('op_date', [$start, $end])
+                        ->whereNull('governorate_id')
+                        ->whereNull('country_id')
                         ->where(function($query) use ($defaultDoc, $defaultOp) {
                             $query->where('doctor_id', $defaultDoc->id)
                                   ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
@@ -92,6 +96,8 @@ class EntryController extends Controller
                 $defaultOp = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 if ($defaultDoc && $defaultOp) {
                     Surgery::whereBetween('op_date', [$start, $end])
+                        ->whereNull('governorate_id')
+                        ->whereNull('country_id')
                         ->where(function($query) use ($defaultDoc, $defaultOp) {
                             $query->where('operation_name_id', $defaultOp->id)
                                   ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
@@ -108,6 +114,8 @@ class EntryController extends Controller
                 $defaultOp  = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 if ($defaultDoc && $defaultOp) {
                     Surgery::whereBetween('op_date', [$start, $end])
+                        ->whereNull('governorate_id')
+                        ->whereNull('country_id')
                         ->where('doctor_id', $defaultDoc->id)
                         ->where('operation_name_id', $defaultOp->id)
                         ->whereNotNull('sector_id')
@@ -186,19 +194,11 @@ class EntryController extends Controller
                 if (strlen($end) === 7) $end = \Carbon\Carbon::parse($end)->endOfMonth()->toDateString();
                 $q->whereBetween('visit_date', [$start, $end]);
             })
-            ->when($r->type === 'visits_doctors' && $defaultDoc && $defaultUnit, function($q) use ($defaultDoc, $defaultUnit) {
-                $q->where(function($query) use ($defaultDoc, $defaultUnit) {
-                    $query->where(function($sub1) {
-                        $sub1->whereNull('governorate_id')
-                             ->whereNull('country_id')
-                             ->whereDoesntHave('eyeTests')
-                             ->whereDoesntHave('labTests');
-                    })
-                    ->orWhere(function($sub2) use ($defaultDoc, $defaultUnit) {
-                        $sub2->where('doctor_id', '!=', $defaultDoc->id)
-                             ->orWhere('clinic_unit_id', '!=', $defaultUnit->id);
-                    });
-                });
+            ->when($r->type === 'visits_doctors', function($q) {
+                $q->whereNull('governorate_id')
+                  ->whereNull('country_id')
+                  ->whereDoesntHave('eyeTests')
+                  ->whereDoesntHave('labTests');
             })
             ->when($r->type === 'visits_govs', fn($q) => $q->whereNotNull('governorate_id'))
             ->when($r->type === 'visits_countries', fn($q) => $q->whereNotNull('country_id'))
@@ -440,26 +440,32 @@ class EntryController extends Controller
                 $q->whereBetween('op_date', [$start, $end]);
             })
             ->when($r->type === 'surgeries_ops' && $defaultDoc, function($q) use ($defaultDoc, $defaultOp) {
-                $q->where(function($query) use ($defaultDoc, $defaultOp) {
-                    $query->where('doctor_id', $defaultDoc->id)
-                          ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
-                              $sub->where('doctor_id', '!=', $defaultDoc->id)
-                                  ->where('operation_name_id', '!=', $defaultOp->id);
-                          });
-                });
+                $q->whereNull('governorate_id')
+                  ->whereNull('country_id')
+                  ->where(function($query) use ($defaultDoc, $defaultOp) {
+                      $query->where('doctor_id', $defaultDoc->id)
+                            ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                                $sub->where('doctor_id', '!=', $defaultDoc->id)
+                                    ->where('operation_name_id', '!=', $defaultOp->id);
+                            });
+                  });
             })
             ->when($r->type === 'surgeries_docs' && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
-                $q->where(function($query) use ($defaultDoc, $defaultOp) {
-                    $query->where('operation_name_id', $defaultOp->id)
-                          ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
-                              $sub->where('doctor_id', '!=', $defaultDoc->id)
-                                  ->where('operation_name_id', '!=', $defaultOp->id);
-                          });
-                });
+                $q->whereNull('governorate_id')
+                  ->whereNull('country_id')
+                  ->where(function($query) use ($defaultDoc, $defaultOp) {
+                      $query->where('operation_name_id', $defaultOp->id)
+                            ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                                $sub->where('doctor_id', '!=', $defaultDoc->id)
+                                    ->where('operation_name_id', '!=', $defaultOp->id);
+                            });
+                  });
             })
             ->when($r->type === 'surgeries_cls' && $defaultDoc && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
                 // Return only the classification×sector entries (saved via cls tab)
-                $q->where('doctor_id', $defaultDoc->id)
+                $q->whereNull('governorate_id')
+                  ->whereNull('country_id')
+                  ->where('doctor_id', $defaultDoc->id)
                   ->where('operation_name_id', $defaultOp->id)
                   ->whereNotNull('sector_id')
                   ->whereNotNull('classification');
