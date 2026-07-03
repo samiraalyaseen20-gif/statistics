@@ -274,6 +274,65 @@ if (file_exists(base_path('iraq.svg'))) {
         </div>
 
 
+        {{-- ═══ جداول 8 & 9: التوزيع الجغرافي للعمليات الجراحية ═══ --}}
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {{-- داخل العراق --}}
+            <div class="custom-card p-6 rounded-2xl">
+                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                    <i data-lucide="flag" class="w-4 h-4 text-rose-500"></i>
+                    جدول (8): مقارنة التوزيع الجغرافي للعمليات الجراحية داخل العراق
+                    <span id="cmp-total-8" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div>
+                        <div class="cmp-side-label-a mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-8-a" viewBox="0 0 584 594" class="w-full max-w-[320px] h-[340px] overflow-visible mx-auto">
+                                <g id="cmp-svg-8-a-paths" fill="rgba(244, 63, 94, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
+                                    {!! $pathsHtml !!}
+                                </g>
+                                <g id="cmp-svg-8-a-nodes"></g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="cmp-side-label-b mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-8-b" viewBox="0 0 584 594" class="w-full max-w-[320px] h-[340px] overflow-visible mx-auto">
+                                <g id="cmp-svg-8-b-paths" fill="rgba(244, 63, 94, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
+                                    {!! $pathsHtml !!}
+                                </g>
+                                <g id="cmp-svg-8-b-nodes"></g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- خارج العراق --}}
+            <div class="custom-card p-6 rounded-2xl">
+                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                    <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
+                    جدول (9): مقارنة العمليات الجراحية للمرضى من خارج العراق
+                    <span id="cmp-total-9" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div>
+                        <div class="cmp-side-label-a mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-9-a" viewBox="0 0 450 180" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="cmp-side-label-b mb-2"></div>
+                        <div class="w-full overflow-x-auto py-1">
+                            <svg id="cmp-svg-9-b" viewBox="0 0 450 180" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         {{-- ═══ جدول 5: الفحوصات البصرية والساندة (مستقل - يعرض إجمالي الفترة بغض النظر عن باقي الفلاتر) ═══ --}}
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
@@ -971,6 +1030,18 @@ function renderAllCmpCharts(data, labelA, labelB) {
     cmpWatchChart('cmp-svg-4-a', () => cmpDrawChevrons('cmp-svg-4-a', cvA.map(r => r.total), cvA.map(r => r.country), CMP_COLORS_A));
     cmpWatchChart('cmp-svg-4-b', () => cmpDrawChevrons('cmp-svg-4-b', cvB.map(r => r.total), cvB.map(r => r.country), CMP_COLORS_B));
 
+    // ─ جدول 8: داخل العراق (عمليات) ─
+    const sgA = A.surgeries_by_gov || [];
+    const sgB = B.surgeries_by_gov || [];
+    cmpWatchChart('cmp-svg-8-a', () => cmpDrawIraqMap('cmp-svg-8-a', sgA.map(r => r.total), sgA.map(r => r.gov), '#3b82f6'));
+    cmpWatchChart('cmp-svg-8-b', () => cmpDrawIraqMap('cmp-svg-8-b', sgB.map(r => r.total), sgB.map(r => r.gov), '#f43f5e'));
+
+    // ─ جدول 9: خارج العراق (عمليات) ─
+    const scgA = A.surgeries_by_country || [];
+    const scgB = B.surgeries_by_country || [];
+    cmpWatchChart('cmp-svg-9-a', () => cmpDrawChevrons('cmp-svg-9-a', scgA.map(r => r.total), scgA.map(r => r.country), CMP_COLORS_A));
+    cmpWatchChart('cmp-svg-9-b', () => cmpDrawChevrons('cmp-svg-9-b', scgB.map(r => r.total), scgB.map(r => r.country), CMP_COLORS_B));
+
     // ─ جدول 5: الفحوصات البصرية والساندة (مستقل — حسب الفترة فقط) ─
     const etA = A.eye_tests_by_type || [];
     const etB = B.eye_tests_by_type || [];
@@ -1028,6 +1099,8 @@ function renderAllCmpCharts(data, labelA, labelB) {
     cmpSetTotal('cmp-total-5',  A.total_eye_tests,  B.total_eye_tests);
 
     cmpSetTotal('cmp-total-7',  A.total_surgeries,  B.total_surgeries);
+    cmpSetTotal('cmp-total-8',  (A.surgeries_by_gov    || []).reduce((s,r)=>s+r.total,0), (B.surgeries_by_gov    || []).reduce((s,r)=>s+r.total,0));
+    cmpSetTotal('cmp-total-9',  (A.surgeries_by_country|| []).reduce((s,r)=>s+r.total,0), (B.surgeries_by_country|| []).reduce((s,r)=>s+r.total,0));
     cmpSetTotal('cmp-total-10', A.total_surgeries,  B.total_surgeries);
     cmpSetTotal('cmp-total-detail', A.total_surgeries, B.total_surgeries);
 

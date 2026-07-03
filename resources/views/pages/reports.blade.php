@@ -1175,6 +1175,10 @@ function renderAll2DArrowCharts() {
     const govLabels       = @json($visitsByGov->pluck('gov'));
     const countryData     = @json($visitsByCountry->pluck('total'));
     const countryLabels   = @json($visitsByCountry->pluck('country'));
+    const surgGovData         = @json($surgeriesByGov->pluck('total'));
+    const surgGovLabels       = @json($surgeriesByGov->pluck('gov'));
+    const surgCountryData     = @json($surgeriesByCountry->pluck('total'));
+    const surgCountryLabels   = @json($surgeriesByCountry->pluck('country'));
     const visualData      = @json($eyeTestsByType->pluck('total'));
     const visualLabels    = @json($eyeTestsByType->pluck('type'));
     const labTestData     = @json($labTestsByType->pluck('total'));
@@ -1197,6 +1201,8 @@ function renderAll2DArrowCharts() {
     watchChart('svg-report-2',  () => draw2DFlatVerticalArrows('svg-report-2', docVisitsData, docVisitsLabels));
     watchChart('svg-report-3',  () => drawIraqMap('svg-report-3', govData, govLabels, '#0284c7'));
     watchChart('svg-report-4',  () => draw2DFlatHorizontalChevrons('svg-report-4', countryData, countryLabels));
+    watchChart('svg-report-8',  () => drawIraqMap('svg-report-8', surgGovData, surgGovLabels, '#f43f5e'));
+    watchChart('svg-report-9',  () => draw2DFlatHorizontalChevrons('svg-report-9', surgCountryData, surgCountryLabels, ['#f43f5e','#ec4899','#db2777','#f43f5e','#ec4899','#db2777']));
     watchChart('svg-report-5',  () => draw2DFlatHorizontalChevrons('svg-report-5', visualData, visualLabels, ['#f97316','#ea580c','#c2410c','#ea580c','#f97316','#c2410c']));
     watchChart('svg-report-6',  () => draw2DFlatVerticalArrows('svg-report-6', labTestData, labTestLabels, ['#8b5cf6','#a855f7','#c084fc','#d8b4fe','#f3e8ff']));
     watchChart('svg-report-7',  () => draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#10b981', '#f43f5e', '#ec4899', '#f59e0b', '#8b5cf6', '#64748b']));
