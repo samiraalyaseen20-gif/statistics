@@ -226,7 +226,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <div class="xl:col-span-1 flex justify-center">
                 <svg id="svg-report-7" viewBox="0 0 520 220" class="w-full max-w-[420px] h-[220px] overflow-visible"></svg>
             </div>
-            <!-- Table driven by JS (same API as Edit button) -->
+            <!-- Dynamic Table from database metadata, filled via AJAX -->
             <div class="xl:col-span-2">
                 <div id="table7-loading" class="text-center text-xs text-slate-400 py-6">
                     <i data-lucide="loader" class="w-4 h-4 inline animate-spin mr-1"></i> جاري تحميل بيانات التصنيف...
@@ -235,18 +235,76 @@ if (file_exists(base_path('iraq.svg'))) {
                     <thead>
                         <tr class="text-[10px] font-bold text-slate-400">
                             <th class="text-right pr-3">تصنيف العمليات الجراحية</th>
-                            <th class="bg-sky-400/20 font-bold text-sky-800 dark:text-sky-300">قطاع الصحة</th>
-                            <th class="bg-orange-400/20 font-bold text-orange-800 dark:text-orange-300">قطاع العتبة الخاص</th>
-                            <th class="bg-emerald-400/20 font-bold text-emerald-800 dark:text-emerald-300">قطاع العتبة العام</th>
+                            @php
+                                $headerColors = [
+                                    'bg-sky-400/20 text-sky-800 dark:text-sky-300',
+                                    'bg-orange-400/20 text-orange-800 dark:text-orange-300',
+                                    'bg-emerald-400/20 text-emerald-800 dark:text-emerald-300',
+                                    'bg-yellow-400/20 text-yellow-800 dark:text-yellow-300',
+                                    'bg-purple-400/20 text-purple-800 dark:text-purple-300'
+                                ];
+                            @endphp
+                            @foreach($filterSectors as $idx => $s)
+                                @php
+                                    $colorClass = $headerColors[$idx % count($headerColors)];
+                                    $displaySecName = $s->name;
+                                    if ($s->name === 'عتبة الخاص') $displaySecName = 'قطاع العتبة الخاص';
+                                    if ($s->name === 'عتبة العام') $displaySecName = 'قطاع العتبة العام';
+                                @endphp
+                                <th class="{{ $colorClass }} font-bold">{{ $displaySecName }}</th>
+                            @endforeach
                             <th class="text-pink-600 font-extrabold">المجموع</th>
                             <th class="bg-violet-400/20 font-bold text-violet-800 dark:text-violet-300">النسبة المئوية</th>
                         </tr>
                     </thead>
-                    <tbody id="table7-tbody"></tbody>
+                    <tbody id="table7-tbody">
+                        @foreach($filterClassifications as $c)
+                            @php
+                                $standardLabels = [
+                                    'صغرى' => 'العمليات الصغرى',
+                                    'وسطى (حقن)' => 'العمليات الوسطى (حقن العين)',
+                                    'وسطى (ليزر)' => 'العمليات الوسطى (الليزر)',
+                                    'كبرى' => 'العمليات الكبرى',
+                                    'فوق الكبرى' => 'العمليات فوق الكبرى',
+                                    'خاصة' => 'العمليات الخاصة'
+                                ];
+                                $label = $standardLabels[$c->name] ?? $c->name;
+                            @endphp
+                            <tr class="table-row table7-data-row" data-cls="{{ $c->name }}">
+                                <td class="text-right pr-3 font-bold">{{ $label }}</td>
+                                @foreach($filterSectors as $s)
+                                    <td class="font-bold table7-cell opacity-30" data-cls="{{ $c->name }}" data-sec="{{ $s->name }}">0</td>
+                                @endforeach
+                                <td class="font-extrabold text-pink-600 text-xs table7-row-total">0</td>
+                                <td class="bg-violet-400/10 text-violet-700 font-extrabold text-xs table7-row-pct">0%</td>
+                            </tr>
+                        @endforeach
+                        
+                        <!-- Totals Row -->
+                        <tr class="table-row font-extrabold text-rose-600 text-xs" id="table7-totals-row">
+                            <td class="text-right pr-3 text-sm">المجموع</td>
+                            @foreach($filterSectors as $s)
+                                <td class="bg-slate-100/5 table7-col-total" data-sec="{{ $s->name }}">0</td>
+                            @endforeach
+                            <td class="text-sm font-black text-pink-600" id="table7-grand-total">0</td>
+                            <td class="bg-violet-400/15"></td>
+                        </tr>
+                        
+                        <!-- Percentages Row -->
+                        <tr class="table-row font-extrabold text-emerald-600 text-[10px]" id="table7-pct-row">
+                            <td class="text-right pr-3 font-bold text-[9px]">النسبة %</td>
+                            @foreach($filterSectors as $s)
+                                <td class="bg-emerald-400/5 font-bold table7-col-pct" data-sec="{{ $s->name }}">0%</td>
+                            @endforeach
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
+
 
 
     <!-- التوزيع الجغرافي للعمليات الجراحية (جدول 8 و 9) -->
@@ -1117,15 +1175,6 @@ function renderAll2DArrowCharts() {
     const visualLabels    = @json($eyeTestsByType->pluck('type'));
     const labTestData     = @json($labTestsByType->pluck('total'));
     const labTestLabels   = @json($labTestsByType->pluck('type'));
-    const surgClassData   = [
-        {{ $surgeriesByCatSector->where('classification', 'صغرى')->sum('total') }},
-        {{ $surgeriesByCatSector->where('classification', 'وسطى (حقن)')->sum('total') }},
-        {{ $surgeriesByCatSector->where('classification', 'وسطى (ليزر)')->sum('total') }},
-        {{ $surgeriesByCatSector->where('classification', 'كبرى')->sum('total') }},
-        {{ $surgeriesByCatSector->where('classification', 'فوق الكبرى')->sum('total') }},
-        {{ $surgeriesByCatSector->where('classification', 'خاصة')->sum('total') }}
-    ];
-    const surgClassLabels = ['صغرى', 'وسطى (حقن)', 'وسطى (ليزر)', 'كبرى', 'فوق الكبرى', 'خاصة'];
     const docSurgData     = @json($docSurgs->values());
     const docSurgLabels   = @json($docSurgs->keys()->map(fn($n) => str_replace('د. ', '', $n)));
 
@@ -1139,7 +1188,17 @@ function renderAll2DArrowCharts() {
     watchChart('svg-report-9',  () => draw2DFlatHorizontalChevrons('svg-report-9', surgCountryData, surgCountryLabels, ['#f43f5e','#ec4899','#db2777','#f43f5e','#ec4899','#db2777']));
     watchChart('svg-report-5',  () => draw2DFlatHorizontalChevrons('svg-report-5', visualData, visualLabels, ['#f97316','#ea580c','#c2410c','#ea580c','#f97316','#c2410c']));
     watchChart('svg-report-6',  () => draw2DFlatVerticalArrows('svg-report-6', labTestData, labTestLabels, ['#8b5cf6','#a855f7','#c084fc','#d8b4fe','#f3e8ff']));
-    watchChart('svg-report-7',  () => draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#10b981', '#f43f5e', '#ec4899', '#f59e0b', '#8b5cf6', '#64748b']));
+    watchChart('svg-report-7',  () => {
+        const surgClassLabels = [];
+        const surgClassData = [];
+        document.querySelectorAll('.table7-data-row').forEach(row => {
+            const label = row.querySelector('td').textContent.trim();
+            const total = parseInt(row.querySelector('.table7-row-total').textContent) || 0;
+            surgClassLabels.push(label);
+            surgClassData.push(total);
+        });
+        draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#10b981', '#f43f5e', '#ec4899', '#f59e0b', '#8b5cf6', '#64748b']);
+    });
     watchChart('svg-report-10', () => draw2DFlatVerticalArrows('svg-report-10', docSurgData, docSurgLabels));
 
     // Initialize switcher single doctor stats
@@ -1234,17 +1293,19 @@ window.initReportsPage = function() {
 
 // ── جدول (7): جلب بيانات التصنيف من نفس API التي يستخدمها زر "تعديل" ──
 async function loadTable7() {
-    const CLS_ROWS = [
-        { key: 'صغرى',        label: 'العمليات الصغرى' },
-        { key: 'وسطى (حقن)',  label: 'العمليات الوسطى (حقن العين)' },
-        { key: 'وسطى (ليزر)', label: 'العمليات الوسطى (الليزر)' },
-        { key: 'كبرى',        label: 'العمليات الكبرى' },
-        { key: 'فوق الكبرى',  label: 'العمليات فوق الكبرى' },
-        { key: 'خاصة',        label: 'العمليات الخاصة' },
-    ];
-    const CLS_SECTORS = ['قطاع الصحة', 'عتبة الخاص', 'عتبة العام'];
+    // 1. Reset all table values to 0
+    document.querySelectorAll('.table7-cell').forEach(c => {
+        c.textContent = '0';
+        c.classList.add('opacity-30');
+    });
+    document.querySelectorAll('.table7-row-total').forEach(c => c.textContent = '0');
+    document.querySelectorAll('.table7-row-pct').forEach(c => c.textContent = '0%');
+    document.querySelectorAll('.table7-col-total').forEach(c => c.textContent = '0');
+    document.querySelectorAll('.table7-col-pct').forEach(c => c.textContent = '0%');
+    const grandTotalEl = document.getElementById('table7-grand-total');
+    if (grandTotalEl) grandTotalEl.textContent = '0';
 
-    // جلب نطاق التاريخ من فلاتر التقرير
+    // 2. Fetch data
     const fromVal = document.getElementById('report-date-from')?.value || '{{ substr($start_date ?? date("Y-m"), 0, 7) }}';
     const toVal   = document.getElementById('report-date-to')?.value   || '{{ substr($end_date   ?? date("Y-m"), 0, 7) }}';
 
@@ -1256,80 +1317,80 @@ async function loadTable7() {
         const data = await res.json();
         const items = data.data || data; // [{classification, sector_name, quantity}]
 
-        // تجميع: cls × sector → مجموع الأعداد
-        const grid = {};
-        CLS_ROWS.forEach(r => { grid[r.key] = {}; CLS_SECTORS.forEach(s => { grid[r.key][s] = 0; }); });
-
+        // 3. Populate cells
         items.forEach(item => {
             const cls = item.classification || '';
             const sec = item.sector_name || item.sector || '';
             const qty = parseInt(item.quantity) || 1;
-            if (grid[cls] !== undefined && grid[cls][sec] !== undefined) {
-                grid[cls][sec] += qty;
+
+            const cell = document.querySelector(`.table7-cell[data-cls="${cls}"][data-sec="${sec}"]`);
+            if (cell) {
+                const currentVal = parseInt(cell.textContent) || 0;
+                const newVal = currentVal + qty;
+                cell.textContent = newVal;
+                if (newVal > 0) {
+                    cell.classList.remove('opacity-30');
+                } else {
+                    cell.classList.add('opacity-30');
+                }
             }
         });
 
-        // حساب الإجماليات
+        // 4. Calculate row totals and grand total
         let grandTotal = 0;
-        const rowTotals = {};
-        const colTotals = [0, 0, 0];
-
-        CLS_ROWS.forEach(r => {
-            let rowT = 0;
-            CLS_SECTORS.forEach((s, si) => {
-                const v = grid[r.key][s];
-                rowT += v;
-                colTotals[si] += v;
+        document.querySelectorAll('.table7-data-row').forEach(row => {
+            let rowTotal = 0;
+            row.querySelectorAll('.table7-cell').forEach(cell => {
+                rowTotal += parseInt(cell.textContent) || 0;
             });
-            rowTotals[r.key] = rowT;
-            grandTotal += rowT;
+            row.querySelector('.table7-row-total').textContent = rowTotal;
+            grandTotal += rowTotal;
         });
 
-        // بناء الـ tbody
-        const tbody = document.getElementById('table7-tbody');
-        if (!tbody) return;
-        tbody.innerHTML = '';
+        if (grandTotalEl) grandTotalEl.textContent = grandTotal;
 
-        CLS_ROWS.forEach(r => {
-            const rowT = rowTotals[r.key];
-            const pct  = grandTotal > 0 ? Math.round((rowT / grandTotal) * 100) : 0;
-            let tr = `<tr class="table-row">
-                <td class="text-right pr-3 font-bold">${r.label}</td>`;
-            CLS_SECTORS.forEach(s => {
-                const v = grid[r.key][s];
-                tr += `<td class="${v === 0 ? 'opacity-30' : ''} font-bold">${v}</td>`;
+        // 5. Calculate row percentages
+        document.querySelectorAll('.table7-data-row').forEach(row => {
+            const rowTotal = parseInt(row.querySelector('.table7-row-total').textContent) || 0;
+            const pct = grandTotal > 0 ? Math.round((rowTotal / grandTotal) * 100) : 0;
+            row.querySelector('.table7-row-pct').textContent = pct + '%';
+        });
+
+        // 6. Calculate column totals and percentages
+        document.querySelectorAll('.table7-col-total').forEach(colTotalCell => {
+            const sec = colTotalCell.dataset.sec;
+            let colTotal = 0;
+            document.querySelectorAll(`.table7-cell[data-sec="${sec}"]`).forEach(cell => {
+                colTotal += parseInt(cell.textContent) || 0;
             });
-            tr += `<td class="font-extrabold text-pink-600 text-xs">${rowT}</td>
-                   <td class="bg-violet-400/10 text-violet-700 font-extrabold text-xs">${pct}%</td>
-            </tr>`;
-            tbody.innerHTML += tr;
+            colTotalCell.textContent = colTotal;
+
+            const pctCell = document.querySelector(`.table7-col-pct[data-sec="${sec}"]`);
+            if (pctCell) {
+                const colPct = grandTotal > 0 ? Math.round((colTotal / grandTotal) * 100) : 0;
+                pctCell.textContent = colPct + '%';
+            }
         });
 
-        // صف إجمالي الأعمدة
-        let totalRow = `<tr class="table-row font-extrabold text-rose-600 text-xs">
-            <td class="text-right pr-3 text-sm">المجموع</td>`;
-        colTotals.forEach(t => { totalRow += `<td class="bg-slate-100/5">${t}</td>`; });
-        totalRow += `<td class="text-sm font-black text-pink-600">${grandTotal}</td><td class="bg-violet-400/15"></td></tr>`;
-
-        // صف نسب الأعمدة
-        let pctRow = `<tr class="table-row font-extrabold text-emerald-600 text-[10px]">
-            <td class="text-right pr-3 font-bold text-[9px]">النسبة %</td>`;
-        colTotals.forEach(t => {
-            const p = grandTotal > 0 ? Math.round((t / grandTotal) * 100) : 0;
-            pctRow += `<td class="bg-emerald-400/5 font-bold">${p}%</td>`;
-        });
-        pctRow += `<td></td><td></td></tr>`;
-
-        tbody.innerHTML += totalRow + pctRow;
-
-        // إظهار الجدول وإخفاء loading
+        // 7. Hide loading and show table
         document.getElementById('table7-loading')?.classList.add('hidden');
         document.getElementById('table7-content')?.classList.remove('hidden');
 
-        // تحديث الرسم البياني بنفس البيانات
-        if (typeof renderAll2DArrowCharts === 'function') renderAll2DArrowCharts();
+        // 8. Re-render SVG chart dynamically based on newly computed DOM totals
+        const surgClassLabels = [];
+        const surgClassData = [];
+        document.querySelectorAll('.table7-data-row').forEach(row => {
+            const label = row.querySelector('td').textContent.trim();
+            const total = parseInt(row.querySelector('.table7-row-total').textContent) || 0;
+            surgClassLabels.push(label);
+            surgClassData.push(total);
+        });
+        
+        // Redraw svg-report-7 directly
+        draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#10b981', '#f43f5e', '#ec4899', '#f59e0b', '#8b5cf6', '#64748b']);
 
     } catch(e) {
+        console.error(e);
         const loading = document.getElementById('table7-loading');
         if (loading) loading.innerHTML = '<span class="text-rose-400">تعذّر تحميل بيانات التصنيف</span>';
     }
