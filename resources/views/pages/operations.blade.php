@@ -41,14 +41,28 @@ async function loadOps() {
     const tb = document.getElementById('tbody-operations');
     if(!tb) return;
     if(!data?.length) { tb.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-text-main opacity-40 text-xs">لا توجد بيانات بعد</td></tr>`; return; }
-    tb.innerHTML = data.map((d,i)=>`<tr class="table-row">
+    tb.innerHTML = data.map((d,i)=>`<tr class="table-row" data-op-row-id="${d.id}">
         <td class="text-center">${i+1}</td>
-        <td class="font-bold">${d.name}</td>
-        <td class="text-center"><span class="text-[9px] font-bold px-2.5 py-0.5 rounded-full ${opClassColors[d.classification]||''}">${d.classification}</span></td>
+        <td>
+            <input type="text" value="${d.name}" 
+                class="w-full text-right bg-transparent border-none focus:outline-none focus:ring-1 focus:ring-rose-500 rounded-lg py-1 px-2 font-bold text-text-main"
+                onchange="saveOpRow(${d.id})">
+        </td>
+        <td class="text-center font-['Tajawal']">
+            <select class="text-[9px] font-bold px-2.5 py-0.5 rounded-full border-none focus:outline-none cursor-pointer ${opClassColors[d.classification]||''}"
+                onchange="saveOpRow(${d.id})">
+                <option value="صغرى" ${d.classification === 'صغرى' ? 'selected' : ''}>صغرى</option>
+                <option value="وسطى (حقن)" ${d.classification === 'وسطى (حقن)' ? 'selected' : ''}>وسطى (حقن)</option>
+                <option value="وسطى (ليزر)" ${d.classification === 'وسطى (ليزر)' ? 'selected' : ''}>وسطى (ليزر)</option>
+                <option value="كبرى" ${d.classification === 'كبرى' ? 'selected' : ''}>كبرى</option>
+                <option value="فوق الكبرى" ${d.classification === 'فوق الكبرى' ? 'selected' : ''}>فوق الكبرى</option>
+                <option value="خاصة" ${d.classification === 'خاصة' ? 'selected' : ''}>خاصة</option>
+            </select>
+        </td>
         <td class="text-center">
             <input type="number" value="${d.display_order || 0}" 
                 class="w-16 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main" 
-                onchange="updateOpOrder(${d.id}, '${d.name}', '${d.classification}', this.value)">
+                onchange="saveOpRow(${d.id})">
         </td>
         <td class="text-center">
             <button onclick="deleteOp(${d.id})" class="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center mx-auto hover-press">
@@ -58,16 +72,28 @@ async function loadOps() {
     </tr>`).join('');
 }
 
-async function updateOpOrder(id, name, classification, order) {
+async function saveOpRow(id) {
+    const tr = document.querySelector(`tr[data-op-row-id="${id}"]`);
+    if (!tr) return;
+    const name = tr.querySelector('input[type="text"]').value.trim();
+    const classification = tr.querySelector('select').value;
+    const order = tr.querySelector('input[type="number"]').value;
+
+    if (!name) {
+        showToast('الرجاء كتابة اسم العملية', 'error');
+        return;
+    }
+
     try {
         await apiFetch(`/api/operation-names/${id}`, 'PUT', {
             name: name,
             classification: classification,
             display_order: parseInt(order) || 0
         });
-        showToast('تم تحديث تسلسل العرض بنجاح');
+        showToast('تم تحديث بيانات العملية بنجاح');
+        loadOps(); // Reloads table to refresh classes/colors
     } catch (e) {
-        showToast('فشل تحديث تسلسل العرض', 'error');
+        showToast('فشل تحديث بيانات العملية', 'error');
     }
 }
 
