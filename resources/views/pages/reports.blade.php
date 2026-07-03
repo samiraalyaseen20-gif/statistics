@@ -230,11 +230,13 @@ if (file_exists(base_path('iraq.svg'))) {
                 <table class="custom-table text-xs">
                     <thead><tr><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
                     <tbody>
-                        <tr class="table-row"><td>وسطى (حقن العين)</td><td class="text-center font-bold text-rose-600">1,257</td></tr>
-                        <tr class="table-row"><td>فوق الكبرى</td><td class="text-center font-bold text-violet-600">434</td></tr>
-                        <tr class="table-row"><td>وسطى (ليزر)</td><td class="text-center font-bold text-pink-600">103</td></tr>
-                        <tr class="table-row"><td>الخاصة</td><td class="text-center font-bold text-slate-600">90</td></tr>
-                        <tr class="table-row font-extrabold text-rose-600"><td class="text-sm">المجموع الكلي</td><td class="text-center text-sm font-extrabold">2,002</td></tr>
+                        <tr class="table-row"><td>وسطى (حقن العين)</td><td class="text-center font-bold text-rose-600">{{ number_format($surgeriesByCatSector->where('classification', 'وسطى (حقن)')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>فوق الكبرى</td><td class="text-center font-bold text-violet-600">{{ number_format($surgeriesByCatSector->where('classification', 'فوق الكبرى')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>وسطى (ليزر)</td><td class="text-center font-bold text-pink-600">{{ number_format($surgeriesByCatSector->where('classification', 'وسطى (ليزر)')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>الخاصة</td><td class="text-center font-bold text-slate-600">{{ number_format($surgeriesByCatSector->where('classification', 'خاصة')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>صغرى</td><td class="text-center font-bold text-emerald-600">{{ number_format($surgeriesByCatSector->where('classification', 'صغرى')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>كبرى</td><td class="text-center font-bold text-amber-600">{{ number_format($surgeriesByCatSector->where('classification', 'كبرى')->sum('total')) }}</td></tr>
+                        <tr class="table-row font-extrabold text-rose-600"><td class="text-sm">المجموع الكلي</td><td class="text-center text-sm font-extrabold">{{ number_format($totalSurgeries) }}</td></tr>
                     </tbody>
                 </table>
             </div>
