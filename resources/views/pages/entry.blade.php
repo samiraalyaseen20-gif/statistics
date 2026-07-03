@@ -30,18 +30,34 @@
         </button>
     </div>
 
-    {{-- ══════════════════ TAB 1: VISITS BY DOCTORS ══════════════════ --}}
+    {{-- ══ TAB 1: VISITS BY DOCTORS ══ --}}
     <div id="entry-tab-content-visit" class="entry-tab-panel space-y-6">
         <div class="custom-card p-5 rounded-2xl space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <h3 class="text-xs font-black text-text-main flex items-center gap-2">
-                    <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
-                    <span>جدول إدخال أعداد مرضى الأطباء والاستشاريات</span>
-                </h3>
+
+            {{-- Header row --}}
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100/5 pb-4">
+                <div>
+                    <h3 class="text-sm font-black text-text-main flex items-center gap-2">
+                        <i data-lucide="stethoscope" class="w-5 h-5 text-pink-500"></i>
+                        <span>جدول إدخال أعداد مرضى الأطباء</span>
+                    </h3>
+                    <p class="text-[10px] text-slate-400 mt-1 font-bold">يرجى اختيار الاستشارية ثم إدخال عدد مرضى كل طبيب</p>
+                </div>
                 <div class="flex flex-wrap items-center gap-2">
+                    {{-- Clinic Unit Dropdown --}}
+                    <div class="flex items-center gap-1.5">
+                        <i data-lucide="hospital" class="w-4 h-4 text-indigo-400"></i>
+                        <select id="select-visit-unit"
+                            onchange="rebuildVisitsDoctorsTable()"
+                            class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal'] min-w-52">
+                            <option value="">— اختر الاستشارية —</option>
+                        </select>
+                    </div>
+                    {{-- Month --}}
                     <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
                     <input type="month" id="date-visit-doctors" required
                         class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-2 text-xs font-bold text-text-main custom-date-input">
+                    {{-- Buttons --}}
                     <button onclick="toggleEditVisitsDoctors()" id="btn-edit-visits-doctors"
                         class="py-1.5 px-3 rounded-xl text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
                         <i data-lucide="edit" class="w-3.5 h-3.5"></i>
@@ -55,16 +71,34 @@
                 </div>
             </div>
 
+            {{-- Table --}}
             <div class="overflow-x-auto">
-                <table class="w-full text-right border-collapse">
+                <table class="custom-table text-center" style="font-size:11px">
                     <thead>
-                        <tr id="thead-visits-doctors" class="border-b border-slate-200/10 text-[10px] font-bold text-slate-400">
-                            <th class="pb-2">اسم الطبيب الاستشاري</th>
+                        <tr id="thead-visits-doctors">
+                            <th class="w-10">ت</th>
+                            <th class="text-right pr-2">اسم الطبيب الاستشاري</th>
+                            <th class="bg-indigo-400/20" id="thead-unit-name">عدد المرضى</th>
                         </tr>
                     </thead>
-                    <tbody id="tbody-visits-doctors" class="divide-y divide-slate-200/5 text-[11px] font-bold text-text-main">
-                        {{-- Populated dynamically --}}
+                    <tbody id="tbody-visits-doctors" class="text-[11px] font-bold text-text-main">
+                        <tr>
+                            <td colspan="3" class="py-8 text-slate-400 text-xs">
+                                <i data-lucide="mouse-pointer-click" class="w-5 h-5 mx-auto mb-2 text-indigo-400"></i>
+                                اختر استشارية من القائمة أعلاه لعرض الأطباء
+                            </td>
+                        </tr>
                     </tbody>
+                    <tfoot>
+                        <tr class="border-t-2 border-slate-300/20" id="tfoot-visits-doctors" style="display:none">
+                            <td class="py-3" colspan="2">
+                                <span class="text-pink-600 font-extrabold">المجموع الكلي</span>
+                            </td>
+                            <td class="py-3 bg-indigo-400/20">
+                                <span id="visits-docs-grand-total" class="inline-block px-3 py-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-lg font-black text-xs min-w-12">0</span>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
