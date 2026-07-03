@@ -13,10 +13,15 @@
             <i data-lucide="map" class="w-4 h-4"></i>
             <span>المحافظات والدول</span>
         </button>
-        <button onclick="switchEntryTab('surgery')" id="tab-btn-surgery"
+        <button onclick="switchEntryTab('surgery-ops')" id="tab-btn-surgery-ops"
             class="entry-tab-btn py-2 px-5 rounded-xl text-xs font-bold text-text-main flex items-center gap-2 hover-press">
             <i data-lucide="scissors" class="w-4 h-4"></i>
-            <span>العمليات الجراحية</span>
+            <span>أعداد العمليات (النوع)</span>
+        </button>
+        <button onclick="switchEntryTab('surgery-docs')" id="tab-btn-surgery-docs"
+            class="entry-tab-btn py-2 px-5 rounded-xl text-xs font-bold text-text-main flex items-center gap-2 hover-press">
+            <i data-lucide="user-check" class="w-4 h-4"></i>
+            <span>عمليات الأطباء</span>
         </button>
         <button onclick="switchEntryTab('tests')" id="tab-btn-tests"
             class="entry-tab-btn py-2 px-5 rounded-xl text-xs font-bold text-text-main flex items-center gap-2 hover-press">
@@ -136,75 +141,91 @@
         </div>
     </div>
 
-    {{-- ══════════════════ TAB 3: SURGERIES BY OPERATIONS & DOCTORS ══════════════════ --}}
-    <div id="entry-tab-content-surgery" class="entry-tab-panel space-y-6 hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-            {{-- Operations Types Table --}}
-            <div class="custom-card p-5 rounded-2xl space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <h3 class="text-xs font-black text-text-main flex items-center gap-2">
-                        <i data-lucide="scissors" class="w-4 h-4 text-purple-500"></i>
-                        <span>أعداد العمليات الجراحية المنفذة (حسب النوع)</span>
+    {{-- ══════════════════ TAB 3: SURGERIES BY OPERATIONS TYPES ══════════════════ --}}
+    <div id="entry-tab-content-surgery-ops" class="entry-tab-panel space-y-6 hidden">
+        <div class="custom-card p-6 rounded-2xl space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100/5 pb-4">
+                <div>
+                    <h3 class="text-sm font-black text-text-main flex items-center gap-2">
+                        <i data-lucide="scissors" class="w-5 h-5 text-purple-500"></i>
+                        <span class="text-sky-500 font-extrabold text-base">اعداد العمليات الشهرية الكلية</span>
                     </h3>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
-                        <input type="month" id="date-surg-op" required
-                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
-                        <button onclick="toggleEditSurgeriesOps()" id="btn-edit-surg-op"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
-                        <button onclick="saveSurgeriesOps()"
-                            class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-purple-500 hover-press">حفظ العمليات</button>
-                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1 font-bold">يرجى إدخال أعداد العمليات الجراحية المنفذة لكل نوع للشهر المحدد</p>
                 </div>
-                <div class="overflow-y-auto max-h-[450px]">
-                    <table class="w-full text-right border-collapse">
-                        <thead>
-                            <tr class="border-b border-slate-200/10 text-[9px] font-bold text-slate-400">
-                                <th class="pb-1">نوع العملية الجراحية</th>
-                                <th class="pb-1">القطاع الافتراضي</th>
-                                <th class="pb-1">العدد</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-surg-ops" class="divide-y divide-slate-200/5 text-[10px] font-bold text-text-main">
-                            {{-- Populated dynamically --}}
-                        </tbody>
-                    </table>
+                <div class="flex flex-wrap items-center gap-2">
+                    <label class="text-[10px] font-bold text-slate-400">الشهر والسنّة:</label>
+                    <input type="month" id="date-surg-op" required
+                        class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
+                    <button onclick="toggleEditSurgeriesOps()" id="btn-edit-surg-op"
+                        class="py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
+                    <button onclick="saveSurgeriesOps()"
+                        class="py-1.5 px-4 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-500 hover-press shadow-md shadow-indigo-500/10">حفظ العمليات</button>
                 </div>
             </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-right border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200/10 text-xs font-bold text-slate-400">
+                            <th class="pb-2 text-center w-12">ت</th>
+                            <th class="pb-2">اسم العملية</th>
+                            <th class="pb-2 text-center w-32">تصنيف العملية</th>
+                            <th class="pb-2 text-center w-36">عددها</th>
+                            <th class="pb-2 text-center w-32">النسبة المئوية</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-surg-ops" class="divide-y divide-slate-200/5 text-[11px] font-bold text-text-main">
+                        {{-- Populated dynamically --}}
+                    </tbody>
+                    <tfoot>
+                        <tr class="border-t border-slate-200/20 bg-slate-100/5 font-extrabold">
+                            <td class="py-3 text-center"></td>
+                            <td class="py-3 text-rose-500 font-bold text-xs">المجموع</td>
+                            <td class="py-3 text-center"></td>
+                            <td class="py-3 text-center">
+                                <span id="surg-ops-total-qty" class="inline-block px-3 py-1 bg-yellow-400 text-slate-900 rounded-md font-black text-xs min-w-16 text-center">0</span>
+                            </td>
+                            <td class="py-3 text-center text-rose-600 text-xs font-black">%</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
 
-            {{-- Doctors Surgeries Table --}}
-            <div class="custom-card p-5 rounded-2xl space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <h3 class="text-xs font-black text-text-main flex items-center gap-2">
-                        <i data-lucide="stethoscope" class="w-4 h-4 text-indigo-500"></i>
+    {{-- ══════════════════ TAB 4: SURGERIES BY DOCTORS ══════════════════ --}}
+    <div id="entry-tab-content-surgery-docs" class="entry-tab-panel space-y-6 hidden">
+        <div class="custom-card p-6 rounded-2xl space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100/5 pb-4">
+                <div>
+                    <h3 class="text-sm font-black text-text-main flex items-center gap-2">
+                        <i data-lucide="stethoscope" class="w-5 h-5 text-indigo-500"></i>
                         <span>إجمالي العمليات المنفذة لكل طبيب</span>
                     </h3>
-                    <div class="flex flex-wrap items-center gap-2">
-                        <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
-                        <input type="month" id="date-surg-doc" required
-                            class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
-                        <button onclick="toggleEditSurgeriesDocs()" id="btn-edit-surg-doc"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
-                        <button onclick="saveSurgeriesDocs()"
-                            class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-indigo-500 hover-press">حفظ الأطباء</button>
-                    </div>
+                    <p class="text-[10px] text-slate-400 mt-1 font-bold">يرجى إدخال إجمالي أعداد العمليات الجراحية المنفذة لكل طبيب استشاري</p>
                 </div>
-                <div class="overflow-y-auto max-h-[450px]">
-                    <table class="w-full text-right border-collapse">
-                        <thead>
-                            <tr class="border-b border-slate-200/10 text-[9px] font-bold text-slate-400">
-                                <th class="pb-1">الطبيب الاستشاري</th>
-                                <th class="pb-1">عدد العمليات الإجمالي</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-surg-docs" class="divide-y divide-slate-200/5 text-[10px] font-bold text-text-main">
-                            {{-- Populated dynamically --}}
-                        </tbody>
-                    </table>
+                <div class="flex flex-wrap items-center gap-2">
+                    <label class="text-[10px] font-bold text-slate-400">الشهر والسنّة:</label>
+                    <input type="month" id="date-surg-doc" required
+                        class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
+                    <button onclick="toggleEditSurgeriesDocs()" id="btn-edit-surg-doc"
+                        class="py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
+                    <button onclick="saveSurgeriesDocs()"
+                        class="py-1.5 px-4 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-indigo-500 to-blue-500 hover-press shadow-md shadow-indigo-500/10">حفظ الأطباء</button>
                 </div>
             </div>
-
+            <div class="overflow-x-auto">
+                <table class="w-full text-right border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200/10 text-xs font-bold text-slate-400">
+                            <th class="pb-2">الطبيب الاستشاري</th>
+                            <th class="pb-2 text-center w-48">عدد العمليات الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-surg-docs" class="divide-y divide-slate-200/5 text-[11px] font-bold text-text-main">
+                        {{-- Populated dynamically --}}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -282,6 +303,65 @@
 </section>
 
 <script>
+const surgeryTypeDefinitions = [
+    { id: 1, name: 'قص السائل الزجاجي', classification: 'خاصة' },
+    { id: 3, name: 'رفع ماء اسود+رفع ساد', classification: 'خاصة' },
+    { id: 4, name: 'رفع ساد+زراعة عدسة', classification: 'فوق الكبرى' },
+    { id: 5, name: 'رفع سليكون+زرع عدسة', classification: 'فوق الكبرى' },
+    { id: 6, name: 'زرع عدسة ثانوية', classification: 'فوق الكبرى' },
+    { id: 7, name: 'تعديل هطول الاجفان', classification: 'كبرى' },
+    { id: 8, name: 'الحول', classification: 'كبرى' },
+    { id: 9, name: 'تصليب القرنية', classification: 'كبرى' },
+    { id: 10, name: 'غسل حجرة', classification: 'كبرى' },
+    { id: 11, name: 'رفع سليكون', classification: 'كبرى' },
+    { id: 12, name: 'رفع ظفرة', classification: 'كبرى' },
+    { id: 25, name: 'حقن الفايزمو', classification: 'وسطى' },
+    { id: 13, name: 'حقن الايليا', classification: 'وسطى' },
+    { id: 27, name: 'حقن اللوسنتس', classification: 'وسطى' },
+    { id: 14, name: 'حقن الافاستين', classification: 'وسطى' },
+    { id: 15, name: 'حقن الكينا كورت', classification: 'وسطى' },
+    { id: 16, name: 'الليزر', classification: 'وسطى' },
+    { id: 17, name: 'رفع كيس دهني', classification: 'صغرى' },
+    { id: 23, name: 'رفع ورم', classification: 'صغرى' },
+    { id: 18, name: 'فحص تحت التخديرالعام', classification: 'صغرى' },
+    { id: 19, name: 'تسليك مجرى الدمع', classification: 'صغرى' },
+    { id: 24, name: 'رفع جسم غريب', classification: 'صغرى' },
+    { id: 26, name: 'زرق دواء تحت الملتحمة', classification: 'صغرى' }
+];
+
+function updateSurgOpsPercentages() {
+    const tbody = document.getElementById('tbody-surg-ops');
+    if (!tbody) return;
+    const rows = tbody.querySelectorAll('tr.table-row');
+    let totalQty = 0;
+    
+    rows.forEach(tr => {
+        const input = tr.querySelector('input[type="number"]');
+        if (input) {
+            totalQty += parseInt(input.value) || 0;
+        }
+    });
+    
+    const totalSpan = document.getElementById('surg-ops-total-qty');
+    if (totalSpan) {
+        totalSpan.textContent = totalQty;
+    }
+    
+    rows.forEach(tr => {
+        const input = tr.querySelector('input[type="number"]');
+        const pctSpan = tr.querySelector('.row-percentage');
+        if (input && pctSpan) {
+            const qty = parseInt(input.value) || 0;
+            if (totalQty > 0) {
+                const pct = ((qty / totalQty) * 100).toFixed(2);
+                pctSpan.textContent = pct + '%';
+            } else {
+                pctSpan.textContent = '0.00%';
+            }
+        }
+    });
+}
+
 // Tab Swapping
 function switchEntryTab(tabName) {
     document.querySelectorAll('.entry-tab-panel').forEach(p => p.classList.add('hidden'));
@@ -435,27 +515,23 @@ function populateDirectGrids() {
 
     // 4. Surgery Operations Table
     const tbodySurgOps = document.getElementById('tbody-surg-ops');
-    if (tbodySurgOps && operationNames.length && sectors.length) {
+    if (tbodySurgOps && sectors.length) {
         tbodySurgOps.innerHTML = '';
-        const sectorGov = sectors.find(s => s.name.includes('حكومي')) || sectors[0];
-        const sectorOptions = sectors.map(s => `<option value="${s.id}" ${sectorGov && sectorGov.id === s.id ? 'selected' : ''}>${s.name}</option>`).join('');
-
-        operationNames.forEach(o => {
+        surgeryTypeDefinitions.forEach((def, index) => {
             tbodySurgOps.innerHTML += `
-                <tr class="table-row" data-op-id="${o.id}">
-                    <td class="py-2 font-bold">${o.name} <span class="text-[9px] text-slate-400 font-normal">(${o.classification})</span></td>
-                    <td>
-                        <select class="custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 text-[10px] font-bold text-text-main font-['Tajawal']">
-                            ${sectorOptions}
-                        </select>
+                <tr class="table-row" data-op-id="${def.id}">
+                    <td class="py-2.5 text-center text-slate-400 font-bold">${index + 1}</td>
+                    <td class="py-2.5 font-bold">${def.name}</td>
+                    <td class="py-2.5 text-center text-slate-400 font-medium">${def.classification}</td>
+                    <td class="py-2.5 text-center flex justify-center">
+                        <input type="number" min="0" value="0" oninput="updateSurgOpsPercentages()"
+                            class="w-24 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main surg-qty-input">
                     </td>
-                    <td>
-                        <input type="number" min="0" value="0"
-                            class="w-20 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main">
-                    </td>
+                    <td class="py-2.5 text-center text-emerald-600 font-bold text-xs row-percentage">0.00%</td>
                 </tr>
             `;
         });
+        updateSurgOpsPercentages();
     }
 
     // 5. Surgery Doctors Table
@@ -556,6 +632,10 @@ function resetGridInputs(type) {
     else if (type === 'lab_tests') selector = '#tbody-tests-lab input';
     
     document.querySelectorAll(selector).forEach(inp => inp.value = 0);
+    
+    if (type === 'surgeries_ops') {
+        updateSurgOpsPercentages();
+    }
 }
 
 async function clearDatabaseForEdit(type, date) {
@@ -719,16 +799,15 @@ async function toggleEditSurgeriesOps() {
         items.forEach(s => {
             const tr = document.querySelector('#tbody-surg-ops tr[data-op-id="' + s.operation_name_id + '"]');
             if (tr) {
-                const sel = tr.querySelector('select');
-                if (sel) sel.value = s.sector_id;
                 const inp = tr.querySelector('input');
                 if (inp) {
-                    inp.value = (parseInt(inp.value) || 0) + 1;
+                    inp.value = (parseInt(inp.value) || 0) + (s.quantity || 1);
                     found++;
                 }
             }
         });
         if (found > 0) {
+            updateSurgOpsPercentages();
             setEditButtonState(type, true, 'date-surg-op', 'btn-edit-surg-op');
             showToast('تم جلب أعداد العمليات للتعديل', 'success');
         } else {
@@ -1076,10 +1155,11 @@ async function saveSurgeriesOps() {
     const rows = document.querySelectorAll('#tbody-surg-ops tr');
 
     const defaultDoc = entryLookups?.doctors[0]?.id || 1;
+    const sectorGov = entryLookups?.sectors?.find(s => s.name.includes('حكومي')) || entryLookups?.sectors?.[0];
+    const sectorId = sectorGov ? sectorGov.id : 1;
 
     rows.forEach(tr => {
         const opId = tr.getAttribute('data-op-id');
-        const sectorId = tr.querySelector('select').value;
         const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
         if (count > 0) {
