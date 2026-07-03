@@ -40,7 +40,7 @@
                     <button onclick="toggleEditVisitsDoctors()" id="btn-edit-visits-doctors"
                         class="py-1.5 px-3 rounded-xl text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
                         <i data-lucide="edit" class="w-3.5 h-3.5"></i>
-                        <span>تعديل شهر سابق</span>
+                        <span>تعديل</span>
                     </button>
                     <button onclick="saveVisitsDoctors()"
                         class="py-1.5 px-4 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-500 to-rose-500 hover-press flex items-center gap-1.5 shadow-md">
@@ -81,7 +81,7 @@
                         <input type="month" id="date-geo-gov" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="toggleEditGovsVisits()" id="btn-edit-geo-gov"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
                         <button onclick="saveGovsVisits()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-emerald-500 hover-press">حفظ المحافظات</button>
                     </div>
@@ -113,7 +113,7 @@
                         <input type="month" id="date-geo-country" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="toggleEditCountriesVisits()" id="btn-edit-geo-country"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
                         <button onclick="saveCountriesVisits()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-sky-500 hover-press">حفظ الدول</button>
                     </div>
@@ -152,7 +152,7 @@
                         <input type="month" id="date-surg-op" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="toggleEditSurgeriesOps()" id="btn-edit-surg-op"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
                         <button onclick="saveSurgeriesOps()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-purple-500 hover-press">حفظ العمليات</button>
                     </div>
@@ -185,7 +185,7 @@
                         <input type="month" id="date-surg-doc" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="toggleEditSurgeriesDocs()" id="btn-edit-surg-doc"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
                         <button onclick="saveSurgeriesDocs()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-indigo-500 hover-press">حفظ الأطباء</button>
                     </div>
@@ -224,7 +224,7 @@
                         <input type="month" id="date-tests-eye" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="toggleEditEyeTests()" id="btn-edit-tests-eye"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
                         <button onclick="saveEyeTestsGrid()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-orange-500 hover-press">حفظ الفحوصات</button>
                     </div>
@@ -256,7 +256,7 @@
                         <input type="month" id="date-tests-lab" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
                         <button onclick="toggleEditLabTests()" id="btn-edit-tests-lab"
-                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل شهر سابق</button>
+                            class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
                         <button onclick="saveLabTestsGrid()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-purple-500 hover-press">حفظ التحاليل</button>
                     </div>
@@ -536,7 +536,7 @@ function setEditButtonState(type, active, dateInputId, buttonId) {
     } else {
         editStates[type].active = false;
         editStates[type].date = '';
-        btn.innerHTML = '<span>تعديل شهر سابق</span>';
+        btn.innerHTML = '<span>تعديل</span>';
         btn.className = "py-1.5 px-3 rounded-xl text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5";
         if (buttonId !== 'btn-edit-visits-doctors') {
             btn.className = "py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press";
