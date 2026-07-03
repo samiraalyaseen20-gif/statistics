@@ -44,8 +44,21 @@ class ReportController extends Controller
         $country_id     = $r->get('country_id');
 
         // 3. Build filtered base queries
+        $editedMonths = Visit::where('patient_name', 'قيد إحصائي')
+            ->selectRaw("DISTINCT DATE_FORMAT(visit_date, '%Y-%m') as month")
+            ->pluck('month')
+            ->toArray();
+
         $visitsQuery = Visit::whereBetween('visit_date', [$start_date, $end_date])
             ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل']);
+
+        if (!empty($editedMonths)) {
+            $visitsQuery->where(function($q) use ($editedMonths) {
+                $q->where('patient_name', '!=', 'مريض مجهول')
+                  ->orWhereNotIn(\Illuminate\Support\Facades\DB::raw("DATE_FORMAT(visit_date, '%Y-%m')"), $editedMonths);
+            });
+        }
+
         if ($doctor_id)      $visitsQuery->where('doctor_id', $doctor_id);
         if ($clinic_unit_id) $visitsQuery->where('clinic_unit_id', $clinic_unit_id);
         if ($governorate_id) $visitsQuery->where('governorate_id', $governorate_id);
@@ -221,7 +234,12 @@ class ReportController extends Controller
 
     public function comparisonData(Request $r)
     {
-        $getSideStats = function($docId, $startDate, $endDate, $opClass = null) {
+        $editedMonths = Visit::where('patient_name', 'قيد إحصائي')
+            ->selectRaw("DISTINCT DATE_FORMAT(visit_date, '%Y-%m') as month")
+            ->pluck('month')
+            ->toArray();
+
+        $getSideStats = function($docId, $startDate, $endDate, $opClass = null) use ($editedMonths) {
             $startDate = $startDate ?: '2026-05-01';
             $endDate   = $endDate ?: '2026-05-31';
 
@@ -234,6 +252,14 @@ class ReportController extends Controller
 
             $visitsQuery = Visit::whereBetween('visit_date', [$startDate, $endDate])
                 ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل']);
+
+            if (!empty($editedMonths)) {
+                $visitsQuery->where(function($q) use ($editedMonths) {
+                    $q->where('patient_name', '!=', 'مريض مجهول')
+                      ->orWhereNotIn(\Illuminate\Support\Facades\DB::raw("DATE_FORMAT(visit_date, '%Y-%m')"), $editedMonths);
+                });
+            }
+
             if ($docId) $visitsQuery->where('doctor_id', $docId);
 
             $surgeriesQuery = Surgery::whereBetween('op_date', [$startDate, $endDate]);

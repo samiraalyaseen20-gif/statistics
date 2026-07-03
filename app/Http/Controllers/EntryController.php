@@ -129,9 +129,22 @@ class EntryController extends Controller
         $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
         $defaultUnit = ClinicUnit::first();
 
+        $editedMonths = Visit::where('patient_name', 'قيد إحصائي')
+            ->selectRaw("DISTINCT DATE_FORMAT(visit_date, '%Y-%m') as month")
+            ->pluck('month')
+            ->toArray();
+
         $q = Visit::with(['doctor','clinicUnit','governorate','country'])
-            ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل'])
-            ->when($r->start_date && $r->end_date, function($q) use ($r) {
+            ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل']);
+
+        if (!empty($editedMonths)) {
+            $q->where(function($query) use ($editedMonths) {
+                $query->where('patient_name', '!=', 'مريض مجهول')
+                      ->orWhereNotIn(\Illuminate\Support\Facades\DB::raw("DATE_FORMAT(visit_date, '%Y-%m')"), $editedMonths);
+            });
+        }
+
+        $q->when($r->start_date && $r->end_date, function($q) use ($r) {
                 $start = $r->start_date;
                 $end = $r->end_date;
                 if (strlen($start) === 7) $start = $start . '-01';
