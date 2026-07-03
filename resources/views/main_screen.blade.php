@@ -995,6 +995,7 @@
                 governorates: 'المحافظات',
                 test_types: 'أنواع الفحص',
                 operations: 'العمليات',
+                classifications: 'تصنيفات العمليات',
                 sectors: 'القطاعات',
                 clinic_units: 'إدارة الاستشاريات العامة',
                 lab_test_types: 'التحاليل',
@@ -1019,6 +1020,7 @@
             if (pageId === 'governorates' && typeof window.initGovernoratesPage === 'function') window.initGovernoratesPage();
             if (pageId === 'test_types' && typeof window.initTestTypesPage === 'function') window.initTestTypesPage();
             if (pageId === 'operations' && typeof window.initOperationsPage === 'function') window.initOperationsPage();
+            if (pageId === 'classifications' && typeof window.initClassificationsPage === 'function') window.initClassificationsPage();
             if (pageId === 'sectors' && typeof window.initSectorsPage === 'function') window.initSectorsPage();
             if (pageId === 'clinic_units' && typeof window.initClinicUnitsPage === 'function') window.initClinicUnitsPage();
             if (pageId === 'lab_test_types' && typeof window.initLabTestTypesPage === 'function') window.initLabTestTypesPage();
