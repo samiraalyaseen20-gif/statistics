@@ -213,6 +213,7 @@ if (file_exists(base_path('iraq.svg'))) {
         </div>
     </div>
 
+
     <!-- 5. تصنيف العمليات الجراحية (جدول 7) -->
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
@@ -225,38 +226,12 @@ if (file_exists(base_path('iraq.svg'))) {
             <div class="xl:col-span-1 flex justify-center">
                 <svg id="svg-report-7" viewBox="0 0 520 220" class="w-full max-w-[420px] h-[220px] overflow-visible"></svg>
             </div>
-            <!-- Legend / Stats Table -->
+            <!-- Table driven by JS (same API as Edit button) -->
             <div class="xl:col-span-2">
-                @php
-                $classificationsOrder = [
-                    'صغرى' => ['label' => 'العمليات الصغرى', 'bg' => 'bg-yellow-400/10', 'text' => 'text-yellow-700'],
-                    'وسطى (حقن)' => ['label' => 'العمليات الوسطى (حقن العين)', 'bg' => 'bg-blue-400/10', 'text' => 'text-blue-700'],
-                    'وسطى (ليزر)' => ['label' => 'العمليات الوسطى (الليزر)', 'bg' => 'bg-sky-400/10', 'text' => 'text-sky-700'],
-                    'كبرى' => ['label' => 'العمليات الكبرى', 'bg' => 'bg-orange-400/10', 'text' => 'text-orange-700'],
-                    'فوق الكبرى' => ['label' => 'العمليات فوق الكبرى', 'bg' => 'bg-rose-400/10', 'text' => 'text-rose-700'],
-                    'خاصة' => ['label' => 'العمليات الخاصة', 'bg' => 'bg-purple-400/10', 'text' => 'text-purple-700']
-                ];
-                $sectorsList = ['قطاع الصحة', 'عتبة الخاص', 'عتبة العام'];
-                
-                $colTotals = array_fill(0, count($sectorsList), 0);
-                $grandTotal = 0;
-                $rowTotals = [];
-                
-                foreach ($classificationsOrder as $key => $info) {
-                    $rowTotal = 0;
-                    foreach ($sectorsList as $secIdx => $sec) {
-                        $val = $surgeriesByCatSector
-                            ->filter(fn($item) => $item->classification === $key && $item->sector === $sec)
-                            ->sum('total');
-                        $colTotals[$secIdx] += $val;
-                        $rowTotal += $val;
-                    }
-                    $rowTotals[$key] = $rowTotal;
-                    $grandTotal += $rowTotal;
-                }
-                @endphp
-                
-                <table class="custom-table text-center text-[11px]" style="min-width: 100%">
+                <div id="table7-loading" class="text-center text-xs text-slate-400 py-6">
+                    <i data-lucide="loader" class="w-4 h-4 inline animate-spin mr-1"></i> جاري تحميل بيانات التصنيف...
+                </div>
+                <table id="table7-content" class="custom-table text-center text-[11px] hidden" style="min-width:100%">
                     <thead>
                         <tr class="text-[10px] font-bold text-slate-400">
                             <th class="text-right pr-3">تصنيف العمليات الجراحية</th>
@@ -267,56 +242,15 @@ if (file_exists(base_path('iraq.svg'))) {
                             <th class="bg-violet-400/20 font-bold text-violet-800 dark:text-violet-300">النسبة المئوية</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach($classificationsOrder as $key => $info)
-                        @php
-                        $rowTotal = $rowTotals[$key] ?? 0;
-                        $rowPct = $grandTotal > 0 ? round(($rowTotal / $grandTotal) * 100) : 0;
-                        @endphp
-                        <tr class="table-row">
-                            <td class="text-right pr-3 font-bold">{{ $info['label'] }}</td>
-                            @foreach($sectorsList as $secIdx => $sec)
-                            @php
-                            $val = $surgeriesByCatSector
-                                ->filter(fn($item) => $item->classification === $key && $item->sector === $sec)
-                                ->sum('total');
-                            @endphp
-                            <td class="{{ $val == 0 ? 'opacity-30' : '' }} font-bold">{{ $val }}</td>
-                            @endforeach
-                            <td class="font-extrabold text-pink-600 text-xs">{{ $rowTotal }}</td>
-                            <td class="bg-violet-400/10 text-violet-700 font-extrabold text-xs">{{ $rowPct }}%</td>
-                        </tr>
-                        @endforeach
-                        
-                        <!-- Col Totals Row -->
-                        <tr class="table-row font-extrabold text-rose-600 text-xs">
-                            <td class="text-right pr-3 text-sm">المجموع</td>
-                            @foreach($colTotals as $total)
-                            <td class="bg-slate-100/5">{{ $total }}</td>
-                            @endforeach
-                            <td class="text-sm font-black text-pink-600">{{ $grandTotal }}</td>
-                            <td class="bg-violet-400/15"></td>
-                        </tr>
-                        
-                        <!-- Col Percentage Row -->
-                        <tr class="table-row font-extrabold text-emerald-600 text-[10px]">
-                            <td class="text-right pr-3 font-bold text-[9px]">النسبة %</td>
-                            @foreach($colTotals as $total)
-                            @php
-                            $colPct = $grandTotal > 0 ? round(($total / $grandTotal) * 100) : 0;
-                            @endphp
-                            <td class="bg-emerald-400/5 font-bold">{{ $colPct }}%</td>
-                            @endforeach
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="table7-tbody"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
+
     <!-- التوزيع الجغرافي للعمليات الجراحية (جدول 8 و 9) -->
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Inside Iraq (Vertical Columns) -->
         <div class="custom-card p-6 rounded-2xl">
@@ -1293,7 +1227,112 @@ window.initReportsPage = function() {
         _chartsInitialized = true;
         setTimeout(() => {
             renderAll2DArrowCharts();
+            loadTable7();
         }, 150);
     }
 };
+
+// ── جدول (7): جلب بيانات التصنيف من نفس API التي يستخدمها زر "تعديل" ──
+async function loadTable7() {
+    const CLS_ROWS = [
+        { key: 'صغرى',        label: 'العمليات الصغرى' },
+        { key: 'وسطى (حقن)',  label: 'العمليات الوسطى (حقن العين)' },
+        { key: 'وسطى (ليزر)', label: 'العمليات الوسطى (الليزر)' },
+        { key: 'كبرى',        label: 'العمليات الكبرى' },
+        { key: 'فوق الكبرى',  label: 'العمليات فوق الكبرى' },
+        { key: 'خاصة',        label: 'العمليات الخاصة' },
+    ];
+    const CLS_SECTORS = ['قطاع الصحة', 'عتبة الخاص', 'عتبة العام'];
+
+    // جلب نطاق التاريخ من فلاتر التقرير
+    const fromVal = document.getElementById('report-date-from')?.value || '{{ substr($start_date ?? date("Y-m"), 0, 7) }}';
+    const toVal   = document.getElementById('report-date-to')?.value   || '{{ substr($end_date   ?? date("Y-m"), 0, 7) }}';
+
+    const startDate = fromVal.length === 7 ? fromVal + '-01' : fromVal;
+    const endDate   = toVal.length   === 7 ? toVal   + '-01' : toVal;
+
+    try {
+        const res  = await fetch(`/api/surgeries?start_date=${startDate}&end_date=${endDate}&per_page=2000&type=surgeries_cls`);
+        const data = await res.json();
+        const items = data.data || data; // [{classification, sector_name, quantity}]
+
+        // تجميع: cls × sector → مجموع الأعداد
+        const grid = {};
+        CLS_ROWS.forEach(r => { grid[r.key] = {}; CLS_SECTORS.forEach(s => { grid[r.key][s] = 0; }); });
+
+        items.forEach(item => {
+            const cls = item.classification || '';
+            const sec = item.sector_name || item.sector || '';
+            const qty = parseInt(item.quantity) || 1;
+            if (grid[cls] !== undefined && grid[cls][sec] !== undefined) {
+                grid[cls][sec] += qty;
+            }
+        });
+
+        // حساب الإجماليات
+        let grandTotal = 0;
+        const rowTotals = {};
+        const colTotals = [0, 0, 0];
+
+        CLS_ROWS.forEach(r => {
+            let rowT = 0;
+            CLS_SECTORS.forEach((s, si) => {
+                const v = grid[r.key][s];
+                rowT += v;
+                colTotals[si] += v;
+            });
+            rowTotals[r.key] = rowT;
+            grandTotal += rowT;
+        });
+
+        // بناء الـ tbody
+        const tbody = document.getElementById('table7-tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        CLS_ROWS.forEach(r => {
+            const rowT = rowTotals[r.key];
+            const pct  = grandTotal > 0 ? Math.round((rowT / grandTotal) * 100) : 0;
+            let tr = `<tr class="table-row">
+                <td class="text-right pr-3 font-bold">${r.label}</td>`;
+            CLS_SECTORS.forEach(s => {
+                const v = grid[r.key][s];
+                tr += `<td class="${v === 0 ? 'opacity-30' : ''} font-bold">${v}</td>`;
+            });
+            tr += `<td class="font-extrabold text-pink-600 text-xs">${rowT}</td>
+                   <td class="bg-violet-400/10 text-violet-700 font-extrabold text-xs">${pct}%</td>
+            </tr>`;
+            tbody.innerHTML += tr;
+        });
+
+        // صف إجمالي الأعمدة
+        let totalRow = `<tr class="table-row font-extrabold text-rose-600 text-xs">
+            <td class="text-right pr-3 text-sm">المجموع</td>`;
+        colTotals.forEach(t => { totalRow += `<td class="bg-slate-100/5">${t}</td>`; });
+        totalRow += `<td class="text-sm font-black text-pink-600">${grandTotal}</td><td class="bg-violet-400/15"></td></tr>`;
+
+        // صف نسب الأعمدة
+        let pctRow = `<tr class="table-row font-extrabold text-emerald-600 text-[10px]">
+            <td class="text-right pr-3 font-bold text-[9px]">النسبة %</td>`;
+        colTotals.forEach(t => {
+            const p = grandTotal > 0 ? Math.round((t / grandTotal) * 100) : 0;
+            pctRow += `<td class="bg-emerald-400/5 font-bold">${p}%</td>`;
+        });
+        pctRow += `<td></td><td></td></tr>`;
+
+        tbody.innerHTML += totalRow + pctRow;
+
+        // إظهار الجدول وإخفاء loading
+        document.getElementById('table7-loading')?.classList.add('hidden');
+        document.getElementById('table7-content')?.classList.remove('hidden');
+
+        // تحديث الرسم البياني بنفس البيانات
+        if (typeof renderAll2DArrowCharts === 'function') renderAll2DArrowCharts();
+
+    } catch(e) {
+        const loading = document.getElementById('table7-loading');
+        if (loading) loading.innerHTML = '<span class="text-rose-400">تعذّر تحميل بيانات التصنيف</span>';
+    }
+}
+
 </script>
