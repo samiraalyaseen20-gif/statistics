@@ -157,13 +157,13 @@
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-purple-500 hover-press">حفظ العمليات</button>
                     </div>
                 </div>
+                <div class="overflow-y-auto max-h-[450px]">
                     <table class="w-full text-right border-collapse">
                         <thead>
-                            <tr class="border-b border-slate-200/10 text-[9px] font-bold text-slate-400 text-center">
-                                <th class="pb-1 text-right">نوع العملية الجراحية</th>
-                                <th class="pb-1">قطاع الصحة</th>
-                                <th class="pb-1">عتبة الخاص</th>
-                                <th class="pb-1">عتبة العام</th>
+                            <tr class="border-b border-slate-200/10 text-[9px] font-bold text-slate-400">
+                                <th class="pb-1">نوع العملية الجراحية</th>
+                                <th class="pb-1">القطاع الافتراضي</th>
+                                <th class="pb-1">العدد</th>
                             </tr>
                         </thead>
                         <tbody id="tbody-surg-ops" class="divide-y divide-slate-200/5 text-[10px] font-bold text-text-main">
@@ -437,22 +437,22 @@ function populateDirectGrids() {
     const tbodySurgOps = document.getElementById('tbody-surg-ops');
     if (tbodySurgOps && operationNames.length && sectors.length) {
         tbodySurgOps.innerHTML = '';
-        const sortedSectors = [...sectors].sort((a,b) => a.id - b.id);
+        const sectorGov = sectors.find(s => s.name.includes('حكومي')) || sectors[0];
+        const sectorOptions = sectors.map(s => `<option value="${s.id}" ${sectorGov && sectorGov.id === s.id ? 'selected' : ''}>${s.name}</option>`).join('');
 
         operationNames.forEach(o => {
-            let cells = `<td class="py-2 font-bold text-right">${o.name} <span class="text-[9px] text-slate-400 font-normal">(${o.classification})</span></td>`;
-            sortedSectors.forEach(sec => {
-                cells += `
-                    <td class="text-center">
-                        <input type="number" min="0" value="0"
-                            data-sector-id="${sec.id}"
-                            class="w-16 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1 text-xs font-bold text-text-main">
-                    </td>
-                `;
-            });
             tbodySurgOps.innerHTML += `
                 <tr class="table-row" data-op-id="${o.id}">
-                    ${cells}
+                    <td class="py-2 font-bold">${o.name} <span class="text-[9px] text-slate-400 font-normal">(${o.classification})</span></td>
+                    <td>
+                        <select class="custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 text-[10px] font-bold text-text-main font-['Tajawal']">
+                            ${sectorOptions}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" min="0" value="0"
+                            class="w-20 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main">
+                    </td>
                 </tr>
             `;
         });
@@ -719,7 +719,9 @@ async function toggleEditSurgeriesOps() {
         items.forEach(s => {
             const tr = document.querySelector('#tbody-surg-ops tr[data-op-id="' + s.operation_name_id + '"]');
             if (tr) {
-                const inp = tr.querySelector('input[data-sector-id="' + s.sector_id + '"]');
+                const sel = tr.querySelector('select');
+                if (sel) sel.value = s.sector_id;
+                const inp = tr.querySelector('input');
                 if (inp) {
                     inp.value = (parseInt(inp.value) || 0) + 1;
                     found++;
@@ -1077,31 +1079,27 @@ async function saveSurgeriesOps() {
 
     rows.forEach(tr => {
         const opId = tr.getAttribute('data-op-id');
-        const inputs = tr.querySelectorAll('input[type="number"]');
+        const sectorId = tr.querySelector('select').value;
+        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
-        inputs.forEach(input => {
-            const count = parseInt(input.value) || 0;
-            if (count > 0) {
-                const sectorId = input.getAttribute('data-sector-id');
-
-                promises.push(
-                    fetch('/api/surgeries', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            doctor_id: defaultDoc,
-                            operation_name_id: opId,
-                            sector_id: sectorId,
-                            op_date: date,
-                            quantity: count
-                        })
+        if (count > 0) {
+            promises.push(
+                fetch('/api/surgeries', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        doctor_id: defaultDoc,
+                        operation_name_id: opId,
+                        sector_id: sectorId,
+                        op_date: date,
+                        quantity: count
                     })
-                );
-            }
-        });
+                })
+            );
+        }
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
