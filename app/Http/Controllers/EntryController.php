@@ -509,7 +509,7 @@ class EntryController extends Controller
             'patient_name'      => 'nullable|string|max:255',
             'doctor_id'         => 'required|exists:doctors,id',
             'operation_name_id' => 'required|exists:operation_names,id',
-            'sector_id'         => 'required|exists:sectors,id',
+            'sector_id'         => 'nullable|exists:sectors,id',
             'governorate_id'    => 'nullable|exists:governorates,id',
             'country_id'        => 'nullable|exists:countries,id',
             'op_date'           => 'required|date',
