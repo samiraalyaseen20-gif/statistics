@@ -163,28 +163,28 @@
                 </div>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-right border-collapse">
+                <table class="custom-table text-center" style="font-size:11px">
                     <thead>
-                        <tr class="border-b border-slate-200/10 text-xs font-bold text-slate-400">
-                            <th class="pb-2 text-center w-12">ت</th>
-                            <th class="pb-2">اسم العملية</th>
-                            <th class="pb-2 text-center w-32">تصنيف العملية</th>
-                            <th class="pb-2 text-center w-36">عددها</th>
-                            <th class="pb-2 text-center w-32">النسبة المئوية</th>
+                        <tr>
+                            <th class="w-10">ت</th>
+                            <th class="text-right pr-2">اسم العملية</th>
+                            <th class="bg-violet-400/20">تصنيف العملية</th>
+                            <th class="bg-yellow-400/20 w-32">العدد</th>
+                            <th class="bg-emerald-400/20 w-32">النسبة %</th>
                         </tr>
                     </thead>
-                    <tbody id="tbody-surg-ops" class="divide-y divide-slate-200/5 text-[11px] font-bold text-text-main">
+                    <tbody id="tbody-surg-ops" class="text-[11px] font-bold text-text-main">
                         {{-- Populated dynamically --}}
                     </tbody>
                     <tfoot>
-                        <tr class="border-t border-slate-200/20 bg-slate-100/5 font-extrabold">
-                            <td class="py-3 text-center"></td>
-                            <td class="py-3 text-rose-500 font-bold text-xs">المجموع</td>
-                            <td class="py-3 text-center"></td>
-                            <td class="py-3 text-center">
-                                <span id="surg-ops-total-qty" class="inline-block px-3 py-1 bg-yellow-400 text-slate-900 rounded-md font-black text-xs min-w-16 text-center">0</span>
+                        <tr class="border-t-2 border-slate-300/20">
+                            <td class="py-3"></td>
+                            <td class="py-3 text-right pr-2 text-pink-600 font-extrabold text-xs">المجموع الكلي</td>
+                            <td class="py-3"></td>
+                            <td class="py-3 bg-yellow-400/20">
+                                <span id="surg-ops-total-qty" class="inline-block px-3 py-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-lg font-black text-xs min-w-16 text-center">0</span>
                             </td>
-                            <td class="py-3 text-center text-rose-600 text-xs font-black">%</td>
+                            <td class="py-3 bg-emerald-400/20 text-emerald-600 font-black">100%</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -214,16 +214,37 @@
                 </div>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-right border-collapse">
+                <table class="custom-table text-center" style="font-size:11px">
                     <thead>
-                        <tr class="border-b border-slate-200/10 text-xs font-bold text-slate-400">
-                            <th class="pb-2">الطبيب الاستشاري</th>
-                            <th class="pb-2 text-center w-48">عدد العمليات الإجمالي</th>
+                        <tr>
+                            <th class="w-10 text-center">ت</th>
+                            <th class="text-right pr-2">الطبيب الاستشاري</th>
+                            <th class="bg-yellow-400/20">صغرى</th>
+                            <th class="bg-blue-400/20">وسطى</th>
+                            <th class="bg-orange-400/20">كبرى</th>
+                            <th class="bg-rose-400/20">فوق الكبرى</th>
+                            <th class="bg-purple-400/20">خاصة</th>
+                            <th class="text-pink-600 font-extrabold">المجموع</th>
                         </tr>
                     </thead>
-                    <tbody id="tbody-surg-docs" class="divide-y divide-slate-200/5 text-[11px] font-bold text-text-main">
+                    <tbody id="tbody-surg-docs" class="text-[11px] font-bold text-text-main">
                         {{-- Populated dynamically --}}
                     </tbody>
+                    <tfoot>
+                        <tr class="border-t-2 border-slate-300/20">
+                            <td class="py-3" colspan="2">
+                                <span class="text-pink-600 font-extrabold">المجموع الكلي</span>
+                            </td>
+                            <td class="py-3 bg-yellow-400/20" id="surg-docs-total-small">0</td>
+                            <td class="py-3 bg-blue-400/20" id="surg-docs-total-mid">0</td>
+                            <td class="py-3 bg-orange-400/20" id="surg-docs-total-major">0</td>
+                            <td class="py-3 bg-rose-400/20" id="surg-docs-total-super">0</td>
+                            <td class="py-3 bg-purple-400/20" id="surg-docs-total-special">0</td>
+                            <td class="py-3">
+                                <span id="surg-docs-grand-total" class="inline-block px-3 py-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-lg font-black text-xs min-w-12">0</span>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -336,6 +357,52 @@ function updateSurgOpsPercentages() {
             }
         }
     });
+}
+
+function updateRowClassColor(selectEl) {
+    const clsColorMap = {
+        'صغرى':        'bg-yellow-400/10',
+        'وسطى':        'bg-blue-400/10',
+        'وسطى (حقن)': 'bg-blue-400/10',
+        'وسطى (ليزر)':'bg-sky-400/10',
+        'كبرى':        'bg-orange-400/10',
+        'فوق الكبرى':  'bg-rose-400/10',
+        'خاصة':        'bg-purple-400/10',
+    };
+    const td = selectEl.closest('td');
+    if (!td) return;
+    // Remove old cls bg
+    Object.values(clsColorMap).forEach(cls => td.classList.remove(cls));
+    td.classList.add(clsColorMap[selectEl.value] || 'bg-slate-400/10');
+}
+
+function updateSurgDocsTotals() {
+    const tbody = document.getElementById('tbody-surg-docs');
+    if (!tbody) return;
+    const clsCols = ['صغرى', 'وسطى', 'كبرى', 'فوق الكبرى', 'خاصة'];
+    const footerIds = ['surg-docs-total-small', 'surg-docs-total-mid', 'surg-docs-total-major', 'surg-docs-total-super', 'surg-docs-total-special'];
+    const colTotals = [0, 0, 0, 0, 0];
+    let grandTotal = 0;
+
+    tbody.querySelectorAll('tr.table-row').forEach(tr => {
+        let rowTotal = 0;
+        clsCols.forEach((cls, ci) => {
+            const inp = tr.querySelector(`input[data-cls="${cls}"]`);
+            const val = parseInt(inp?.value) || 0;
+            colTotals[ci] += val;
+            rowTotal += val;
+        });
+        grandTotal += rowTotal;
+        const rowTotalCell = tr.querySelector('.row-doc-total');
+        if (rowTotalCell) rowTotalCell.textContent = rowTotal;
+    });
+
+    footerIds.forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = colTotals[i];
+    });
+    const grand = document.getElementById('surg-docs-grand-total');
+    if (grand) grand.textContent = grandTotal;
 }
 
 // Tab Swapping
@@ -495,25 +562,37 @@ function populateDirectGrids() {
         tbodySurgOps.innerHTML = '';
         const dbOps = entryLookups.operationNames || entryLookups.operation_names || [];
         const dbClasses = entryLookups.classifications || [];
-        
+
+        // Color map per classification
+        const clsColorMap = {
+            'صغرى':        { bg: 'bg-yellow-400/10',  text: 'text-yellow-700'  },
+            'وسطى':        { bg: 'bg-blue-400/10',    text: 'text-blue-700'    },
+            'وسطى (حقن)': { bg: 'bg-blue-400/10',    text: 'text-blue-700'    },
+            'وسطى (ليزر)':{ bg: 'bg-sky-400/10',     text: 'text-sky-700'     },
+            'كبرى':        { bg: 'bg-orange-400/10',  text: 'text-orange-700'  },
+            'فوق الكبرى':  { bg: 'bg-rose-400/10',    text: 'text-rose-700'    },
+            'خاصة':        { bg: 'bg-purple-400/10',  text: 'text-purple-700'  },
+        };
+
         surgeryTypeOrder.forEach((opId, index) => {
             const dbOp = dbOps.find(o => o.id === opId);
             if (dbOp) {
                 const defaultClass = dbOp.classification || (dbClasses[0] ? dbClasses[0].name : '');
+                const clsColor = clsColorMap[defaultClass] || { bg: 'bg-slate-400/10', text: 'text-slate-600' };
                 tbodySurgOps.innerHTML += `
                     <tr class="table-row" data-op-id="${dbOp.id}">
                         <td class="py-2.5 text-center text-slate-400 font-bold">${index + 1}</td>
-                        <td class="py-2.5 font-bold">${dbOp.name}</td>
-                        <td class="py-2.5 text-center flex justify-center">
-                            <select class="surg-class-select custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main text-[11px] font-['Tajawal'] w-28">
+                        <td class="py-2.5 text-right pr-2 font-bold">${dbOp.name}</td>
+                        <td class="py-2.5 text-center ${clsColor.bg}">
+                            <select class="surg-class-select custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main text-[11px] font-['Tajawal'] w-32" onchange="updateRowClassColor(this)">
                                 ${dbClasses.map(c => `<option value="${c.name}" ${c.name === defaultClass ? 'selected' : ''}>${c.name}</option>`).join('')}
                             </select>
                         </td>
-                        <td class="py-2.5 text-center flex justify-center">
+                        <td class="py-2.5 text-center bg-yellow-400/10">
                             <input type="number" min="0" value="0" oninput="updateSurgOpsPercentages()"
                                 class="w-24 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main surg-qty-input">
                         </td>
-                        <td class="py-2.5 text-center text-emerald-600 font-bold text-xs row-percentage">0.00%</td>
+                        <td class="py-2.5 text-center bg-emerald-400/10 text-emerald-600 font-bold text-xs row-percentage">0.00%</td>
                     </tr>
                 `;
             }
@@ -521,21 +600,30 @@ function populateDirectGrids() {
         updateSurgOpsPercentages();
     }
 
-    // 5. Surgery Doctors Table
+    // 5. Surgery Doctors Table — 6 classification columns matching Report Table 10
     const tbodySurgDocs = document.getElementById('tbody-surg-docs');
     if (tbodySurgDocs && doctors.length) {
         tbodySurgDocs.innerHTML = '';
-        doctors.forEach(doc => {
-            tbodySurgDocs.innerHTML += `
-                <tr class="table-row" data-doctor-id="${doc.id}">
-                    <td class="py-2 font-bold">${doc.name}</td>
-                    <td>
+        const clsCols = ['صغرى', 'وسطى', 'كبرى', 'فوق الكبرى', 'خاصة'];
+        const clsBg   = ['bg-yellow-400/10', 'bg-blue-400/10', 'bg-orange-400/10', 'bg-rose-400/10', 'bg-purple-400/10'];
+
+        doctors.forEach((doc, idx) => {
+            let cells = `<td class="py-2.5 text-center text-slate-400 font-bold">${idx + 1}</td>
+                         <td class="py-2.5 text-right pr-2 font-bold">${doc.name}</td>`;
+            clsCols.forEach((cls, ci) => {
+                cells += `
+                    <td class="py-2.5 ${clsBg[ci]}">
                         <input type="number" min="0" value="0"
-                            class="w-20 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main">
-                    </td>
-                </tr>
-            `;
+                            data-cls="${cls}"
+                            oninput="updateSurgDocsTotals()"
+                            class="w-20 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1 text-xs font-bold text-text-main">
+                    </td>`;
+            });
+            // Row total cell
+            cells += `<td class="py-2.5 font-extrabold text-pink-600 row-doc-total">0</td>`;
+            tbodySurgDocs.innerHTML += `<tr class="table-row" data-doctor-id="${doc.id}">${cells}</tr>`;
         });
+        updateSurgDocsTotals();
     }
 
     // 6. Eye Tests Table
@@ -1200,7 +1288,7 @@ async function saveSurgeriesOps() {
     }
 }
 
-// 5. Save Surgeries by Doctors
+// 5. Save Surgeries by Doctors — saves each classification column separately
 async function saveSurgeriesDocs() {
     const monthVal = document.getElementById('date-surg-doc').value;
     if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
@@ -1215,32 +1303,35 @@ async function saveSurgeriesDocs() {
 
     const promises = [];
     const rows = document.querySelectorAll('#tbody-surg-docs tr');
-
-    const defaultOp = entryLookups?.operationNames[0]?.id || 1;
-    const defaultSector = entryLookups?.sectors[0]?.id || 1;
+    const clsCols = ['صغرى', 'وسطى', 'كبرى', 'فوق الكبرى', 'خاصة'];
+    const defaultOp = entryLookups?.operationNames?.[0]?.id || 1;
+    const defaultSector = entryLookups?.sectors?.[0]?.id || 1;
 
     rows.forEach(tr => {
         const docId = tr.getAttribute('data-doctor-id');
-        const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
-
-        if (count > 0) {
-            promises.push(
-                fetch('/api/surgeries', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        doctor_id: docId,
-                        operation_name_id: defaultOp,
-                        sector_id: defaultSector,
-                        op_date: date,
-                        quantity: count
+        clsCols.forEach(cls => {
+            const inp = tr.querySelector(`input[data-cls="${cls}"]`);
+            const count = parseInt(inp?.value) || 0;
+            if (count > 0) {
+                promises.push(
+                    fetch('/api/surgeries', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            doctor_id: docId,
+                            operation_name_id: defaultOp,
+                            sector_id: defaultSector,
+                            op_date: date,
+                            quantity: count,
+                            classification: cls
+                        })
                     })
-                })
-            );
-        }
+                );
+            }
+        });
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
