@@ -437,15 +437,42 @@
 <script>
 // ══════════════ SURGERY CLASSIFICATION × SECTORS TAB ══════════════
 
-// التصنيفات الثابتة بالترتيب
-const CLS_ROWS = [
-    { key: 'صغرى',       label: 'العمليات الصغرى',              rowBg: 'bg-yellow-400/5'  },
-    { key: 'وسطى (حقن)', label: 'العمليات الوسطى (حقن العين)',  rowBg: 'bg-blue-400/5'    },
-    { key: 'وسطى (ليزر)',label: 'العمليات الوسطى (الليزر)',     rowBg: 'bg-sky-400/5'     },
-    { key: 'كبرى',       label: 'العمليات الكبرى',              rowBg: 'bg-orange-400/5'  },
-    { key: 'فوق الكبرى', label: 'العمليات فوق الكبرى',          rowBg: 'bg-rose-400/5'    },
-    { key: 'خاصة',       label: 'العمليات الخاصة',              rowBg: 'bg-purple-400/5'  },
-];
+// جلب التصنيفات ديناميكياً من إدارة تصنيفات العمليات بقاعدة البيانات
+function getDynamicClsRows() {
+    const dbClasses = entryLookups?.classifications || [];
+    const clsBgMap = {
+        'صغرى':        'bg-yellow-400/5',
+        'وسطى':        'bg-blue-400/5',
+        'وسطى (حقن)': 'bg-blue-400/5',
+        'وسطى (ليزر)':'bg-sky-400/5',
+        'كبرى':        'bg-orange-400/5',
+        'فوق الكبرى':  'bg-rose-400/5',
+        'خاصة':        'bg-purple-400/5',
+    };
+    
+    if (dbClasses.length > 0) {
+        return dbClasses.map(c => {
+            // نتحقق إن كان الاسم يحتوي على كلمة "العمليات" لمنع التكرار في التسمية
+            const name = c.name;
+            const label = name.includes('العمليات') ? name : 'العمليات ' + name;
+            return {
+                key: name,
+                label: label,
+                rowBg: clsBgMap[name] || 'bg-slate-400/5'
+            };
+        });
+    }
+    
+    // Fallback في حال عدم توفر بيانات
+    return [
+        { key: 'صغرى',       label: 'العمليات الصغرى',              rowBg: 'bg-yellow-400/5'  },
+        { key: 'وسطى (حقن)', label: 'العمليات الوسطى (حقن العين)',  rowBg: 'bg-blue-400/5'    },
+        { key: 'وسطى (ليزر)',label: 'العمليات الوسطى (الليزر)',     rowBg: 'bg-sky-400/5'     },
+        { key: 'كبرى',       label: 'العمليات الكبرى',              rowBg: 'bg-orange-400/5'  },
+        { key: 'فوق الكبرى', label: 'العمليات فوق الكبرى',          rowBg: 'bg-rose-400/5'    },
+        { key: 'خاصة',       label: 'العمليات الخاصة',              rowBg: 'bg-purple-400/5'  },
+    ];
+}
 
 // القطاعات بنفس ترتيب الأعمدة (الأسماء في قاعدة البيانات)
 const CLS_SECTORS = ['قطاع الصحة', 'عتبة الخاص', 'عتبة العام'];
@@ -455,8 +482,9 @@ function buildSurgClsTable() {
     const tbody = document.getElementById('tbody-surg-cls');
     if (!tbody) return;
     tbody.innerHTML = '';
+    const dynamicRows = getDynamicClsRows();
 
-    CLS_ROWS.forEach((row, ri) => {
+    dynamicRows.forEach((row, ri) => {
         let cells = `<td class="py-2.5 text-right pr-3 font-bold ${row.rowBg}">${row.label}</td>`;
         CLS_SECTORS.forEach((sec, si) => {
             cells += `
@@ -480,24 +508,27 @@ function buildSurgClsTable() {
 function recalcSurgCls() {
     const grand = { total: 0 };
     const colTotals = [0, 0, 0];
-    const rowTotals = Array(CLS_ROWS.length).fill(0);
+    const dynamicRows = getDynamicClsRows();
+    const rowTotals = Array(dynamicRows.length).fill(0);
 
     document.querySelectorAll('#tbody-surg-cls .surg-cls-inp').forEach(inp => {
         const val  = parseInt(inp.value) || 0;
         const ri   = parseInt(inp.closest('tr').dataset.ri);
         const si   = parseInt(inp.dataset.si);
-        rowTotals[ri] += val;
+        if (ri < rowTotals.length) {
+            rowTotals[ri] += val;
+        }
         colTotals[si]  += val;
         grand.total    += val;
     });
 
     // Update row totals & percentages
-    CLS_ROWS.forEach((_, ri) => {
+    dynamicRows.forEach((_, ri) => {
         const rt  = document.getElementById(`cls-row-total-${ri}`);
         const rp  = document.getElementById(`cls-row-pct-${ri}`);
-        if (rt) rt.textContent = rowTotals[ri];
+        if (rt) rt.textContent = rowTotals[ri] || 0;
         if (rp) rp.textContent = grand.total > 0
-            ? ((rowTotals[ri] / grand.total) * 100).toFixed(0) + '%'
+            ? (((rowTotals[ri] || 0) / grand.total) * 100).toFixed(0) + '%'
             : '0%';
     });
 
