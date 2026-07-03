@@ -442,6 +442,7 @@ class EntryController extends Controller
             'governorate_id'    => 'nullable|exists:governorates,id',
             'country_id'        => 'nullable|exists:countries,id',
             'op_date'           => 'required|date',
+            'classification'    => 'nullable|string',
             'quantity'          => 'nullable|integer|min:1'
         ]);
 
@@ -457,7 +458,8 @@ class EntryController extends Controller
                 'sector_id'         => $r->sector_id,
                 'governorate_id'    => $r->governorate_id,
                 'country_id'        => $r->country_id,
-                'op_date'           => $r->op_date
+                'op_date'           => $r->op_date,
+                'classification'    => $r->classification
             ]);
         }
 
@@ -481,9 +483,10 @@ class EntryController extends Controller
             'governorate_id'    => 'nullable|exists:governorates,id',
             'country_id'        => 'nullable|exists:countries,id',
             'op_date'           => 'required|date',
+            'classification'    => 'nullable|string',
         ]);
         
-        $surgery->update($r->only(['patient_name', 'doctor_id', 'operation_name_id', 'sector_id', 'governorate_id', 'country_id', 'op_date']));
+        $surgery->update($r->only(['patient_name', 'doctor_id', 'operation_name_id', 'sector_id', 'governorate_id', 'country_id', 'op_date', 'classification']));
         return response()->json($surgery->load(['doctor','operationName','sector','governorate','country']));
     }
 
@@ -491,14 +494,15 @@ class EntryController extends Controller
     public function formData()
     {
         return response()->json([
-            'doctors'        => Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get(['id','name']),
-            'clinicUnits'    => ClinicUnit::all(['id','name']),
-            'governorates'   => Governorate::all(['id','name']),
-            'countries'      => Country::all(['id','name']),
-            'testTypes'      => TestType::all(['id','name']),
-            'labTestTypes'   => LabTestType::all(['id','name']),
-            'operationNames' => OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get(['id','name','classification']),
-            'sectors'        => Sector::all(['id','name']),
+            'doctors'         => Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get(['id','name']),
+            'clinicUnits'     => ClinicUnit::all(['id','name']),
+            'governorates'    => Governorate::all(['id','name']),
+            'countries'       => Country::all(['id','name']),
+            'testTypes'       => TestType::all(['id','name']),
+            'labTestTypes'    => LabTestType::all(['id','name']),
+            'operationNames'  => OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get(['id','name','classification']),
+            'sectors'         => Sector::all(['id','name']),
+            'classifications' => \App\Models\Classification::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get(['id','name']),
         ]);
     }
 }

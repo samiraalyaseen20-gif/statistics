@@ -150,10 +150,9 @@ class ReportController extends Controller
 
         // جدول (7): تصنيف العمليات × القطاع
         $surgeriesByCatSector = (clone $surgeriesQuery)
-            ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
             ->join('sectors','surgeries.sector_id','=','sectors.id')
-            ->select('operation_names.classification','sectors.name as sector', DB::raw('count(*) as total'))
-            ->groupBy('operation_names.classification','sectors.name')
+            ->select('surgeries.classification','sectors.name as sector', DB::raw('count(*) as total'))
+            ->groupBy('surgeries.classification','sectors.name')
             ->get();
 
         // جدول (8): ديمغرافي داخل العراق (عمليات)
@@ -187,10 +186,9 @@ class ReportController extends Controller
         // جدول (10): عمليات لكل طبيب بالتصنيف والقطاع
         $surgeriesByDoctorCatSector = (clone $surgeriesQuery)
             ->join('doctors','surgeries.doctor_id','=','doctors.id')
-            ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
             ->join('sectors','surgeries.sector_id','=','sectors.id')
-            ->select('doctors.name as doctor','doctors.display_order','operation_names.classification','sectors.name as sector', DB::raw('count(*) as total'))
-            ->groupBy('doctors.name','doctors.display_order','operation_names.classification','sectors.name')
+            ->select('doctors.name as doctor','doctors.display_order','surgeries.classification','sectors.name as sector', DB::raw('count(*) as total'))
+            ->groupBy('doctors.name','doctors.display_order','surgeries.classification','sectors.name')
             ->orderBy('doctors.display_order', 'asc')
             ->orderBy('doctors.name', 'asc')
             ->get();
@@ -199,8 +197,8 @@ class ReportController extends Controller
         $surgeryDetailByDoctor = (clone $surgeriesQuery)
             ->join('doctors','surgeries.doctor_id','=','doctors.id')
             ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
-            ->select('doctors.name as doctor','doctors.display_order as doc_order','operation_names.name as op','operation_names.display_order as op_order','operation_names.classification', DB::raw('count(*) as total'))
-            ->groupBy('doctors.name','doctors.display_order','operation_names.name','operation_names.display_order','operation_names.classification')
+            ->select('doctors.name as doctor','doctors.display_order as doc_order','operation_names.name as op','operation_names.display_order as op_order','surgeries.classification', DB::raw('count(*) as total'))
+            ->groupBy('doctors.name','doctors.display_order','operation_names.name','operation_names.display_order','surgeries.classification')
             ->orderBy('doctors.display_order', 'asc')
             ->orderBy('operation_names.display_order', 'asc')
             ->get()->groupBy('doctor');
@@ -265,8 +263,7 @@ class ReportController extends Controller
             $surgeriesQuery = Surgery::whereBetween('op_date', [$startDate, $endDate]);
             if ($docId) $surgeriesQuery->where('doctor_id', $docId);
             if ($opClass) {
-                $surgeriesQuery->join('operation_names as op_filter', 'surgeries.operation_name_id', '=', 'op_filter.id')
-                    ->where('op_filter.classification', $opClass);
+                $surgeriesQuery->where('surgeries.classification', $opClass);
             }
 
             // Totals

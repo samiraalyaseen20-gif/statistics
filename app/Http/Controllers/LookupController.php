@@ -11,6 +11,7 @@ use App\Models\OperationName;
 use App\Models\Sector;
 use App\Models\ClinicUnit;
 use App\Models\LabTestType;
+use App\Models\Classification;
 use Illuminate\Support\Facades\Auth;
 
 class LookupController extends Controller
@@ -88,7 +89,7 @@ class LookupController extends Controller
         $this->checkPermission();
         $r->validate([
             'name'           => 'required|string|max:255',
-            'classification' => 'required|in:صغرى,وسطى (حقن),وسطى (ليزر),كبرى,فوق الكبرى,خاصة',
+            'classification' => 'nullable|string',
             'display_order'  => 'nullable|integer'
         ]);
         return response()->json(OperationName::create([
@@ -101,12 +102,12 @@ class LookupController extends Controller
         $this->checkPermission();
         $r->validate([
             'name'           => 'required|string|max:255',
-            'classification' => 'required|in:صغرى,وسطى (حقن),وسطى (ليزر),كبرى,فوق الكبرى,خاصة',
+            'classification' => 'nullable|string',
             'display_order'  => 'nullable|integer'
         ]);
         $operationName->update([
             'name'           => $r->name,
-            'classification' => $r->classification,
+            'classification' => $r->get('classification', $operationName->classification),
             'display_order'  => $r->get('display_order', 0)
         ]);
         return response()->json($operationName);
@@ -150,5 +151,38 @@ class LookupController extends Controller
     public function labTestTypesDestroy(LabTestType $labTestType) {
         $this->checkPermission();
         $labTestType->delete(); return response()->json(['ok'=>true]);
+    }
+
+    // ========== CLASSIFICATIONS ==========
+    public function classificationsIndex() {
+        return response()->json(Classification::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get());
+    }
+    public function classificationsStore(Request $r) {
+        $this->checkPermission();
+        $r->validate([
+            'name' => 'required|string|max:255|unique:classifications,name',
+            'display_order' => 'nullable|integer'
+        ]);
+        return response()->json(Classification::create([
+            'name' => $r->name,
+            'display_order' => $r->get('display_order', 0)
+        ]), 201);
+    }
+    public function classificationsUpdate(Request $r, Classification $classification) {
+        $this->checkPermission();
+        $r->validate([
+            'name' => 'required|string|max:255|unique:classifications,name,' . $classification->id,
+            'display_order' => 'nullable|integer'
+        ]);
+        $classification->update([
+            'name' => $r->name,
+            'display_order' => $r->get('display_order', 0)
+        ]);
+        return response()->json($classification);
+    }
+    public function classificationsDestroy(Classification $classification) {
+        $this->checkPermission();
+        $classification->delete();
+        return response()->json(['ok' => true]);
     }
 }

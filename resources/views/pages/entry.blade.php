@@ -494,15 +494,21 @@ function populateDirectGrids() {
     if (tbodySurgOps && sectors.length) {
         tbodySurgOps.innerHTML = '';
         const dbOps = entryLookups.operationNames || entryLookups.operation_names || [];
+        const dbClasses = entryLookups.classifications || [];
         
         surgeryTypeOrder.forEach((opId, index) => {
             const dbOp = dbOps.find(o => o.id === opId);
             if (dbOp) {
+                const defaultClass = dbOp.classification || (dbClasses[0] ? dbClasses[0].name : '');
                 tbodySurgOps.innerHTML += `
                     <tr class="table-row" data-op-id="${dbOp.id}">
                         <td class="py-2.5 text-center text-slate-400 font-bold">${index + 1}</td>
                         <td class="py-2.5 font-bold">${dbOp.name}</td>
-                        <td class="py-2.5 text-center text-slate-400 font-medium">${dbOp.classification}</td>
+                        <td class="py-2.5 text-center flex justify-center">
+                            <select class="surg-class-select custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main text-[11px] font-['Tajawal'] w-28">
+                                ${dbClasses.map(c => `<option value="${c.name}" ${c.name === defaultClass ? 'selected' : ''}>${c.name}</option>`).join('')}
+                            </select>
+                        </td>
                         <td class="py-2.5 text-center flex justify-center">
                             <input type="number" min="0" value="0" oninput="updateSurgOpsPercentages()"
                                 class="w-24 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main surg-qty-input">
@@ -783,8 +789,12 @@ async function toggleEditSurgeriesOps() {
                 const inp = tr.querySelector('input');
                 if (inp) {
                     inp.value = (parseInt(inp.value) || 0) + (s.quantity || 1);
-                    found++;
                 }
+                const select = tr.querySelector('select.surg-class-select');
+                if (select && s.classification) {
+                    select.value = s.classification;
+                }
+                found++;
             }
         });
         if (found > 0) {
@@ -1142,6 +1152,7 @@ async function saveSurgeriesOps() {
     rows.forEach(tr => {
         const opId = tr.getAttribute('data-op-id');
         const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
+        const clsVal = tr.querySelector('select.surg-class-select').value;
 
         if (count > 0) {
             promises.push(
@@ -1156,7 +1167,8 @@ async function saveSurgeriesOps() {
                         operation_name_id: opId,
                         sector_id: sectorId,
                         op_date: date,
-                        quantity: count
+                        quantity: count,
+                        classification: clsVal
                     })
                 })
             );

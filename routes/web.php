@@ -49,6 +49,12 @@ Route::middleware('auth')->group(function () {
         Route::put   ('operation-names/{operationName}',  [LookupController::class, 'operationNamesUpdate']);
         Route::delete('operation-names/{operationName}',  [LookupController::class, 'operationNamesDestroy']);
 
+        // Classifications
+        Route::get   ('classifications',                    [LookupController::class, 'classificationsIndex']);
+        Route::post  ('classifications',                    [LookupController::class, 'classificationsStore']);
+        Route::put   ('classifications/{classification}',   [LookupController::class, 'classificationsUpdate']);
+        Route::delete('classifications/{classification}',   [LookupController::class, 'classificationsDestroy']);
+
         // Sectors
         Route::get   ('sectors',           [LookupController::class, 'sectorsIndex']);
         Route::post  ('sectors',           [LookupController::class, 'sectorsStore']);

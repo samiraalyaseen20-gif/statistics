@@ -91,6 +91,9 @@
                         <button onclick="navigateToPage('operations')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-operations">
                             <i data-lucide="scissors" class="w-3 h-3 shrink-0 text-rose-500"></i><span>العمليات</span>
                         </button>
+                        <button onclick="navigateToPage('classifications')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-classifications">
+                            <i data-lucide="tags" class="w-3 h-3 shrink-0 text-purple-500"></i><span>تصنيفات العمليات</span>
+                        </button>
                         <button onclick="navigateToPage('sectors')" class="nav-link w-full py-1.5 px-3 rounded-lg text-[10px] font-bold flex items-center gap-2 text-text-main hover:bg-slate-200/10 hover-press" id="nav-sectors">
                             <i data-lucide="building-2" class="w-3 h-3 shrink-0 text-amber-500"></i><span>القطاعات</span>
                         </button>
@@ -173,6 +176,7 @@
                 @include('pages.governorates')
                 @include('pages.test_types')
                 @include('pages.operations')
+                @include('pages.classifications')
                 @include('pages.sectors')
                 @include('pages.clinic_units')
                 @include('pages.lab_test_types')
