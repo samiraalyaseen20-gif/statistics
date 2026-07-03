@@ -46,6 +46,7 @@ class EntryController extends Controller
                 $defaultUnit = ClinicUnit::first();
                 if ($defaultDoc && $defaultUnit) {
                     Visit::whereBetween('visit_date', [$start, $end])
+                        ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل'])
                         ->where(function($query) use ($defaultDoc, $defaultUnit) {
                             $query->where(function($sub1) {
                                 $sub1->whereNull('governorate_id')
@@ -129,6 +130,7 @@ class EntryController extends Controller
         $defaultUnit = ClinicUnit::first();
 
         $q = Visit::with(['doctor','clinicUnit','governorate','country'])
+            ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل'])
             ->when($r->start_date && $r->end_date, function($q) use ($r) {
                 $start = $r->start_date;
                 $end = $r->end_date;

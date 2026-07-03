@@ -44,7 +44,8 @@ class ReportController extends Controller
         $country_id     = $r->get('country_id');
 
         // 3. Build filtered base queries
-        $visitsQuery = Visit::whereBetween('visit_date', [$start_date, $end_date]);
+        $visitsQuery = Visit::whereBetween('visit_date', [$start_date, $end_date])
+            ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل']);
         if ($doctor_id)      $visitsQuery->where('doctor_id', $doctor_id);
         if ($clinic_unit_id) $visitsQuery->where('clinic_unit_id', $clinic_unit_id);
         if ($governorate_id) $visitsQuery->where('governorate_id', $governorate_id);
@@ -231,7 +232,8 @@ class ReportController extends Controller
                 $endDate = \Carbon\Carbon::parse($endDate)->endOfMonth()->toDateString();
             }
 
-            $visitsQuery = Visit::whereBetween('visit_date', [$startDate, $endDate]);
+            $visitsQuery = Visit::whereBetween('visit_date', [$startDate, $endDate])
+                ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل']);
             if ($docId) $visitsQuery->where('doctor_id', $docId);
 
             $surgeriesQuery = Surgery::whereBetween('op_date', [$startDate, $endDate]);
