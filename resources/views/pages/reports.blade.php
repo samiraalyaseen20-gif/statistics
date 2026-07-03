@@ -230,12 +230,12 @@ if (file_exists(base_path('iraq.svg'))) {
                 <table class="custom-table text-xs">
                     <thead><tr><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
                     <tbody>
-                        <tr class="table-row"><td>وسطى (حقن العين)</td><td class="text-center font-bold text-rose-600">{{ number_format($surgeriesByCatSector->where('classification', 'وسطى (حقن)')->sum('total')) }}</td></tr>
-                        <tr class="table-row"><td>فوق الكبرى</td><td class="text-center font-bold text-violet-600">{{ number_format($surgeriesByCatSector->where('classification', 'فوق الكبرى')->sum('total')) }}</td></tr>
-                        <tr class="table-row"><td>وسطى (ليزر)</td><td class="text-center font-bold text-pink-600">{{ number_format($surgeriesByCatSector->where('classification', 'وسطى (ليزر)')->sum('total')) }}</td></tr>
-                        <tr class="table-row"><td>الخاصة</td><td class="text-center font-bold text-slate-600">{{ number_format($surgeriesByCatSector->where('classification', 'خاصة')->sum('total')) }}</td></tr>
-                        <tr class="table-row"><td>صغرى</td><td class="text-center font-bold text-emerald-600">{{ number_format($surgeriesByCatSector->where('classification', 'صغرى')->sum('total')) }}</td></tr>
-                        <tr class="table-row"><td>كبرى</td><td class="text-center font-bold text-amber-600">{{ number_format($surgeriesByCatSector->where('classification', 'كبرى')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>العمليات الصغرى</td><td class="text-center font-bold text-emerald-600">{{ number_format($surgeriesByCatSector->where('classification', 'صغرى')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>العمليات الوسطى (حقن العين)</td><td class="text-center font-bold text-rose-600">{{ number_format($surgeriesByCatSector->where('classification', 'وسطى (حقن)')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>العمليات الوسطى (الليزر)</td><td class="text-center font-bold text-pink-600">{{ number_format($surgeriesByCatSector->where('classification', 'وسطى (ليزر)')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>العمليات الكبرى</td><td class="text-center font-bold text-amber-600">{{ number_format($surgeriesByCatSector->where('classification', 'كبرى')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>العمليات فوق الكبرى</td><td class="text-center font-bold text-violet-600">{{ number_format($surgeriesByCatSector->where('classification', 'فوق الكبرى')->sum('total')) }}</td></tr>
+                        <tr class="table-row"><td>العمليات الخاصة</td><td class="text-center font-bold text-slate-600">{{ number_format($surgeriesByCatSector->where('classification', 'خاصة')->sum('total')) }}</td></tr>
                         <tr class="table-row font-extrabold text-rose-600"><td class="text-sm">المجموع الكلي</td><td class="text-center text-sm font-extrabold">{{ number_format($totalSurgeries) }}</td></tr>
                     </tbody>
                 </table>
@@ -1071,13 +1071,13 @@ function renderAll2DArrowCharts() {
     const labTestLabels   = @json($labTestsByType->pluck('type'));
     const surgClassData   = [
         {{ $surgeriesByCatSector->where('classification', 'صغرى')->sum('total') }},
-        {{ $surgeriesByCatSector->where('classification', 'ليزر')->sum('total') }},
+        {{ $surgeriesByCatSector->where('classification', 'وسطى (حقن)')->sum('total') }},
+        {{ $surgeriesByCatSector->where('classification', 'وسطى (ليزر)')->sum('total') }},
         {{ $surgeriesByCatSector->where('classification', 'كبرى')->sum('total') }},
-        {{ $surgeriesByCatSector->where('classification', 'خاصة')->sum('total') }},
         {{ $surgeriesByCatSector->where('classification', 'فوق الكبرى')->sum('total') }},
-        {{ $surgeriesByCatSector->where('classification', 'وسطى')->sum('total') }}
+        {{ $surgeriesByCatSector->where('classification', 'خاصة')->sum('total') }}
     ];
-    const surgClassLabels = ['صغرى', 'ليزر', 'كبرى', 'خاصة', 'فوق كبرى', 'حقن/وسطى'];
+    const surgClassLabels = ['صغرى', 'وسطى (حقن)', 'وسطى (ليزر)', 'كبرى', 'فوق الكبرى', 'خاصة'];
     const docSurgData     = @json($docSurgs->values());
     const docSurgLabels   = @json($docSurgs->keys()->map(fn($n) => str_replace('د. ', '', $n)));
 
@@ -1089,7 +1089,7 @@ function renderAll2DArrowCharts() {
     watchChart('svg-report-4',  () => draw2DFlatHorizontalChevrons('svg-report-4', countryData, countryLabels));
     watchChart('svg-report-5',  () => draw2DFlatHorizontalChevrons('svg-report-5', visualData, visualLabels, ['#f97316','#ea580c','#c2410c','#ea580c','#f97316','#c2410c']));
     watchChart('svg-report-6',  () => draw2DFlatVerticalArrows('svg-report-6', labTestData, labTestLabels, ['#8b5cf6','#a855f7','#c084fc','#d8b4fe','#f3e8ff']));
-    watchChart('svg-report-7',  () => draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#0ea5e9','#db2777','#d97706','#475569','#6d28d9','#e11d48']));
+    watchChart('svg-report-7',  () => draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#10b981', '#f43f5e', '#ec4899', '#f59e0b', '#8b5cf6', '#64748b']));
     watchChart('svg-report-10', () => draw2DFlatVerticalArrows('svg-report-10', docSurgData, docSurgLabels));
 
     // Initialize switcher single doctor stats
