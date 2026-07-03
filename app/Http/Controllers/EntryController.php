@@ -81,6 +81,10 @@ class EntryController extends Controller
                     Surgery::whereBetween('op_date', [$start, $end])
                         ->whereNull('governorate_id')
                         ->whereNull('country_id')
+                        // استبعاد سجلات التصنيفات (cls) التي لها sector_id و classification
+                        ->where(function($q) {
+                            $q->whereNull('sector_id')->orWhereNull('classification');
+                        })
                         ->where(function($query) use ($defaultDoc, $defaultOp) {
                             $query->where('doctor_id', $defaultDoc->id)
                                   ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
@@ -98,6 +102,10 @@ class EntryController extends Controller
                     Surgery::whereBetween('op_date', [$start, $end])
                         ->whereNull('governorate_id')
                         ->whereNull('country_id')
+                        // استبعاد سجلات التصنيفات (cls) التي لها sector_id و classification
+                        ->where(function($q) {
+                            $q->whereNull('sector_id')->orWhereNull('classification');
+                        })
                         ->where(function($query) use ($defaultDoc, $defaultOp) {
                             $query->where('operation_name_id', $defaultOp->id)
                                   ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
@@ -442,6 +450,9 @@ class EntryController extends Controller
             ->when($r->type === 'surgeries_ops' && $defaultDoc, function($q) use ($defaultDoc, $defaultOp) {
                 $q->whereNull('governorate_id')
                   ->whereNull('country_id')
+                  ->where(function($q2) {
+                      $q2->whereNull('sector_id')->orWhereNull('classification');
+                  })
                   ->where(function($query) use ($defaultDoc, $defaultOp) {
                       $query->where('doctor_id', $defaultDoc->id)
                             ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
@@ -453,6 +464,9 @@ class EntryController extends Controller
             ->when($r->type === 'surgeries_docs' && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
                 $q->whereNull('governorate_id')
                   ->whereNull('country_id')
+                  ->where(function($q2) {
+                      $q2->whereNull('sector_id')->orWhereNull('classification');
+                  })
                   ->where(function($query) use ($defaultDoc, $defaultOp) {
                       $query->where('operation_name_id', $defaultOp->id)
                             ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
