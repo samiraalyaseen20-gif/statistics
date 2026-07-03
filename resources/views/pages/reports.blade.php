@@ -316,6 +316,37 @@ if (file_exists(base_path('iraq.svg'))) {
         </div>
     </div>
 
+    <!-- التوزيع الجغرافي للعمليات الجراحية (جدول 8 و 9) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Inside Iraq (Vertical Columns) -->
+        <div class="custom-card p-6 rounded-2xl">
+            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                <i data-lucide="flag" class="w-4 h-4 text-rose-500"></i>
+                جدول (8): التوزيع الجغرافي للعمليات الجراحية داخل العراق
+                <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($surgeriesByGov->sum('total')) }}</span>
+            </h3>
+            <div class="w-full overflow-x-auto py-2">
+                <svg id="svg-report-8" viewBox="0 0 584 594" class="w-full max-w-[480px] h-[480px] overflow-visible mx-auto">
+                    <g id="svg-report-8-paths" fill="rgba(244, 63, 94, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
+                        {!! $pathsHtml !!}
+                    </g>
+                    <g id="svg-report-8-nodes"></g>
+                </svg>
+            </div>
+        </div>
+        <!-- Outside Iraq (Horizontal Chevrons) -->
+        <div class="custom-card p-6 rounded-2xl">
+            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+                <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
+                جدول (9): العمليات الجراحية للمرضى من خارج العراق
+                <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($surgeriesByCountry->sum('total')) }}</span>
+            </h3>
+            <div class="w-full overflow-x-auto py-2">
+                <svg id="svg-report-9" viewBox="0 0 450 180" class="w-full min-w-[400px] h-auto overflow-visible"></svg>
+            </div>
+        </div>
+    </div>
+
     <!-- 6. العمليات الجراحية لكل طبيب اختصاص (جدول 10) -->
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">

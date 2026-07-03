@@ -32,7 +32,7 @@ class EntryController extends Controller
         $r->validate([
             'start_date' => 'required|date',
             'end_date'   => 'required|date',
-            'type'       => 'required|in:visits_doctors,visits_govs,visits_countries,surgeries_cls,surgeries_ops,surgeries_docs,eye_tests,lab_tests'
+            'type'       => 'required|in:visits_doctors,visits_govs,visits_countries,surgeries_cls,surgeries_ops,surgeries_docs,eye_tests,lab_tests,surgeries_govs,surgeries_countries'
         ]);
 
         $start = $r->start_date;
@@ -112,6 +112,28 @@ class EntryController extends Controller
                         ->where('operation_name_id', $defaultOp->id)
                         ->whereNotNull('sector_id')
                         ->whereNotNull('classification')
+                        ->delete();
+                }
+                break;
+            case 'surgeries_govs':
+                $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+                $defaultOp  = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+                if ($defaultDoc && $defaultOp) {
+                    Surgery::whereBetween('op_date', [$start, $end])
+                        ->where('doctor_id', $defaultDoc->id)
+                        ->where('operation_name_id', $defaultOp->id)
+                        ->whereNotNull('governorate_id')
+                        ->delete();
+                }
+                break;
+            case 'surgeries_countries':
+                $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+                $defaultOp  = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+                if ($defaultDoc && $defaultOp) {
+                    Surgery::whereBetween('op_date', [$start, $end])
+                        ->where('doctor_id', $defaultDoc->id)
+                        ->where('operation_name_id', $defaultOp->id)
+                        ->whereNotNull('country_id')
                         ->delete();
                 }
                 break;
@@ -442,6 +464,16 @@ class EntryController extends Controller
                   ->whereNotNull('sector_id')
                   ->whereNotNull('classification');
             })
+            ->when($r->type === 'surgeries_govs' && $defaultDoc && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
+                $q->where('doctor_id', $defaultDoc->id)
+                  ->where('operation_name_id', $defaultOp->id)
+                  ->whereNotNull('governorate_id');
+            })
+            ->when($r->type === 'surgeries_countries' && $defaultDoc && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
+                $q->where('doctor_id', $defaultDoc->id)
+                  ->where('operation_name_id', $defaultOp->id)
+                  ->whereNotNull('country_id');
+            })
             ->latest('id');
 
         if ($r->get('per_page') == 1000 || $r->get('per_page') == 2000) {
@@ -454,6 +486,8 @@ class EntryController extends Controller
                     'quantity'       => $s->quantity ?? 1,
                     'op_date'        => $s->op_date,
                     'doctor_id'      => $s->doctor_id,
+                    'governorate_id' => $s->governorate_id,
+                    'country_id'     => $s->country_id,
                 ];
             });
             return response()->json(['data' => $results]);

@@ -111,6 +111,19 @@
 
     {{-- ══════════════════ TAB 2: GEOGRAPHY (GOVS & COUNTRIES) ══════════════════ --}}
     <div id="entry-tab-content-geo" class="entry-tab-panel space-y-6 hidden">
+        
+        {{-- Geo type selector --}}
+        <div class="custom-card p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="flex items-center gap-2">
+                <i data-lucide="map-pin" class="w-5 h-5 text-emerald-500"></i>
+                <span class="text-xs font-black text-text-main">تحديد نوع إحصائية الجغرافيا (المحافظات والدول):</span>
+            </div>
+            <select id="geo-type-select" onchange="onGeoTypeChange()" class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal'] min-w-56 shadow-sm">
+                <option value="visits" selected>الاستشارية (أعداد المراجعين)</option>
+                <option value="surgeries">العمليات الجراحية (أعداد العمليات)</option>
+            </select>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
             {{-- Governorates Table --}}
@@ -118,15 +131,15 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <h3 class="text-xs font-black text-text-main flex items-center gap-2">
                         <i data-lucide="map-pin" class="w-4 h-4 text-emerald-500"></i>
-                        <span>مرضى المحافظات (داخل العراق)</span>
+                        <span id="gov-card-title">مرضى المحافظات (داخل العراق)</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
                         <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
                         <input type="month" id="date-geo-gov" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
-                        <button onclick="toggleEditGovsVisits()" id="btn-edit-geo-gov"
+                        <button onclick="toggleEditGovs()" id="btn-edit-geo-gov"
                             class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
-                        <button onclick="saveGovsVisits()"
+                        <button onclick="saveGovs()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-emerald-500 hover-press">حفظ المحافظات</button>
                     </div>
                 </div>
@@ -150,15 +163,15 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <h3 class="text-xs font-black text-text-main flex items-center gap-2">
                         <i data-lucide="globe" class="w-4 h-4 text-sky-500"></i>
-                        <span>مرضى الدول (خارج العراق)</span>
+                        <span id="country-card-title">مرضى الدول (خارج العراق)</span>
                     </h3>
                     <div class="flex flex-wrap items-center gap-2">
                         <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
                         <input type="month" id="date-geo-country" required
                             class="custom-inset border-none focus:outline-none rounded-xl py-1 px-2 text-xs font-bold text-text-main custom-date-input">
-                        <button onclick="toggleEditCountriesVisits()" id="btn-edit-geo-country"
+                        <button onclick="toggleEditCountries()" id="btn-edit-geo-country"
                             class="py-1 px-2.5 rounded-lg text-[10px] font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
-                        <button onclick="saveCountriesVisits()"
+                        <button onclick="saveCountries()"
                             class="py-1 px-3 rounded-lg text-[10px] font-bold text-white bg-sky-500 hover-press">حفظ الدول</button>
                     </div>
                 </div>
@@ -1040,6 +1053,8 @@ const editStates = {
     surgeries_cls:   { active: false, date: '' },
     surgeries_ops:   { active: false, date: '' },
     surgeries_docs:  { active: false, date: '' },
+    surgeries_govs:  { active: false, date: '' },
+    surgeries_countries: { active: false, date: '' },
     eye_tests:       { active: false, date: '' },
     lab_tests:       { active: false, date: '' }
 };
@@ -1071,8 +1086,8 @@ function setEditButtonState(type, active, dateInputId, buttonId) {
 function resetGridInputs(type) {
     let selector = '';
     if (type === 'visits_doctors') selector = '#tbody-visits-doctors input';
-    else if (type === 'visits_govs') selector = '#tbody-geo-govs input';
-    else if (type === 'visits_countries') selector = '#tbody-geo-countries input';
+    else if (type === 'visits_govs' || type === 'surgeries_govs') selector = '#tbody-geo-govs input';
+    else if (type === 'visits_countries' || type === 'surgeries_countries') selector = '#tbody-geo-countries input';
     else if (type === 'surgeries_ops') selector = '#tbody-surg-ops input';
     else if (type === 'surgeries_docs') selector = '#tbody-surg-docs input';
     else if (type === 'eye_tests') selector = '#tbody-tests-eye input';
@@ -1149,8 +1164,45 @@ async function toggleEditVisitsDoctors() {
     }
 }
 
-async function toggleEditGovsVisits() {
-    const type = 'visits_govs';
+function onGeoTypeChange() {
+    const geoType = document.getElementById('geo-type-select').value;
+    const govTitle = document.getElementById('gov-card-title');
+    const countryTitle = document.getElementById('country-card-title');
+    const govTh = document.querySelector('#tbody-geo-govs').closest('table').querySelector('thead th:nth-child(2)');
+    const countryTh = document.querySelector('#tbody-geo-countries').closest('table').querySelector('thead th:nth-child(2)');
+
+    // Cancel active edit modes for both govs and countries
+    ['visits_govs', 'visits_countries', 'surgeries_govs', 'surgeries_countries'].forEach(type => {
+        if (editStates[type] && editStates[type].active) {
+            if (type.includes('gov')) {
+                setEditButtonState(type, false, 'date-geo-gov', 'btn-edit-geo-gov');
+            } else {
+                setEditButtonState(type, false, 'date-geo-country', 'btn-edit-geo-country');
+            }
+        }
+    });
+
+    if (geoType === 'visits') {
+        if (govTitle) govTitle.textContent = 'مرضى المحافظات (داخل العراق)';
+        if (countryTitle) countryTitle.textContent = 'مرضى الدول (خارج العراق)';
+        if (govTh) govTh.textContent = 'عدد المرضى';
+        if (countryTh) countryTh.textContent = 'عدد المرضى';
+    } else {
+        if (govTitle) govTitle.textContent = 'عمليات المحافظات (داخل العراق)';
+        if (countryTitle) countryTitle.textContent = 'عمليات الدول (خارج العراق)';
+        if (govTh) govTh.textContent = 'عدد العمليات';
+        if (countryTh) countryTh.textContent = 'عدد العمليات';
+    }
+
+    // Reset grid inputs
+    resetGridInputs('visits_govs');
+    resetGridInputs('visits_countries');
+}
+
+async function toggleEditGovs() {
+    const geoType = document.getElementById('geo-type-select').value;
+    const type = geoType === 'visits' ? 'visits_govs' : 'surgeries_govs';
+    
     if (editStates[type].active) {
         setEditButtonState(type, false, 'date-geo-gov', 'btn-edit-geo-gov');
         showToast('تم إلغاء وضع التعديل', 'info');
@@ -1160,7 +1212,13 @@ async function toggleEditGovsVisits() {
     if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
     const date = monthVal + "-01";
     try {
-        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=visits_govs');
+        let url = '';
+        if (geoType === 'visits') {
+            url = '/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=visits_govs';
+        } else {
+            url = '/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=surgeries_govs';
+        }
+        const res = await fetch(url);
         const data = await res.json();
         const items = data.data || data;
         resetGridInputs(type);
@@ -1171,7 +1229,7 @@ async function toggleEditGovsVisits() {
                 if (tr) {
                     const inp = tr.querySelector('input');
                     if (inp) {
-                        inp.value = (parseInt(inp.value) || 0) + 1;
+                        inp.value = (parseInt(inp.value) || 0) + (parseInt(v.quantity) || 1);
                         found++;
                     }
                 }
@@ -1179,7 +1237,7 @@ async function toggleEditGovsVisits() {
         });
         if (found > 0) {
             setEditButtonState(type, true, 'date-geo-gov', 'btn-edit-geo-gov');
-            showToast('تم جلب أعداد المحافظات للتعديل', 'success');
+            showToast(geoType === 'visits' ? 'تم جلب أعداد المحافظات للتعديل' : 'تم جلب أعداد العمليات للمحافظات للتعديل', 'success');
         } else {
             showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
         }
@@ -1188,8 +1246,10 @@ async function toggleEditGovsVisits() {
     }
 }
 
-async function toggleEditCountriesVisits() {
-    const type = 'visits_countries';
+async function toggleEditCountries() {
+    const geoType = document.getElementById('geo-type-select').value;
+    const type = geoType === 'visits' ? 'visits_countries' : 'surgeries_countries';
+    
     if (editStates[type].active) {
         setEditButtonState(type, false, 'date-geo-country', 'btn-edit-geo-country');
         showToast('تم إلغاء وضع التعديل', 'info');
@@ -1199,7 +1259,13 @@ async function toggleEditCountriesVisits() {
     if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
     const date = monthVal + "-01";
     try {
-        const res = await fetch('/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=visits_countries');
+        let url = '';
+        if (geoType === 'visits') {
+            url = '/api/visits?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=visits_countries';
+        } else {
+            url = '/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=surgeries_countries';
+        }
+        const res = await fetch(url);
         const data = await res.json();
         const items = data.data || data;
         resetGridInputs(type);
@@ -1210,7 +1276,7 @@ async function toggleEditCountriesVisits() {
                 if (tr) {
                     const inp = tr.querySelector('input');
                     if (inp) {
-                        inp.value = (parseInt(inp.value) || 0) + 1;
+                        inp.value = (parseInt(inp.value) || 0) + (parseInt(v.quantity) || 1);
                         found++;
                     }
                 }
@@ -1218,7 +1284,7 @@ async function toggleEditCountriesVisits() {
         });
         if (found > 0) {
             setEditButtonState(type, true, 'date-geo-country', 'btn-edit-geo-country');
-            showToast('تم جلب أعداد الدول للتعديل', 'success');
+            showToast(geoType === 'visits' ? 'تم جلب أعداد الدول للتعديل' : 'تم جلب أعداد العمليات للدول للتعديل', 'success');
         } else {
             showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
         }
@@ -1451,16 +1517,18 @@ async function saveVisitsDoctors() {
     }
 }
 
-// 2. Save Governorates Visits
-async function saveGovsVisits() {
+// 2. Save Governorates
+async function saveGovs() {
+    const geoType = document.getElementById('geo-type-select').value;
+    const type = geoType === 'visits' ? 'visits_govs' : 'surgeries_govs';
     const monthVal = document.getElementById('date-geo-gov').value;
     if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
     const date = monthVal + "-01";
 
-    const isEdit = editStates['visits_govs'].active;
+    const isEdit = editStates[type].active;
     if (isEdit) {
         showToast('جاري تحديث البيانات القديمة...', 'info');
-        const cleared = await clearDatabaseForEdit('visits_govs', editStates['visits_govs'].date + "-01");
+        const cleared = await clearDatabaseForEdit(type, editStates[type].date + "-01");
         if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
     }
 
@@ -1469,40 +1537,62 @@ async function saveGovsVisits() {
     
     const defaultDoc = entryLookups?.doctors[0]?.id || 1;
     const defaultUnit = entryLookups?.clinicUnits[0]?.id || 1;
+    const defaultOp = entryLookups?.operationNames?.[0]?.id || 1;
+    const defaultSector = entryLookups?.sectors?.[0]?.id || 1;
 
     rows.forEach(tr => {
         const govId = tr.getAttribute('data-gov-id');
         const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
         if (count > 0) {
-            promises.push(
-                fetch('/api/visits', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        doctor_id: defaultDoc,
-                        clinic_unit_id: defaultUnit,
-                        governorate_id: govId,
-                        status: 'مدفوع',
-                        visit_date: date,
-                        quantity: count
+            if (geoType === 'visits') {
+                promises.push(
+                    fetch('/api/visits', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            doctor_id: defaultDoc,
+                            clinic_unit_id: defaultUnit,
+                            governorate_id: govId,
+                            status: 'مدفوع',
+                            visit_date: date,
+                            quantity: count
+                        })
                     })
-                })
-            );
+                );
+            } else {
+                promises.push(
+                    fetch('/api/surgeries', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            doctor_id: defaultDoc,
+                            operation_name_id: defaultOp,
+                            sector_id: defaultSector,
+                            governorate_id: govId,
+                            op_date: date,
+                            quantity: count
+                        })
+                    })
+                );
+            }
         }
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
-    showToast('جاري حفظ أعداد المحافظات...', 'info');
+    showToast(geoType === 'visits' ? 'جاري حفظ أعداد المحافظات...' : 'جاري حفظ عمليات المحافظات...', 'info');
     try {
         if (promises.length > 0) {
             const results = await Promise.all(promises);
             if (results.every(r => r.ok)) {
-                showToast('تم حفظ أعداد مرضى المحافظات بنجاح', 'success');
+                showToast(geoType === 'visits' ? 'تم حفظ أعداد مرضى المحافظات بنجاح' : 'تم حفظ أعداد عمليات المحافظات بنجاح', 'success');
             } else {
                 showToast('فشل حفظ بعض القيود', 'error');
             }
@@ -1511,7 +1601,7 @@ async function saveGovsVisits() {
         }
         
         if (isEdit) {
-            setEditButtonState('visits_govs', false, 'date-geo-gov', 'btn-edit-geo-gov');
+            setEditButtonState(type, false, 'date-geo-gov', 'btn-edit-geo-gov');
         }
         lastUsedDate = monthVal;
         loadEntryLookups();
@@ -1520,16 +1610,18 @@ async function saveGovsVisits() {
     }
 }
 
-// 3. Save Countries Visits
-async function saveCountriesVisits() {
+// 3. Save Countries
+async function saveCountries() {
+    const geoType = document.getElementById('geo-type-select').value;
+    const type = geoType === 'visits' ? 'visits_countries' : 'surgeries_countries';
     const monthVal = document.getElementById('date-geo-country').value;
     if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
     const date = monthVal + "-01";
 
-    const isEdit = editStates['visits_countries'].active;
+    const isEdit = editStates[type].active;
     if (isEdit) {
         showToast('جاري تحديث البيانات القديمة...', 'info');
-        const cleared = await clearDatabaseForEdit('visits_countries', editStates['visits_countries'].date + "-01");
+        const cleared = await clearDatabaseForEdit(type, editStates[type].date + "-01");
         if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
     }
 
@@ -1538,40 +1630,62 @@ async function saveCountriesVisits() {
 
     const defaultDoc = entryLookups?.doctors[0]?.id || 1;
     const defaultUnit = entryLookups?.clinicUnits[0]?.id || 1;
+    const defaultOp = entryLookups?.operationNames?.[0]?.id || 1;
+    const defaultSector = entryLookups?.sectors?.[0]?.id || 1;
 
     rows.forEach(tr => {
         const countryId = tr.getAttribute('data-country-id');
         const count = parseInt(tr.querySelector('input[type="number"]').value) || 0;
 
         if (count > 0) {
-            promises.push(
-                fetch('/api/visits', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        doctor_id: defaultDoc,
-                        clinic_unit_id: defaultUnit,
-                        country_id: countryId,
-                        status: 'مدفوع',
-                        visit_date: date,
-                        quantity: count
+            if (geoType === 'visits') {
+                promises.push(
+                    fetch('/api/visits', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            doctor_id: defaultDoc,
+                            clinic_unit_id: defaultUnit,
+                            country_id: countryId,
+                            status: 'مدفوع',
+                            visit_date: date,
+                            quantity: count
+                        })
                     })
-                })
-            );
+                );
+            } else {
+                promises.push(
+                    fetch('/api/surgeries', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            doctor_id: defaultDoc,
+                            operation_name_id: defaultOp,
+                            sector_id: defaultSector,
+                            country_id: countryId,
+                            op_date: date,
+                            quantity: count
+                        })
+                    })
+                );
+            }
         }
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
-    showToast('جاري حفظ أعداد الدول...', 'info');
+    showToast(geoType === 'visits' ? 'جاري حفظ أعداد الدول...' : 'جاري حفظ عمليات الدول...', 'info');
     try {
         if (promises.length > 0) {
             const results = await Promise.all(promises);
             if (results.every(r => r.ok)) {
-                showToast('تم حفظ أعداد مرضى الدول بنجاح', 'success');
+                showToast(geoType === 'visits' ? 'تم حفظ أعداد مرضى الدول بنجاح' : 'تم حفظ أعداد عمليات الدول بنجاح', 'success');
             } else {
                 showToast('فشل حفظ بعض القيود', 'error');
             }
@@ -1580,7 +1694,7 @@ async function saveCountriesVisits() {
         }
         
         if (isEdit) {
-            setEditButtonState('visits_countries', false, 'date-geo-country', 'btn-edit-geo-country');
+            setEditButtonState(type, false, 'date-geo-country', 'btn-edit-geo-country');
         }
         lastUsedDate = monthVal;
         loadEntryLookups();

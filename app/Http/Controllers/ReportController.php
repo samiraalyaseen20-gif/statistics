@@ -322,7 +322,33 @@ class ReportController extends Controller
                 ->map(fn($g, $key) => ['country' => $key, 'total' => $g->sum('total')])
                 ->values();
 
+            // جدول 8: داخل العراق (عمليات)
+            $surgeriesByGov = (clone $surgeriesQuery)
+                ->whereNotNull('governorate_id')
+                ->select('governorate_id', DB::raw('count(*) as total'))
+                ->groupBy('governorate_id')
+                ->get()
+                ->map(fn($v) => [
+                    'gov' => $this->normalizeGovName($v->governorate->name ?? '—'),
+                    'total' => $v->total
+                ])
+                ->groupBy('gov')
+                ->map(fn($g, $key) => ['gov' => $key, 'total' => $g->sum('total')])
+                ->values();
 
+            // جدول 9: خارج العراق (عمليات)
+            $surgeriesByCountry = (clone $surgeriesQuery)
+                ->whereNotNull('country_id')
+                ->select('country_id', DB::raw('count(*) as total'))
+                ->groupBy('country_id')
+                ->get()
+                ->map(fn($v) => [
+                    'country' => $this->normalizeCountryName($v->country->name ?? '—'),
+                    'total' => $v->total
+                ])
+                ->groupBy('country')
+                ->map(fn($g, $key) => ['country' => $key, 'total' => $g->sum('total')])
+                ->values();
 
             // جدول 7: تصنيف العمليات
             $surgeriesByCat = (clone $surgeriesQuery)
@@ -359,18 +385,20 @@ class ReportController extends Controller
                 ])->sortByDesc('total')->values();
 
             return [
-                'total_visits'      => $totalVisits,
-                'total_surgeries'   => $totalSurgeries,
-                'total_eye_tests'   => $totalEyeTests,
-                'consultations'     => $consultations,
-                'visits_by_doctor'  => $visitsByDoctor,
-                'visits_by_gov'     => $visitsByGov,
-                'visits_by_country' => $visitsByCountry,
-                'eye_tests_by_type' => $eyeTestsByType,
-                'surgeries_by_cat'  => $surgeriesByCat,
-                'surgs_by_doctor'   => $surgsByDoctor,
-                'surg_detail'       => $surgDetailByDoctor,
-                'combined_ops'      => $combinedOps,
+                'total_visits'         => $totalVisits,
+                'total_surgeries'      => $totalSurgeries,
+                'total_eye_tests'      => $totalEyeTests,
+                'consultations'        => $consultations,
+                'visits_by_doctor'     => $visitsByDoctor,
+                'visits_by_gov'        => $visitsByGov,
+                'visits_by_country'    => $visitsByCountry,
+                'eye_tests_by_type'    => $eyeTestsByType,
+                'surgeries_by_cat'     => $surgeriesByCat,
+                'surgs_by_doctor'      => $surgsByDoctor,
+                'surg_detail'          => $surgDetailByDoctor,
+                'combined_ops'         => $combinedOps,
+                'surgeries_by_gov'     => $surgeriesByGov,
+                'surgeries_by_country' => $surgeriesByCountry,
             ];
         };
 
