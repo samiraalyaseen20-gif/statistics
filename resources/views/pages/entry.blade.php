@@ -303,31 +303,7 @@
 </section>
 
 <script>
-const surgeryTypeDefinitions = [
-    { id: 1, name: 'قص السائل الزجاجي', classification: 'خاصة' },
-    { id: 3, name: 'رفع ماء اسود+رفع ساد', classification: 'خاصة' },
-    { id: 4, name: 'رفع ساد+زراعة عدسة', classification: 'فوق الكبرى' },
-    { id: 5, name: 'رفع سليكون+زرع عدسة', classification: 'فوق الكبرى' },
-    { id: 6, name: 'زرع عدسة ثانوية', classification: 'فوق الكبرى' },
-    { id: 7, name: 'تعديل هطول الاجفان', classification: 'كبرى' },
-    { id: 8, name: 'الحول', classification: 'كبرى' },
-    { id: 9, name: 'تصليب القرنية', classification: 'كبرى' },
-    { id: 10, name: 'غسل حجرة', classification: 'كبرى' },
-    { id: 11, name: 'رفع سليكون', classification: 'كبرى' },
-    { id: 12, name: 'رفع ظفرة', classification: 'كبرى' },
-    { id: 25, name: 'حقن الفايزمو', classification: 'وسطى' },
-    { id: 13, name: 'حقن الايليا', classification: 'وسطى' },
-    { id: 27, name: 'حقن اللوسنتس', classification: 'وسطى' },
-    { id: 14, name: 'حقن الافاستين', classification: 'وسطى' },
-    { id: 15, name: 'حقن الكينا كورت', classification: 'وسطى' },
-    { id: 16, name: 'الليزر', classification: 'وسطى' },
-    { id: 17, name: 'رفع كيس دهني', classification: 'صغرى' },
-    { id: 23, name: 'رفع ورم', classification: 'صغرى' },
-    { id: 18, name: 'فحص تحت التخديرالعام', classification: 'صغرى' },
-    { id: 19, name: 'تسليك مجرى الدمع', classification: 'صغرى' },
-    { id: 24, name: 'رفع جسم غريب', classification: 'صغرى' },
-    { id: 26, name: 'زرق دواء تحت الملتحمة', classification: 'صغرى' }
-];
+const surgeryTypeOrder = [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 25, 13, 27, 14, 15, 16, 17, 23, 18, 19, 24, 26];
 
 function updateSurgOpsPercentages() {
     const tbody = document.getElementById('tbody-surg-ops');
@@ -517,19 +493,24 @@ function populateDirectGrids() {
     const tbodySurgOps = document.getElementById('tbody-surg-ops');
     if (tbodySurgOps && sectors.length) {
         tbodySurgOps.innerHTML = '';
-        surgeryTypeDefinitions.forEach((def, index) => {
-            tbodySurgOps.innerHTML += `
-                <tr class="table-row" data-op-id="${def.id}">
-                    <td class="py-2.5 text-center text-slate-400 font-bold">${index + 1}</td>
-                    <td class="py-2.5 font-bold">${def.name}</td>
-                    <td class="py-2.5 text-center text-slate-400 font-medium">${def.classification}</td>
-                    <td class="py-2.5 text-center flex justify-center">
-                        <input type="number" min="0" value="0" oninput="updateSurgOpsPercentages()"
-                            class="w-24 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main surg-qty-input">
-                    </td>
-                    <td class="py-2.5 text-center text-emerald-600 font-bold text-xs row-percentage">0.00%</td>
-                </tr>
-            `;
+        const dbOps = entryLookups.operationNames || entryLookups.operation_names || [];
+        
+        surgeryTypeOrder.forEach((opId, index) => {
+            const dbOp = dbOps.find(o => o.id === opId);
+            if (dbOp) {
+                tbodySurgOps.innerHTML += `
+                    <tr class="table-row" data-op-id="${dbOp.id}">
+                        <td class="py-2.5 text-center text-slate-400 font-bold">${index + 1}</td>
+                        <td class="py-2.5 font-bold">${dbOp.name}</td>
+                        <td class="py-2.5 text-center text-slate-400 font-medium">${dbOp.classification}</td>
+                        <td class="py-2.5 text-center flex justify-center">
+                            <input type="number" min="0" value="0" oninput="updateSurgOpsPercentages()"
+                                class="w-24 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main surg-qty-input">
+                        </td>
+                        <td class="py-2.5 text-center text-emerald-600 font-bold text-xs row-percentage">0.00%</td>
+                    </tr>
+                `;
+            }
         });
         updateSurgOpsPercentages();
     }

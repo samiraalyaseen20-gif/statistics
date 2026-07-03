@@ -44,11 +44,21 @@ async function loadOps() {
     tb.innerHTML = data.map((d,i)=>`<tr class="table-row">
         <td class="text-center">${i+1}</td>
         <td class="font-bold">${d.name}</td>
-        <td class="text-center"><span class="text-[9px] font-bold px-2.5 py-0.5 rounded-full ${opClassColors[d.classification]||''}">${d.classification}</span></td>
+        <td class="text-center">
+            <select class="custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main text-[11px] font-['Tajawal']"
+                onchange="updateOp(${d.id}, '${d.name}', this.value, ${d.closest('tr').querySelector('.op-order-input').value})">
+                <option value="صغرى" ${d.classification === 'صغرى' ? 'selected' : ''}>صغرى</option>
+                <option value="وسطى (حقن)" ${d.classification === 'وسطى (حقن)' ? 'selected' : ''}>وسطى (حقن)</option>
+                <option value="وسطى (ليزر)" ${d.classification === 'وسطى (ليزر)' ? 'selected' : ''}>وسطى (ليزر)</option>
+                <option value="كبرى" ${d.classification === 'كبرى' ? 'selected' : ''}>كبرى</option>
+                <option value="فوق الكبرى" ${d.classification === 'فوق الكبرى' ? 'selected' : ''}>فوق الكبرى</option>
+                <option value="خاصة" ${d.classification === 'خاصة' ? 'selected' : ''}>خاصة</option>
+            </select>
+        </td>
         <td class="text-center">
             <input type="number" value="${d.display_order || 0}" 
-                class="w-16 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main" 
-                onchange="updateOpOrder(${d.id}, '${d.name}', '${d.classification}', this.value)">
+                class="w-16 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main op-order-input" 
+                onchange="updateOp(${d.id}, '${d.name}', this.closest('tr').querySelector('select').value, this.value)">
         </td>
         <td class="text-center">
             <button onclick="deleteOp(${d.id})" class="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center mx-auto hover-press">
@@ -58,16 +68,17 @@ async function loadOps() {
     </tr>`).join('');
 }
 
-async function updateOpOrder(id, name, classification, order) {
+async function updateOp(id, name, classification, order) {
     try {
         await apiFetch(`/api/operation-names/${id}`, 'PUT', {
             name: name,
             classification: classification,
             display_order: parseInt(order) || 0
         });
-        showToast('تم تحديث تسلسل العرض بنجاح');
+        showToast('تم تحديث العملية بنجاح');
+        loadOps();
     } catch (e) {
-        showToast('فشل تحديث تسلسل العرض', 'error');
+        showToast('فشل تحديث العملية', 'error');
     }
 }
 
