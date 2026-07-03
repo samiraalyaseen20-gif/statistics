@@ -156,26 +156,45 @@ class ReportController extends Controller
             ->groupBy('lab_test_type_id')
             ->get()->map(fn($v) => ['type' => $v->labTestType->name ?? '—', 'total' => $v->total]);
 
-        // جدول (7): تصنيف العمليات × القطاع (جلب فقط المدخلات المباشرة من تبويب تصنيف العمليات)
+        // جدول (7): تصنيف العمليات × القطاع
+        // المصدر الأول: سجلات CLS (defaultDoc+defaultOp مع classification و sector) - إدخال تجميعي مباشر
+        // المصدر الثاني: سجلات العمليات الفعلية للأطباء مع classification و sector (fallback)
         $defaultDoc = \App\Models\Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
         $defaultOp  = \App\Models\OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
 
-        $surgeriesByCatSectorQuery = Surgery::whereBetween('op_date', [$start_date, $end_date])
+        // المصدر 1: سجلات CLS المباشرة (من تبويب التصنيف)
+        $clsDirectQuery = Surgery::whereBetween('op_date', [$start_date, $end_date])
             ->whereNull('governorate_id')
             ->whereNull('country_id')
             ->whereNotNull('sector_id')
             ->whereNotNull('classification');
 
         if ($defaultDoc && $defaultOp) {
-            $surgeriesByCatSectorQuery->where('doctor_id', $defaultDoc->id)
-                                      ->where('operation_name_id', $defaultOp->id);
+            $clsDirectQuery->where('doctor_id', $defaultDoc->id)
+                           ->where('operation_name_id', $defaultOp->id);
         }
 
-        $surgeriesByCatSector = $surgeriesByCatSectorQuery
-            ->join('sectors','surgeries.sector_id','=','sectors.id')
-            ->select('surgeries.classification','sectors.name as sector', DB::raw('count(*) as total'))
-            ->groupBy('surgeries.classification','sectors.name')
-            ->get();
+        $clsDirectCount = (clone $clsDirectQuery)->count();
+
+        if ($clsDirectCount > 0) {
+            // استخدام سجلات CLS المباشرة إذا تم إدخالها من تبويب التصنيف
+            $surgeriesByCatSector = $clsDirectQuery
+                ->join('sectors','surgeries.sector_id','=','sectors.id')
+                ->select('surgeries.classification','sectors.name as sector', DB::raw('count(*) as total'))
+                ->groupBy('surgeries.classification','sectors.name')
+                ->get();
+        } else {
+            // Fallback: جلب من سجلات العمليات الفعلية للأطباء (مع classification و sector)
+            $surgeriesByCatSector = Surgery::whereBetween('op_date', [$start_date, $end_date])
+                ->whereNull('governorate_id')
+                ->whereNull('country_id')
+                ->whereNotNull('sector_id')
+                ->whereNotNull('classification')
+                ->join('sectors','surgeries.sector_id','=','sectors.id')
+                ->select('surgeries.classification','sectors.name as sector', DB::raw('count(*) as total'))
+                ->groupBy('surgeries.classification','sectors.name')
+                ->get();
+        }
 
         // جدول (8): ديمغرافي داخل العراق (عمليات)
         $surgeriesByGov = (clone $surgeriesQuery)
