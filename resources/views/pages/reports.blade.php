@@ -217,26 +217,99 @@ if (file_exists(base_path('iraq.svg'))) {
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
-            جدول (7): أعداد وتصنيف العمليات الجراحية للعيون
-            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalSurgeries) }}</span>
+            جدول (7): أعداد وتصنيف العمليات الجراحية للعيون حسب القطاعات
+            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع الكلي للعمليات: {{ number_format($totalSurgeries) }}</span>
         </h3>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 items-center">
             <!-- 2D Arrow Columns -->
-            <div class="lg:col-span-2 flex justify-center">
-                <svg id="svg-report-7" viewBox="0 0 520 220" class="w-full max-w-[480px] h-[220px] overflow-visible"></svg>
+            <div class="xl:col-span-1 flex justify-center">
+                <svg id="svg-report-7" viewBox="0 0 520 220" class="w-full max-w-[420px] h-[220px] overflow-visible"></svg>
             </div>
             <!-- Legend / Stats Table -->
-            <div class="lg:col-span-1">
-                <table class="custom-table text-xs">
-                    <thead><tr><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
+            <div class="xl:col-span-2">
+                @php
+                $classificationsOrder = [
+                    'صغرى' => ['label' => 'العمليات الصغرى', 'bg' => 'bg-yellow-400/10', 'text' => 'text-yellow-700'],
+                    'وسطى (حقن)' => ['label' => 'العمليات الوسطى (حقن العين)', 'bg' => 'bg-blue-400/10', 'text' => 'text-blue-700'],
+                    'وسطى (ليزر)' => ['label' => 'العمليات الوسطى (الليزر)', 'bg' => 'bg-sky-400/10', 'text' => 'text-sky-700'],
+                    'كبرى' => ['label' => 'العمليات الكبرى', 'bg' => 'bg-orange-400/10', 'text' => 'text-orange-700'],
+                    'فوق الكبرى' => ['label' => 'العمليات فوق الكبرى', 'bg' => 'bg-rose-400/10', 'text' => 'text-rose-700'],
+                    'خاصة' => ['label' => 'العمليات الخاصة', 'bg' => 'bg-purple-400/10', 'text' => 'text-purple-700']
+                ];
+                $sectorsList = ['قطاع الصحة', 'عتبة الخاص', 'عتبة العام'];
+                
+                $colTotals = array_fill(0, count($sectorsList), 0);
+                $grandTotal = 0;
+                $rowTotals = [];
+                
+                foreach ($classificationsOrder as $key => $info) {
+                    $rowTotal = 0;
+                    foreach ($sectorsList as $secIdx => $sec) {
+                        $val = $surgeriesByCatSector
+                            ->filter(fn($item) => $item->classification === $key && $item->sector === $sec)
+                            ->sum('total');
+                        $colTotals[$secIdx] += $val;
+                        $rowTotal += $val;
+                    }
+                    $rowTotals[$key] = $rowTotal;
+                    $grandTotal += $rowTotal;
+                }
+                @endphp
+                
+                <table class="custom-table text-center text-[11px]" style="min-width: 100%">
+                    <thead>
+                        <tr class="text-[10px] font-bold text-slate-400">
+                            <th class="text-right pr-3">تصنيف العمليات الجراحية</th>
+                            <th class="bg-sky-400/20 font-bold text-sky-800 dark:text-sky-300">قطاع الصحة</th>
+                            <th class="bg-orange-400/20 font-bold text-orange-800 dark:text-orange-300">قطاع العتبة الخاص</th>
+                            <th class="bg-emerald-400/20 font-bold text-emerald-800 dark:text-emerald-300">قطاع العتبة العام</th>
+                            <th class="text-pink-600 font-extrabold">المجموع</th>
+                            <th class="bg-violet-400/20 font-bold text-violet-800 dark:text-violet-300">النسبة المئوية</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        <tr class="table-row"><td>العمليات الصغرى</td><td class="text-center font-bold text-emerald-600">{{ number_format($surgeriesByCatSector->where('classification', 'صغرى')->sum('total')) }}</td></tr>
-                        <tr class="table-row"><td>العمليات الوسطى (حقن العين)</td><td class="text-center font-bold text-rose-600">{{ number_format($surgeriesByCatSector->where('classification', 'وسطى (حقن)')->sum('total')) }}</td></tr>
-                        <tr class="table-row"><td>العمليات الوسطى (الليزر)</td><td class="text-center font-bold text-pink-600">{{ number_format($surgeriesByCatSector->where('classification', 'وسطى (ليزر)')->sum('total')) }}</td></tr>
-                        <tr class="table-row"><td>العمليات الكبرى</td><td class="text-center font-bold text-amber-600">{{ number_format($surgeriesByCatSector->where('classification', 'كبرى')->sum('total')) }}</td></tr>
-                        <tr class="table-row"><td>العمليات فوق الكبرى</td><td class="text-center font-bold text-violet-600">{{ number_format($surgeriesByCatSector->where('classification', 'فوق الكبرى')->sum('total')) }}</td></tr>
-                        <tr class="table-row"><td>العمليات الخاصة</td><td class="text-center font-bold text-slate-600">{{ number_format($surgeriesByCatSector->where('classification', 'خاصة')->sum('total')) }}</td></tr>
-                        <tr class="table-row font-extrabold text-rose-600"><td class="text-sm">المجموع الكلي</td><td class="text-center text-sm font-extrabold">{{ number_format($totalSurgeries) }}</td></tr>
+                        @foreach($classificationsOrder as $key => $info)
+                        @php
+                        $rowTotal = $rowTotals[$key] ?? 0;
+                        $rowPct = $grandTotal > 0 ? round(($rowTotal / $grandTotal) * 100) : 0;
+                        @endphp
+                        <tr class="table-row">
+                            <td class="text-right pr-3 font-bold">{{ $info['label'] }}</td>
+                            @foreach($sectorsList as $secIdx => $sec)
+                            @php
+                            $val = $surgeriesByCatSector
+                                ->filter(fn($item) => $item->classification === $key && $item->sector === $sec)
+                                ->sum('total');
+                            @endphp
+                            <td class="{{ $val == 0 ? 'opacity-30' : '' }} font-bold">{{ $val }}</td>
+                            @endforeach
+                            <td class="font-extrabold text-pink-600 text-xs">{{ $rowTotal }}</td>
+                            <td class="bg-violet-400/10 text-violet-700 font-extrabold text-xs">{{ $rowPct }}%</td>
+                        </tr>
+                        @endforeach
+                        
+                        <!-- Col Totals Row -->
+                        <tr class="table-row font-extrabold text-rose-600 text-xs">
+                            <td class="text-right pr-3 text-sm">المجموع</td>
+                            @foreach($colTotals as $total)
+                            <td class="bg-slate-100/5">{{ $total }}</td>
+                            @endforeach
+                            <td class="text-sm font-black text-pink-600">{{ $grandTotal }}</td>
+                            <td class="bg-violet-400/15"></td>
+                        </tr>
+                        
+                        <!-- Col Percentage Row -->
+                        <tr class="table-row font-extrabold text-emerald-600 text-[10px]">
+                            <td class="text-right pr-3 font-bold text-[9px]">النسبة %</td>
+                            @foreach($colTotals as $total)
+                            @php
+                            $colPct = $grandTotal > 0 ? round(($total / $grandTotal) * 100) : 0;
+                            @endphp
+                            <td class="bg-emerald-400/5 font-bold">{{ $colPct }}%</td>
+                            @endforeach
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

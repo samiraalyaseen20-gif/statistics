@@ -13,6 +13,11 @@
             <i data-lucide="map" class="w-4 h-4"></i>
             <span>المحافظات والدول</span>
         </button>
+        <button onclick="switchEntryTab('surgery-cls')" id="tab-btn-surgery-cls"
+            class="entry-tab-btn py-2 px-5 rounded-xl text-xs font-bold text-text-main flex items-center gap-2 hover-press">
+            <i data-lucide="layout-grid" class="w-4 h-4"></i>
+            <span>تصنيف العمليات (القطاعات)</span>
+        </button>
         <button onclick="switchEntryTab('surgery-ops')" id="tab-btn-surgery-ops"
             class="entry-tab-btn py-2 px-5 rounded-xl text-xs font-bold text-text-main flex items-center gap-2 hover-press">
             <i data-lucide="scissors" class="w-4 h-4"></i>
@@ -355,7 +360,301 @@
         </div>
     </div>
 
+    {{-- ══════════════════ TAB: SURGERY CLASSIFICATION × SECTORS ══════════════════ --}}
+    <div id="entry-tab-content-surgery-cls" class="entry-tab-panel space-y-6 hidden">
+        <div class="custom-card p-6 rounded-2xl space-y-6">
+
+            {{-- Header --}}
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100/5 pb-4">
+                <div>
+                    <h3 class="text-sm font-black text-text-main flex items-center gap-2">
+                        <i data-lucide="layout-grid" class="w-5 h-5 text-rose-500"></i>
+                        <span>تصنيف العمليات الجراحية حسب القطاعات</span>
+                    </h3>
+                    <p class="text-[10px] text-slate-400 mt-1 font-bold">أدخل عدد العمليات لكل تصنيف ولكل قطاع — تُحسب الإجماليات والنسب تلقائياً</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <label class="text-[9px] font-bold text-slate-400">الشهر والسنّة:</label>
+                    <input type="month" id="date-surg-cls" required
+                        class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
+                    <button onclick="toggleEditSurgCls()" id="btn-edit-surg-cls"
+                        class="py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
+                        <i data-lucide="edit" class="w-3.5 h-3.5"></i>
+                        <span>تعديل</span>
+                    </button>
+                    <button onclick="saveSurgCls()"
+                        class="py-1.5 px-5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-rose-500 to-pink-500 hover-press shadow-md shadow-rose-500/20 flex items-center gap-1.5">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        <span>حفظ الجدول</span>
+                    </button>
+                </div>
+            </div>
+
+            {{-- Classification × Sectors Table --}}
+            <div class="overflow-x-auto">
+                <table class="custom-table text-center" style="font-size:11px; min-width:700px" id="table-surg-cls">
+                    <thead>
+                        <tr>
+                            <th class="text-right pr-3 w-52">تصنيف العمليات الجراحية</th>
+                            <th class="bg-sky-400/20 w-32">قطاع الصحة</th>
+                            <th class="bg-orange-400/20 w-32">عتبة الخاص</th>
+                            <th class="bg-emerald-400/20 w-32">عتبة العام</th>
+                            <th class="text-pink-600 font-extrabold w-28">المجموع</th>
+                            <th class="bg-violet-400/20 w-28">النسبة المئوية</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-surg-cls">
+                        {{-- Rows built dynamically by JS --}}
+                    </tbody>
+                    <tfoot id="tfoot-surg-cls">
+                        <tr class="border-t-2 border-slate-300/20 font-extrabold">
+                            <td class="py-3 text-right pr-3 text-pink-600">المجموع</td>
+                            <td class="py-3 bg-sky-400/20"    id="cls-col-total-0">0</td>
+                            <td class="py-3 bg-orange-400/20" id="cls-col-total-1">0</td>
+                            <td class="py-3 bg-emerald-400/20" id="cls-col-total-2">0</td>
+                            <td class="py-3">
+                                <span id="cls-grand-total"
+                                    class="inline-block px-3 py-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-lg font-black text-sm">0</span>
+                            </td>
+                            <td class="py-3 bg-violet-400/20 text-violet-600 font-black">%</td>
+                        </tr>
+                        <tr class="border-t border-slate-200/10">
+                            <td class="py-2 text-right pr-3 text-emerald-600 font-bold text-[10px]">النسبة %</td>
+                            <td class="py-2 bg-sky-400/10 text-sky-600 font-bold text-[10px]" id="cls-col-pct-0">—</td>
+                            <td class="py-2 bg-orange-400/10 text-orange-600 font-bold text-[10px]" id="cls-col-pct-1">—</td>
+                            <td class="py-2 bg-emerald-400/10 text-emerald-600 font-bold text-[10px]" id="cls-col-pct-2">—</td>
+                            <td class="py-2" colspan="2"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
 </section>
+
+<script>
+// ══════════════ SURGERY CLASSIFICATION × SECTORS TAB ══════════════
+
+// التصنيفات الثابتة بالترتيب
+const CLS_ROWS = [
+    { key: 'صغرى',       label: 'العمليات الصغرى',              rowBg: 'bg-yellow-400/5'  },
+    { key: 'وسطى (حقن)', label: 'العمليات الوسطى (حقن العين)',  rowBg: 'bg-blue-400/5'    },
+    { key: 'وسطى (ليزر)',label: 'العمليات الوسطى (الليزر)',     rowBg: 'bg-sky-400/5'     },
+    { key: 'كبرى',       label: 'العمليات الكبرى',              rowBg: 'bg-orange-400/5'  },
+    { key: 'فوق الكبرى', label: 'العمليات فوق الكبرى',          rowBg: 'bg-rose-400/5'    },
+    { key: 'خاصة',       label: 'العمليات الخاصة',              rowBg: 'bg-purple-400/5'  },
+];
+
+// القطاعات بنفس ترتيب الأعمدة (الأسماء في قاعدة البيانات)
+const CLS_SECTORS = ['قطاع الصحة', 'عتبة الخاص', 'عتبة العام'];
+const CLS_SECTOR_BG = ['bg-sky-400/10', 'bg-orange-400/10', 'bg-emerald-400/10'];
+
+function buildSurgClsTable() {
+    const tbody = document.getElementById('tbody-surg-cls');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    CLS_ROWS.forEach((row, ri) => {
+        let cells = `<td class="py-2.5 text-right pr-3 font-bold ${row.rowBg}">${row.label}</td>`;
+        CLS_SECTORS.forEach((sec, si) => {
+            cells += `
+                <td class="py-2.5 ${CLS_SECTOR_BG[si]}">
+                    <input type="number" min="0" value="0"
+                        data-cls="${row.key}" data-sec="${sec}" data-si="${si}"
+                        oninput="recalcSurgCls()"
+                        class="w-24 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1 text-xs font-bold text-text-main surg-cls-inp">
+                </td>`;
+        });
+        // Row total
+        cells += `<td class="py-2.5 font-extrabold text-pink-600 row-cls-total" id="cls-row-total-${ri}">0</td>`;
+        // Row percentage
+        cells += `<td class="py-2.5 bg-violet-400/10 text-violet-600 font-bold text-xs row-cls-pct" id="cls-row-pct-${ri}">0.00%</td>`;
+        tbody.innerHTML += `<tr class="table-row" data-ri="${ri}">${cells}</tr>`;
+    });
+
+    recalcSurgCls();
+}
+
+function recalcSurgCls() {
+    const grand = { total: 0 };
+    const colTotals = [0, 0, 0];
+    const rowTotals = Array(CLS_ROWS.length).fill(0);
+
+    document.querySelectorAll('#tbody-surg-cls .surg-cls-inp').forEach(inp => {
+        const val  = parseInt(inp.value) || 0;
+        const ri   = parseInt(inp.closest('tr').dataset.ri);
+        const si   = parseInt(inp.dataset.si);
+        rowTotals[ri] += val;
+        colTotals[si]  += val;
+        grand.total    += val;
+    });
+
+    // Update row totals & percentages
+    CLS_ROWS.forEach((_, ri) => {
+        const rt  = document.getElementById(`cls-row-total-${ri}`);
+        const rp  = document.getElementById(`cls-row-pct-${ri}`);
+        if (rt) rt.textContent = rowTotals[ri];
+        if (rp) rp.textContent = grand.total > 0
+            ? ((rowTotals[ri] / grand.total) * 100).toFixed(0) + '%'
+            : '0%';
+    });
+
+    // Update column totals & percentages
+    CLS_SECTORS.forEach((_, si) => {
+        const ct = document.getElementById(`cls-col-total-${si}`);
+        const cp = document.getElementById(`cls-col-pct-${si}`);
+        if (ct) ct.textContent = colTotals[si];
+        if (cp) cp.textContent = grand.total > 0
+            ? '%' + ((colTotals[si] / grand.total) * 100).toFixed(0)
+            : '—';
+    });
+
+    // Grand total
+    const gt = document.getElementById('cls-grand-total');
+    if (gt) gt.textContent = grand.total;
+}
+
+// ── Load existing data for editing ──
+async function toggleEditSurgCls() {
+    const type = 'surgeries_cls';
+    if (editStates[type] && editStates[type].active) {
+        editStates[type].active = false;
+        editStates[type].date   = '';
+        const btn = document.getElementById('btn-edit-surg-cls');
+        if (btn) {
+            btn.innerHTML = '<i data-lucide="edit" class="w-3.5 h-3.5"></i><span>تعديل</span>';
+            btn.className = 'py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5';
+        }
+        buildSurgClsTable(); // reset inputs
+        showToast('تم إلغاء وضع التعديل', 'info');
+        if (window.lucide) lucide.createIcons();
+        return;
+    }
+
+    const monthVal = document.getElementById('date-surg-cls').value;
+    if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
+    const date = monthVal + '-01';
+
+    try {
+        const res  = await fetch(`/api/surgeries?start_date=${date}&end_date=${date}&per_page=2000&type=surgeries_cls`);
+        const data = await res.json();
+        const items = data.data || data;
+
+        // Reset inputs first
+        document.querySelectorAll('#tbody-surg-cls .surg-cls-inp').forEach(inp => inp.value = 0);
+
+        let found = 0;
+        items.forEach(item => {
+            const clsKey = item.classification || '';
+            const secName = item.sector_name || item.sector || '';
+            const inp = document.querySelector(
+                `#tbody-surg-cls input[data-cls="${clsKey}"][data-sec="${secName}"]`
+            );
+            if (inp) {
+                inp.value = (parseInt(inp.value) || 0) + (parseInt(item.quantity) || 1);
+                found++;
+            }
+        });
+
+        recalcSurgCls();
+
+        if (!editStates[type]) editStates[type] = { active: false, date: '' };
+        if (found > 0) {
+            editStates[type].active = true;
+            editStates[type].date   = monthVal;
+            const btn = document.getElementById('btn-edit-surg-cls');
+            if (btn) {
+                btn.innerHTML = '<span>إلغاء التعديل</span>';
+                btn.className = 'py-1.5 px-3 rounded-lg text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 hover-press flex items-center gap-1.5';
+            }
+            showToast('تم تحميل البيانات السابقة للتعديل', 'success');
+        } else {
+            showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
+        }
+    } catch(e) {
+        showToast('فشل جلب البيانات السابقة', 'error');
+    }
+}
+
+// ── Save ──
+async function saveSurgCls() {
+    const monthVal = document.getElementById('date-surg-cls').value;
+    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    const date = monthVal + '-01';
+
+    // Clear old data if editing
+    if (editStates['surgeries_cls'] && editStates['surgeries_cls'].active) {
+        showToast('جاري تحديث البيانات القديمة...', 'info');
+        const cleared = await clearDatabaseForEdit('surgeries_cls', editStates['surgeries_cls'].date + '-01');
+        if (!cleared) { showToast('فشل حذف البيانات القديمة', 'error'); return; }
+    }
+
+    const promises = [];
+    const sectors  = entryLookups?.sectors || [];
+    const defaultOp = entryLookups?.operationNames?.[0]?.id || 1;
+    const defaultDoc = entryLookups?.doctors?.[0]?.id || 1;
+
+    document.querySelectorAll('#tbody-surg-cls .surg-cls-inp').forEach(inp => {
+        const qty  = parseInt(inp.value) || 0;
+        if (qty <= 0) return;
+        const cls  = inp.dataset.cls;
+        const secName = inp.dataset.sec;
+        const sector = sectors.find(s => s.name === secName);
+        if (!sector) return;
+
+        promises.push(
+            fetch('/api/surgeries', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    doctor_id:          defaultDoc,
+                    operation_name_id:  defaultOp,
+                    sector_id:          sector.id,
+                    op_date:            date,
+                    quantity:           qty,
+                    classification:     cls
+                })
+            })
+        );
+    });
+
+    if (promises.length === 0 && !(editStates['surgeries_cls']?.active)) {
+        showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return;
+    }
+
+    showToast('جاري حفظ تصنيف العمليات...', 'info');
+    try {
+        if (promises.length > 0) {
+            const results = await Promise.all(promises);
+            if (results.every(r => r.ok)) {
+                showToast('✅ تم حفظ جدول تصنيف العمليات بنجاح وربطه بالتقارير', 'success');
+            } else {
+                showToast('فشل حفظ بعض القيود', 'error');
+            }
+        } else {
+            showToast('تم تحديث البيانات بنجاح', 'success');
+        }
+
+        if (editStates['surgeries_cls']?.active) {
+            editStates['surgeries_cls'].active = false;
+            const btn = document.getElementById('btn-edit-surg-cls');
+            if (btn) {
+                btn.innerHTML = '<i data-lucide="edit" class="w-3.5 h-3.5"></i><span>تعديل</span>';
+                btn.className = 'py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5';
+                if (window.lucide) lucide.createIcons();
+            }
+        }
+        lastUsedDate = monthVal;
+    } catch(e) {
+        showToast('خطأ في الاتصال بالشبكة', 'error');
+    }
+}
+</script>
 
 <script>
 const surgeryTypeOrder = [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 25, 13, 27, 14, 15, 16, 17, 23, 18, 19, 24, 26];
@@ -458,6 +757,11 @@ function switchEntryTab(tabName) {
             activeBtn.classList.add('bg-slate-200/10');
         }
     }
+
+    // Build surgery-cls table on first visit
+    if (tabName === 'surgery-cls') {
+        buildSurgClsTable();
+    }
 }
 
 // Global Memory (Year-Month format: YYYY-MM)
@@ -470,6 +774,7 @@ function syncAllFromDates(value) {
         'date-visit-doctors',
         'date-geo-gov',
         'date-geo-country',
+        'date-surg-cls',
         'date-surg-op',
         'date-surg-doc',
         'date-tests-eye',
@@ -488,6 +793,7 @@ function setupFormDates() {
         'date-visit-doctors',
         'date-geo-gov',
         'date-geo-country',
+        'date-surg-cls',
         'date-surg-op',
         'date-surg-doc',
         'date-tests-eye',
@@ -697,13 +1003,14 @@ function populateDirectGrids() {
 
 // ── EDIT MODES STATE ──
 const editStates = {
-    visits_doctors: { active: false, date: '' },
-    visits_govs: { active: false, date: '' },
-    visits_countries: { active: false, date: '' },
-    surgeries_ops: { active: false, date: '' },
-    surgeries_docs: { active: false, date: '' },
-    eye_tests: { active: false, date: '' },
-    lab_tests: { active: false, date: '' }
+    visits_doctors:  { active: false, date: '' },
+    visits_govs:     { active: false, date: '' },
+    visits_countries:{ active: false, date: '' },
+    surgeries_cls:   { active: false, date: '' },
+    surgeries_ops:   { active: false, date: '' },
+    surgeries_docs:  { active: false, date: '' },
+    eye_tests:       { active: false, date: '' },
+    lab_tests:       { active: false, date: '' }
 };
 
 function setEditButtonState(type, active, dateInputId, buttonId) {

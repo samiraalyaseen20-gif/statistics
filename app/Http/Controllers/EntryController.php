@@ -32,7 +32,7 @@ class EntryController extends Controller
         $r->validate([
             'start_date' => 'required|date',
             'end_date'   => 'required|date',
-            'type'       => 'required|in:visits_doctors,visits_govs,visits_countries,surgeries_ops,surgeries_docs,eye_tests,lab_tests'
+            'type'       => 'required|in:visits_doctors,visits_govs,visits_countries,surgeries_cls,surgeries_ops,surgeries_docs,eye_tests,lab_tests'
         ]);
 
         $start = $r->start_date;
@@ -99,6 +99,19 @@ class EntryController extends Controller
                                           ->where('operation_name_id', '!=', $defaultOp->id);
                                   });
                         })
+                        ->delete();
+                }
+                break;
+            case 'surgeries_cls':
+                // Delete classification×sector entries saved with defaultDoc + defaultOp
+                $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+                $defaultOp  = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+                if ($defaultDoc && $defaultOp) {
+                    Surgery::whereBetween('op_date', [$start, $end])
+                        ->where('doctor_id', $defaultDoc->id)
+                        ->where('operation_name_id', $defaultOp->id)
+                        ->whereNotNull('sector_id')
+                        ->whereNotNull('classification')
                         ->delete();
                 }
                 break;
@@ -422,10 +435,28 @@ class EntryController extends Controller
                           });
                 });
             })
+            ->when($r->type === 'surgeries_cls' && $defaultDoc && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
+                // Return only the classification×sector entries (saved via cls tab)
+                $q->where('doctor_id', $defaultDoc->id)
+                  ->where('operation_name_id', $defaultOp->id)
+                  ->whereNotNull('sector_id')
+                  ->whereNotNull('classification');
+            })
             ->latest('id');
 
-        if ($r->get('per_page') == 1000) {
-            return response()->json(['data' => $q->get()]);
+        if ($r->get('per_page') == 1000 || $r->get('per_page') == 2000) {
+            $results = $q->get()->map(function($s) {
+                return [
+                    'id'             => $s->id,
+                    'classification' => $s->classification,
+                    'sector_name'    => $s->sector?->name,
+                    'sector_id'      => $s->sector_id,
+                    'quantity'       => $s->quantity ?? 1,
+                    'op_date'        => $s->op_date,
+                    'doctor_id'      => $s->doctor_id,
+                ];
+            });
+            return response()->json(['data' => $results]);
         }
 
         return response()->json($q->paginate($r->get('per_page', 20)));
