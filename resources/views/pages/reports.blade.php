@@ -447,13 +447,18 @@ if (file_exists(base_path('iraq.svg'))) {
         <div class="flex items-center gap-3 mb-6 bg-slate-200/20 p-3 rounded-xl">
             <span class="text-xs font-bold text-slate-500">اختيار الطبيب:</span>
             <select id="doc-active-selector" onchange="showDocStats(this.value)" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
+                @if(!isset($doctor_id) || empty($doctor_id))
                 <option value="all">كل الأطباء ({{ $totalSurgeries }} عملية)</option>
+                @endif
                 @foreach($filterDoctors as $doc)
                     @php
                     $docOps = $surgeryDetailByDoctor->get($doc->name) ?? collect();
                     $docTotal = $docOps->sum('total');
+                    $isDocActive = (isset($doctor_id) && $doctor_id == $doc->id);
                     @endphp
-                    <option value="{{ $doc->id }}">{{ $doc->name }} ({{ $docTotal }} عملية)</option>
+                    @if(!isset($doctor_id) || empty($doctor_id) || $doctor_id == $doc->id)
+                    <option value="{{ $doc->id }}" {{ $isDocActive ? 'selected' : '' }}>{{ $doc->name }} ({{ $docTotal }} عملية)</option>
+                    @endif
                 @endforeach
             </select>
         </div>
@@ -472,7 +477,7 @@ if (file_exists(base_path('iraq.svg'))) {
         @endphp
 
         <!-- Combined Panel for All Doctors -->
-        <div id="stats-panel-all" class="stats-panel transition-opacity duration-300">
+        <div id="stats-panel-all" class="stats-panel {{ (isset($doctor_id) && !empty($doctor_id)) ? 'hidden' : '' }} transition-opacity duration-300">
             <div class="flex items-center justify-between gap-3 mb-4">
                 <h4 class="text-xs font-bold text-slate-800">كل الأطباء - إجمالي العمليات</h4>
                 <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $totalSurgeries }} عملية</span>
@@ -508,8 +513,9 @@ if (file_exists(base_path('iraq.svg'))) {
         @php
         $docOps = $surgeryDetailByDoctor->get($doc->name) ?? collect();
         $docTotal = $docOps->sum('total');
+        $isDocActive = (isset($doctor_id) && $doctor_id == $doc->id);
         @endphp
-        <div id="stats-panel-{{ $doc->id }}" class="stats-panel hidden transition-opacity duration-300">
+        <div id="stats-panel-{{ $doc->id }}" class="stats-panel {{ $isDocActive ? '' : 'hidden' }} transition-opacity duration-300">
             <div class="flex items-center justify-between gap-3 mb-4">
                 <h4 class="text-xs font-bold text-slate-800">{{ $doc->name }}</h4>
                 <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $docTotal }} عملية</span>
