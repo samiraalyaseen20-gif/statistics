@@ -98,6 +98,49 @@ Route::middleware('auth')->group(function () {
         Route::put   ('surgeries/{surgery}',   [EntryController::class, 'surgeriesUpdate']);
         Route::delete('surgeries/{surgery}',   [EntryController::class, 'surgeriesDestroy']);
 
+        // Diagnostic route for server database inspection
+        Route::get('diagnose-surgeries', function (\Illuminate\Http\Request $request) {
+            $month = $request->get('month', now()->format('Y-m'));
+            $start = $month . '-01';
+            $end = \Carbon\Carbon::parse($start)->endOfMonth()->toDateString();
+            
+            $defaultDoc = \App\Models\Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+            $defaultOp  = \App\Models\OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
+            
+            $allSurgs = \App\Models\Surgery::whereBetween('op_date', [$start, $end])
+                ->whereNull('governorate_id')
+                ->whereNull('country_id')
+                ->get()
+                ->map(function ($s) {
+                    return [
+                        'id' => $s->id,
+                        'patient' => $s->patient_name,
+                        'doctor' => $s->doctor?->name,
+                        'doctor_id' => $s->doctor_id,
+                        'operation' => $s->operationName?->name,
+                        'operation_id' => $s->operation_name_id,
+                        'sector' => $s->sector?->name,
+                        'sector_id' => $s->sector_id,
+                        'classification' => $s->classification,
+                        'op_date' => $s->op_date,
+                    ];
+                });
+                
+            return response()->json([
+                'month' => $month,
+                'default_doctor' => [
+                    'id' => $defaultDoc ? $defaultDoc->id : null,
+                    'name' => $defaultDoc ? $defaultDoc->name : null,
+                ],
+                'default_operation' => [
+                    'id' => $defaultOp ? $defaultOp->id : null,
+                    'name' => $defaultOp ? $defaultOp->name : null,
+                ],
+                'all_surgeries_count' => $allSurgs->count(),
+                'all_surgeries_in_month' => $allSurgs
+            ]);
+        });
+
         // Users & Permissions Management
         Route::get   ('users',                 [UserController::class, 'index']);
         Route::post  ('users',                 [UserController::class, 'store']);
