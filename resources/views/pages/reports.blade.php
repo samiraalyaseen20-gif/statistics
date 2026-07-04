@@ -599,6 +599,10 @@ if (file_exists(base_path('iraq.svg'))) {
     {{-- ── جدول (10): العمليات التفصيلية لكل طبيب (من الجدول المستقل) ── --}}
     @php
     $detailSource = $doctorOpStatsByDoctor ?? collect();
+    $grandDetailTotal = 0;
+    foreach($detailSource as $docOps) {
+        $grandDetailTotal += $docOps->sum('total');
+    }
 
     $bcMap = [
         'خاصة'       => 'bg-purple-100 text-purple-700',
@@ -615,6 +619,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="table-2" class="w-4 h-4 text-violet-500"></i>
             جدول (10): العمليات التفصيلية لكل طبيب حسب النوع
+            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع الكلي للعمليات التفصيلية: {{ number_format($grandDetailTotal) }}</span>
         </h3>
 
         @if($detailSource && $detailSource->count() > 0)

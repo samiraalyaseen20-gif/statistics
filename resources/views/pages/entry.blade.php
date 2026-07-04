@@ -205,18 +205,24 @@
                 <div>
                     <h3 class="text-sm font-black text-text-main flex items-center gap-2">
                         <i data-lucide="scissors" class="w-5 h-5 text-purple-500"></i>
-                        <span class="text-sky-500 font-extrabold text-base">اعداد العمليات الشهرية الكلية</span>
+                        <span class="text-sky-500 font-extrabold text-base">أعداد العمليات الشهرية الكلية</span>
                     </h3>
-                    <p class="text-[10px] text-slate-400 mt-1 font-bold">يرجى إدخال أعداد العمليات الجراحية المنفذة لكل نوع للشهر المحدد</p>
+                    <p class="text-[10px] text-rose-500 mt-1 font-bold">يتم احتساب هذا الجدول تلقائياً من تبويب "العمليات التفصيلية لكل طبيب" لشهر الفلتر المحدد (مغلق للتعديل اليدوي)</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
                     <label class="text-[10px] font-bold text-slate-400">الشهر والسنّة:</label>
                     <input type="month" id="date-surg-op" required
                         class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
-                    <button onclick="toggleEditSurgeriesOps()" id="btn-edit-surg-op"
-                        class="py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
+                    <button onclick="loadTotalOpsFromDetailed()" id="btn-edit-surg-op"
+                        class="py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                        <span>تحديث الحساب</span>
+                    </button>
                     <button onclick="saveSurgeriesOps()"
-                        class="py-1.5 px-4 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-500 hover-press shadow-md shadow-indigo-500/10">حفظ العمليات</button>
+                        class="py-1.5 px-4 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-500 hover-press shadow-md shadow-indigo-500/10 flex items-center gap-1.5">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        <span>حفظ الجدول</span>
+                    </button>
                 </div>
             </div>
             <div class="overflow-x-auto">
@@ -864,6 +870,10 @@ function switchEntryTab(tabName) {
     if (tabName === 'surgery-doc-ops') {
         buildDocOpsAccordion();
     }
+    // Load total ops from detailed stats
+    if (tabName === 'surgery-ops') {
+        loadTotalOpsFromDetailed();
+    }
 }
 
 // Global Memory (Year-Month format: YYYY-MM)
@@ -889,6 +899,8 @@ function syncAllFromDates(value) {
             el.value = value;
         }
     });
+    // Auto sync monthly totals table when date changes
+    loadTotalOpsFromDetailed();
 }
 
 function setupFormDates() {
@@ -1028,13 +1040,13 @@ function populateDirectGrids() {
                         <td class="py-2.5 text-center text-slate-400 font-bold">${index + 1}</td>
                         <td class="py-2.5 text-right pr-2 font-bold">${dbOp.name}</td>
                         <td class="py-2.5 text-center ${clsColor.bg}">
-                            <select class="surg-class-select custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main text-[11px] font-['Tajawal'] w-32" onchange="updateRowClassColor(this)">
+                            <select disabled class="surg-class-select bg-slate-100/10 border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main text-[11px] font-['Tajawal'] w-32 cursor-not-allowed pointer-events-none" onchange="updateRowClassColor(this)">
                                 ${dbClasses.map(c => `<option value="${c.name}" ${c.name === defaultClass ? 'selected' : ''}>${c.name}</option>`).join('')}
                             </select>
                         </td>
-                        <td class="py-2.5 text-center bg-yellow-400/10">
-                            <input type="number" min="0" value="0" oninput="updateSurgOpsPercentages()"
-                                class="w-24 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main surg-qty-input">
+                        <td class="py-2.5 text-center bg-slate-200/5">
+                            <input type="number" min="0" value="0" readonly tabindex="-1"
+                                class="w-24 text-center bg-slate-100/5 border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main surg-qty-input cursor-not-allowed pointer-events-none">
                         </td>
                         <td class="py-2.5 text-center bg-emerald-400/10 text-emerald-600 font-bold text-xs row-percentage">0.00%</td>
                     </tr>
@@ -1082,6 +1094,8 @@ function populateDirectGrids() {
             `;
         });
     }
+    // Load monthly operations totals from detailed doctor operations on load
+    loadTotalOpsFromDetailed();
 }
 
 // ── EDIT MODES STATE ──
@@ -1752,16 +1766,16 @@ async function saveCountries() {
 }
 
 // 4. Save Surgeries by Operation Names
-async function saveSurgeriesOps() {
+async function saveSurgeriesOps(silent = false) {
     const monthVal = document.getElementById('date-surg-op').value;
-    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    if (!monthVal) { if (!silent) showToast('حدد الشهر والسنّة', 'error'); return; }
     const date = monthVal + "-01";
 
     const isEdit = editStates['surgeries_ops'].active;
     if (isEdit) {
-        showToast('جاري تحديث البيانات القديمة...', 'info');
+        if (!silent) showToast('جاري تحديث البيانات القديمة...', 'info');
         const cleared = await clearDatabaseForEdit('surgeries_ops', editStates['surgeries_ops'].date + "-01");
-        if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
+        if (!cleared) { if (!silent) showToast('فشل تحديث البيانات القديمة', 'error'); return; }
     }
 
     const promises = [];
@@ -1797,28 +1811,35 @@ async function saveSurgeriesOps() {
         }
     });
 
-    if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
+    if (promises.length === 0 && !isEdit) { if (!silent) showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
-    showToast('جاري حفظ أعداد العمليات...', 'info');
+    if (!silent) showToast('جاري حفظ أعداد العمليات...', 'info');
     try {
         if (promises.length > 0) {
             const results = await Promise.all(promises);
             if (results.every(r => r.ok)) {
-                showToast('تم حفظ أعداد العمليات بنجاح', 'success');
+                if (!silent) showToast('تم حفظ أعداد العمليات بنجاح', 'success');
             } else {
-                showToast('فشل حفظ بعض القيود', 'error');
+                if (!silent) showToast('فشل حفظ بعض القيود', 'error');
             }
         } else {
-            showToast('تم تحديث البيانات بنجاح', 'success');
+            if (!silent) showToast('تم تحديث البيانات بنجاح', 'success');
         }
         
         if (isEdit) {
-            setEditButtonState('surgeries_ops', false, 'date-surg-op', 'btn-edit-surg-op');
+            editStates['surgeries_ops'].active = false;
+            editStates['surgeries_ops'].date   = '';
+            const btn = document.getElementById('btn-edit-surg-op');
+            if (btn) {
+                btn.innerHTML = '<i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i><span>تحديث الحساب</span>';
+                btn.className = 'py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5';
+                if (window.lucide) lucide.createIcons();
+            }
         }
         lastUsedDate = monthVal;
         loadEntryLookups();
     } catch(e) {
-        showToast('خطأ في الاتصال بالشبكة', 'error');
+        if (!silent) showToast('خطأ في الاتصال بالشبكة', 'error');
     }
 }
 
@@ -2159,6 +2180,68 @@ async function saveLabTestsGrid() {
     }
 }
 
+async function loadTotalOpsFromDetailed() {
+    const monthInput = document.getElementById('date-surg-op');
+    if (!monthInput) return;
+    const monthVal = monthInput.value;
+    if (!monthVal) return;
+
+    const type = 'surgeries_ops';
+    try {
+        // 1. Fetch detailed operations from database
+        const res = await fetch(`/api/doctor-op-stats?month=${monthVal}`);
+        const data = await res.json();
+
+        // Sum quantities and classifications by operation_name_id
+        const sums = {};
+        const classes = {};
+        data.forEach(item => {
+            const opId = item.operation_name_id;
+            sums[opId] = (sums[opId] || 0) + (parseInt(item.quantity) || 0);
+            if (item.classification) {
+                classes[opId] = item.classification;
+            }
+        });
+
+        // 2. Reset the grid first
+        document.querySelectorAll('#tbody-surg-ops .surg-qty-input').forEach(inp => inp.value = 0);
+
+        // 3. Populate
+        Object.entries(sums).forEach(([opId, qty]) => {
+            const tr = document.querySelector(`#tbody-surg-ops tr[data-op-id="${opId}"]`);
+            if (tr) {
+                const inp = tr.querySelector('.surg-qty-input');
+                if (inp) inp.value = qty;
+
+                // Also update the classification select to match
+                const select = tr.querySelector('select.surg-class-select');
+                if (select && classes[opId]) {
+                    select.value = classes[opId];
+                    updateRowClassColor(select);
+                }
+            }
+        });
+
+        updateSurgOpsPercentages();
+
+        // 4. Check if there are already records in surgeries table for this month to determine if saving will be an edit or insert
+        const date = monthVal + "-01";
+        const resSurg = await fetch('/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=10&type=surgeries_ops');
+        const dataSurg = await resSurg.json();
+        const itemsSurg = dataSurg.data || dataSurg;
+
+        if (itemsSurg.length > 0) {
+            editStates[type].active = true;
+            editStates[type].date   = monthVal;
+        } else {
+            editStates[type].active = false;
+            editStates[type].date   = '';
+        }
+    } catch (e) {
+        console.error("Failed to load total operations from detailed stats:", e);
+    }
+}
+
 // Initialize Page Entry Grid hook
 window.initEntryPage = function() {
     setupFormDates();
@@ -2399,6 +2482,14 @@ async function saveDocOps() {
         if (res.ok && result.ok) {
             showToast(`✅ تم حفظ ${result.saved} عملية تفصيلية بنجاح وستظهر في التقارير`, 'success');
             lastUsedDate = monthVal;
+            
+            // Auto sync monthly totals table in the background
+            try {
+                await loadTotalOpsFromDetailed();
+                await saveSurgeriesOps(true);
+            } catch (syncErr) {
+                console.error("Auto sync failed:", syncErr);
+            }
         } else {
             showToast('حدث خطأ أثناء الحفظ', 'error');
         }
