@@ -262,6 +262,14 @@ class ReportController extends Controller
                 'total'          => $group->sum('quantity')
             ])->sortByDesc('total')->values();
 
+        $flatDetailedOps = $doctorOpStatsRaw->map(fn($s) => (object)[
+            'doctor_name'    => $s->doctor->name ?? '—',
+            'op'             => $s->operationName->name ?? '—',
+            'classification' => $s->classification ?? ($s->operationName->classification ?? '—'),
+            'total'          => $s->quantity,
+            'doc_order'      => $s->doctor->display_order ?? 0,
+        ])->sortBy('doc_order')->values();
+
         $grandDetailTotal = $doctorOpStatsRaw->sum('quantity');
 
         $doctorOpStatsByDoctor = $doctorOpStatsRaw
@@ -296,7 +304,7 @@ class ReportController extends Controller
             'eyeTestsByType','labVisitCount','labTestsByType',
             'surgeriesByCatSector','surgeriesByGov','surgeriesByCountry',
             'surgeriesByDoctorCatSector','surgeryDetailByDoctor',
-            'doctorOpStatsByDoctor', 'combinedDetailedOps', 'grandDetailTotal',
+            'doctorOpStatsByDoctor', 'combinedDetailedOps', 'flatDetailedOps', 'grandDetailTotal',
             'totalVisits','totalEyeTests','totalSurgeries',
             'year','month','start_date','end_date',
             'doctor_id','clinic_unit_id','sector_id','governorate_id','country_id',
