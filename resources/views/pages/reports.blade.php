@@ -21,7 +21,24 @@ if (file_exists(base_path('iraq.svg'))) {
                 <div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-500">
                     <i data-lucide="file-bar-chart-2" class="w-4 h-4"></i>
                 </div>
-                <h2 class="text-xs font-bold text-text-main">الإحصاءات والتقارير الطبية</h2>
+                <div>
+                    <h2 class="text-xs font-bold text-text-main">الإحصاءات والتقارير الطبية</h2>
+                    <p class="text-[9px] text-slate-400 font-bold mt-0.5">
+                        الفترة:
+                        <span class="text-pink-500 font-black">
+                            {{ \Carbon\Carbon::parse($start_date)->translatedFormat('M Y') }}
+                            @if(substr($start_date,0,7) !== substr($end_date,0,7))
+                                — {{ \Carbon\Carbon::parse($end_date)->translatedFormat('M Y') }}
+                            @endif
+                        </span>
+                        @if($doctor_id)
+                            &nbsp;|&nbsp; <span class="text-violet-500">{{ $filterDoctors->firstWhere('id',$doctor_id)?->name ?? '' }}</span>
+                        @endif
+                        @if($sector_id)
+                            &nbsp;|&nbsp; <span class="text-sky-500">{{ $filterSectors->firstWhere('id',$sector_id)?->name ?? '' }}</span>
+                        @endif
+                    </p>
+                </div>
             </div>
             <div class="flex flex-wrap items-center gap-3">
                 <!-- Date range pickers -->
@@ -1379,11 +1396,12 @@ let _chartsInitialized = false;
 window.initReportsPage = function() {
     if (!_chartsInitialized) {
         _chartsInitialized = true;
-        setTimeout(() => {
-            renderAll2DArrowCharts();
-            loadTable7();
-        }, 150);
     }
+    // Always re-render charts and reload table7 on each page visit
+    setTimeout(() => {
+        renderAll2DArrowCharts();
+        loadTable7();
+    }, 150);
 };
 
 // ── جدول (7): جلب بيانات التصنيف من نفس API التي يستخدمها زر "تعديل" ──
@@ -1403,10 +1421,28 @@ async function loadTable7() {
     const toVal   = document.getElementById('report-date-to')?.value   || '{{ substr($end_date   ?? date("Y-m"), 0, 7) }}';
 
     const startDate = fromVal.length === 7 ? fromVal + '-01' : fromVal;
-    const endDate   = toVal.length   === 7 ? toVal   + '-01' : toVal;
+    let endDate = toVal;
+    if (toVal.length === 7) {
+        const parts = toVal.split('-');
+        const year = parseInt(parts[0]);
+        const month = parseInt(parts[1]);
+        const lastDay = new Date(year, month, 0).getDate();
+        endDate = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+    }
+
+    const docId = document.getElementById('filter-doctor-id')?.value;
+    const govId = document.getElementById('filter-governorate-id')?.value;
+    const countryId = document.getElementById('filter-country-id')?.value;
+    const sectorId = document.getElementById('filter-sector-id')?.value;
+
+    let apiUrl = `/api/surgeries?start_date=${startDate}&end_date=${endDate}&per_page=2000&type=surgeries_cls`;
+    if (docId) apiUrl += `&doctor_id=${docId}`;
+    if (govId) apiUrl += `&governorate_id=${govId}`;
+    if (countryId) apiUrl += `&country_id=${countryId}`;
+    if (sectorId) apiUrl += `&sector_id=${sectorId}`;
 
     try {
-        const res  = await fetch(`/api/surgeries?start_date=${startDate}&end_date=${endDate}&per_page=2000&type=surgeries_cls`);
+        const res  = await fetch(apiUrl);
         const data = await res.json();
         const items = data.data || data; // [{classification, sector_name, quantity}]
 

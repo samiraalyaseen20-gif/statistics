@@ -252,19 +252,23 @@ class ReportController extends Controller
 
         $doctorOpStatsRaw = DoctorOperationStat::with(['doctor', 'operationName'])
             ->whereBetween('stat_month', [$statMonthStart, $statMonthEnd])
-            ->where('quantity', '>', 0)
-            ->get();
+            ->where('quantity', '>', 0);
+        if ($doctor_id) {
+            $doctorOpStatsRaw->where('doctor_id', $doctor_id);
+        }
+        $doctorOpStatsRaw = $doctorOpStatsRaw->get();
 
         $doctorOpStatsByDoctor = $doctorOpStatsRaw
             ->groupBy(fn($s) => $s->doctor->name ?? '—')
-            ->map(fn($group) => $group->map(fn($s) => (object)[
-                'op'            => $s->operationName->name ?? '—',
-                'classification'=> $s->classification ?? ($s->operationName->classification ?? '—'),
-                'total'         => $s->quantity,
-                'doc_order'     => $s->doctor->display_order ?? 0,
-                'op_order'      => $s->operationName->display_order ?? 0,
-            ])->sortBy('op_order')->values()
-        );
+            ->map(fn($group) => $group->groupBy('operation_name_id')
+                ->map(fn($subGroup) => (object)[
+                    'op'            => $subGroup->first()->operationName->name ?? '—',
+                    'classification'=> $subGroup->first()->classification ?? ($subGroup->first()->operationName->classification ?? '—'),
+                    'total'         => $subGroup->sum('quantity'),
+                    'doc_order'     => $subGroup->first()->doctor->display_order ?? 0,
+                    'op_order'      => $subGroup->first()->operationName->display_order ?? 0,
+                ])->sortBy('op_order')->values()
+            );
 
         // Totals
         $totalVisits    = (clone $docVisitsQuery)->count();
@@ -467,13 +471,14 @@ class ReportController extends Controller
             if ($sideOpStatsRaw->count() > 0) {
                 $doctorOpStats = $sideOpStatsRaw
                     ->groupBy(fn($s) => $s->doctor->name ?? '—')
-                    ->map(fn($group) => $group->map(fn($s) => (object)[
-                        'op'            => $s->operationName->name ?? '—',
-                        'classification'=> $s->classification ?? ($s->operationName->classification ?? '—'),
-                        'total'         => $s->quantity,
-                        'op_order'      => $s->operationName->display_order ?? 0,
-                    ])->sortBy('op_order')->values()
-                );
+                    ->map(fn($group) => $group->groupBy('operation_name_id')
+                        ->map(fn($subGroup) => (object)[
+                            'op'            => $subGroup->first()->operationName->name ?? '—',
+                            'classification'=> $subGroup->first()->classification ?? ($subGroup->first()->operationName->classification ?? '—'),
+                            'total'         => $subGroup->sum('quantity'),
+                            'op_order'      => $subGroup->first()->operationName->display_order ?? 0,
+                        ])->sortBy('op_order')->values()
+                    );
             } else {
                 $doctorOpStats = null;
             }

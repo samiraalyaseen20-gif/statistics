@@ -1116,8 +1116,8 @@ function resetComparisonFilters() {
     document.getElementById('cmp-op-a').value = '';
     document.getElementById('cmp-op-b').value = '';
     
-    const defaultStart = '2026-05-01';
-    const defaultEnd = '2026-05-31';
+    const defaultStart = '2026-05';
+    const defaultEnd = '2026-05';
     
     document.getElementById('cmp-from-a').value = defaultStart;
     document.getElementById('cmp-to-a').value = defaultEnd;
