@@ -363,18 +363,12 @@ if (file_exists(base_path('iraq.svg'))) {
         </div>
     </div>
 
-    @php
-    // حساب مبدئي لمجموع جدول (10) الحقيقي (بدون سجلات CLS)
-    $d10Totals = $surgeriesByDoctorCatSector->groupBy('doctor')->map(fn($g) => $g->sum('total'));
-    $d10GrandTotal = $d10Totals->sum();
-    @endphp
-
     <!-- 6. العمليات الجراحية لكل طبيب اختصاص (جدول 10) -->
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
             جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص (بيانات حقيقية)
-            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($d10GrandTotal) }}</span>
+            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalSurgeries) }}</span>
         </h3>
         <div class="w-full overflow-x-auto py-2 mb-4">
             <svg id="svg-report-10" viewBox="0 0 900 240" class="w-full min-w-[850px] h-[240px] overflow-visible"></svg>
@@ -497,36 +491,27 @@ if (file_exists(base_path('iraq.svg'))) {
         <!-- Combined Panel for All Doctors -->
         <div id="stats-panel-all" class="stats-panel transition-opacity duration-300">
             <div class="flex items-center justify-between gap-3 mb-4">
-                <h4 class="text-xs font-bold text-slate-800">إجمالي أعداد العمليات المنفذة حسب النوع (لكل طبيب)</h4>
+                <h4 class="text-xs font-bold text-slate-800">إجمالي أعداد العمليات المنفذة حسب النوع</h4>
                 <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $grandDetailTotal }} عملية</span>
             </div>
             <div class="flex flex-col lg:flex-row gap-6 items-start">
                 <div class="w-full lg:w-2/5 flex-shrink-0">
                     <svg id="svg-doc-all" viewBox="0 0 450 200" class="w-full h-auto overflow-visible"></svg>
                 </div>
-                <div class="w-full lg:w-3/5 overflow-x-auto">
-                    <table class="custom-table text-xs w-full">
-                        <thead>
-                            <tr>
-                                <th class="w-8">ت</th>
-                                <th class="text-right pr-3">اسم الطبيب</th>
-                                <th class="text-right pr-3">اسم العملية</th>
-                                <th class="text-center">التصنيف</th>
-                                <th class="text-center font-bold">العدد</th>
-                            </tr>
-                        </thead>
+                <div class="w-full lg:w-3/5">
+                    <table class="custom-table text-xs">
+                        <thead><tr><th>ت</th><th class="text-right pr-3">اسم العملية</th><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
                         <tbody>
-                            @forelse($flatDetailedOps as $i => $op)
+                            @forelse($combinedDetailedOps as $i => $op)
                             <tr class="table-row">
                                 <td class="w-8 text-center text-slate-400">{{ $i + 1 }}</td>
-                                <td class="text-right pr-3 font-extrabold text-violet-700">{{ $op->doctor_name }}</td>
                                 <td class="text-right pr-3 font-bold text-text-main">{{ $op->op }}</td>
                                 <td class="text-center"><span class="text-[9px] font-bold px-2 py-0.5 rounded-full {{ $bc[$op->classification] ?? 'bg-slate-100 text-slate-600' }}">{{ $op->classification }}</span></td>
                                 <td class="text-center font-bold text-violet-600 text-xs">{{ $op->total }}</td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="text-center text-slate-400 py-4">لا توجد عمليات مسجلة</td>
+                                <td colspan="4" class="text-center text-slate-400 py-4">لا توجد عمليات مسجلة</td>
                             </tr>
                             @endforelse
                         </tbody>
