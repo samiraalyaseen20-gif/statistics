@@ -598,6 +598,7 @@ class EntryController extends Controller
             'entries.*.doctor_id'         => 'required|exists:doctors,id',
             'entries.*.operation_name_id' => 'required|exists:operation_names,id',
             'entries.*.quantity'          => 'required|integer|min:0',
+            'entries.*.classification'    => 'nullable|string',
         ]);
 
         $month = $r->month;

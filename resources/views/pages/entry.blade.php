@@ -2190,6 +2190,7 @@ function buildDocOpsAccordion(existingData) {
 
     const doctors = entryLookups?.doctors || [];
     const ops = entryLookups?.operationNames || [];
+    const dbClasses = entryLookups?.classifications || [];
 
     if (!doctors.length || !ops.length) {
         // Lookups not ready yet — retry after 400ms
@@ -2197,10 +2198,13 @@ function buildDocOpsAccordion(existingData) {
         return;
     }
 
-    // Build a lookup for existing data: { doctorId_opId: quantity }
+    // Build a lookup for existing data: { doctorId_opId: { quantity, classification } }
     const existingMap = {};
     existingData.forEach(d => {
-        existingMap[`${d.doctor_id}_${d.operation_name_id}`] = d.quantity;
+        existingMap[`${d.doctor_id}_${d.operation_name_id}`] = {
+            quantity: d.quantity,
+            classification: d.classification
+        };
     });
 
     let html = '';
@@ -2210,14 +2214,22 @@ function buildDocOpsAccordion(existingData) {
 
         let rowsHtml = '';
         ops.forEach(op => {
-            const cls = op.classification || '';
+            const record = existingMap[`${doc.id}_${op.id}`];
+            const existingQty = record ? record.quantity : 0;
+            const cls = record && record.classification ? record.classification : (op.classification || '');
+            
             const clsStyle = CLS_COLORS[cls] || { bg: 'bg-slate-400/5', badge: 'bg-slate-100 text-slate-600' };
-            const existingQty = existingMap[`${doc.id}_${op.id}`] || 0;
+            const selectOptions = dbClasses.map(c => 
+                `<option value="${c.name}" ${c.name === cls ? 'selected' : ''}>${c.name}</option>`
+            ).join('');
+
             rowsHtml += `
                 <tr class="table-row" data-doctor-id="${doc.id}" data-op-id="${op.id}">
                     <td class="py-2.5 text-right pr-3 font-bold text-[11px]">${op.name}</td>
                     <td class="py-2.5 text-center ${clsStyle.bg}">
-                        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${clsStyle.badge}">${cls}</span>
+                        <select class="doc-op-class-select custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main text-[11px] font-['Tajawal'] w-28" onchange="updateRowClassColor(this)">
+                            ${selectOptions}
+                        </select>
                     </td>
                     <td class="py-2.5 text-center bg-violet-400/10">
                         <input type="number" min="0" value="${existingQty}"
@@ -2231,7 +2243,10 @@ function buildDocOpsAccordion(existingData) {
                 </tr>`;
         });
 
-        const docTotal = ops.reduce((sum, op) => sum + (existingMap[`${doc.id}_${op.id}`] || 0), 0);
+        const docTotal = ops.reduce((sum, op) => {
+            const record = existingMap[`${doc.id}_${op.id}`];
+            return sum + (record ? record.quantity : 0);
+        }, 0);
 
         html += `
             <div class="border ${docBg} rounded-xl overflow-hidden">
@@ -2352,10 +2367,15 @@ async function saveDocOps() {
     inputs.forEach(inp => {
         const qty = parseInt(inp.value) || 0;
         if (qty > 0) {
+            const tr = inp.closest('tr');
+            const selectEl = tr ? tr.querySelector('.doc-op-class-select') : null;
+            const classification = selectEl ? selectEl.value : '';
+
             entries.push({
                 doctor_id:         parseInt(inp.dataset.doctorId),
                 operation_name_id: parseInt(inp.dataset.opId),
                 quantity:          qty,
+                classification:    classification,
             });
         }
     });
