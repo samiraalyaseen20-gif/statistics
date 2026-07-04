@@ -400,7 +400,7 @@ if (file_exists(base_path('iraq.svg'))) {
                     $sectorsList = ['قطاع الصحة', 'عتبة الخاص', 'عتبة العام'];
                     
                     // 1. تجميع البيانات لكل طبيب ديناميكياً
-                    $dynamicD10 = $filterDoctors->map(function($doc, $index) use ($surgeriesByDoctorCatSector, $classifications, $sectorsList) {
+                    $dynamicD10 = $filterDoctors->map(function($doc, $index) use ($surgeriesByDoctorCatSector, $doctorOpStatsByDoctor, $classifications, $sectorsList) {
                         $docSurgeries = $surgeriesByDoctorCatSector->where('doctor', $doc->name);
                         
                         $vals = [];
@@ -421,10 +421,42 @@ if (file_exists(base_path('iraq.svg'))) {
                             }
                         }
                         
+                        // إذا لم توجد بيانات تفصيلية بالقطاع، استخدم doctor_operation_stats كبديل
+                        // (يوزع التصنيف في عمود قطاع الصحة فقط لأن القطاع غير متاح)
+                        $isFallback = false;
+                        if ($total == 0 && isset($doctorOpStatsByDoctor[$doc->name])) {
+                            $docStats = $doctorOpStatsByDoctor[$doc->name];
+                            $fallbackVals = array_fill(0, 15, 0);
+                            $fallbackTotal = 0;
+                            
+                            foreach ($docStats as $stat) {
+                                $cls = $stat->classification ?? '';
+                                // تحديد موضع التصنيف (كل تصنيف 3 خانات: صحة/خاص/عام — نضع الكل في خانة الصحة)
+                                if (str_contains($cls, 'فوق الكبرى'))      $colBase = 9;
+                                elseif (str_contains($cls, 'كبرى'))         $colBase = 6;
+                                elseif (str_contains($cls, 'وسطى') || str_contains($cls, 'حقن') || str_contains($cls, 'ليزر')) $colBase = 3;
+                                elseif (str_contains($cls, 'صغرى'))         $colBase = 0;
+                                elseif (str_contains($cls, 'خاصة'))         $colBase = 12;
+                                else $colBase = null;
+                                
+                                if ($colBase !== null) {
+                                    $fallbackVals[$colBase] += $stat->total;
+                                    $fallbackTotal += $stat->total;
+                                }
+                            }
+                            
+                            if ($fallbackTotal > 0) {
+                                $vals = $fallbackVals;
+                                $total = $fallbackTotal;
+                                $isFallback = true;
+                            }
+                        }
+                        
                         return [
-                            'name' => $doc->name,
-                            'vals' => $vals,
-                            'total' => $total
+                            'name'       => $doc->name,
+                            'vals'       => $vals,
+                            'total'      => $total,
+                            'isFallback' => $isFallback,
                         ];
                     })->filter(fn($d) => $d['total'] > 0)->values();
 
@@ -439,9 +471,14 @@ if (file_exists(base_path('iraq.svg'))) {
                     @endphp
 
                     @forelse($dynamicD10 as $num => $doc)
-                    <tr class="table-row">
+                    <tr class="table-row {{ $doc['isFallback'] ? 'opacity-80' : '' }}">
                         <td>{{ $num + 1 }}</td>
-                        <td class="text-right pr-2 font-bold whitespace-nowrap">{{ $doc['name'] }}</td>
+                        <td class="text-right pr-2 font-bold whitespace-nowrap">
+                            {{ $doc['name'] }}
+                            @if($doc['isFallback'])
+                                <span title="بيانات مستمدة من إحصاءات الطبيب — التفاصيل في الجدول أدناه" class="text-amber-500 text-[9px] mr-1">◈</span>
+                            @endif
+                        </td>
                         @foreach($doc['vals'] as $v)
                         <td class="{{ $v == 0 ? 'opacity-20' : '' }}">{{ $v }}</td>
                         @endforeach
