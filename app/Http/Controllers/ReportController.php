@@ -246,31 +246,25 @@ class ReportController extends Controller
             ->get()->groupBy('doctor');
 
         // ═══ عمليات مفصلة لكل طبيب (من جدول doctor_operation_stats المستقل) ═══
-        // إذا وُجدت بيانات في الجدول المستقل لنفس الفترة الزمنية — نستخدمها كمصدر أساسي
-        // وإلا نعود إلى surgeries (surgeryDetailByDoctor السابق)
+        // نعتمد فقط على الجدول الجديد للعمليات التفصيلية. وإذا كان فارغاً يظهر صفراً/لا يوجد بيانات.
         $statMonthStart = substr($start_date, 0, 7) . '-01';
         $statMonthEnd   = substr($end_date,   0, 7) . '-01';
 
         $doctorOpStatsRaw = DoctorOperationStat::with(['doctor', 'operationName'])
             ->whereBetween('stat_month', [$statMonthStart, $statMonthEnd])
+            ->where('quantity', '>', 0)
             ->get();
 
-        if ($doctorOpStatsRaw->count() > 0) {
-            // استخدام الجدول المستقل — تجميع بالطبيب واسم العملية
-            $doctorOpStatsByDoctor = $doctorOpStatsRaw
-                ->groupBy(fn($s) => $s->doctor->name ?? '—')
-                ->map(fn($group) => $group->map(fn($s) => (object)[
-                    'op'            => $s->operationName->name ?? '—',
-                    'classification'=> $s->classification ?? ($s->operationName->classification ?? '—'),
-                    'total'         => $s->quantity,
-                    'doc_order'     => $s->doctor->display_order ?? 0,
-                    'op_order'      => $s->operationName->display_order ?? 0,
-                ])->sortBy('op_order')->values()
-            );
-        } else {
-            // Fallback: الجدول القديم
-            $doctorOpStatsByDoctor = null;
-        }
+        $doctorOpStatsByDoctor = $doctorOpStatsRaw
+            ->groupBy(fn($s) => $s->doctor->name ?? '—')
+            ->map(fn($group) => $group->map(fn($s) => (object)[
+                'op'            => $s->operationName->name ?? '—',
+                'classification'=> $s->classification ?? ($s->operationName->classification ?? '—'),
+                'total'         => $s->quantity,
+                'doc_order'     => $s->doctor->display_order ?? 0,
+                'op_order'      => $s->operationName->display_order ?? 0,
+            ])->sortBy('op_order')->values()
+        );
 
         // Totals
         $totalVisits    = (clone $docVisitsQuery)->count();

@@ -574,12 +574,7 @@ if (file_exists(base_path('iraq.svg'))) {
 
     {{-- ── جدول (10): العمليات التفصيلية لكل طبيب (من الجدول المستقل) ── --}}
     @php
-    // استخدم $doctorOpStatsByDoctor إذا توفر، وإلا ارجع لـ $surgeryDetailByDoctor
-    $detailSource = isset($doctorOpStatsByDoctor) && $doctorOpStatsByDoctor && $doctorOpStatsByDoctor->count() > 0
-        ? $doctorOpStatsByDoctor
-        : $surgeryDetailByDoctor;
-
-    $usingNewTable = isset($doctorOpStatsByDoctor) && $doctorOpStatsByDoctor && $doctorOpStatsByDoctor->count() > 0;
+    $detailSource = $doctorOpStatsByDoctor ?? collect();
 
     $bcMap = [
         'خاصة'       => 'bg-purple-100 text-purple-700',
@@ -596,11 +591,6 @@ if (file_exists(base_path('iraq.svg'))) {
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="table-2" class="w-4 h-4 text-violet-500"></i>
             جدول (10): العمليات التفصيلية لكل طبيب حسب النوع
-            @if($usingNewTable)
-            <span class="inline-flex items-center bg-violet-500/10 text-violet-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">
-                بيانات محدّثة
-            </span>
-            @endif
         </h3>
 
         @if($detailSource && $detailSource->count() > 0)
@@ -608,9 +598,9 @@ if (file_exists(base_path('iraq.svg'))) {
             @foreach($filterDoctors as $doc)
             @php
             $docOps = $detailSource->get($doc->name) ?? collect();
-            $docTotal = $usingNewTable
-                ? $docOps->sum('total')
-                : $docOps->sum('total');
+            // تصفية فقط العمليات التي قيمتها أكبر من 0
+            $docOps = $docOps->filter(fn($op) => $op->total > 0)->values();
+            $docTotal = $docOps->sum('total');
             @endphp
             @if($docOps->count() > 0)
             <div class="border border-violet-200/20 rounded-xl overflow-hidden">
