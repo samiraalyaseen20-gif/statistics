@@ -454,7 +454,7 @@
             </div>
 
             {{-- Classification × Sectors Table --}}
-            <div class="overflow-x-auto">
+            <div class="nice-scroll">
                 <table class="custom-table text-center" style="font-size:11px; min-width:700px" id="table-surg-cls">
                     <thead>
                         <tr>
