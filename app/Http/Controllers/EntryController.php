@@ -103,7 +103,7 @@ class EntryController extends Controller
                     $query = Surgery::whereBetween('op_date', [$start, $end])
                         ->whereNull('governorate_id')
                         ->whereNull('country_id')
-                        ->whereNotNull('classification');
+                        ->where('patient_name', 'قيد إحصائي أطباء');
                     
                     if ($r->has('sector_id')) {
                         $query->where('sector_id', $r->sector_id);
@@ -119,10 +119,7 @@ class EntryController extends Controller
                     Surgery::whereBetween('op_date', [$start, $end])
                         ->whereNull('governorate_id')
                         ->whereNull('country_id')
-                        ->where('doctor_id', $defaultDoc->id)
-                        ->where('operation_name_id', $defaultOp->id)
-                        ->whereNotNull('sector_id')
-                        ->whereNotNull('classification')
+                        ->where('patient_name', 'قيد إحصائي تصنيف')
                         ->delete();
                 }
                 break;
@@ -459,7 +456,7 @@ class EntryController extends Controller
             ->when($r->type === 'surgeries_docs' && $defaultOp, function($q) use ($r, $defaultDoc, $defaultOp) {
                 $q->whereNull('governorate_id')
                   ->whereNull('country_id')
-                  ->whereNotNull('classification');
+                  ->where('patient_name', 'قيد إحصائي أطباء');
                 if ($r->has('sector_id')) {
                     $q->where('sector_id', $r->sector_id);
                 }
@@ -468,10 +465,7 @@ class EntryController extends Controller
                 // Return only the classification×sector entries (saved via cls tab)
                 $q->whereNull('governorate_id')
                   ->whereNull('country_id')
-                  ->where('doctor_id', $defaultDoc->id)
-                  ->where('operation_name_id', $defaultOp->id)
-                  ->whereNotNull('sector_id')
-                  ->whereNotNull('classification');
+                  ->where('patient_name', 'قيد إحصائي تصنيف');
             })
             ->when($r->type === 'surgeries_govs' && $defaultDoc && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
                 $q->where('doctor_id', $defaultDoc->id)

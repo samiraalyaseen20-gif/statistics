@@ -717,7 +717,8 @@ async function saveSurgCls() {
                     sector_id:          sector.id,
                     op_date:            date,
                     quantity:           qty,
-                    classification:     cls
+                    classification:     cls,
+                    patient_name:       'قيد إحصائي تصنيف'
                 })
             })
         );
@@ -2022,7 +2023,8 @@ async function saveSurgeriesDocs() {
                         sector_id: secId,
                         op_date: date,
                         quantity: count,
-                        classification: cls
+                        classification: cls,
+                        patient_name: 'قيد إحصائي أطباء'
                     })
                 })
             );

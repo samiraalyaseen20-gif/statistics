@@ -175,13 +175,9 @@ class ReportController extends Controller
         $clsDirectQuery = Surgery::whereBetween('op_date', [$start_date, $end_date])
             ->whereNull('governorate_id')
             ->whereNull('country_id')
+            ->where('patient_name', 'قيد إحصائي تصنيف')
             ->whereNotNull('sector_id')
             ->whereNotNull('classification');
-
-        if ($defaultDoc && $defaultOp) {
-            $clsDirectQuery->where('doctor_id', $defaultDoc->id)
-                           ->where('operation_name_id', $defaultOp->id);
-        }
 
         $clsDirectCount = (clone $clsDirectQuery)->count();
 
@@ -234,20 +230,12 @@ class ReportController extends Controller
             ->values();
 
         // جدول (10): عمليات لكل طبيب بالتصنيف والقطاع
-        // استثناء سجلات CLS المباشرة (doctor_id=defaultDoc & operation_name_id=defaultOp)
-        // لأنها تجميع تصنيفي وليست عمليات حقيقية لذلك الطبيب
-        $d10Query = (clone $docSurgeriesQuery)
+        // استبعاد سجلات CLS المباشرة (التي لها patient_name = 'قيد إحصائي تصنيف')
+        // لأنها تجميع تصنيفي وليست عمليات حقيقية للأطباء
+        $surgeriesByDoctorCatSector = (clone $docSurgeriesQuery)
             ->join('doctors','surgeries.doctor_id','=','doctors.id')
-            ->join('sectors','surgeries.sector_id','=','sectors.id');
-
-        if ($defaultDoc && $defaultOp) {
-            $d10Query->where(function($q) use ($defaultDoc, $defaultOp) {
-                $q->where('surgeries.doctor_id', '!=', $defaultDoc->id)
-                  ->orWhere('surgeries.operation_name_id', '!=', $defaultOp->id);
-            });
-        }
-
-        $surgeriesByDoctorCatSector = $d10Query
+            ->join('sectors','surgeries.sector_id','=','sectors.id')
+            ->where('surgeries.patient_name', '!=', 'قيد إحصائي تصنيف')
             ->select('doctors.name as doctor','doctors.display_order','surgeries.classification','sectors.name as sector', DB::raw('count(*) as total'))
             ->groupBy('doctors.name','doctors.display_order','surgeries.classification','sectors.name')
             ->orderBy('doctors.display_order', 'asc')
