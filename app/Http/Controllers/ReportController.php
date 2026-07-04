@@ -116,8 +116,18 @@ class ReportController extends Controller
             ->orderBy('doctors.name', 'asc')
             ->get()->map(fn($v) => ['doctor' => $v->doctor ?? '—', 'total' => $v->total]);
 
+        // Base query for visits geography (ignores doctor/unit filters since geo visits are entered globally)
+        $visitsGeoQuery = Visit::whereBetween('visit_date', [$start_date, $end_date])
+            ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل']);
+        if (!empty($editedMonths)) {
+            $visitsGeoQuery->where(function($q) use ($editedMonths) {
+                $q->where('patient_name', '!=', 'مريض مجهول')
+                  ->orWhereNotIn(\Illuminate\Support\Facades\DB::raw("DATE_FORMAT(visit_date, '%Y-%m')"), $editedMonths);
+            });
+        }
+
         // جدول (3): ديمغرافي داخل العراق (استشارية)
-        $visitsByGov = (clone $visitsQuery)
+        $visitsByGov = (clone $visitsGeoQuery)
             ->whereNotNull('governorate_id')
             ->select('governorate_id', DB::raw('count(*) as total'))
             ->groupBy('governorate_id')
@@ -131,7 +141,7 @@ class ReportController extends Controller
             ->values();
 
         // جدول (4): ديمغرافي خارج العراق (استشارية)
-        $visitsByCountry = (clone $visitsQuery)
+        $visitsByCountry = (clone $visitsGeoQuery)
             ->whereNotNull('country_id')
             ->select('country_id', DB::raw('count(*) as total'))
             ->groupBy('country_id')
@@ -197,8 +207,11 @@ class ReportController extends Controller
                 ->get();
         }
 
+        // Base query for surgeries geography (ignores doctor/sector filters since geo surgeries are entered globally)
+        $surgeriesGeoQuery = Surgery::whereBetween('op_date', [$start_date, $end_date]);
+
         // جدول (8): ديمغرافي داخل العراق (عمليات)
-        $surgeriesByGov = (clone $surgeriesQuery)
+        $surgeriesByGov = (clone $surgeriesGeoQuery)
             ->whereNotNull('governorate_id')
             ->select('governorate_id', DB::raw('count(*) as total'))
             ->groupBy('governorate_id')
@@ -212,7 +225,7 @@ class ReportController extends Controller
             ->values();
 
         // جدول (9): ديمغرافي خارج العراق (عمليات)
-        $surgeriesByCountry = (clone $surgeriesQuery)
+        $surgeriesByCountry = (clone $surgeriesGeoQuery)
             ->whereNotNull('country_id')
             ->select('country_id', DB::raw('count(*) as total'))
             ->groupBy('country_id')
