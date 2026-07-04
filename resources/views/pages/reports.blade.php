@@ -468,11 +468,11 @@ if (file_exists(base_path('iraq.svg'))) {
         <p class="text-[8px] text-slate-400 mt-2">ص = قطاع الصحة (حكومي) &nbsp;|&nbsp; خ = عتبة الخاص &nbsp;|&nbsp; ع = عتبة العام</p>
     </div>
 
-    <!-- 7. الإحصائية التفصيلية لكل طبيب -->
+    <!-- 7. أعداد العمليات الشهرية الكلية -->
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-            <i data-lucide="user-cog" class="w-4 h-4 text-violet-500"></i>
-            الإحصائية التفصيلية للعمليات الجراحية لكل طبيب
+            <i data-lucide="scissors" class="w-4 h-4 text-violet-500"></i>
+            أعداد العمليات الجراحية المنفذة لكل نوع للشهر المحدد (أعداد العمليات الشهرية الكلية)
             <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع الكلي: {{ number_format($grandDetailTotal) }}</span>
         </h3>
         
@@ -491,7 +491,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <!-- Combined Panel for All Doctors -->
         <div id="stats-panel-all" class="stats-panel transition-opacity duration-300">
             <div class="flex items-center justify-between gap-3 mb-4">
-                <h4 class="text-xs font-bold text-slate-800">إجمالي العمليات الجراحية المنفذة</h4>
+                <h4 class="text-xs font-bold text-slate-800">إجمالي أعداد العمليات المنفذة حسب النوع</h4>
                 <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $grandDetailTotal }} عملية</span>
             </div>
             <div class="flex flex-col lg:flex-row gap-6 items-start">
@@ -500,19 +500,18 @@ if (file_exists(base_path('iraq.svg'))) {
                 </div>
                 <div class="w-full lg:w-3/5">
                     <table class="custom-table text-xs">
-                        <thead><tr><th>ت</th><th class="text-right pr-3">اسم الطبيب</th><th class="text-right pr-3">اسم العملية</th><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
+                        <thead><tr><th>ت</th><th class="text-right pr-3">اسم العملية</th><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
                         <tbody>
-                            @forelse($flatDetailedOps as $i => $op)
+                            @forelse($combinedDetailedOps as $i => $op)
                             <tr class="table-row">
                                 <td class="w-8 text-center text-slate-400">{{ $i + 1 }}</td>
-                                <td class="text-right pr-3 font-extrabold text-violet-600">{{ $op->doctor_name }}</td>
                                 <td class="text-right pr-3 font-bold text-text-main">{{ $op->op }}</td>
                                 <td class="text-center"><span class="text-[9px] font-bold px-2 py-0.5 rounded-full {{ $bc[$op->classification] ?? 'bg-slate-100 text-slate-600' }}">{{ $op->classification }}</span></td>
                                 <td class="text-center font-bold text-violet-600 text-xs">{{ $op->total }}</td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="text-center text-slate-400 py-4">لا توجد عمليات مسجلة</td>
+                                <td colspan="4" class="text-center text-slate-400 py-4">لا توجد عمليات مسجلة</td>
                             </tr>
                             @endforelse
                         </tbody>
