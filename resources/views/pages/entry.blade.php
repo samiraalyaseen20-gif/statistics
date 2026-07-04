@@ -275,9 +275,9 @@
                 </div>
             </div>
             {{-- All-sectors grid table --}}
-            <div class="overflow-x-auto">
+            <div class="nice-scroll" style="max-height: 480px; overflow-y: auto;">
                 <table class="custom-table text-center" style="font-size:10px; min-width:850px" id="table-surg-docs">
-                    <thead>
+                    <thead class="sticky-thead">
                         {{-- Row 1: merged header --}}
                         <tr>
                             <th rowspan="2" class="w-6">ت</th>
