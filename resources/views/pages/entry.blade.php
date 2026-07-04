@@ -1030,8 +1030,7 @@ function populateDirectGrids() {
             'خاصة':        { bg: 'bg-purple-400/10',  text: 'text-purple-700'  },
         };
 
-        surgeryTypeOrder.forEach((opId, index) => {
-            const dbOp = dbOps.find(o => o.id === opId);
+        dbOps.forEach((dbOp, index) => {
             if (dbOp) {
                 const defaultClass = dbOp.classification || (dbClasses[0] ? dbClasses[0].name : '');
                 const clsColor = clsColorMap[defaultClass] || { bg: 'bg-slate-400/10', text: 'text-slate-600' };
