@@ -363,12 +363,18 @@ if (file_exists(base_path('iraq.svg'))) {
         </div>
     </div>
 
+    @php
+    // حساب مبدئي لمجموع جدول (10) الحقيقي (بدون سجلات CLS)
+    $d10Totals = $surgeriesByDoctorCatSector->groupBy('doctor')->map(fn($g) => $g->sum('total'));
+    $d10GrandTotal = $d10Totals->sum();
+    @endphp
+
     <!-- 6. العمليات الجراحية لكل طبيب اختصاص (جدول 10) -->
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
             جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص (بيانات حقيقية)
-            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalSurgeries) }}</span>
+            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($d10GrandTotal) }}</span>
         </h3>
         <div class="w-full overflow-x-auto py-2 mb-4">
             <svg id="svg-report-10" viewBox="0 0 900 240" class="w-full min-w-[850px] h-[240px] overflow-visible"></svg>
