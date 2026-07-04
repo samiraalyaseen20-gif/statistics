@@ -14,6 +14,7 @@ use App\Models\Country;
 use App\Models\TestType;
 use App\Models\OperationName;
 use App\Models\Sector;
+use App\Models\DoctorOperationStat;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -244,6 +245,33 @@ class ReportController extends Controller
             ->orderBy('operation_names.display_order', 'asc')
             ->get()->groupBy('doctor');
 
+        // ═══ عمليات مفصلة لكل طبيب (من جدول doctor_operation_stats المستقل) ═══
+        // إذا وُجدت بيانات في الجدول المستقل لنفس الفترة الزمنية — نستخدمها كمصدر أساسي
+        // وإلا نعود إلى surgeries (surgeryDetailByDoctor السابق)
+        $statMonthStart = substr($start_date, 0, 7) . '-01';
+        $statMonthEnd   = substr($end_date,   0, 7) . '-01';
+
+        $doctorOpStatsRaw = DoctorOperationStat::with(['doctor', 'operationName'])
+            ->whereBetween('stat_month', [$statMonthStart, $statMonthEnd])
+            ->get();
+
+        if ($doctorOpStatsRaw->count() > 0) {
+            // استخدام الجدول المستقل — تجميع بالطبيب واسم العملية
+            $doctorOpStatsByDoctor = $doctorOpStatsRaw
+                ->groupBy(fn($s) => $s->doctor->name ?? '—')
+                ->map(fn($group) => $group->map(fn($s) => (object)[
+                    'op'            => $s->operationName->name ?? '—',
+                    'classification'=> $s->classification ?? ($s->operationName->classification ?? '—'),
+                    'total'         => $s->quantity,
+                    'doc_order'     => $s->doctor->display_order ?? 0,
+                    'op_order'      => $s->operationName->display_order ?? 0,
+                ])->sortBy('op_order')->values()
+            );
+        } else {
+            // Fallback: الجدول القديم
+            $doctorOpStatsByDoctor = null;
+        }
+
         // Totals
         $totalVisits    = (clone $docVisitsQuery)->count();
         $totalEyeTests  = (clone $eyeTestsQuery)->count();
@@ -264,6 +292,7 @@ class ReportController extends Controller
             'eyeTestsByType','labVisitCount','labTestsByType',
             'surgeriesByCatSector','surgeriesByGov','surgeriesByCountry',
             'surgeriesByDoctorCatSector','surgeryDetailByDoctor',
+            'doctorOpStatsByDoctor',
             'totalVisits','totalEyeTests','totalSurgeries',
             'year','month','start_date','end_date',
             'doctor_id','clinic_unit_id','sector_id','governorate_id','country_id',
@@ -433,6 +462,28 @@ class ReportController extends Controller
                     'total'          => $g->sum('total'),
                 ])->sortByDesc('total')->values();
 
+            // عمليات مفصلة من الجدول المستقل (doctor_operation_stats)
+            $sideStatStart = substr($startDate, 0, 7) . '-01';
+            $sideStatEnd   = substr($endDate,   0, 7) . '-01';
+            $sideOpStatsRaw = DoctorOperationStat::with(['doctor', 'operationName'])
+                ->whereBetween('stat_month', [$sideStatStart, $sideStatEnd]);
+            if ($docId) $sideOpStatsRaw = $sideOpStatsRaw->where('doctor_id', $docId);
+            $sideOpStatsRaw = $sideOpStatsRaw->get();
+
+            if ($sideOpStatsRaw->count() > 0) {
+                $doctorOpStats = $sideOpStatsRaw
+                    ->groupBy(fn($s) => $s->doctor->name ?? '—')
+                    ->map(fn($group) => $group->map(fn($s) => (object)[
+                        'op'            => $s->operationName->name ?? '—',
+                        'classification'=> $s->classification ?? ($s->operationName->classification ?? '—'),
+                        'total'         => $s->quantity,
+                        'op_order'      => $s->operationName->display_order ?? 0,
+                    ])->sortBy('op_order')->values()
+                );
+            } else {
+                $doctorOpStats = null;
+            }
+
             return [
                 'total_visits'         => $totalVisits,
                 'total_surgeries'      => $totalSurgeries,
@@ -448,6 +499,7 @@ class ReportController extends Controller
                 'combined_ops'         => $combinedOps,
                 'surgeries_by_gov'     => $surgeriesByGov,
                 'surgeries_by_country' => $surgeriesByCountry,
+                'doctor_op_stats'      => $doctorOpStats,
             ];
         };
 

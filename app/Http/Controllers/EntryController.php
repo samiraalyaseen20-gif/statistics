@@ -15,6 +15,7 @@ use App\Models\TestType;
 use App\Models\LabTestType;
 use App\Models\OperationName;
 use App\Models\Sector;
+use App\Models\DoctorOperationStat;
 use Illuminate\Support\Facades\Auth;
 
 class EntryController extends Controller
@@ -573,6 +574,77 @@ class EntryController extends Controller
         
         $surgery->update($r->only(['patient_name', 'doctor_id', 'operation_name_id', 'sector_id', 'governorate_id', 'country_id', 'op_date', 'classification']));
         return response()->json($surgery->load(['doctor','operationName','sector','governorate','country']));
+    }
+
+    // ========== DOCTOR OPERATION STATS ==========
+    public function doctorOpStatsIndex(Request $r)
+    {
+        $month = $r->get('month');
+        if (!$month) return response()->json([]);
+        // Normalize to first day of month
+        $statMonth = strlen($month) === 7 ? $month . '-01' : $month;
+
+        $stats = DoctorOperationStat::with(['doctor', 'operationName'])
+            ->where('stat_month', $statMonth)
+            ->get()
+            ->map(fn($s) => [
+                'id'                => $s->id,
+                'doctor_id'         => $s->doctor_id,
+                'doctor_name'       => $s->doctor->name ?? '—',
+                'operation_name_id' => $s->operation_name_id,
+                'operation_name'    => $s->operationName->name ?? '—',
+                'classification'    => $s->classification,
+                'quantity'          => $s->quantity,
+                'stat_month'        => $s->stat_month,
+            ]);
+
+        return response()->json($stats);
+    }
+
+    public function doctorOpStatsSave(Request $r)
+    {
+        $this->checkPermission();
+        $r->validate([
+            'month'      => 'required|string',
+            'entries'    => 'required|array',
+            'entries.*.doctor_id'         => 'required|exists:doctors,id',
+            'entries.*.operation_name_id' => 'required|exists:operation_names,id',
+            'entries.*.quantity'          => 'required|integer|min:0',
+        ]);
+
+        $month = $r->month;
+        $statMonth = strlen($month) === 7 ? $month . '-01' : $month;
+
+        // Clear existing data for this month first
+        DoctorOperationStat::where('stat_month', $statMonth)->delete();
+
+        $entries = collect($r->entries)->filter(fn($e) => ($e['quantity'] ?? 0) > 0);
+
+        foreach ($entries as $entry) {
+            // Get classification from operation name if not provided
+            $op = OperationName::find($entry['operation_name_id']);
+            $classification = $entry['classification'] ?? $op->classification ?? null;
+
+            DoctorOperationStat::create([
+                'doctor_id'         => $entry['doctor_id'],
+                'operation_name_id' => $entry['operation_name_id'],
+                'classification'    => $classification,
+                'quantity'          => $entry['quantity'],
+                'stat_month'        => $statMonth,
+            ]);
+        }
+
+        return response()->json(['ok' => true, 'saved' => $entries->count()]);
+    }
+
+    public function doctorOpStatsClear(Request $r)
+    {
+        $this->checkPermission();
+        $r->validate(['month' => 'required|string']);
+        $month = $r->month;
+        $statMonth = strlen($month) === 7 ? $month . '-01' : $month;
+        DoctorOperationStat::where('stat_month', $statMonth)->delete();
+        return response()->json(['ok' => true]);
     }
 
     // ========== FORM DATA (for dropdowns) ==========

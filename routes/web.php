@@ -98,6 +98,11 @@ Route::middleware('auth')->group(function () {
         Route::put   ('surgeries/{surgery}',   [EntryController::class, 'surgeriesUpdate']);
         Route::delete('surgeries/{surgery}',   [EntryController::class, 'surgeriesDestroy']);
 
+        // Doctor Operation Stats (per-doctor detailed operations)
+        Route::get   ('doctor-op-stats',       [EntryController::class, 'doctorOpStatsIndex']);
+        Route::post  ('doctor-op-stats/save',  [EntryController::class, 'doctorOpStatsSave']);
+        Route::post  ('doctor-op-stats/clear', [EntryController::class, 'doctorOpStatsClear']);
+
         // Diagnostic route for server database inspection
         Route::get('diagnose-surgeries', function (\Illuminate\Http\Request $request) {
             $month = $request->get('month', now()->format('Y-m'));

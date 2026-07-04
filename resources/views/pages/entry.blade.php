@@ -28,6 +28,11 @@
             <i data-lucide="user-check" class="w-4 h-4"></i>
             <span>عمليات الأطباء</span>
         </button>
+        <button onclick="switchEntryTab('surgery-doc-ops')" id="tab-btn-surgery-doc-ops"
+            class="entry-tab-btn py-2 px-5 rounded-xl text-xs font-bold text-text-main flex items-center gap-2 hover-press">
+            <i data-lucide="table-2" class="w-4 h-4"></i>
+            <span>عمليات مفصلة (لكل طبيب)</span>
+        </button>
         <button onclick="switchEntryTab('tests')" id="tab-btn-tests"
             class="entry-tab-btn py-2 px-5 rounded-xl text-xs font-bold text-text-main flex items-center gap-2 hover-press">
             <i data-lucide="beaker" class="w-4 h-4"></i>
@@ -298,6 +303,53 @@
                         </tr>
                     </tfoot>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    {{-- ══════════════════ TAB 5: DETAILED OPERATIONS PER DOCTOR ══════════════════ --}}
+    <div id="entry-tab-content-surgery-doc-ops" class="entry-tab-panel space-y-6 hidden">
+        <div class="custom-card p-6 rounded-2xl space-y-4">
+            {{-- Header --}}
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-100/5 pb-4">
+                <div>
+                    <h3 class="text-sm font-black text-text-main flex items-center gap-2">
+                        <i data-lucide="table-2" class="w-5 h-5 text-violet-500"></i>
+                        <span>العمليات التفصيلية لكل طبيب</span>
+                    </h3>
+                    <p class="text-[10px] text-slate-400 mt-1 font-bold">أدخل عدد كل عملية لكل طبيب — اسم العملية وتصنيفها يأتيان من إدارة العمليات</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <label class="text-[10px] font-bold text-slate-400">الشهر والسنّة:</label>
+                    <input type="month" id="date-doc-ops" required
+                        class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
+                    <button onclick="loadDocOpsForEdit()" id="btn-edit-doc-ops"
+                        class="py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
+                        <i data-lucide="edit" class="w-3.5 h-3.5"></i>
+                        <span>تعديل</span>
+                    </button>
+                    <button onclick="saveDocOps()"
+                        class="py-1.5 px-5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-violet-500 to-indigo-500 hover-press shadow-md shadow-violet-500/20 flex items-center gap-1.5">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        <span>حفظ الكل</span>
+                    </button>
+                </div>
+            </div>
+
+            {{-- Doctors accordion --}}
+            <div id="doc-ops-accordion" class="space-y-4">
+                <div class="flex items-center justify-center py-10 text-slate-400">
+                    <div class="text-center">
+                        <i data-lucide="loader" class="w-8 h-8 mx-auto mb-2 animate-spin text-violet-400"></i>
+                        <p class="text-xs font-bold">جاري تحميل بيانات الأطباء والعمليات...</p>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Summary footer --}}
+            <div class="border-t border-slate-200/10 pt-4 flex flex-wrap items-center justify-between gap-3">
+                <span class="text-xs font-bold text-slate-400">المجموع الكلي لجميع الأطباء:</span>
+                <span id="doc-ops-grand-total" class="inline-block px-4 py-1.5 bg-gradient-to-r from-violet-500 to-indigo-500 text-white rounded-lg font-black text-sm">0</span>
             </div>
         </div>
     </div>
@@ -806,6 +858,10 @@ function switchEntryTab(tabName) {
     if (tabName === 'surgery-cls') {
         buildSurgClsTable();
     }
+    // Build doctor ops accordion on first visit
+    if (tabName === 'surgery-doc-ops') {
+        buildDocOpsAccordion();
+    }
 }
 
 // Global Memory (Year-Month format: YYYY-MM)
@@ -821,6 +877,7 @@ function syncAllFromDates(value) {
         'date-surg-cls',
         'date-surg-op',
         'date-surg-doc',
+        'date-doc-ops',
         'date-tests-eye',
         'date-tests-lab'
     ];
@@ -840,6 +897,7 @@ function setupFormDates() {
         'date-surg-cls',
         'date-surg-op',
         'date-surg-doc',
+        'date-doc-ops',
         'date-tests-eye',
         'date-tests-lab'
     ];
@@ -1975,5 +2033,227 @@ async function saveLabTestsGrid() {
 window.initEntryPage = function() {
     setupFormDates();
     loadEntryLookups();
+}
+</script>
+
+<script>
+// ══════════════════════════════════════════════
+// TAB: DOCTOR OPERATION STATS (عمليات مفصلة لكل طبيب)
+// ══════════════════════════════════════════════
+
+let docOpsBuilt = false;
+
+const CLS_COLORS = {
+    'صغرى':        { bg: 'bg-yellow-400/10', badge: 'bg-yellow-100 text-yellow-700' },
+    'وسطى':        { bg: 'bg-blue-400/10',   badge: 'bg-blue-100 text-blue-700'   },
+    'وسطى (حقن)': { bg: 'bg-blue-400/10',   badge: 'bg-blue-100 text-blue-700'   },
+    'وسطى (ليزر)':{ bg: 'bg-sky-400/10',    badge: 'bg-sky-100 text-sky-700'     },
+    'كبرى':        { bg: 'bg-orange-400/10', badge: 'bg-orange-100 text-orange-700'},
+    'فوق الكبرى':  { bg: 'bg-rose-400/10',   badge: 'bg-rose-100 text-rose-700'   },
+    'خاصة':        { bg: 'bg-purple-400/10', badge: 'bg-purple-100 text-purple-700'},
+};
+
+function buildDocOpsAccordion(existingData) {
+    if (typeof existingData === 'undefined' || existingData === null) existingData = [];
+    const accordion = document.getElementById('doc-ops-accordion');
+    if (!accordion) return;
+
+    const doctors = entryLookups?.doctors || [];
+    const ops = entryLookups?.operationNames || [];
+
+    if (!doctors.length || !ops.length) {
+        // Lookups not ready yet — retry after 400ms
+        setTimeout(() => buildDocOpsAccordion(existingData), 400);
+        return;
+    }
+
+    // Build a lookup for existing data: { doctorId_opId: quantity }
+    const existingMap = {};
+    existingData.forEach(d => {
+        existingMap[`${d.doctor_id}_${d.operation_name_id}`] = d.quantity;
+    });
+
+    let html = '';
+    doctors.forEach((doc, di) => {
+        const docBgs = ['border-violet-200/30', 'border-indigo-200/30', 'border-blue-200/30', 'border-sky-200/30', 'border-teal-200/30'];
+        const docBg = docBgs[di % docBgs.length];
+
+        let rowsHtml = '';
+        ops.forEach(op => {
+            const cls = op.classification || '';
+            const clsStyle = CLS_COLORS[cls] || { bg: 'bg-slate-400/5', badge: 'bg-slate-100 text-slate-600' };
+            const existingQty = existingMap[`${doc.id}_${op.id}`] || 0;
+            rowsHtml += `
+                <tr class="table-row" data-doctor-id="${doc.id}" data-op-id="${op.id}">
+                    <td class="py-2.5 text-right pr-3 font-bold text-[11px]">${op.name}</td>
+                    <td class="py-2.5 text-center ${clsStyle.bg}">
+                        <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${clsStyle.badge}">${cls}</span>
+                    </td>
+                    <td class="py-2.5 text-center bg-violet-400/10">
+                        <input type="number" min="0" value="${existingQty}"
+                            data-doctor-id="${doc.id}" data-op-id="${op.id}"
+                            oninput="updateDocOpsGrandTotal()"
+                            class="w-24 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-2 text-xs font-bold text-text-main doc-op-qty-input">
+                    </td>
+                    <td class="py-2.5 text-center text-emerald-600 font-bold text-xs doc-op-row-sub">
+                        ${existingQty}
+                    </td>
+                </tr>`;
+        });
+
+        const docTotal = ops.reduce((sum, op) => sum + (existingMap[`${doc.id}_${op.id}`] || 0), 0);
+
+        html += `
+            <div class="border ${docBg} rounded-xl overflow-hidden">
+                <button onclick="toggleDocAccordion(${doc.id})"
+                    class="w-full flex items-center justify-between px-4 py-3 bg-slate-200/10 hover:bg-slate-200/20 transition-colors">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="stethoscope" class="w-4 h-4 text-violet-500"></i>
+                        <span class="text-xs font-extrabold text-text-main">${doc.name}</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="doc-sub-total-${doc.id}" class="inline-block px-3 py-0.5 bg-violet-500/10 text-violet-600 rounded-lg font-black text-xs">${docTotal} عملية</span>
+                        <i data-lucide="chevron-down" id="doc-chevron-${doc.id}" class="w-4 h-4 text-slate-400 transition-transform duration-200"></i>
+                    </div>
+                </button>
+                <div id="doc-panel-${doc.id}" class="hidden">
+                    <div class="overflow-x-auto">
+                        <table class="custom-table text-center w-full" style="font-size:11px">
+                            <thead>
+                                <tr>
+                                    <th class="text-right pr-3 w-48">اسم العملية</th>
+                                    <th class="w-36 bg-violet-400/10">التصنيف</th>
+                                    <th class="w-32 bg-violet-400/20">العدد</th>
+                                    <th class="w-24 bg-emerald-400/10">المُدخل</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doc-tbody-${doc.id}">
+                                ${rowsHtml}
+                            </tbody>
+                            <tfoot>
+                                <tr class="border-t-2 border-slate-300/20">
+                                    <td colspan="2" class="py-2 text-right pr-3 font-extrabold text-pink-600 text-xs">مجموع ${doc.name}</td>
+                                    <td colspan="2" class="py-2 bg-violet-400/10">
+                                        <span id="doc-foot-${doc.id}" class="inline-block px-3 py-1 bg-gradient-to-r from-violet-500 to-indigo-500 text-white rounded-lg font-black text-xs min-w-12">${docTotal}</span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>`;
+    });
+
+    accordion.innerHTML = html;
+    if (window.lucide) lucide.createIcons();
+    updateDocOpsGrandTotal();
+}
+
+function toggleDocAccordion(docId) {
+    const panel = document.getElementById(`doc-panel-${docId}`);
+    const chevron = document.getElementById(`doc-chevron-${docId}`);
+    if (!panel) return;
+    const isHidden = panel.classList.contains('hidden');
+    panel.classList.toggle('hidden');
+    if (chevron) chevron.style.transform = isHidden ? 'rotate(180deg)' : '';
+}
+
+function updateDocOpsGrandTotal() {
+    const inputs = document.querySelectorAll('.doc-op-qty-input');
+    const docTotals = {};
+    let grand = 0;
+
+    inputs.forEach(inp => {
+        const val = parseInt(inp.value) || 0;
+        const docId = inp.dataset.doctorId;
+        docTotals[docId] = (docTotals[docId] || 0) + val;
+        grand += val;
+
+        const tr = inp.closest('tr');
+        if (tr) {
+            const subCell = tr.querySelector('.doc-op-row-sub');
+            if (subCell) subCell.textContent = val;
+        }
+    });
+
+    Object.entries(docTotals).forEach(([docId, total]) => {
+        const badge = document.getElementById(`doc-sub-total-${docId}`);
+        const foot  = document.getElementById(`doc-foot-${docId}`);
+        if (badge) badge.textContent = total + ' عملية';
+        if (foot)  foot.textContent  = total;
+    });
+
+    const grandEl = document.getElementById('doc-ops-grand-total');
+    if (grandEl) grandEl.textContent = grand;
+}
+
+async function loadDocOpsForEdit() {
+    const monthVal = document.getElementById('date-doc-ops').value;
+    if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
+
+    showToast('جاري تحميل البيانات...', 'info');
+    try {
+        const res = await fetch(`/api/doctor-op-stats?month=${monthVal}`);
+        const data = await res.json();
+
+        buildDocOpsAccordion(data);
+
+        if (data.length > 0) {
+            showToast(`تم تحميل ${data.length} سجل — يمكنك التعديل والحفظ`, 'success');
+        } else {
+            showToast('لا توجد بيانات مسجلة لهذا الشهر — الجدول جاهز للإدخال', 'warning');
+        }
+    } catch(e) {
+        showToast('فشل جلب البيانات', 'error');
+    }
+}
+
+async function saveDocOps() {
+    const monthVal = document.getElementById('date-doc-ops').value;
+    if (!monthVal) { showToast('يرجى تحديد الشهر والسنة أولاً', 'error'); return; }
+
+    const inputs = document.querySelectorAll('.doc-op-qty-input');
+    if (!inputs.length) {
+        showToast('يرجى فتح الجدول أولاً بالضغط على "تعديل" أو النتقال للتبويب', 'error');
+        return;
+    }
+
+    const entries = [];
+    inputs.forEach(inp => {
+        const qty = parseInt(inp.value) || 0;
+        if (qty > 0) {
+            entries.push({
+                doctor_id:         parseInt(inp.dataset.doctorId),
+                operation_name_id: parseInt(inp.dataset.opId),
+                quantity:          qty,
+            });
+        }
+    });
+
+    if (entries.length === 0) {
+        showToast('لا توجد أعداد مدخلة — يرجى إدخال عدد لعملية واحدة على الأقل', 'error');
+        return;
+    }
+
+    showToast('جاري حفظ العمليات التفصيلية...', 'info');
+    try {
+        const res = await fetch('/api/doctor-op-stats/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ month: monthVal, entries })
+        });
+        const result = await res.json();
+        if (res.ok && result.ok) {
+            showToast(`✅ تم حفظ ${result.saved} عملية تفصيلية بنجاح وستظهر في التقارير`, 'success');
+            lastUsedDate = monthVal;
+        } else {
+            showToast('حدث خطأ أثناء الحفظ', 'error');
+        }
+    } catch(e) {
+        showToast('خطأ في الاتصال بالشبكة', 'error');
+    }
 }
 </script>

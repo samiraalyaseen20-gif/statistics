@@ -572,6 +572,104 @@ if (file_exists(base_path('iraq.svg'))) {
     </div>
 
 
+    {{-- ── جدول (10): العمليات التفصيلية لكل طبيب (من الجدول المستقل) ── --}}
+    @php
+    // استخدم $doctorOpStatsByDoctor إذا توفر، وإلا ارجع لـ $surgeryDetailByDoctor
+    $detailSource = isset($doctorOpStatsByDoctor) && $doctorOpStatsByDoctor && $doctorOpStatsByDoctor->count() > 0
+        ? $doctorOpStatsByDoctor
+        : $surgeryDetailByDoctor;
+
+    $usingNewTable = isset($doctorOpStatsByDoctor) && $doctorOpStatsByDoctor && $doctorOpStatsByDoctor->count() > 0;
+
+    $bcMap = [
+        'خاصة'       => 'bg-purple-100 text-purple-700',
+        'فوق الكبرى' => 'bg-rose-100 text-rose-700',
+        'كبرى'        => 'bg-orange-100 text-orange-700',
+        'وسطى (حقن)' => 'bg-blue-100 text-blue-700',
+        'وسطى (ليزر)'=> 'bg-sky-100 text-sky-700',
+        'وسطى'        => 'bg-blue-100 text-blue-700',
+        'صغرى'        => 'bg-yellow-100 text-yellow-700',
+    ];
+    @endphp
+
+    <div class="custom-card p-6 rounded-2xl">
+        <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
+            <i data-lucide="table-2" class="w-4 h-4 text-violet-500"></i>
+            جدول (10): العمليات التفصيلية لكل طبيب حسب النوع
+            @if($usingNewTable)
+            <span class="inline-flex items-center bg-violet-500/10 text-violet-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">
+                بيانات محدّثة
+            </span>
+            @endif
+        </h3>
+
+        @if($detailSource && $detailSource->count() > 0)
+        <div class="space-y-4">
+            @foreach($filterDoctors as $doc)
+            @php
+            $docOps = $detailSource->get($doc->name) ?? collect();
+            $docTotal = $usingNewTable
+                ? $docOps->sum('total')
+                : $docOps->sum('total');
+            @endphp
+            @if($docOps->count() > 0)
+            <div class="border border-violet-200/20 rounded-xl overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-3 bg-violet-500/5 border-b border-violet-200/10">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="stethoscope" class="w-4 h-4 text-violet-500"></i>
+                        <span class="text-xs font-extrabold text-text-main">{{ $doc->name }}</span>
+                    </div>
+                    <span class="inline-block px-3 py-0.5 bg-violet-500 text-white rounded-full font-black text-[10px]">{{ number_format($docTotal) }} عملية</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="custom-table text-xs w-full">
+                        <thead>
+                            <tr>
+                                <th class="w-8">ت</th>
+                                <th class="text-right pr-3">اسم العملية</th>
+                                <th class="w-36 bg-violet-400/10">التصنيف</th>
+                                <th class="w-24 text-center font-bold">العدد</th>
+                                <th class="w-24 text-center bg-emerald-400/10">النسبة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($docOps as $i => $op)
+                            <tr class="table-row">
+                                <td class="w-8 text-center text-slate-400">{{ $i + 1 }}</td>
+                                <td class="text-right pr-3 font-bold">{{ $op->op }}</td>
+                                <td class="text-center">
+                                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full {{ $bcMap[$op->classification] ?? 'bg-slate-100 text-slate-600' }}">
+                                        {{ $op->classification }}
+                                    </span>
+                                </td>
+                                <td class="text-center font-extrabold text-violet-600">{{ number_format($op->total) }}</td>
+                                <td class="text-center text-emerald-600 font-bold bg-emerald-400/5">
+                                    {{ $docTotal > 0 ? number_format(($op->total / $docTotal) * 100, 1) . '%' : '—' }}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr class="border-t-2 border-slate-300/20 font-extrabold">
+                                <td colspan="3" class="py-2 text-right pr-3 text-pink-600 text-[10px]">المجموع</td>
+                                <td class="py-2 text-center text-violet-600">{{ number_format($docTotal) }}</td>
+                                <td class="py-2 text-center text-emerald-600 bg-emerald-400/5">100%</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            @endif
+            @endforeach
+        </div>
+        @else
+        <div class="text-center py-10 text-slate-400">
+            <i data-lucide="table-2" class="w-8 h-8 mx-auto mb-2 opacity-40"></i>
+            <p class="text-xs font-bold">لا توجد عمليات تفصيلية مسجلة لهذه الفترة</p>
+            <p class="text-[10px] mt-1">يرجى إدخال البيانات من تبويب "عمليات مفصلة (لكل طبيب)" في إدخال البيانات</p>
+        </div>
+        @endif
+    </div>
 
 </section>
 
