@@ -232,6 +232,25 @@ if (file_exists(base_path('iraq.svg'))) {
                     <i data-lucide="loader" class="w-4 h-4 inline animate-spin mr-1"></i> جاري تحميل بيانات التصنيف...
                 </div>
                 <table id="table7-content" class="custom-table text-center text-[11px] hidden" style="min-width:100%">
+                    @php
+                        // ترتيب القطاعات: قطاع الصحة، قطاع العتبة الخاص، قطاع العتبة العام
+                        $orderedSectors7 = collect();
+                        
+                        $health = $filterSectors->first(fn($s) => str_contains($s->name, 'الصحة') || str_contains($s->name, 'صحة'));
+                        if ($health) $orderedSectors7->push($health);
+                        
+                        $private = $filterSectors->first(fn($s) => str_contains($s->name, 'الخاص') || str_contains($s->name, 'خاص'));
+                        if ($private) $orderedSectors7->push($private);
+                        
+                        $public = $filterSectors->first(fn($s) => str_contains($s->name, 'العام') || str_contains($s->name, 'عام'));
+                        if ($public) $orderedSectors7->push($public);
+                        
+                        foreach($filterSectors as $s) {
+                            if (!$orderedSectors7->contains('id', $s->id)) {
+                                $orderedSectors7->push($s);
+                            }
+                        }
+                    @endphp
                     <thead>
                         <tr class="text-[10px] font-bold text-slate-400">
                             <th class="text-right pr-3">تصنيف العمليات الجراحية</th>
@@ -244,17 +263,17 @@ if (file_exists(base_path('iraq.svg'))) {
                                     'bg-purple-400/20 text-purple-800 dark:text-purple-300'
                                 ];
                             @endphp
-                            @foreach($filterSectors as $idx => $s)
+                            @foreach($orderedSectors7 as $idx => $s)
                                 @php
                                     $colorClass = $headerColors[$idx % count($headerColors)];
                                     $displaySecName = $s->name;
-                                    if ($s->name === 'عتبة الخاص') $displaySecName = 'قطاع العتبة الخاص';
-                                    if ($s->name === 'عتبة العام') $displaySecName = 'قطاع العتبة العام';
+                                    if ($s->name === 'عتبة الخاص' || $s->name === 'قطاع العتبة الخاص') $displaySecName = 'قطاع العتبة الخاص';
+                                    elseif ($s->name === 'عتبة العام' || $s->name === 'قطاع العتبة العام') $displaySecName = 'قطاع العتبة العام';
+                                    elseif ($s->name === 'قطاع الصحة' || $s->name === 'صحة') $displaySecName = 'قطاع الصحة';
                                 @endphp
                                 <th class="{{ $colorClass }} font-bold">{{ $displaySecName }}</th>
                             @endforeach
                             <th class="text-pink-600 font-extrabold">المجموع</th>
-                            <th class="bg-violet-400/20 font-bold text-violet-800 dark:text-violet-300">النسبة المئوية</th>
                         </tr>
                     </thead>
                     <tbody id="table7-tbody">
@@ -272,32 +291,20 @@ if (file_exists(base_path('iraq.svg'))) {
                             @endphp
                             <tr class="table-row table7-data-row" data-cls="{{ $c->name }}">
                                 <td class="text-right pr-3 font-bold">{{ $label }}</td>
-                                @foreach($filterSectors as $s)
+                                @foreach($orderedSectors7 as $s)
                                     <td class="font-bold table7-cell opacity-30" data-cls="{{ $c->name }}" data-sec="{{ $s->name }}">0</td>
                                 @endforeach
                                 <td class="font-extrabold text-pink-600 text-xs table7-row-total">0</td>
-                                <td class="bg-violet-400/10 text-violet-700 font-extrabold text-xs table7-row-pct">0%</td>
                             </tr>
                         @endforeach
                         
                         <!-- Totals Row -->
                         <tr class="table-row font-extrabold text-rose-600 text-xs" id="table7-totals-row">
                             <td class="text-right pr-3 text-sm">المجموع</td>
-                            @foreach($filterSectors as $s)
+                            @foreach($orderedSectors7 as $s)
                                 <td class="bg-slate-100/5 table7-col-total" data-sec="{{ $s->name }}">0</td>
                             @endforeach
                             <td class="text-sm font-black text-pink-600" id="table7-grand-total">0</td>
-                            <td class="bg-violet-400/15"></td>
-                        </tr>
-                        
-                        <!-- Percentages Row -->
-                        <tr class="table-row font-extrabold text-emerald-600 text-[10px]" id="table7-pct-row">
-                            <td class="text-right pr-3 font-bold text-[9px]">النسبة %</td>
-                            @foreach($filterSectors as $s)
-                                <td class="bg-emerald-400/5 font-bold table7-col-pct" data-sec="{{ $s->name }}">0%</td>
-                            @endforeach
-                            <td></td>
-                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1387,9 +1394,7 @@ async function loadTable7() {
         c.classList.add('opacity-30');
     });
     document.querySelectorAll('.table7-row-total').forEach(c => c.textContent = '0');
-    document.querySelectorAll('.table7-row-pct').forEach(c => c.textContent = '0%');
     document.querySelectorAll('.table7-col-total').forEach(c => c.textContent = '0');
-    document.querySelectorAll('.table7-col-pct').forEach(c => c.textContent = '0%');
     const grandTotalEl = document.getElementById('table7-grand-total');
     if (grandTotalEl) grandTotalEl.textContent = '0';
 
@@ -1437,14 +1442,7 @@ async function loadTable7() {
 
         if (grandTotalEl) grandTotalEl.textContent = grandTotal;
 
-        // 5. Calculate row percentages
-        document.querySelectorAll('.table7-data-row').forEach(row => {
-            const rowTotal = parseInt(row.querySelector('.table7-row-total').textContent) || 0;
-            const pct = grandTotal > 0 ? Math.round((rowTotal / grandTotal) * 100) : 0;
-            row.querySelector('.table7-row-pct').textContent = pct + '%';
-        });
-
-        // 6. Calculate column totals and percentages
+        // 5. Calculate column totals
         document.querySelectorAll('.table7-col-total').forEach(colTotalCell => {
             const sec = colTotalCell.dataset.sec;
             let colTotal = 0;
@@ -1452,12 +1450,6 @@ async function loadTable7() {
                 colTotal += parseInt(cell.textContent) || 0;
             });
             colTotalCell.textContent = colTotal;
-
-            const pctCell = document.querySelector(`.table7-col-pct[data-sec="${sec}"]`);
-            if (pctCell) {
-                const colPct = grandTotal > 0 ? Math.round((colTotal / grandTotal) * 100) : 0;
-                pctCell.textContent = colPct + '%';
-            }
         });
 
         // 7. Hide loading and show table
