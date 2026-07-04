@@ -103,7 +103,10 @@ class EntryController extends Controller
                     $query = Surgery::whereBetween('op_date', [$start, $end])
                         ->whereNull('governorate_id')
                         ->whereNull('country_id')
-                        ->where('patient_name', 'قيد إحصائي أطباء');
+                        ->where(function($q) {
+                            $q->where('patient_name', 'قيد إحصائي أطباء')
+                              ->orWhere('patient_name', 'قيد إحصائي');
+                        });
                     
                     if ($r->has('sector_id')) {
                         $query->where('sector_id', $r->sector_id);
