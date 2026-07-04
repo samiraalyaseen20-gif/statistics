@@ -456,7 +456,7 @@ class EntryController extends Controller
             ->when($r->type === 'surgeries_docs' && $defaultOp, function($q) use ($r, $defaultDoc, $defaultOp) {
                 $q->whereNull('governorate_id')
                   ->whereNull('country_id')
-                  ->where('patient_name', 'قيد إحصائي أطباء');
+                  ->where('patient_name', '!=', 'قيد إحصائي تصنيف');
                 if ($r->has('sector_id')) {
                     $q->where('sector_id', $r->sector_id);
                 }
