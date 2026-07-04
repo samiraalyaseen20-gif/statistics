@@ -252,8 +252,13 @@ class ReportController extends Controller
 
         $doctorOpStatsRaw = DoctorOperationStat::with(['doctor', 'operationName'])
             ->whereBetween('stat_month', [$statMonthStart, $statMonthEnd])
-            ->where('quantity', '>', 0)
-            ->get();
+            ->where('quantity', '>', 0);
+
+        if ($doctor_id) {
+            $doctorOpStatsRaw->where('doctor_id', $doctor_id);
+        }
+
+        $doctorOpStatsRaw = $doctorOpStatsRaw->get();
 
         $combinedDetailedOps = $doctorOpStatsRaw->groupBy('operation_name_id')
             ->map(fn($group) => (object)[
