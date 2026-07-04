@@ -65,9 +65,13 @@ class ReportController extends Controller
         if ($governorate_id) $visitsQuery->where('governorate_id', $governorate_id);
         if ($country_id)     $visitsQuery->where('country_id', $country_id);
 
-        $docVisitsQuery = (clone $visitsQuery)
-            ->whereNull('governorate_id')
-            ->whereNull('country_id');
+        $docVisitsQuery = clone $visitsQuery;
+        if (!$governorate_id) {
+            $docVisitsQuery->whereNull('governorate_id');
+        }
+        if (!$country_id) {
+            $docVisitsQuery->whereNull('country_id');
+        }
 
         $surgeriesQuery = Surgery::whereBetween('op_date', [$start_date, $end_date]);
         if ($doctor_id)      $surgeriesQuery->where('doctor_id', $doctor_id);
@@ -75,9 +79,13 @@ class ReportController extends Controller
         if ($governorate_id) $surgeriesQuery->where('governorate_id', $governorate_id);
         if ($country_id)     $surgeriesQuery->where('country_id', $country_id);
 
-        $docSurgeriesQuery = (clone $surgeriesQuery)
-            ->whereNull('governorate_id')
-            ->whereNull('country_id');
+        $docSurgeriesQuery = clone $surgeriesQuery;
+        if (!$governorate_id) {
+            $docSurgeriesQuery->whereNull('governorate_id');
+        }
+        if (!$country_id) {
+            $docSurgeriesQuery->whereNull('country_id');
+        }
 
         $eyeTestsQuery = EyeTest::whereBetween('test_date', [$start_date, $end_date]);
         if ($doctor_id || $clinic_unit_id || $governorate_id || $country_id) {
@@ -116,18 +124,8 @@ class ReportController extends Controller
             ->orderBy('doctors.name', 'asc')
             ->get()->map(fn($v) => ['doctor' => $v->doctor ?? '—', 'total' => $v->total]);
 
-        // Base query for visits geography (ignores doctor/unit filters since geo visits are entered globally)
-        $visitsGeoQuery = Visit::whereBetween('visit_date', [$start_date, $end_date])
-            ->whereNotIn('patient_name', ['قيد إحصائي فحص', 'قيد إحصائي تحليل']);
-        if (!empty($editedMonths)) {
-            $visitsGeoQuery->where(function($q) use ($editedMonths) {
-                $q->where('patient_name', '!=', 'مريض مجهول')
-                  ->orWhereNotIn(\Illuminate\Support\Facades\DB::raw("DATE_FORMAT(visit_date, '%Y-%m')"), $editedMonths);
-            });
-        }
-
         // جدول (3): ديمغرافي داخل العراق (استشارية)
-        $visitsByGov = (clone $visitsGeoQuery)
+        $visitsByGov = (clone $visitsQuery)
             ->whereNotNull('governorate_id')
             ->select('governorate_id', DB::raw('count(*) as total'))
             ->groupBy('governorate_id')
@@ -141,7 +139,7 @@ class ReportController extends Controller
             ->values();
 
         // جدول (4): ديمغرافي خارج العراق (استشارية)
-        $visitsByCountry = (clone $visitsGeoQuery)
+        $visitsByCountry = (clone $visitsQuery)
             ->whereNotNull('country_id')
             ->select('country_id', DB::raw('count(*) as total'))
             ->groupBy('country_id')
@@ -207,11 +205,8 @@ class ReportController extends Controller
                 ->get();
         }
 
-        // Base query for surgeries geography (ignores doctor/sector filters since geo surgeries are entered globally)
-        $surgeriesGeoQuery = Surgery::whereBetween('op_date', [$start_date, $end_date]);
-
         // جدول (8): ديمغرافي داخل العراق (عمليات)
-        $surgeriesByGov = (clone $surgeriesGeoQuery)
+        $surgeriesByGov = (clone $surgeriesQuery)
             ->whereNotNull('governorate_id')
             ->select('governorate_id', DB::raw('count(*) as total'))
             ->groupBy('governorate_id')
@@ -225,7 +220,7 @@ class ReportController extends Controller
             ->values();
 
         // جدول (9): ديمغرافي خارج العراق (عمليات)
-        $surgeriesByCountry = (clone $surgeriesGeoQuery)
+        $surgeriesByCountry = (clone $surgeriesQuery)
             ->whereNotNull('country_id')
             ->select('country_id', DB::raw('count(*) as total'))
             ->groupBy('country_id')
