@@ -234,19 +234,22 @@ class ReportController extends Controller
             ->values();
 
         // جدول (10): عمليات لكل طبيب بالتصنيف والقطاع
-        // نستبعد سجلات CLS (التي تُسجَّل بالطبيب الافتراضي والعملية الافتراضية) لأنها تُمثّل إجماليات جدول 7 وليست عمليات حقيقية للطبيب
         $clsDefaultDoc = Doctor::orderBy('display_order','asc')->orderBy('name','asc')->first();
         $clsDefaultOp  = OperationName::orderBy('display_order','asc')->orderBy('name','asc')->first();
 
         $surgeriesByDoctorCatSector = (clone $docSurgeriesQuery)
             ->join('doctors','surgeries.doctor_id','=','doctors.id')
             ->join('sectors','surgeries.sector_id','=','sectors.id')
-            ->when($clsDefaultDoc && $clsDefaultOp, fn($q) =>
-                $q->where(fn($w) =>
-                    $w->where('surgeries.doctor_id','!=',$clsDefaultDoc->id)
-                      ->orWhere('surgeries.operation_name_id','!=',$clsDefaultOp->id)
-                )
-            )
+            ->where(function($q) use ($clsDefaultDoc, $clsDefaultOp) {
+                $q->where('surgeries.patient_name', 'DOC_BATCH')
+                  ->orWhere(function($sub) use ($clsDefaultDoc, $clsDefaultOp) {
+                      $sub->whereIn('surgeries.patient_name', ['قيد إحصائي', ''])
+                          ->where(fn($w) =>
+                              $w->where('surgeries.doctor_id','!=',$clsDefaultDoc->id)
+                                ->orWhere('surgeries.operation_name_id','!=',$clsDefaultOp->id)
+                          );
+                  });
+            })
             ->select('doctors.name as doctor','doctors.display_order','surgeries.classification','sectors.name as sector', DB::raw('count(*) as total'))
             ->groupBy('doctors.name','doctors.display_order','surgeries.classification','sectors.name')
             ->orderBy('doctors.display_order', 'asc')
@@ -257,12 +260,16 @@ class ReportController extends Controller
         $surgeryDetailByDoctor = (clone $docSurgeriesQuery)
             ->join('doctors','surgeries.doctor_id','=','doctors.id')
             ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
-            ->when($clsDefaultDoc && $clsDefaultOp, fn($q) =>
-                $q->where(fn($w) =>
-                    $w->where('surgeries.doctor_id','!=',$clsDefaultDoc->id)
-                      ->orWhere('surgeries.operation_name_id','!=',$clsDefaultOp->id)
-                )
-            )
+            ->where(function($q) use ($clsDefaultDoc, $clsDefaultOp) {
+                $q->where('surgeries.patient_name', 'DOC_BATCH')
+                  ->orWhere(function($sub) use ($clsDefaultDoc, $clsDefaultOp) {
+                      $sub->whereIn('surgeries.patient_name', ['قيد إحصائي', ''])
+                          ->where(fn($w) =>
+                              $w->where('surgeries.doctor_id','!=',$clsDefaultDoc->id)
+                                ->orWhere('surgeries.operation_name_id','!=',$clsDefaultOp->id)
+                          );
+                  });
+            })
             ->select('doctors.name as doctor','doctors.display_order as doc_order','operation_names.name as op','operation_names.display_order as op_order','surgeries.classification', DB::raw('count(*) as total'))
             ->groupBy('doctors.name','doctors.display_order','operation_names.name','operation_names.display_order','surgeries.classification')
             ->orderBy('doctors.display_order', 'asc')

@@ -717,7 +717,8 @@ async function saveSurgCls() {
                     sector_id:          sector.id,
                     op_date:            date,
                     quantity:           qty,
-                    classification:     cls
+                    classification:     cls,
+                    patient_name:       'CLS_BATCH'
                 })
             })
         );
@@ -1638,7 +1639,8 @@ async function saveGovs() {
                             sector_id: defaultSector,
                             governorate_id: govId,
                             op_date: date,
-                            quantity: count
+                            quantity: count,
+                            patient_name: 'GOV_BATCH'
                         })
                     })
                 );
@@ -1731,7 +1733,8 @@ async function saveCountries() {
                             sector_id: defaultSector,
                             country_id: countryId,
                             op_date: date,
-                            quantity: count
+                            quantity: count,
+                            patient_name: 'COUNTRY_BATCH'
                         })
                     })
                 );
@@ -1803,7 +1806,8 @@ async function saveSurgeriesOps(silent = false) {
                         sector_id: sectorId,
                         op_date: date,
                         quantity: count,
-                        classification: clsVal
+                        classification: clsVal,
+                        patient_name: 'OP_BATCH'
                     })
                 })
             );
@@ -2022,7 +2026,8 @@ async function saveSurgeriesDocs() {
                         sector_id: secId,
                         op_date: date,
                         quantity: count,
-                        classification: cls
+                        classification: cls,
+                        patient_name: 'DOC_BATCH'
                     })
                 })
             );

@@ -103,8 +103,17 @@ class EntryController extends Controller
                     $query = Surgery::whereBetween('op_date', [$start, $end])
                         ->whereNull('governorate_id')
                         ->whereNull('country_id')
-                        ->whereNotNull('classification');
-                    
+                        ->whereNotNull('classification')
+                        ->where(function($w) use ($defaultDoc, $defaultOp) {
+                            $w->where('patient_name', 'DOC_BATCH')
+                              ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                                  $sub->whereIn('patient_name', ['قيد إحصائي', ''])
+                                      ->where(fn($sub2) =>
+                                          $sub2->where('doctor_id', '!=', $defaultDoc->id)
+                                               ->orWhere('operation_name_id', '!=', $defaultOp->id)
+                                      );
+                              });
+                        });
                     if ($r->has('sector_id')) {
                         $query->where('sector_id', $r->sector_id);
                     }
@@ -112,17 +121,22 @@ class EntryController extends Controller
                 }
                 break;
             case 'surgeries_cls':
-                // Delete classification×sector entries saved with defaultDoc + defaultOp
                 $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 $defaultOp  = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 if ($defaultDoc && $defaultOp) {
                     Surgery::whereBetween('op_date', [$start, $end])
                         ->whereNull('governorate_id')
                         ->whereNull('country_id')
-                        ->where('doctor_id', $defaultDoc->id)
-                        ->where('operation_name_id', $defaultOp->id)
                         ->whereNotNull('sector_id')
                         ->whereNotNull('classification')
+                        ->where(function($w) use ($defaultDoc, $defaultOp) {
+                            $w->where('patient_name', 'CLS_BATCH')
+                              ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                                  $sub->whereIn('patient_name', ['قيد إحصائي', ''])
+                                      ->where('doctor_id', $defaultDoc->id)
+                                      ->where('operation_name_id', $defaultOp->id);
+                              });
+                        })
                         ->delete();
                 }
                 break;
@@ -131,9 +145,11 @@ class EntryController extends Controller
                 $defaultOp  = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 if ($defaultDoc && $defaultOp) {
                     Surgery::whereBetween('op_date', [$start, $end])
-                        ->where('doctor_id', $defaultDoc->id)
-                        ->where('operation_name_id', $defaultOp->id)
                         ->whereNotNull('governorate_id')
+                        ->where(function($w) use ($defaultDoc, $defaultOp) {
+                            $w->where('patient_name', 'GOV_BATCH')
+                              ->orWhereIn('patient_name', ['قيد إحصائي', '']);
+                        })
                         ->delete();
                 }
                 break;
@@ -142,9 +158,11 @@ class EntryController extends Controller
                 $defaultOp  = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 if ($defaultDoc && $defaultOp) {
                     Surgery::whereBetween('op_date', [$start, $end])
-                        ->where('doctor_id', $defaultDoc->id)
-                        ->where('operation_name_id', $defaultOp->id)
                         ->whereNotNull('country_id')
+                        ->where(function($w) use ($defaultDoc, $defaultOp) {
+                            $w->where('patient_name', 'COUNTRY_BATCH')
+                              ->orWhereIn('patient_name', ['قيد إحصائي', '']);
+                        })
                         ->delete();
                 }
                 break;
@@ -448,40 +466,65 @@ class EntryController extends Controller
                   ->where(function($q2) {
                       $q2->whereNull('sector_id')->orWhereNull('classification');
                   })
-                  ->where(function($query) use ($defaultDoc, $defaultOp) {
-                      $query->where('doctor_id', $defaultDoc->id)
-                            ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
-                                $sub->where('doctor_id', '!=', $defaultDoc->id)
-                                    ->where('operation_name_id', '!=', $defaultOp->id);
-                            });
+                  ->where(function($w) use ($defaultDoc, $defaultOp) {
+                      $w->where('patient_name', 'OP_BATCH')
+                        ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                            $sub->whereIn('patient_name', ['قيد إحصائي', ''])
+                                ->where(function($query) use ($defaultDoc, $defaultOp) {
+                                    $query->where('doctor_id', $defaultDoc->id)
+                                          ->orWhere(function($sub2) use ($defaultDoc, $defaultOp) {
+                                              $sub2->where('doctor_id', '!=', $defaultDoc->id)
+                                                   ->where('operation_name_id', '!=', $defaultOp->id);
+                                          });
+                                });
+                        });
                   });
             })
             ->when($r->type === 'surgeries_docs' && $defaultOp, function($q) use ($r, $defaultDoc, $defaultOp) {
                 $q->whereNull('governorate_id')
                   ->whereNull('country_id')
-                  ->whereNotNull('classification');
+                  ->whereNotNull('classification')
+                  ->where(function($w) use ($defaultDoc, $defaultOp) {
+                      $w->where('patient_name', 'DOC_BATCH')
+                        ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                            $sub->whereIn('patient_name', ['قيد إحصائي', ''])
+                                ->where(fn($sub2) =>
+                                    $sub2->where('doctor_id', '!=', $defaultDoc->id)
+                                         ->orWhere('operation_name_id', '!=', $defaultOp->id)
+                                );
+                        });
+                  });
                 if ($r->has('sector_id')) {
                     $q->where('sector_id', $r->sector_id);
                 }
             })
             ->when($r->type === 'surgeries_cls' && $defaultDoc && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
-                // Return only the classification×sector entries (saved via cls tab)
                 $q->whereNull('governorate_id')
                   ->whereNull('country_id')
-                  ->where('doctor_id', $defaultDoc->id)
-                  ->where('operation_name_id', $defaultOp->id)
                   ->whereNotNull('sector_id')
-                  ->whereNotNull('classification');
+                  ->whereNotNull('classification')
+                  ->where(function($w) use ($defaultDoc, $defaultOp) {
+                      $w->where('patient_name', 'CLS_BATCH')
+                        ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
+                            $sub->whereIn('patient_name', ['قيد إحصائي', ''])
+                                ->where('doctor_id', $defaultDoc->id)
+                                ->where('operation_name_id', $defaultOp->id);
+                        });
+                  });
             })
             ->when($r->type === 'surgeries_govs' && $defaultDoc && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
-                $q->where('doctor_id', $defaultDoc->id)
-                  ->where('operation_name_id', $defaultOp->id)
-                  ->whereNotNull('governorate_id');
+                $q->whereNotNull('governorate_id')
+                  ->where(function($w) use ($defaultDoc, $defaultOp) {
+                      $w->where('patient_name', 'GOV_BATCH')
+                        ->orWhereIn('patient_name', ['قيد إحصائي', '']);
+                  });
             })
             ->when($r->type === 'surgeries_countries' && $defaultDoc && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
-                $q->where('doctor_id', $defaultDoc->id)
-                  ->where('operation_name_id', $defaultOp->id)
-                  ->whereNotNull('country_id');
+                $q->whereNotNull('country_id')
+                  ->where(function($w) use ($defaultDoc, $defaultOp) {
+                      $w->where('patient_name', 'COUNTRY_BATCH')
+                        ->orWhereIn('patient_name', ['قيد إحصائي', '']);
+                  });
             })
             ->latest('id');
 
