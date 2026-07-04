@@ -214,9 +214,9 @@
                     <input type="month" id="date-surg-op" required
                         class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
                     <button onclick="loadTotalOpsFromDetailed()" id="btn-edit-surg-op"
-                        class="py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
-                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-                        <span>تحديث الحساب</span>
+                        class="py-1.5 px-4 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
+                        <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                        <span>عرض بيانات الشهر المحدد</span>
                     </button>
                     <button onclick="saveSurgeriesOps()"
                         class="py-1.5 px-4 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-500 hover-press shadow-md shadow-indigo-500/10 flex items-center gap-1.5">
@@ -2180,7 +2180,7 @@ async function saveLabTestsGrid() {
     }
 }
 
-async function loadTotalOpsFromDetailed() {
+async function loadTotalOpsFromDetailed(silent = false) {
     const monthInput = document.getElementById('date-surg-op');
     if (!monthInput) return;
     const monthVal = monthInput.value;
@@ -2188,6 +2188,7 @@ async function loadTotalOpsFromDetailed() {
 
     const type = 'surgeries_ops';
     try {
+        if (!silent) showToast('جاري تجميع وعرض بيانات الشهر المحدد...', 'info');
         // 1. Fetch detailed operations from database
         const res = await fetch(`/api/doctor-op-stats?month=${monthVal}`);
         const data = await res.json();
@@ -2207,6 +2208,7 @@ async function loadTotalOpsFromDetailed() {
         document.querySelectorAll('#tbody-surg-ops .surg-qty-input').forEach(inp => inp.value = 0);
 
         // 3. Populate
+        let populatedCount = 0;
         Object.entries(sums).forEach(([opId, qty]) => {
             const tr = document.querySelector(`#tbody-surg-ops tr[data-op-id="${opId}"]`);
             if (tr) {
@@ -2219,6 +2221,7 @@ async function loadTotalOpsFromDetailed() {
                     select.value = classes[opId];
                     updateRowClassColor(select);
                 }
+                if (qty > 0) populatedCount++;
             }
         });
 
@@ -2237,8 +2240,17 @@ async function loadTotalOpsFromDetailed() {
             editStates[type].active = false;
             editStates[type].date   = '';
         }
+
+        if (!silent) {
+            if (data.length > 0) {
+                showToast(`تم جلب وعرض البيانات المجمعة للشهر المحدد بنجاح`, 'success');
+            } else {
+                showToast('لا توجد عمليات مسجلة للأطباء في هذا الشهر لعرضها', 'warning');
+            }
+        }
     } catch (e) {
         console.error("Failed to load total operations from detailed stats:", e);
+        if (!silent) showToast('فشل جلب وتجميع بيانات الشهر المحدد', 'error');
     }
 }
 
