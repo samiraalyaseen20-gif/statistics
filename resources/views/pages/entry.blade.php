@@ -258,49 +258,47 @@
                         <i data-lucide="stethoscope" class="w-5 h-5 text-indigo-500"></i>
                         <span>إجمالي العمليات المنفذة لكل طبيب</span>
                     </h3>
-                    <p class="text-[10px] text-slate-400 mt-1 font-bold">يرجى إدخال إجمالي أعداد العمليات الجراحية المنفذة لكل طبيب استشاري</p>
+                    <p class="text-[10px] text-slate-400 mt-1 font-bold">أدخل عدد عمليات كل طبيب لكل تصنيف ولكل قطاع — جميع القطاعات تظهر دفعة واحدة</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
                     <label class="text-[10px] font-bold text-slate-400">الشهر والسنّة:</label>
                     <input type="month" id="date-surg-doc" required
                         class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
                     <button onclick="toggleEditSurgeriesDocs()" id="btn-edit-surg-doc"
-                        class="py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press">تعديل</button>
+                        class="py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
+                        <i data-lucide="edit" class="w-3.5 h-3.5"></i><span>تعديل</span>
+                    </button>
                     <button onclick="saveSurgeriesDocs()"
-                        class="py-1.5 px-4 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-indigo-500 to-blue-500 hover-press shadow-md shadow-indigo-500/10">حفظ الأطباء</button>
+                        class="py-1.5 px-4 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-indigo-500 to-blue-500 hover-press shadow-md shadow-indigo-500/10 flex items-center gap-1.5">
+                        <i data-lucide="save" class="w-4 h-4"></i><span>حفظ الأطباء</span>
+                    </button>
                 </div>
             </div>
+            {{-- All-sectors grid table --}}
             <div class="overflow-x-auto">
-                <table class="custom-table text-center" style="font-size:11px">
+                <table class="custom-table text-center" style="font-size:10px; min-width:850px" id="table-surg-docs">
                     <thead>
+                        {{-- Row 1: merged header --}}
                         <tr>
-                            <th class="w-10 text-center">ت</th>
-                            <th class="text-right pr-2">الطبيب الاستشاري</th>
-                            <th class="bg-yellow-400/20">صغرى</th>
-                            <th class="bg-blue-400/20">وسطى</th>
-                            <th class="bg-orange-400/20">كبرى</th>
-                            <th class="bg-rose-400/20">فوق الكبرى</th>
-                            <th class="bg-purple-400/20">خاصة</th>
-                            <th class="text-pink-600 font-extrabold">المجموع</th>
+                            <th rowspan="2" class="w-6">ت</th>
+                            <th rowspan="2" class="text-right pr-2 min-w-28">اسم الطبيب</th>
+                            <th colspan="3" class="bg-yellow-400/20 text-yellow-700 font-extrabold">صغرى</th>
+                            <th colspan="3" class="bg-blue-400/20 text-blue-700 font-extrabold">وسطى</th>
+                            <th colspan="3" class="bg-orange-400/20 text-orange-700 font-extrabold">كبرى</th>
+                            <th colspan="3" class="bg-rose-400/20 text-rose-700 font-extrabold">فوق الكبرى</th>
+                            <th colspan="3" class="bg-purple-400/20 text-purple-700 font-extrabold">خاصة</th>
+                            <th rowspan="2" class="text-pink-600 font-extrabold min-w-14">المجموع</th>
+                        </tr>
+                        {{-- Row 2: sector sub-headers --}}
+                        <tr id="surg-docs-sector-headers">
+                            {{-- filled dynamically by JS --}}
                         </tr>
                     </thead>
-                    <tbody id="tbody-surg-docs" class="text-[11px] font-bold text-text-main">
+                    <tbody id="tbody-surg-docs" class="text-[10px] font-bold text-text-main">
                         {{-- Populated dynamically --}}
                     </tbody>
-                    <tfoot>
-                        <tr class="border-t-2 border-slate-300/20">
-                            <td class="py-3" colspan="2">
-                                <span class="text-pink-600 font-extrabold">المجموع الكلي</span>
-                            </td>
-                            <td class="py-3 bg-yellow-400/20" id="surg-docs-total-small">0</td>
-                            <td class="py-3 bg-blue-400/20" id="surg-docs-total-mid">0</td>
-                            <td class="py-3 bg-orange-400/20" id="surg-docs-total-major">0</td>
-                            <td class="py-3 bg-rose-400/20" id="surg-docs-total-super">0</td>
-                            <td class="py-3 bg-purple-400/20" id="surg-docs-total-special">0</td>
-                            <td class="py-3">
-                                <span id="surg-docs-grand-total" class="inline-block px-3 py-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-lg font-black text-xs min-w-12">0</span>
-                            </td>
-                        </tr>
+                    <tfoot id="tfoot-surg-docs">
+                        {{-- Filled dynamically --}}
                     </tfoot>
                 </table>
             </div>
@@ -858,6 +856,10 @@ function switchEntryTab(tabName) {
     if (tabName === 'surgery-cls') {
         buildSurgClsTable();
     }
+    // Build doctor surgeries table on first visit
+    if (tabName === 'surgery-docs') {
+        buildSurgDocsTable();
+    }
     // Build doctor ops accordion on first visit
     if (tabName === 'surgery-doc-ops') {
         buildDocOpsAccordion();
@@ -1042,30 +1044,9 @@ function populateDirectGrids() {
         updateSurgOpsPercentages();
     }
 
-    // 5. Surgery Doctors Table — 6 classification columns matching Report Table 10
-    const tbodySurgDocs = document.getElementById('tbody-surg-docs');
-    if (tbodySurgDocs && doctors.length) {
-        tbodySurgDocs.innerHTML = '';
-        const clsCols = ['صغرى', 'وسطى', 'كبرى', 'فوق الكبرى', 'خاصة'];
-        const clsBg   = ['bg-yellow-400/10', 'bg-blue-400/10', 'bg-orange-400/10', 'bg-rose-400/10', 'bg-purple-400/10'];
-
-        doctors.forEach((doc, idx) => {
-            let cells = `<td class="py-2.5 text-center text-slate-400 font-bold">${idx + 1}</td>
-                         <td class="py-2.5 text-right pr-2 font-bold">${doc.name}</td>`;
-            clsCols.forEach((cls, ci) => {
-                cells += `
-                    <td class="py-2.5 ${clsBg[ci]}">
-                        <input type="number" min="0" value="0"
-                            data-cls="${cls}"
-                            oninput="updateSurgDocsTotals()"
-                            class="w-20 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1 text-xs font-bold text-text-main">
-                    </td>`;
-            });
-            // Row total cell
-            cells += `<td class="py-2.5 font-extrabold text-pink-600 row-doc-total">0</td>`;
-            tbodySurgDocs.innerHTML += `<tr class="table-row" data-doctor-id="${doc.id}">${cells}</tr>`;
-        });
-        updateSurgDocsTotals();
+    // 5. Surgery Doctors Table — Redesigned with all sectors columns
+    if (document.getElementById('tbody-surg-docs') && doctors.length) {
+        buildSurgDocsTable();
     }
 
     // 6. Eye Tests Table
@@ -1158,19 +1139,23 @@ function resetGridInputs(type) {
     }
 }
 
-async function clearDatabaseForEdit(type, date) {
+async function clearDatabaseForEdit(type, date, sectorId = null) {
     try {
+        const payload = {
+            start_date: date,
+            end_date: date,
+            type: type
+        };
+        if (sectorId) {
+            payload.sector_id = sectorId;
+        }
         const res = await fetch('/api/entry/clear', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             },
-            body: JSON.stringify({
-                start_date: date,
-                end_date: date,
-                type: type
-            })
+            body: JSON.stringify(payload)
         });
         return res.ok;
     } catch(e) {
@@ -1402,26 +1387,31 @@ async function toggleEditSurgeriesDocs() {
     }
     const monthVal = document.getElementById('date-surg-doc').value;
     if (!monthVal) { showToast('يرجى تحديد الشهر أولاً', 'error'); return; }
+
     const date = monthVal + "-01";
     try {
-        const res = await fetch('/api/surgeries?start_date=' + date + '&end_date=' + date + '&per_page=1000&type=surgeries_docs');
+        const res = await fetch(`/api/surgeries?start_date=${date}&end_date=${date}&per_page=2000&type=surgeries_docs`);
         const data = await res.json();
         const items = data.data || data;
         resetGridInputs(type);
         let found = 0;
         items.forEach(s => {
-            const tr = document.querySelector('#tbody-surg-docs tr[data-doctor-id="' + s.doctor_id + '"]');
-            if (tr) {
-                const inp = tr.querySelector('input');
-                if (inp) {
-                    inp.value = (parseInt(inp.value) || 0) + 1;
-                    found++;
+            const tr = document.querySelector(`#tbody-surg-docs tr[data-doctor-id="${s.doctor_id}"]`);
+            if (tr && s.classification) {
+                const secKey = sdSectorKey(s.sector_name);
+                if (secKey) {
+                    const inp = tr.querySelector(`input[data-cls="${s.classification}"][data-sec="${secKey}"]`);
+                    if (inp) {
+                        inp.value = (parseInt(inp.value) || 0) + (parseInt(s.quantity) || 0);
+                        found++;
+                    }
                 }
             }
         });
         if (found > 0) {
+            recalcSurgDocs();
             setEditButtonState(type, true, 'date-surg-doc', 'btn-edit-surg-doc');
-            showToast('تم جلب أعداد العمليات للأطباء للتعديل', 'success');
+            showToast('تم جلب أعداد العمليات للتعديل', 'success');
         } else {
             showToast('لا توجد بيانات مسجلة في هذا الشهر', 'warning');
         }
@@ -1832,7 +1822,138 @@ async function saveSurgeriesOps() {
     }
 }
 
-// 5. Save Surgeries by Doctors — saves each classification column separately
+// ══════════ SURGERY-DOCS ALL-SECTORS GRID ══════════
+
+// القطاعات الثلاثة بالترتيب (مع مفتاح الـ data-sec للـ input)
+const SD_SECTORS = [
+    { key: 'صحة',      label: 'صحة',      bg: 'bg-sky-400/10'     },
+    { key: 'عتبة خاص', label: 'عتبة خاص',  bg: 'bg-orange-400/10'  },
+    { key: 'عتبة عام', label: 'عتبة عام',   bg: 'bg-emerald-400/10' },
+];
+const SD_CLS = [
+    { key: 'صغرى',       bg: 'bg-yellow-400/5' },
+    { key: 'وسطى',       bg: 'bg-blue-400/5'   },
+    { key: 'كبرى',       bg: 'bg-orange-400/5' },
+    { key: 'فوق الكبرى', bg: 'bg-rose-400/5'   },
+    { key: 'خاصة',       bg: 'bg-purple-400/5' },
+];
+
+// map: sector name in DB → SD_SECTORS key
+function sdSectorKey(sectorName) {
+    if (!sectorName) return null;
+    const n = sectorName.toLowerCase();
+    if (n.includes('صح') || n.includes('health')) return 'صحة';
+    if (n.includes('خاص'))                        return 'عتبة خاص';
+    if (n.includes('عام'))                        return 'عتبة عام';
+    return null;
+}
+
+function buildSurgDocsTable() {
+    const doctors = entryLookups?.doctors || [];
+    const sectors = entryLookups?.sectors || [];
+
+    // ── sector sub-headers row ──
+    const subHdrRow = document.getElementById('surg-docs-sector-headers');
+    if (subHdrRow) {
+        let hdrs = '';
+        SD_CLS.forEach(cls => {
+            SD_SECTORS.forEach(sec => {
+                hdrs += `<th class="py-1 ${cls.bg} text-[9px] font-bold">${sec.label}</th>`;
+            });
+        });
+        subHdrRow.innerHTML = hdrs;
+    }
+
+    // ── tbody ──
+    const tbody = document.getElementById('tbody-surg-docs');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    doctors.forEach((doc, idx) => {
+        let cells = `<td class="py-1 text-center font-bold text-slate-400">${idx + 1}</td>`;
+        cells += `<td class="py-1 text-right pr-2 font-bold whitespace-nowrap">${doc.name}</td>`;
+
+        SD_CLS.forEach(cls => {
+            SD_SECTORS.forEach(sec => {
+                cells += `
+                <td class="p-0.5 ${cls.bg}">
+                    <input type="number" min="0" value="0"
+                        data-doc-id="${doc.id}"
+                        data-cls="${cls.key}"
+                        data-sec="${sec.key}"
+                        oninput="recalcSurgDocs()"
+                        class="w-11 text-center custom-inset border-none focus:outline-none rounded-md py-0.5 px-0.5 text-[9.5px] font-bold text-text-main sd-inp">
+                </td>`;
+            });
+        });
+        // row total
+        cells += `<td class="py-1 font-extrabold text-pink-600 sd-row-total" id="sd-row-total-${doc.id}">0</td>`;
+
+        tbody.innerHTML += `<tr class="table-row" data-doctor-id="${doc.id}">${cells}</tr>`;
+    });
+
+    // ── tfoot ──
+    const tfoot = document.getElementById('tfoot-surg-docs');
+    if (tfoot) {
+        let footCells = `<td colspan="2" class="py-2 text-pink-600 font-extrabold text-right pr-2">المجموع الكلي</td>`;
+        let ci = 0;
+        SD_CLS.forEach(cls => {
+            SD_SECTORS.forEach(sec => {
+                footCells += `<td class="py-2 ${cls.bg} font-bold text-[9.5px]" id="sd-col-total-${ci}">0</td>`;
+                ci++;
+            });
+        });
+        footCells += `<td class="py-2"><span id="sd-grand-total" class="inline-block px-2.5 py-0.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-md font-black text-[10px] min-w-10">0</span></td>`;
+        tfoot.innerHTML = `<tr class="border-t-2 border-slate-300/20">${footCells}</tr>`;
+    }
+
+    recalcSurgDocs();
+}
+
+function recalcSurgDocs() {
+    const inputs = document.querySelectorAll('#tbody-surg-docs .sd-inp');
+    const colCount = SD_CLS.length * SD_SECTORS.length;
+    const colTotals = Array(colCount).fill(0);
+    const rowTotals = {};
+    let grand = 0;
+
+    // Build column index map: cls × sec → colIndex
+    const colIndex = {};
+    let ci = 0;
+    SD_CLS.forEach(cls => {
+        SD_SECTORS.forEach(sec => {
+            colIndex[cls.key + '|' + sec.key] = ci++;
+        });
+    });
+
+    inputs.forEach(inp => {
+        const val = parseInt(inp.value) || 0;
+        const docId = inp.dataset.docId;
+        const cls   = inp.dataset.cls;
+        const sec   = inp.dataset.sec;
+        const idx   = colIndex[cls + '|' + sec];
+        if (idx !== undefined) colTotals[idx] += val;
+        if (!rowTotals[docId]) rowTotals[docId] = 0;
+        rowTotals[docId] += val;
+        grand += val;
+    });
+
+    // update row totals
+    Object.keys(rowTotals).forEach(docId => {
+        const el = document.getElementById('sd-row-total-' + docId);
+        if (el) el.textContent = rowTotals[docId];
+    });
+    // update col totals
+    colTotals.forEach((v, i) => {
+        const el = document.getElementById('sd-col-total-' + i);
+        if (el) el.textContent = v;
+    });
+    // grand total
+    const gEl = document.getElementById('sd-grand-total');
+    if (gEl) gEl.textContent = grand;
+}
+
+// 5. Save Surgeries by Doctors — all sectors at once
 async function saveSurgeriesDocs() {
     const monthVal = document.getElementById('date-surg-doc').value;
     if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
@@ -1840,42 +1961,52 @@ async function saveSurgeriesDocs() {
 
     const isEdit = editStates['surgeries_docs'].active;
     if (isEdit) {
-        showToast('جاري تحديث البيانات القديمة...', 'info');
-        const cleared = await clearDatabaseForEdit('surgeries_docs', editStates['surgeries_docs'].date + "-01");
-        if (!cleared) { showToast('فشل تحديث البيانات القديمة', 'error'); return; }
+        showToast('جاري مسح البيانات القديمة...', 'info');
+        // clear all sectors for this date
+        const sectors = entryLookups?.sectors || [];
+        for (const sec of sectors) {
+            await clearDatabaseForEdit('surgeries_docs', editStates['surgeries_docs'].date + "-01", sec.id);
+        }
     }
 
     const promises = [];
-    const rows = document.querySelectorAll('#tbody-surg-docs tr');
-    const clsCols = ['صغرى', 'وسطى', 'كبرى', 'فوق الكبرى', 'خاصة'];
+    const inputs = document.querySelectorAll('#tbody-surg-docs .sd-inp');
     const defaultOp = entryLookups?.operationNames?.[0]?.id || 1;
-    const defaultSector = entryLookups?.sectors?.[0]?.id || 1;
+    const sectors = entryLookups?.sectors || [];
 
-    rows.forEach(tr => {
-        const docId = tr.getAttribute('data-doctor-id');
-        clsCols.forEach(cls => {
-            const inp = tr.querySelector(`input[data-cls="${cls}"]`);
-            const count = parseInt(inp?.value) || 0;
-            if (count > 0) {
-                promises.push(
-                    fetch('/api/surgeries', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            doctor_id: docId,
-                            operation_name_id: defaultOp,
-                            sector_id: defaultSector,
-                            op_date: date,
-                            quantity: count,
-                            classification: cls
-                        })
+    // Build sector name → id map
+    const secIdMap = {};
+    sectors.forEach(s => {
+        const k = sdSectorKey(s.name);
+        if (k) secIdMap[k] = s.id;
+    });
+
+    inputs.forEach(inp => {
+        const count = parseInt(inp.value) || 0;
+        if (count > 0) {
+            const docId  = inp.dataset.docId;
+            const cls    = inp.dataset.cls;
+            const secKey = inp.dataset.sec;
+            const secId  = secIdMap[secKey];
+            if (!secId) return;
+            promises.push(
+                fetch('/api/surgeries', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        doctor_id: docId,
+                        operation_name_id: defaultOp,
+                        sector_id: secId,
+                        op_date: date,
+                        quantity: count,
+                        classification: cls
                     })
-                );
-            }
-        });
+                })
+            );
+        }
     });
 
     if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
@@ -1892,7 +2023,6 @@ async function saveSurgeriesDocs() {
         } else {
             showToast('تم تحديث البيانات بنجاح', 'success');
         }
-        
         if (isEdit) {
             setEditButtonState('surgeries_docs', false, 'date-surg-doc', 'btn-edit-surg-doc');
         }

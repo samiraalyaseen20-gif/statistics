@@ -100,21 +100,15 @@ class EntryController extends Controller
                 $defaultDoc = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 $defaultOp = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->first();
                 if ($defaultDoc && $defaultOp) {
-                    Surgery::whereBetween('op_date', [$start, $end])
+                    $query = Surgery::whereBetween('op_date', [$start, $end])
                         ->whereNull('governorate_id')
                         ->whereNull('country_id')
-                        // استبعاد سجلات التصنيفات (cls) التي لها sector_id و classification
-                        ->where(function($q) {
-                            $q->whereNull('sector_id')->orWhereNull('classification');
-                        })
-                        ->where(function($query) use ($defaultDoc, $defaultOp) {
-                            $query->where('operation_name_id', $defaultOp->id)
-                                  ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
-                                      $sub->where('doctor_id', '!=', $defaultDoc->id)
-                                          ->where('operation_name_id', '!=', $defaultOp->id);
-                                  });
-                        })
-                        ->delete();
+                        ->whereNotNull('classification');
+                    
+                    if ($r->has('sector_id')) {
+                        $query->where('sector_id', $r->sector_id);
+                    }
+                    $query->delete();
                 }
                 break;
             case 'surgeries_cls':
@@ -462,19 +456,13 @@ class EntryController extends Controller
                             });
                   });
             })
-            ->when($r->type === 'surgeries_docs' && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
+            ->when($r->type === 'surgeries_docs' && $defaultOp, function($q) use ($r, $defaultDoc, $defaultOp) {
                 $q->whereNull('governorate_id')
                   ->whereNull('country_id')
-                  ->where(function($q2) {
-                      $q2->whereNull('sector_id')->orWhereNull('classification');
-                  })
-                  ->where(function($query) use ($defaultDoc, $defaultOp) {
-                      $query->where('operation_name_id', $defaultOp->id)
-                            ->orWhere(function($sub) use ($defaultDoc, $defaultOp) {
-                                $sub->where('doctor_id', '!=', $defaultDoc->id)
-                                    ->where('operation_name_id', '!=', $defaultOp->id);
-                            });
-                  });
+                  ->whereNotNull('classification');
+                if ($r->has('sector_id')) {
+                    $q->where('sector_id', $r->sector_id);
+                }
             })
             ->when($r->type === 'surgeries_cls' && $defaultDoc && $defaultOp, function($q) use ($defaultDoc, $defaultOp) {
                 // Return only the classification×sector entries (saved via cls tab)
