@@ -272,8 +272,9 @@ class ReportController extends Controller
             ->map(fn($group) => (object)[
                 'op'             => $group->first()->operationName->name ?? '—',
                 'classification' => $group->first()->classification ?? ($group->first()->operationName->classification ?? '—'),
-                'total'          => $group->sum('quantity')
-            ])->sortByDesc('total')->values();
+                'total'          => $group->sum('quantity'),
+                'op_order'       => $group->first()->operationName->display_order ?? 0
+            ])->sortBy('op_order')->values();
 
         $flatDetailedOps = $doctorOpStatsRaw->map(fn($s) => (object)[
             'doctor_name'    => $s->doctor->name ?? '—',
@@ -281,7 +282,13 @@ class ReportController extends Controller
             'classification' => $s->classification ?? ($s->operationName->classification ?? '—'),
             'total'          => $s->quantity,
             'doc_order'      => $s->doctor->display_order ?? 0,
-        ])->sortBy('doc_order')->values();
+            'op_order'       => $s->operationName->display_order ?? 0,
+        ])->sort(function($a, $b) {
+            if ($a->doc_order !== $b->doc_order) {
+                return $a->doc_order <=> $b->doc_order;
+            }
+            return $a->op_order <=> $b->op_order;
+        })->values();
 
         $grandDetailTotal = $doctorOpStatsRaw->sum('quantity');
 
