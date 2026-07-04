@@ -252,11 +252,17 @@ class ReportController extends Controller
 
         $doctorOpStatsRaw = DoctorOperationStat::with(['doctor', 'operationName'])
             ->whereBetween('stat_month', [$statMonthStart, $statMonthEnd])
-            ->where('quantity', '>', 0);
-        if ($doctor_id) {
-            $doctorOpStatsRaw->where('doctor_id', $doctor_id);
-        }
-        $doctorOpStatsRaw = $doctorOpStatsRaw->get();
+            ->where('quantity', '>', 0)
+            ->get();
+
+        $combinedDetailedOps = $doctorOpStatsRaw->groupBy('operation_name_id')
+            ->map(fn($group) => (object)[
+                'op'             => $group->first()->operationName->name ?? '—',
+                'classification' => $group->first()->classification ?? ($group->first()->operationName->classification ?? '—'),
+                'total'          => $group->sum('quantity')
+            ])->sortByDesc('total')->values();
+
+        $grandDetailTotal = $doctorOpStatsRaw->sum('quantity');
 
         $doctorOpStatsByDoctor = $doctorOpStatsRaw
             ->groupBy(fn($s) => $s->doctor->name ?? '—')
@@ -290,7 +296,7 @@ class ReportController extends Controller
             'eyeTestsByType','labVisitCount','labTestsByType',
             'surgeriesByCatSector','surgeriesByGov','surgeriesByCountry',
             'surgeriesByDoctorCatSector','surgeryDetailByDoctor',
-            'doctorOpStatsByDoctor',
+            'doctorOpStatsByDoctor', 'combinedDetailedOps', 'grandDetailTotal',
             'totalVisits','totalEyeTests','totalSurgeries',
             'year','month','start_date','end_date',
             'doctor_id','clinic_unit_id','sector_id','governorate_id','country_id',

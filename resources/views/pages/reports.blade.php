@@ -473,61 +473,26 @@ if (file_exists(base_path('iraq.svg'))) {
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="user-cog" class="w-4 h-4 text-violet-500"></i>
             الإحصائية التفصيلية للعمليات الجراحية لكل طبيب
-            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalSurgeries) }}</span>
+            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع الكلي: {{ number_format($grandDetailTotal) }}</span>
         </h3>
         
-        @php
-        // Prepare combined operations list for "All Doctors"
-        $allOps = collect();
-        foreach($surgeryDetailByDoctor as $docName => $docOps) {
-            foreach($docOps as $op) {
-                $allOps->push($op);
-            }
-        }
-        $combinedOps = $allOps->groupBy('op')->map(fn($group) => (object)[
-            'op' => $group->first()->op,
-            'classification' => $group->first()->classification,
-            'total' => $group->sum('total')
-        ])->sortByDesc('total')->values();
-        @endphp
-
-        <div class="flex items-center gap-3 mb-6 bg-slate-200/20 p-3 rounded-xl">
-            <span class="text-xs font-bold text-slate-500">اختيار الطبيب:</span>
-            <select id="doc-active-selector" onchange="showDocStats(this.value)" class="custom-inset border-none focus:outline-none rounded-lg py-1.5 px-3 text-xs font-bold text-text-main font-['Tajawal']">
-                @if(!isset($doctor_id) || empty($doctor_id))
-                <option value="all">كل الأطباء ({{ $totalSurgeries }} عملية)</option>
-                @endif
-                @foreach($filterDoctors as $doc)
-                    @php
-                    $docOps = $surgeryDetailByDoctor->get($doc->name) ?? collect();
-                    $docTotal = $docOps->sum('total');
-                    $isDocActive = (isset($doctor_id) && $doctor_id == $doc->id);
-                    @endphp
-                    @if(!isset($doctor_id) || empty($doctor_id) || $doctor_id == $doc->id)
-                    <option value="{{ $doc->id }}" {{ $isDocActive ? 'selected' : '' }}>{{ $doc->name }} ({{ $docTotal }} عملية)</option>
-                    @endif
-                @endforeach
-            </select>
-        </div>
-
-        <!-- Details Panel -->
         @php
         $bc = [
             'خاصة' => 'bg-purple-100 text-purple-700',
             'فوق الكبرى' => 'bg-rose-100 text-rose-700',
             'كبرى' => 'bg-orange-100 text-orange-700',
             'وسطى (حقن)' => 'bg-blue-100 text-blue-700',
-            'وسطى (ليزر)' => 'bg-blue-100 text-blue-700',
+            'وسطى (ليزر)' => 'bg-sky-100 text-sky-700',
             'وسطى' => 'bg-blue-100 text-blue-700',
             'صغرى' => 'bg-yellow-100 text-yellow-700'
         ];
         @endphp
 
         <!-- Combined Panel for All Doctors -->
-        <div id="stats-panel-all" class="stats-panel {{ (isset($doctor_id) && !empty($doctor_id)) ? 'hidden' : '' }} transition-opacity duration-300">
+        <div id="stats-panel-all" class="stats-panel transition-opacity duration-300">
             <div class="flex items-center justify-between gap-3 mb-4">
-                <h4 class="text-xs font-bold text-slate-800">كل الأطباء - إجمالي العمليات</h4>
-                <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $totalSurgeries }} عملية</span>
+                <h4 class="text-xs font-bold text-slate-800">إجمالي العمليات الجراحية المنفذة</h4>
+                <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $grandDetailTotal }} عملية</span>
             </div>
             <div class="flex flex-col lg:flex-row gap-6 items-start">
                 <div class="w-full lg:w-2/5 flex-shrink-0">
@@ -537,11 +502,11 @@ if (file_exists(base_path('iraq.svg'))) {
                     <table class="custom-table text-xs">
                         <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
                         <tbody>
-                            @forelse($combinedOps as $i => $op)
+                            @forelse($combinedDetailedOps as $i => $op)
                             <tr class="table-row">
                                 <td class="w-8 text-center">{{ $i + 1 }}</td>
                                 <td>{{ $op->op }}</td>
-                                <td><span class="text-[9px] font-bold px-2 py-0.5 rounded-full {{ $bc[$op->classification] ?? '' }}">{{ $op->classification }}</span></td>
+                                <td><span class="text-[9px] font-bold px-2 py-0.5 rounded-full {{ $bc[$op->classification] ?? 'bg-slate-100 text-slate-600' }}">{{ $op->classification }}</span></td>
                                 <td class="text-center font-bold text-violet-600 text-xs">{{ $op->total }}</td>
                             </tr>
                             @empty
@@ -554,45 +519,6 @@ if (file_exists(base_path('iraq.svg'))) {
                 </div>
             </div>
         </div>
-
-        <!-- Individual Doctor Panels -->
-        @foreach($filterDoctors as $doc)
-        @php
-        $docOps = $surgeryDetailByDoctor->get($doc->name) ?? collect();
-        $docTotal = $docOps->sum('total');
-        $isDocActive = (isset($doctor_id) && $doctor_id == $doc->id);
-        @endphp
-        <div id="stats-panel-{{ $doc->id }}" class="stats-panel {{ $isDocActive ? '' : 'hidden' }} transition-opacity duration-300">
-            <div class="flex items-center justify-between gap-3 mb-4">
-                <h4 class="text-xs font-bold text-slate-800">{{ $doc->name }}</h4>
-                <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $docTotal }} عملية</span>
-            </div>
-            <div class="flex flex-col lg:flex-row gap-6 items-start">
-                <div class="w-full lg:w-2/5 flex-shrink-0">
-                    <svg id="svg-doc-{{ $doc->id }}" viewBox="0 0 450 200" class="w-full h-auto overflow-visible"></svg>
-                </div>
-                <div class="w-full lg:w-3/5">
-                    <table class="custom-table text-xs">
-                        <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
-                        <tbody>
-                            @forelse($docOps as $i => $op)
-                            <tr class="table-row">
-                                <td class="w-8 text-center">{{ $i + 1 }}</td>
-                                <td>{{ $op->op }}</td>
-                                <td><span class="text-[9px] font-bold px-2 py-0.5 rounded-full {{ $bc[$op->classification] ?? '' }}">{{ $op->classification }}</span></td>
-                                <td class="text-center font-bold text-violet-600 text-xs">{{ $op->total }}</td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="4" class="text-center text-slate-400 py-4">لا توجد عمليات مسجلة لهذا الطبيب في هذه الفترة</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        @endforeach
     </div>
 
 
@@ -1318,35 +1244,16 @@ function renderAll2DArrowCharts() {
     });
     watchChart('svg-report-10', () => draw2DFlatVerticalArrows('svg-report-10', docSurgData, docSurgLabels));
 
-    // Initialize switcher single doctor stats
-    const selector = document.getElementById('doc-active-selector');
-    if (selector) renderSingleDocChart(selector.value);
+    // Initialize combined detailed doctor stats chart
+    watchChart('svg-doc-all', () => renderSingleDocChart('all'));
 }
 
 // switcher individual doctor operations details -> Horizontal Chevrons
 const docOpsData = {
-    "all": @json($combinedOps->pluck('total')),
-    @foreach($surgeryDetailByDoctor as $docName => $ops)
-        @php
-        $docModel = $filterDoctors->firstWhere('name', $docName);
-        $docId = $docModel ? $docModel->id : 0;
-        @endphp
-        @if($docId)
-        "{{ $docId }}": @json($ops->pluck('total')),
-        @endif
-    @endforeach
+    "all": @json($combinedDetailedOps->pluck('total'))
 };
 const docNamesData = {
-    "all": @json($combinedOps->pluck('op')),
-    @foreach($surgeryDetailByDoctor as $docName => $ops)
-        @php
-        $docModel = $filterDoctors->firstWhere('name', $docName);
-        $docId = $docModel ? $docModel->id : 0;
-        @endphp
-        @if($docId)
-        "{{ $docId }}": @json($ops->pluck('op')),
-        @endif
-    @endforeach
+    "all": @json($combinedDetailedOps->pluck('op'))
 };
 
 function renderSingleDocChart(id) {
