@@ -47,26 +47,9 @@
 <body class="min-h-screen w-full overflow-hidden flex bg-slate-50 text-slate-800">
 
     <div class="flex w-full h-screen">
-        
-        <!-- Right Side: Branding -->
-        <div class="hidden lg:flex w-1/2 bg-animated-gradient relative items-center justify-center overflow-hidden">
-            <div class="absolute top-1/4 -right-20 w-96 h-96 bg-white opacity-10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-1/4 -left-20 w-80 h-80 bg-black opacity-10 rounded-full blur-3xl"></div>
-            <div class="relative z-10 text-center text-white">
-                <div class="w-24 h-24 mx-auto bg-white rounded-2xl flex items-center justify-center text-pink-500 shadow-xl mb-6">
-                    <i data-lucide="activity" class="w-12 h-12"></i>
-                </div>
-            </div>
-        </div>
 
-        <!-- Left Side: Login Form -->
-        <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative">
-            <!-- Mobile Logo -->
-            <div class="absolute top-8 left-0 right-0 flex justify-center lg:hidden">
-                <div class="w-10 h-10 rounded-xl bg-pink-500 flex items-center justify-center text-white shadow-lg">
-                    <i data-lucide="activity" class="w-5 h-5"></i>
-                </div>
-            </div>
+        <!-- Login Form -->
+        <div class="w-full flex items-center justify-center p-6 sm:p-12 relative">
 
             <div class="w-full max-w-md">
                 <div class="mb-8"></div>
@@ -94,7 +77,7 @@
                             </div>
                             <input type="text" name="username" value="{{ old('username') }}" required autofocus
                                    class="w-full bg-transparent border-none focus:ring-0 text-slate-800 font-bold text-lg p-0 pb-1"
-                                   placeholder="admin" autocomplete="off">
+                                   placeholder="samira" autocomplete="off">
                         </div>
                     </div>
 
