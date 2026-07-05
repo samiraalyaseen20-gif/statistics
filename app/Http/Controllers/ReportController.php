@@ -15,6 +15,7 @@ use App\Models\TestType;
 use App\Models\OperationName;
 use App\Models\Sector;
 use App\Models\DoctorOperationStat;
+use App\Models\DoctorSurgeryStat;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -229,18 +230,24 @@ class ReportController extends Controller
             ->map(fn($g, $key) => ['country' => $key, 'total' => $g->sum('total')])
             ->values();
 
-        // جدول (10): عمليات لكل طبيب بالتصنيف والقطاع
-        // استبعاد سجلات CLS المباشرة (التي لها patient_name = 'قيد إحصائي تصنيف')
-        // لأنها تجميع تصنيفي وليست عمليات حقيقية للأطباء
-        $surgeriesByDoctorCatSector = (clone $docSurgeriesQuery)
-            ->join('doctors','surgeries.doctor_id','=','doctors.id')
-            ->join('sectors','surgeries.sector_id','=','sectors.id')
-            ->where('surgeries.patient_name', '!=', 'قيد إحصائي تصنيف')
-            ->select('doctors.name as doctor','doctors.display_order','surgeries.classification','sectors.name as sector', DB::raw('count(*) as total'))
-            ->groupBy('doctors.name','doctors.display_order','surgeries.classification','sectors.name')
-            ->orderBy('doctors.display_order', 'asc')
-            ->orderBy('doctors.name', 'asc')
-            ->get();
+        $statMonthStart = substr($start_date, 0, 7) . '-01';
+        $statMonthEnd   = substr($end_date,   0, 7) . '-01';
+
+        // جدول (10): إجمالي العمليات الجراحية لكل طبيب (بيانات حقيقية من الجدول المستقل)
+        $docSurgeryStatsQuery = DoctorSurgeryStat::with(['doctor', 'sector'])
+            ->whereBetween('stat_month', [$statMonthStart, $statMonthEnd]);
+
+        if ($doctor_id) {
+            $docSurgeryStatsQuery->where('doctor_id', $doctor_id);
+        }
+
+        $surgeriesByDoctorCatSector = $docSurgeryStatsQuery->get()
+            ->map(fn($item) => (object)[
+                'doctor' => $item->doctor->name ?? '—',
+                'classification' => $item->classification,
+                'sector' => $item->sector->name ?? '—',
+                'total' => $item->quantity
+            ]);
 
         // الملف الثاني: تفصيلي لكل طبيب (اسم العملية + العدد)
         $surgeryDetailByDoctor = (clone $docSurgeriesQuery)
@@ -251,11 +258,6 @@ class ReportController extends Controller
             ->orderBy('doctors.display_order', 'asc')
             ->orderBy('operation_names.display_order', 'asc')
             ->get()->groupBy('doctor');
-
-        // ═══ عمليات مفصلة لكل طبيب (من جدول doctor_operation_stats المستقل) ═══
-        // نعتمد فقط على الجدول الجديد للعمليات التفصيلية. وإذا كان فارغاً يظهر صفراً/لا يوجد بيانات.
-        $statMonthStart = substr($start_date, 0, 7) . '-01';
-        $statMonthEnd   = substr($end_date,   0, 7) . '-01';
 
         $doctorOpStatsRaw = DoctorOperationStat::with(['doctor', 'operationName'])
             ->whereBetween('stat_month', [$statMonthStart, $statMonthEnd])
@@ -306,7 +308,11 @@ class ReportController extends Controller
         // Totals
         $totalVisits    = (clone $docVisitsQuery)->count();
         $totalEyeTests  = (clone $eyeTestsQuery)->count();
-        $totalSurgeries = (clone $docSurgeriesQuery)->count();
+        
+        // المجموع الكلي للعمليات الجراحية للأطباء من الجدول المستقل تماماً
+        $totalSurgeries = DoctorSurgeryStat::whereBetween('stat_month', [$statMonthStart, $statMonthEnd])
+            ->when($doctor_id, fn($q) => $q->where('doctor_id', $doctor_id))
+            ->sum('quantity');
 
         $filterDoctors      = Doctor::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get();
         $filterClinicUnits  = ClinicUnit::orderBy('name')->get();
@@ -378,7 +384,13 @@ class ReportController extends Controller
 
             // Totals
             $totalVisits    = (clone $docVisitsQuery)->count();
-            $totalSurgeries = (clone $docSurgeriesQuery)->count();
+            
+            $sideStatStart = substr($startDate, 0, 7) . '-01';
+            $sideStatEnd   = substr($endDate,   0, 7) . '-01';
+            
+            $totalSurgeries = DoctorSurgeryStat::whereBetween('stat_month', [$sideStatStart, $sideStatEnd])
+                ->when($docId, fn($q) => $q->where('doctor_id', $docId))
+                ->sum('quantity');
 
             // فحوصات بصرية — مستقلة لا تتأثر بالطبيب أو تصنيف العملية
             $eyeTestsQuery = \App\Models\EyeTest::whereBetween('test_date', [$startDate, $endDate]);
@@ -466,14 +478,16 @@ class ReportController extends Controller
                 ->groupBy('operation_names.classification')
                 ->get()->map(fn($v) => ['classification' => $v->classification, 'total' => $v->total]);
 
-            // جدول 10: عمليات كل طبيب (الإجمالي)
-            $surgsByDoctor = (clone $docSurgeriesQuery)
-                ->join('doctors','surgeries.doctor_id','=','doctors.id')
-                ->select('doctors.name as doctor', 'doctors.display_order', DB::raw('count(*) as total'))
-                ->groupBy('doctors.name', 'doctors.display_order')
-                ->orderBy('doctors.display_order', 'asc')
-                ->orderBy('doctors.name', 'asc')
-                ->get()->map(fn($v) => ['doctor' => $v->doctor, 'total' => $v->total]);
+            // جدول 10: عمليات كل طبيب (الإجمالي) من الجدول المستقل
+            $surgsByDoctor = DoctorSurgeryStat::with('doctor')
+                ->whereBetween('stat_month', [$sideStatStart, $sideStatEnd])
+                ->when($docId, fn($q) => $q->where('doctor_id', $docId))
+                ->get()
+                ->groupBy('doctor_id')
+                ->map(fn($group) => [
+                    'doctor' => $group->first()->doctor->name ?? '—',
+                    'total'  => $group->sum('quantity')
+                ])->values();
 
             // تفصيلي: اسم العملية لكل طبيب
             $surgDetailByDoctor = (clone $docSurgeriesQuery)
