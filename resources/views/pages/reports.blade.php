@@ -710,7 +710,6 @@ if (file_exists(base_path('iraq.svg'))) {
                                 <th class="text-right pr-3">اسم العملية</th>
                                 <th class="w-36 bg-violet-400/10">التصنيف</th>
                                 <th class="w-24 text-center font-bold">العدد</th>
-                                <th class="w-24 text-center bg-emerald-400/10">النسبة</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -724,9 +723,6 @@ if (file_exists(base_path('iraq.svg'))) {
                                     </span>
                                 </td>
                                 <td class="text-center font-extrabold text-violet-600">{{ number_format($op->total) }}</td>
-                                <td class="text-center text-emerald-600 font-bold bg-emerald-400/5">
-                                    {{ $docTotal > 0 ? number_format(($op->total / $docTotal) * 100, 1) . '%' : '—' }}
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -734,7 +730,6 @@ if (file_exists(base_path('iraq.svg'))) {
                             <tr class="border-t-2 border-slate-300/20 font-extrabold">
                                 <td colspan="3" class="py-2 text-right pr-3 text-pink-600 text-[10px]">المجموع</td>
                                 <td class="py-2 text-center text-violet-600">{{ number_format($docTotal) }}</td>
-                                <td class="py-2 text-center text-emerald-600 bg-emerald-400/5">100%</td>
                             </tr>
                         </tfoot>
                     </table>
