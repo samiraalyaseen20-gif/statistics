@@ -16,6 +16,7 @@ use App\Models\LabTestType;
 use App\Models\OperationName;
 use App\Models\Sector;
 use App\Models\DoctorOperationStat;
+use App\Models\DoctorSurgeryStat;
 use Illuminate\Support\Facades\Auth;
 
 class EntryController extends Controller
@@ -647,5 +648,88 @@ class EntryController extends Controller
             'sectors'         => Sector::all(['id','name']),
             'classifications' => \App\Models\Classification::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get(['id','name']),
         ]);
+    }
+
+    // ══════════════════════════════════════════════════
+    // إجمالي العمليات المنفذة لكل طبيب — جدول مستقل
+    // ══════════════════════════════════════════════════
+
+    /**
+     * جلب بيانات الجدول لشهر محدد
+     * GET /api/doctor-surgery-stats?month=2026-02
+     */
+    public function doctorSurgeryStatsIndex(Request $r)
+    {
+        $month = $r->get('month', now()->format('Y-m'));
+        $statMonth = (strlen($month) === 7 ? $month . '-01' : $month);
+
+        $rows = DoctorSurgeryStat::with(['doctor', 'sector'])
+            ->where('stat_month', $statMonth)
+            ->get()
+            ->map(fn($row) => [
+                'id'             => $row->id,
+                'doctor_id'      => $row->doctor_id,
+                'doctor_name'    => $row->doctor?->name,
+                'classification' => $row->classification,
+                'sector_key'     => $row->sector_key,
+                'sector_id'      => $row->sector_id,
+                'quantity'       => $row->quantity,
+                'stat_month'     => $row->stat_month?->format('Y-m'),
+            ]);
+
+        return response()->json($rows);
+    }
+
+    /**
+     * حفظ / تحديث الصفوف (upsert آمن)
+     * POST /api/doctor-surgery-stats/save
+     * body: { month: "2026-02", rows: [{doctor_id, classification, sector_key, sector_id, quantity}] }
+     */
+    public function doctorSurgeryStatsSave(Request $r)
+    {
+        $this->checkPermission();
+        $r->validate([
+            'month'                  => 'required|string',
+            'rows'                   => 'required|array',
+            'rows.*.doctor_id'       => 'required|exists:doctors,id',
+            'rows.*.classification'  => 'required|string',
+            'rows.*.sector_key'      => 'required|string',
+            'rows.*.sector_id'       => 'required|exists:sectors,id',
+            'rows.*.quantity'        => 'required|integer|min:0',
+        ]);
+
+        $month = $r->month;
+        $statMonth = (strlen($month) === 7 ? $month . '-01' : $month);
+
+        foreach ($r->rows as $row) {
+            DoctorSurgeryStat::updateOrCreate(
+                [
+                    'doctor_id'      => $row['doctor_id'],
+                    'classification' => $row['classification'],
+                    'sector_key'     => $row['sector_key'],
+                    'stat_month'     => $statMonth,
+                ],
+                [
+                    'sector_id' => $row['sector_id'],
+                    'quantity'  => $row['quantity'],
+                ]
+            );
+        }
+
+        return response()->json(['ok' => true, 'saved' => count($r->rows)]);
+    }
+
+    /**
+     * مسح بيانات شهر محدد (للتعديل)
+     * POST /api/doctor-surgery-stats/clear
+     * body: { month: "2026-02" }
+     */
+    public function doctorSurgeryStatsClear(Request $r)
+    {
+        $this->checkPermission();
+        $month = $r->month;
+        $statMonth = (strlen($month) === 7 ? $month . '-01' : $month);
+        DoctorSurgeryStat::where('stat_month', $statMonth)->delete();
+        return response()->json(['ok' => true]);
     }
 }

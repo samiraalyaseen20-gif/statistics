@@ -103,6 +103,11 @@ Route::middleware('auth')->group(function () {
         Route::post  ('doctor-op-stats/save',  [EntryController::class, 'doctorOpStatsSave']);
         Route::post  ('doctor-op-stats/clear', [EntryController::class, 'doctorOpStatsClear']);
 
+        // Doctor Surgery Stats (إجمالي العمليات المنفذة لكل طبيب — جدول مستقل تماماً)
+        Route::get   ('doctor-surgery-stats',       [EntryController::class, 'doctorSurgeryStatsIndex']);
+        Route::post  ('doctor-surgery-stats/save',  [EntryController::class, 'doctorSurgeryStatsSave']);
+        Route::post  ('doctor-surgery-stats/clear', [EntryController::class, 'doctorSurgeryStatsClear']);
+
         // Diagnostic route for server database inspection
         Route::get('diagnose-surgeries', function (\Illuminate\Http\Request $request) {
             $month = $request->get('month', now()->format('Y-m'));

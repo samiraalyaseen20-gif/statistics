@@ -270,7 +270,7 @@
                     <label class="text-[10px] font-bold text-slate-400">الشهر والسنّة:</label>
                     <input type="month" id="date-surg-doc" required
                         class="custom-inset border-none focus:outline-none rounded-xl py-1.5 px-3 text-xs font-bold text-text-main custom-date-input">
-                    <button onclick="toggleEditSurgeriesDocs()" id="btn-edit-surg-doc"
+                    <button onclick="loadSurgeriesDocsForEdit()" id="btn-edit-surg-doc"
                         class="py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5">
                         <i data-lucide="edit" class="w-3.5 h-3.5"></i><span>تعديل</span>
                     </button>
@@ -2023,29 +2023,65 @@ function recalcSurgDocs() {
     if (gEl) gEl.textContent = grand;
 }
 
-// 5. Save Surgeries by Doctors — all sectors at once
+// 5. Load saved data for editing (إجمالي الأطباء)
+async function loadSurgeriesDocsForEdit() {
+    const monthVal = document.getElementById('date-surg-doc').value;
+    if (!monthVal) { showToast('حدد الشهر والسنّة أولاً', 'error'); return; }
+
+    // Set edit mode
+    editStates['surgeries_docs'] = { active: true, date: monthVal };
+    const btn = document.getElementById('btn-edit-surg-doc');
+    if (btn) {
+        btn.innerHTML = '<i data-lucide="x-circle" class="w-3.5 h-3.5"></i><span>إلغاء التعديل</span>';
+        btn.className = 'py-1.5 px-3 rounded-lg text-xs font-bold text-red-600 bg-red-50 border border-red-200 hover-press flex items-center gap-1.5';
+        btn.onclick = cancelEditSurgeriesDocs;
+        if (window.lucide) lucide.createIcons();
+    }
+
+    // Load existing data
+    try {
+        const res = await fetch(`/api/doctor-surgery-stats?month=${monthVal}`, {
+            headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
+        });
+        if (!res.ok) throw new Error();
+        const rows = await res.json();
+
+        // Populate inputs
+        rows.forEach(row => {
+            const inp = document.querySelector(
+                `#tbody-surg-docs input[data-doc-id="${row.doctor_id}"][data-cls="${row.classification}"][data-sec="${row.sector_key}"]`
+            );
+            if (inp) inp.value = row.quantity;
+        });
+        recalcSurgDocs();
+        showToast(`تم تحميل بيانات ${monthVal} للتعديل ✏️`, 'info');
+    } catch(e) {
+        showToast('فشل تحميل البيانات للتعديل', 'error');
+    }
+}
+
+function cancelEditSurgeriesDocs() {
+    editStates['surgeries_docs'] = { active: false, date: '' };
+    const btn = document.getElementById('btn-edit-surg-doc');
+    if (btn) {
+        btn.innerHTML = '<i data-lucide="edit" class="w-3.5 h-3.5"></i><span>تعديل</span>';
+        btn.className = 'py-1.5 px-3 rounded-lg text-xs font-bold text-teal-600 bg-teal-50 border border-teal-200 hover-press flex items-center gap-1.5';
+        btn.onclick = loadSurgeriesDocsForEdit;
+        if (window.lucide) lucide.createIcons();
+    }
+    // Reset all inputs to 0
+    document.querySelectorAll('#tbody-surg-docs .sd-inp').forEach(i => i.value = 0);
+    recalcSurgDocs();
+}
+
+// 5. Save Surgeries by Doctors — using independent doctor_surgery_stats table
 async function saveSurgeriesDocs() {
     const _btn = document.querySelector('[onclick="saveSurgeriesDocs()"]');
     if (!lockSave(_btn)) { showToast('⏳ جاري الحفظ، انتظر من فضلك...', 'warning'); return; }
     const monthVal = document.getElementById('date-surg-doc').value;
     if (!monthVal) { unlockSave(_btn); showToast('حدد الشهر والسنّة', 'error'); return; }
-    const date = monthVal + "-01";
 
-    const isEdit = editStates['surgeries_docs'].active;
-    if (isEdit) {
-        showToast('جاري مسح البيانات القديمة...', 'info');
-        // clear all sectors for this date
-        const sectors = entryLookups?.sectors || [];
-        for (const sec of sectors) {
-            await clearDatabaseForEdit('surgeries_docs', editStates['surgeries_docs'].date + "-01", sec.id);
-        }
-    }
-
-    const promises = [];
-    const inputs = document.querySelectorAll('#tbody-surg-docs .sd-inp');
-    const defaultOp = entryLookups?.operationNames?.[0]?.id || 1;
     const sectors = entryLookups?.sectors || [];
-
     // Build sector name → id map
     const secIdMap = {};
     sectors.forEach(s => {
@@ -2053,60 +2089,56 @@ async function saveSurgeriesDocs() {
         if (k) secIdMap[k] = s.id;
     });
 
+    // Collect all non-zero inputs into rows array
+    const rows = [];
+    const inputs = document.querySelectorAll('#tbody-surg-docs .sd-inp');
     inputs.forEach(inp => {
-        const count = parseInt(inp.value) || 0;
-        if (count > 0) {
-            const docId  = inp.dataset.docId;
-            const cls    = inp.dataset.cls;
-            const secKey = inp.dataset.sec;
-            const secId  = secIdMap[secKey];
-            if (!secId) return;
-            promises.push(
-                fetch('/api/surgeries', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        doctor_id: docId,
-                        operation_name_id: defaultOp,
-                        sector_id: secId,
-                        op_date: date,
-                        quantity: count,
-                        classification: cls,
-                        patient_name: 'قيد إحصائي أطباء'
-                    })
-                })
-            );
-        }
+        const qty = parseInt(inp.value) || 0;
+        if (qty <= 0) return;
+        const docId  = inp.dataset.docId;
+        const cls    = inp.dataset.cls;
+        const secKey = inp.dataset.sec;
+        const secId  = secIdMap[secKey];
+        if (!secId) return;
+        rows.push({
+            doctor_id:      docId,
+            classification: cls,
+            sector_key:     secKey,
+            sector_id:      secId,
+            quantity:       qty
+        });
     });
 
-    if (promises.length === 0 && !isEdit) { showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
+    if (rows.length === 0) { unlockSave(_btn); showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
 
     showToast('جاري الحفظ...', 'info');
     try {
-        if (promises.length > 0) {
-            const results = await Promise.all(promises);
-            if (results.every(r => r.ok)) {
-                showToast('تم حفظ إجمالي العمليات للأطباء بنجاح', 'success');
-            } else {
-                showToast('فشل حفظ بعض القيود', 'error');
-            }
+        const res = await fetch('/api/doctor-surgery-stats/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ month: monthVal, rows })
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            showToast(`تم حفظ إجمالي العمليات للأطباء بنجاح ✅ (${data.saved} سجل)`, 'success');
+            // Exit edit mode if was editing
+            cancelEditSurgeriesDocs();
         } else {
-            showToast('تم تحديث البيانات بنجاح', 'success');
-        }
-        if (isEdit) {
-            setEditButtonState('surgeries_docs', false, 'date-surg-doc', 'btn-edit-surg-doc');
+            const err = await res.json().catch(() => ({}));
+            showToast('فشل الحفظ: ' + (err.message || 'خطأ غير معروف'), 'error');
         }
         lastUsedDate = monthVal;
-        loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
     } finally {
         unlockSave(_btn);
     }
 }
+
 
 // 6. Save Eye Tests
 async function saveEyeTestsGrid() {
