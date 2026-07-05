@@ -701,22 +701,25 @@ class EntryController extends Controller
         $month = $r->month;
         $statMonth = (strlen($month) === 7 ? $month . '-01' : $month);
 
+        // مسح كافة سجلات الشهر المحدّد أولاً لمنع التدبيل وللسماح بتصفير القيم
+        DoctorSurgeryStat::where('stat_month', $statMonth)->delete();
+
+        $savedCount = 0;
         foreach ($r->rows as $row) {
-            DoctorSurgeryStat::updateOrCreate(
-                [
+            if ($row['quantity'] > 0) {
+                DoctorSurgeryStat::create([
                     'doctor_id'      => $row['doctor_id'],
                     'classification' => $row['classification'],
                     'sector_key'     => $row['sector_key'],
+                    'sector_id'      => $row['sector_id'],
                     'stat_month'     => $statMonth,
-                ],
-                [
-                    'sector_id' => $row['sector_id'],
-                    'quantity'  => $row['quantity'],
-                ]
-            );
+                    'quantity'       => $row['quantity'],
+                ]);
+                $savedCount++;
+            }
         }
 
-        return response()->json(['ok' => true, 'saved' => count($r->rows)]);
+        return response()->json(['ok' => true, 'saved' => $savedCount]);
     }
 
     /**

@@ -2089,12 +2089,13 @@ async function saveSurgeriesDocs() {
         if (k) secIdMap[k] = s.id;
     });
 
-    // Collect all non-zero inputs into rows array
+    // Collect all inputs (including zero values for updates/clearing)
     const rows = [];
+    let totalQty = 0;
     const inputs = document.querySelectorAll('#tbody-surg-docs .sd-inp');
     inputs.forEach(inp => {
         const qty = parseInt(inp.value) || 0;
-        if (qty <= 0) return;
+        totalQty += qty;
         const docId  = inp.dataset.docId;
         const cls    = inp.dataset.cls;
         const secKey = inp.dataset.sec;
@@ -2109,7 +2110,12 @@ async function saveSurgeriesDocs() {
         });
     });
 
-    if (rows.length === 0) { unlockSave(_btn); showToast('لا توجد أعداد مدخلة لحفظها', 'error'); return; }
+    const isEdit = editStates['surgeries_docs'].active;
+    if (rows.length === 0 || (totalQty === 0 && !isEdit)) { 
+        unlockSave(_btn); 
+        showToast('لا توجد أعداد مدخلة لحفظها', 'error'); 
+        return; 
+    }
 
     showToast('جاري الحفظ...', 'info');
     try {
