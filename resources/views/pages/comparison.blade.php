@@ -888,7 +888,7 @@ function cmpDrawIraqMap(svgId, values, labels, colorTheme) {
             g.appendChild(dot);
         }
 
-        const textStr = `${govArabicName}: ${val.toLocaleString()}`;
+        const textStr = `${govArabicName} ${val.toLocaleString()}`;
         const chipW   = textStr.length * 7.2 + 14;
         const chipY   = val > 0 ? -(3 + (val / maxVal) * 2.5) - 22 : -22;
 
