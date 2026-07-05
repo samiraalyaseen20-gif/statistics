@@ -327,6 +327,21 @@ class ReportController extends Controller
 
         $showCopyright = Setting::get('show_copyright', '1') === '1';
 
+        if ($r->has('print')) {
+            return view('pages.print_report', compact(
+                'consultations','visitsByDoctor','visitsByGov','visitsByCountry',
+                'eyeTestsByType','labVisitCount','labTestsByType',
+                'surgeriesByCatSector','surgeriesByGov','surgeriesByCountry',
+                'surgeriesByDoctorCatSector','surgeryDetailByDoctor',
+                'doctorOpStatsByDoctor', 'combinedDetailedOps', 'flatDetailedOps', 'grandDetailTotal',
+                'totalVisits','totalEyeTests','totalSurgeries',
+                'year','month','start_date','end_date',
+                'doctor_id','clinic_unit_id','sector_id','governorate_id','country_id',
+                'filterDoctors','filterClinicUnits','filterSectors','filterGovernorates','filterCountries',
+                'showCopyright'
+            ));
+        }
+
         return view('main_screen', compact(
             'consultations','visitsByDoctor','visitsByGov','visitsByCountry',
             'eyeTestsByType','labVisitCount','labTestsByType',

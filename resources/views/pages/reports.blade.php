@@ -60,8 +60,9 @@ if (file_exists(base_path('iraq.svg'))) {
                 <button onclick="resetAllFilters()" class="py-2 px-4 rounded-xl text-xs font-bold bg-slate-200/20 text-slate-400 hover:bg-slate-200/40 hover-press flex items-center gap-1.5">
                     <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i><span>تصفير الفلتر</span>
                 </button>
-                <button onclick="window.print()" class="py-2 px-4 rounded-xl text-xs font-bold bg-slate-200/20 text-slate-400 hover:bg-slate-200/40 hover-press">
+                <button onclick="printReportWindow()" class="py-2 px-4 rounded-xl text-xs font-bold bg-violet-500/10 text-violet-600 hover:bg-violet-500/20 hover-press flex items-center gap-1.5 border border-violet-300/20">
                     <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                    <span>طباعة التقرير</span>
                 </button>
             </div>
         </div>
@@ -735,7 +736,7 @@ if (file_exists(base_path('iraq.svg'))) {
                     </table>
                 </div>
                 @if($showCopyright)
-                <div class="px-4 py-2 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-200/10 text-center no-print">
+                <div class="px-4 py-2 border-t border-slate-200/10 text-center copyright-print-footer" style="display:block">
                     <p class="text-[9px] text-slate-400 font-medium tracking-wide">
                         جميع الحقوق محفوظة لدى المهندسة سميره علي ياسين
                     </p>
@@ -756,40 +757,78 @@ if (file_exists(base_path('iraq.svg'))) {
 
 </section>
 
-<!-- Custom Styles for Print and 2D Arrow effects -->
+<!-- ═══ ترويسة الطباعة (تظهر فقط عند الطباعة) ═══ -->
+<div id="print-header" style="display:none">
+    <div style="text-align:center; padding-bottom:12pt; border-bottom: 3pt solid #8b5cf6; margin-bottom:16pt;">
+        <h1 style="font-size:20pt; font-weight:900; color:#1a1a2e; margin:0 0 4pt 0; letter-spacing:1px;">التقرير الإحصائي الطبي</h1>
+        <p id="print-period-label" style="font-size:11pt; color:#6b7280; margin:0; font-weight:600;"></p>
+        <p id="print-doctor-label" style="font-size:10pt; color:#8b5cf6; margin:4pt 0 0 0; font-weight:700;"></p>
+    </div>
+</div>
+
+<!-- ═══ ذيل الطباعة (يظهر فقط عند الطباعة) ═══ -->
+<div id="print-footer" style="display:none">
+    <div style="text-align:center; border-top:1pt solid #e5e7eb; padding-top:6pt; margin-top:20pt;">
+        <p style="font-size:8.5pt; color:#9ca3af; margin:0;">جميع الحقوق محفوظة لدى المهندسة سميره علي ياسين — {{ \Carbon\Carbon::now()->format('Y') }}</p>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PROFESSIONAL PRINT STYLES — A4
+     ═══════════════════════════════════════════════════════════ -->
 <style>
+
+/* ════ مقاس الصفحة والهوامش ════ */
+@page {
+    size: A4 portrait;
+    margin: 1.2cm 1.2cm 1.5cm 1.2cm; /* هوامش متزنة للـ Safe Area */
+}
+
+/* ════ متغيرات للطباعة ════ */
 @media print {
-    /* 1. تهيئة الجسم والـ HTML للطباعة متعددة الصفحات */
+
+    /* ─── أساسيات الجسم والـ Reset للتصميم الطباعي ─── */
     html, body {
         height: auto !important;
         min-height: auto !important;
         overflow: visible !important;
         position: static !important;
         background: #ffffff !important;
-        color: #000000 !important;
+        color: #111827 !important;
+        font-family: 'Tajawal', 'Cairo', Arial, sans-serif !important;
+        font-size: 8.5pt !important; /* تقليل حجم الخط العام لتوفير المساحة */
+        line-height: 1.3 !important;
+        direction: rtl !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
-    
-    /* 2. إخفاء الشريط الجانبي والهيدر وأزرار التصفية والتحكم وكل الكلمات الزائدة والفرعية */
-    #sidebar, 
-    header, 
+
+    /* ─── إخفاء عناصر التنقل والتحكم والتعطيل بالكامل ─── */
+    #sidebar,
     #sidebar-backdrop,
-    #advanced-filters-panel,
-    .fixed, 
+    header,
+    nav,
+    .fixed,
+    .sticky,
     .glass-blob,
-    button, 
-    select, 
-    input,
     .no-print,
     .theme-switcher,
-    #page-reports > .custom-card:first-of-type { 
-        display: none !important; 
+    .arrow-style-select,
+    #advanced-filters-panel,
+    #page-reports > .custom-card:first-of-type,
+    #modal-cancel-btn,
+    #modal-submit-btn,
+    .add-trans-trigger {
+        display: none !important;
     }
-    
-    /* 3. حاويات المحتوى الرئيسية */
-    .flex.h-screen, 
-    .flex-1.flex.flex-col, 
+
+    /* ─── فرد وتبسيط الحاويات الأساسية ─── */
+    .flex.h-screen,
+    .flex-1.flex.flex-col,
     main,
-    .page-section {
+    .page-section,
+    #page-reports {
         display: block !important;
         width: 100% !important;
         height: auto !important;
@@ -797,62 +836,248 @@ if (file_exists(base_path('iraq.svg'))) {
         position: static !important;
         padding: 0 !important;
         margin: 0 !important;
-    }
-    
-    /* إخفاء كافة الأقسام الأخرى ما عدا التقارير */
-    .page-section:not(#page-reports) {
-        display: none !important;
-    }
-    
-    #page-reports {
-        display: block !important;
         opacity: 1 !important;
+        transform: none !important;
+        box-sizing: border-box !important;
     }
-    
-    /* 4. تنسيق بطاقات التقارير لكي تتناسب مع صفحة A4 وتأخذ كل بطاقة صفحة مستقلة أو تنسيق مريح */
+
+    /* تأكيد اتجاه النص والـ padding الداخلي */
+    main {
+        max-width: 100% !important;
+    }
+
+    /* ─── ترويسة وذيل الطباعة ─── */
+    #print-header {
+        display: block !important;
+        margin-bottom: 15pt !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    #print-footer {
+        display: block !important;
+        margin-top: 15pt !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* ─── البطاقات (تحويلها إلى تخطيط ملموم وموفر للمساحة) ─── */
     .custom-card {
+        background: #ffffff !important;
         border: none !important;
         box-shadow: none !important;
-        background: transparent !important;
-        padding: 10px 0 !important;
-        margin-bottom: 25px !important;
-        page-break-inside: avoid !important; /* يمنع انقسام الجداول أو البطاقات في منتصف الصفحة */
+        padding: 0 !important;
+        margin: 0 0 14pt 0 !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        border-radius: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
-    
-    /* 5. تخصيص مقاس الصفحة A4 وضبط الهوامش */
-    @page {
-        size: A4 portrait;
-        margin: 1.5cm;
+
+    /* ─── عنوان كل جدول (h3) ─── */
+    .custom-card h3 {
+        font-size: 10pt !important;
+        font-weight: 700 !important;
+        color: #1e1b4b !important;
+        border-right: 3.5pt solid #7c3aed !important;
+        border-bottom: 0.8pt solid #ddd6fe !important;
+        background: #f5f3ff !important;
+        padding: 5pt 8pt !important;
+        margin: 0 0 6pt 0 !important;
+        border-radius: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 4pt !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
-    
-    /* 6. تحسين الخطوط وعرض الجداول في الطباعة */
+
+    .custom-card h3 i[data-lucide] {
+        display: none !important;
+    }
+
+    /* ─── الجداول (ضغط المسافات والـ padding) ─── */
     table {
         width: 100% !important;
         border-collapse: collapse !important;
-    }
-    
-    th, td {
-        border: 1px solid #000000 !important;
-        padding: 6px 4px !important;
-        color: #000000 !important;
-        background: transparent !important;
-    }
-    
-    h3 {
-        color: #000000 !important;
-        font-size: 13px !important;
-        border-bottom: 2px solid #000000 !important;
-        padding-bottom: 5px !important;
-        margin-bottom: 15px !important;
+        font-size: 8pt !important;
+        margin: 0 0 4pt 0 !important;
+        page-break-inside: auto !important;
+        box-sizing: border-box !important;
     }
 
-    svg {
-        max-width: 100% !important;
-        height: auto !important;
+    thead {
+        display: table-header-group !important;
     }
+
+    tfoot {
+        display: table-footer-group !important;
+    }
+
+    th {
+        background: #ede9fe !important;
+        color: #3730a3 !important;
+        font-weight: 700 !important;
+        font-size: 8.5pt !important;
+        border: 0.8pt solid #a5b4fc !important;
+        padding: 4pt 6pt !important;
+        text-align: center !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    td {
+        border: 0.6pt solid #d1d5db !important;
+        padding: 3.5pt 5pt !important;
+        color: #111827 !important;
+        background: transparent !important;
+        font-size: 8pt !important;
+        vertical-align: middle !important;
+    }
+
+    tr:nth-child(even) td {
+        background: #fafafa !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    tfoot tr td {
+        background: #f5f3ff !important;
+        font-weight: 700 !important;
+        border-top: 1.2pt solid #7c3aed !important;
+        color: #4c1d95 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* ─── تحجيم وتصغير مخططات الـ SVG لتناسب الطباعة الموفرة ─── */
+    svg {
+        max-width: 200px !important; /* تصغير حجم الجارتات لتظهر بشكل مرتب وأنيق */
+        max-height: 120px !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+        margin: 0 auto !important;
+        overflow: visible !important;
+    }
+
+    /* تعديل تخطيط المخطط مع الجدول ليكون جنباً إلى جنب بشكل أنيق */
+    .grid.grid-cols-1.lg\:grid-cols-2,
+    .flex.flex-col.lg\:flex-row.gap-6 {
+        display: flex !important;
+        flex-direction: row-reverse !important; /* الجدول على اليمين والجارت على اليسار */
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 15px !important;
+        width: 100% !important;
+        margin-bottom: 8pt !important;
+    }
+
+    /* تقسيم الحجم الداخلي */
+    .grid.grid-cols-1.lg\:grid-cols-2 > div:first-child,
+    .flex.flex-col.lg\:flex-row.gap-6 > div:first-child {
+        width: 35% !important; /* مساحة مناسبة للمخطط الصغير */
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .grid.grid-cols-1.lg\:grid-cols-2 > div:last-child,
+    .flex.flex-col.lg\:flex-row.gap-6 > div:last-child {
+        width: 63% !important; /* مساحة مناسبة للجدول */
+    }
+
+    /* إخفاء وتصفيف الـ ApexCharts والـ Canvas */
+    .apexcharts-canvas,
+    .apexcharts-canvas svg,
+    [id^="apexcharts"] {
+        max-width: 180px !important;
+        max-height: 120px !important;
+    }
+
+    /* ─── بطاقات الأطباء في جدول (10) ─── */
+    .border.border-violet-200\/20.rounded-xl {
+        border: 1pt solid #c4b5fd !important;
+        margin-bottom: 10pt !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        border-radius: 3pt !important;
+        width: 100% !important;
+    }
+
+    .border.border-violet-200\/20.rounded-xl > div:first-child {
+        background: #ede9fe !important;
+        border-bottom: 0.8pt solid #c4b5fd !important;
+        padding: 4pt 8pt !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* ─── Badges التصنيف ─── */
+    span[class*="rounded-full"],
+    span[class*="bg-purple"],
+    span[class*="bg-rose"],
+    span[class*="bg-orange"],
+    span[class*="bg-blue"],
+    span[class*="bg-sky"],
+    span[class*="bg-yellow"],
+    span[class*="bg-slate"] {
+        border: 0.5pt solid #9ca3af !important;
+        padding: 1pt 4pt !important;
+        font-size: 8pt !important;
+        border-radius: 4pt !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* ─── جدول (10) يبدأ صفحة جديدة ─── */
+    .custom-card:last-of-type {
+        page-break-before: always !important;
+        break-before: page !important;
+    }
+
+    /* ─── overflow-x ─── */
+    .overflow-x-auto {
+        overflow: visible !important;
+    }
+
+    /* ─── space-y ─── */
+    .space-y-4,
+    .space-y-6 {
+        display: block !important;
+    }
+
+    /* ─── إخفاء الـ tabs switcher ─── */
+    [id*="stats-panel"]:not(#stats-panel-all) {
+        display: none !important;
+    }
+
+    /* ─── ملاحظات أسفل الجداول ─── */
+    p[class*="text-[8px]"],
+    p[class*="text-\[8px\]"] {
+        font-size: 8pt !important;
+        color: #6b7280 !important;
+    }
+
+    /* ─── حقوق الملكية ─── */
+    .copyright-print-footer {
+        display: block !important;
+        text-align: center !important;
+        font-size: 8pt !important;
+        color: #9ca3af !important;
+        padding: 4pt 0 !important;
+        border-top: 0.5pt solid #e5e7eb !important;
+        font-style: italic !important;
+    }
+
+    /* ─── min-width ─── */
+    [class*="min-w-"] {
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+
 }
 
-/* Arrow Growth Animation */
+/* ════ Arrow Growth Animation (screen only) ════ */
 .arrow-grp {
     opacity: 0;
     transform: scale(0.95);
@@ -863,6 +1088,8 @@ if (file_exists(base_path('iraq.svg'))) {
     transform: scale(1);
 }
 </style>
+
+
 
 <script>
 // ── Arrow Chart Style Controller ─────────────────────────────
@@ -2280,6 +2507,57 @@ async function loadTable7() {
         const loading = document.getElementById('table7-loading');
         if (loading) loading.innerHTML = '<span class="text-rose-400">تعذّر تحميل بيانات التصنيف</span>';
     }
+}
+
+// ── Print Preparation ──────────────────────────────────────
+window.addEventListener('beforeprint', function () {
+    // تعبئة معلومات الفترة في الترويسة
+    const fromVal = document.getElementById('report-date-from')?.value || '';
+    const toVal   = document.getElementById('report-date-to')?.value || '';
+
+    const formatMonth = (ym) => {
+        if (!ym) return '';
+        const [y, m] = ym.split('-');
+        const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+        return (months[parseInt(m) - 1] || m) + ' ' + y;
+    };
+
+    let periodText = 'الفترة: ' + formatMonth(fromVal);
+    if (fromVal && toVal && fromVal !== toVal) {
+        periodText += ' — ' + formatMonth(toVal);
+    }
+
+    const periodEl = document.getElementById('print-period-label');
+    if (periodEl) periodEl.textContent = periodText;
+
+    // اسم الطبيب إن وُجد
+    const doctorSel = document.getElementById('filter-doctor-id');
+    const doctorEl  = document.getElementById('print-doctor-label');
+    if (doctorSel && doctorEl) {
+        const selOpt = doctorSel.options[doctorSel.selectedIndex];
+        doctorEl.textContent = selOpt && selOpt.value ? 'الطبيب: ' + selOpt.text : '';
+    }
+});
+
+function printReportWindow() {
+    const fromVal = document.getElementById('report-date-from')?.value || '';
+    const toVal   = document.getElementById('report-date-to')?.value || '';
+    const docId   = document.getElementById('filter-doctor-id')?.value || '';
+    const unitId  = document.getElementById('filter-clinic-unit-id')?.value || '';
+    const govId   = document.getElementById('filter-governorate-id')?.value || '';
+    const countryId = document.getElementById('filter-country-id')?.value || '';
+
+    let url = '/?print=1';
+    if (fromVal) url += '&start_date=' + fromVal;
+    if (toVal)   url += '&end_date=' + toVal;
+    if (docId)   url += '&doctor_id=' + docId;
+    if (unitId)  url += '&clinic_unit_id=' + unitId;
+    if (govId)   url += '&governorate_id=' + govId;
+    if (countryId) url += '&country_id=' + countryId;
+
+    // فتح صفحة الطباعة المخصصة في نافذة جديدة
+    const w = window.open(url, '_blank');
+    if (w) w.focus();
 }
 
 </script>
