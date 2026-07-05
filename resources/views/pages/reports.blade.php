@@ -129,10 +129,23 @@ if (file_exists(base_path('iraq.svg'))) {
 
     <!-- 1. الاستشاريات العامة والتخصصية (جدول 1) -->
     <div class="custom-card p-6 rounded-2xl">
-        <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-            <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
-            جدول (1): أعداد المرضى في الاستشاريات
-            <span id="cmp-total-1" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalVisits) }}</span>
+        <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
+            <div class="flex items-center gap-2">
+                <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
+                جدول (1): أعداد المرضى في الاستشاريات
+                <span id="cmp-total-1" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalVisits) }}</span>
+            </div>
+            <div class="flex items-center gap-1.5 no-print">
+                <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
+                <select id="select-svg-report-1" data-svg-id="svg-report-1" onchange="changeReportChartStyle('svg-report-1', this.value)" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
+                    <option value="flat">أسهم مسطحة</option>
+                    <option value="glow">أسهم متوهجة</option>
+                    <option value="bar">أعمدة رأسية (جارت)</option>
+                    <option value="bar-h">أعمدة أفقية (جارت)</option>
+                    <option value="donut">شكل دائري (جارت)</option>
+                    <option value="area">مخطط مساحي (جارت)</option>
+                </select>
+            </div>
         </h3>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <!-- Branching/Split Arrow Infographic -->
@@ -163,10 +176,23 @@ if (file_exists(base_path('iraq.svg'))) {
 
     <!-- 2. مراجعو كل طبيب اختصاص (جدول 2) -->
     <div class="custom-card p-6 rounded-2xl">
-        <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-            <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
-            جدول (2): أعداد مرضى كل طبيب اختصاص
-            <span id="cmp-total-2" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalVisits) }}</span>
+        <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
+            <div class="flex items-center gap-2">
+                <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
+                جدول (2): أعداد مرضى كل طبيب اختصاص
+                <span id="cmp-total-2" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalVisits) }}</span>
+            </div>
+            <div class="flex items-center gap-1.5 no-print">
+                <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
+                <select id="select-svg-report-2" data-svg-id="svg-report-2" onchange="changeReportChartStyle('svg-report-2', this.value)" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
+                    <option value="flat">أسهم مسطحة</option>
+                    <option value="glow">أسهم متوهجة</option>
+                    <option value="bar">أعمدة رأسية (جارت)</option>
+                    <option value="bar-h">أعمدة أفقية (جارت)</option>
+                    <option value="donut">شكل دائري (جارت)</option>
+                    <option value="area">مخطط مساحي (جارت)</option>
+                </select>
+            </div>
         </h3>
         <div class="w-full overflow-x-auto py-2">
             <svg id="svg-report-2" viewBox="0 0 900 240" class="w-full min-w-[850px] h-[240px] overflow-visible"></svg>
@@ -193,10 +219,23 @@ if (file_exists(base_path('iraq.svg'))) {
         </div>
         <!-- Outside Iraq (Horizontal Chevrons) -->
         <div class="custom-card p-6 rounded-2xl">
-            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                جدول (4): المرضى من خارج العراق
-                <span id="cmp-total-4" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($visitsByCountry->sum('total')) }}</span>
+            <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
+                    جدول (4): المرضى من خارج العراق
+                    <span id="cmp-total-4" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($visitsByCountry->sum('total')) }}</span>
+                </div>
+                <div class="flex items-center gap-1.5 no-print">
+                    <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
+                    <select id="select-svg-report-4" data-svg-id="svg-report-4" onchange="changeReportChartStyle('svg-report-4', this.value)" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
+                        <option value="flat">أسهم مسطحة</option>
+                        <option value="glow">أسهم متوهجة</option>
+                        <option value="bar">أعمدة رأسية (جارت)</option>
+                        <option value="bar-h">أعمدة أفقية (جارت)</option>
+                        <option value="donut">شكل دائري (جارت)</option>
+                        <option value="area">مخطط مساحي (جارت)</option>
+                    </select>
+                </div>
             </h3>
             <div class="w-full overflow-x-auto py-2">
                 <svg id="svg-report-4" viewBox="0 0 450 180" class="w-full min-w-[400px] h-auto overflow-visible"></svg>
@@ -208,10 +247,23 @@ if (file_exists(base_path('iraq.svg'))) {
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Visual Tests (Horizontal Chevrons) -->
         <div class="custom-card p-6 rounded-2xl">
-            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
-                جدول (5): البصرية والساندة
-                <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalEyeTests) }}</span>
+            <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
+                    جدول (5): البصرية والساندة
+                    <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalEyeTests) }}</span>
+                </div>
+                <div class="flex items-center gap-1.5 no-print">
+                    <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
+                    <select id="select-svg-report-5" data-svg-id="svg-report-5" onchange="changeReportChartStyle('svg-report-5', this.value)" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
+                        <option value="flat">أسهم مسطحة</option>
+                        <option value="glow">أسهم متوهجة</option>
+                        <option value="bar">أعمدة رأسية (جارت)</option>
+                        <option value="bar-h">أعمدة أفقية (جارت)</option>
+                        <option value="donut">شكل دائري (جارت)</option>
+                        <option value="area">مخطط مساحي (جارت)</option>
+                    </select>
+                </div>
             </h3>
             <div class="w-full overflow-x-auto py-2">
                 <svg id="svg-report-5" viewBox="0 0 450 200" class="w-full min-w-[420px] h-auto overflow-visible"></svg>
@@ -219,10 +271,23 @@ if (file_exists(base_path('iraq.svg'))) {
         </div>
         <!-- Lab Tests (Flat Arrow Columns) -->
         <div class="custom-card p-6 rounded-2xl flex flex-col justify-between">
-            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
-                جدول (6): التحاليل المختبرية المنجزة
-                <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($labTestsByType->sum('total')) }}</span>
+            <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
+                    جدول (6): التحاليل المختبرية المنجزة
+                    <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($labTestsByType->sum('total')) }}</span>
+                </div>
+                <div class="flex items-center gap-1.5 no-print">
+                    <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
+                    <select id="select-svg-report-6" data-svg-id="svg-report-6" onchange="changeReportChartStyle('svg-report-6', this.value)" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
+                        <option value="flat">أسهم مسطحة</option>
+                        <option value="glow">أسهم متوهجة</option>
+                        <option value="bar">أعمدة رأسية (جارت)</option>
+                        <option value="bar-h">أعمدة أفقية (جارت)</option>
+                        <option value="donut">شكل دائري (جارت)</option>
+                        <option value="area">مخطط مساحي (جارت)</option>
+                    </select>
+                </div>
             </h3>
             <div class="w-full overflow-x-auto py-2">
                 <svg id="svg-report-6" viewBox="0 0 450 180" class="w-full min-w-[420px] h-[180px] overflow-visible"></svg>
@@ -233,10 +298,23 @@ if (file_exists(base_path('iraq.svg'))) {
 
     <!-- 5. تصنيف العمليات الجراحية (جدول 7) -->
     <div class="custom-card p-6 rounded-2xl">
-        <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-            <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
-            جدول (7): أعداد وتصنيف العمليات الجراحية للعيون حسب القطاعات
-            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع الكلي للعمليات: {{ number_format($totalSurgeries) }}</span>
+        <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
+            <div class="flex items-center gap-2">
+                <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
+                جدول (7): أعداد وتصنيف العمليات الجراحية للعيون حسب القطاعات
+                <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع الكلي للعمليات: {{ number_format($totalSurgeries) }}</span>
+            </div>
+            <div class="flex items-center gap-1.5 no-print">
+                <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
+                <select id="select-svg-report-7" data-svg-id="svg-report-7" onchange="changeReportChartStyle('svg-report-7', this.value)" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
+                    <option value="flat">أسهم مسطحة</option>
+                    <option value="glow">أسهم متوهجة</option>
+                    <option value="bar">أعمدة رأسية (جارت)</option>
+                    <option value="bar-h">أعمدة أفقية (جارت)</option>
+                    <option value="donut">شكل دائري (جارت)</option>
+                    <option value="area">مخطط مساحي (جارت)</option>
+                </select>
+            </div>
         </h3>
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 items-center">
             <!-- 2D Arrow Columns -->
@@ -352,10 +430,23 @@ if (file_exists(base_path('iraq.svg'))) {
         </div>
         <!-- Outside Iraq (Horizontal Chevrons) -->
         <div class="custom-card p-6 rounded-2xl">
-            <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                جدول (9): العمليات الجراحية للمرضى من خارج العراق
-                <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($surgeriesByCountry->sum('total')) }}</span>
+            <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
+                    جدول (9): العمليات الجراحية للمرضى من خارج العراق
+                    <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($surgeriesByCountry->sum('total')) }}</span>
+                </div>
+                <div class="flex items-center gap-1.5 no-print">
+                    <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
+                    <select id="select-svg-report-9" data-svg-id="svg-report-9" onchange="changeReportChartStyle('svg-report-9', this.value)" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
+                        <option value="flat">أسهم مسطحة</option>
+                        <option value="glow">أسهم متوهجة</option>
+                        <option value="bar">أعمدة رأسية (جارت)</option>
+                        <option value="bar-h">أعمدة أفقية (جارت)</option>
+                        <option value="donut">شكل دائري (جارت)</option>
+                        <option value="area">مخطط مساحي (جارت)</option>
+                    </select>
+                </div>
             </h3>
             <div class="w-full overflow-x-auto py-2">
                 <svg id="svg-report-9" viewBox="0 0 450 180" class="w-full min-w-[400px] h-auto overflow-visible"></svg>
@@ -365,10 +456,23 @@ if (file_exists(base_path('iraq.svg'))) {
 
     <!-- 6. العمليات الجراحية لكل طبيب اختصاص (جدول 10) -->
     <div class="custom-card p-6 rounded-2xl">
-        <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-            <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
-            جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص (بيانات حقيقية)
-            <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalSurgeries) }}</span>
+        <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
+            <div class="flex items-center gap-2">
+                <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
+                جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص (بيانات حقيقية)
+                <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalSurgeries) }}</span>
+            </div>
+            <div class="flex items-center gap-1.5 no-print">
+                <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
+                <select id="select-svg-report-10" data-svg-id="svg-report-10" onchange="changeReportChartStyle('svg-report-10', this.value)" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
+                    <option value="flat">أسهم مسطحة</option>
+                    <option value="glow">أسهم متوهجة</option>
+                    <option value="bar">أعمدة رأسية (جارت)</option>
+                    <option value="bar-h">أعمدة أفقية (جارت)</option>
+                    <option value="donut">شكل دائري (جارت)</option>
+                    <option value="area">مخطط مساحي (جارت)</option>
+                </select>
+            </div>
         </h3>
         <div class="w-full overflow-x-auto py-2 mb-4">
             <svg id="svg-report-10" viewBox="0 0 900 240" class="w-full min-w-[850px] h-[240px] overflow-visible"></svg>
@@ -759,19 +863,192 @@ if (file_exists(base_path('iraq.svg'))) {
 </style>
 
 <script>
+// ── Arrow Chart Style Controller ─────────────────────────────
+const _activeReportApexCharts = new Map();
+
+function changeReportChartStyle(svgId, style) {
+    localStorage.setItem('arrow_style_' + svgId, style);
+    
+    const sel = document.getElementById('select-' + svgId);
+    if (sel) sel.value = style;
+    
+    // إعادة رسم جميع المخططات فوراً لضمان التحديث اللحظي 100%
+    if (typeof renderAll2DArrowCharts === 'function') {
+        renderAll2DArrowCharts();
+    }
+}
+
+// دالة التبديل الذكية بين رسومات SVG الخاصة بالأسهم ومخططات ApexCharts التفاعلية لصفحة التقارير
+function drawReportToggleChart(svgId, defaultChartType, drawArrowFn, data, labels, title = '', colors = null) {
+    const svgEl = document.getElementById(svgId);
+    if (!svgEl) return;
+
+    // الحصول على النمط المختار
+    const style = localStorage.getItem('arrow_style_' + svgId) || 'flat';
+    
+    // محو أية مخططات سابقة بنفس المعرف في ApexCharts لمنع التعليق
+    if (_activeReportApexCharts.has(svgId)) {
+        _activeReportApexCharts.get(svgId).destroy();
+        _activeReportApexCharts.delete(svgId);
+    }
+
+    let apexDivId = 'apex-' + svgId;
+    let apexDiv = document.getElementById(apexDivId);
+
+    // إذا اخترنا أنماط الأسهم الأصلية
+    if (style === 'flat' || style === 'glow') {
+        if (apexDiv) apexDiv.classList.add('hidden');
+        svgEl.classList.remove('hidden');
+        
+        // استدعاء دالة الرسم الأصلية للأسهم
+        if (typeof drawArrowFn === 'function') {
+            drawArrowFn();
+        }
+    } else {
+        // إذا اخترنا أحد أنماط ApexCharts
+        svgEl.classList.add('hidden');
+        
+        if (!apexDiv) {
+            apexDiv = document.createElement('div');
+            apexDiv.id = apexDivId;
+            apexDiv.className = 'w-full overflow-visible transition-all duration-300';
+            svgEl.parentNode.insertBefore(apexDiv, svgEl.nextSibling);
+        }
+        apexDiv.classList.remove('hidden');
+        apexDiv.innerHTML = ''; // تنظيف الحاوية
+
+        // تحديد نمط الرسم المطلوب
+        let chartType = style; // bar, bar-h, donut, area
+        let actualType = chartType === 'bar-h' ? 'bar' : chartType;
+        let isHorizontal = chartType === 'bar-h';
+
+        const chartColors = colors || ['#3b82f6', '#ec4899', '#f59e0b', '#10b981', '#8b5cf6', '#06b6d4', '#f97316', '#64748b'];
+
+        // إعداد خيارات المخطط
+        let options = {
+            chart: {
+                type: actualType,
+                height: 250,
+                fontFamily: 'Tajawal, sans-serif',
+                toolbar: { show: false },
+                background: 'transparent',
+                foreColor: '#94a3b8'
+            },
+            colors: chartColors,
+            theme: {
+                mode: document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+            },
+            stroke: {
+                show: true,
+                width: actualType === 'area' ? 3 : 0,
+                curve: 'smooth'
+            },
+            grid: {
+                borderColor: 'rgba(148, 163, 184, 0.08)',
+                strokeDashArray: 3,
+                xaxis: { lines: { show: isHorizontal } },
+                yaxis: { lines: { show: !isHorizontal } }
+            },
+            tooltip: {
+                theme: 'dark',
+                y: {
+                    formatter: function(val) {
+                        return val.toLocaleString() + ' حالة';
+                    }
+                }
+            }
+        };
+
+        if (actualType === 'bar') {
+            options.series = [{
+                name: title || 'العدد',
+                data: data
+            }];
+            options.plotOptions = {
+                bar: {
+                    horizontal: isHorizontal,
+                    columnWidth: '55%',
+                    endingShape: 'rounded',
+                    borderRadius: 6
+                }
+            };
+            options.xaxis = {
+                categories: labels,
+                labels: {
+                    style: { fontSize: '10px', fontWeight: 'bold' }
+                }
+            };
+        } else if (actualType === 'donut') {
+            options.series = data;
+            options.labels = labels;
+            options.plotOptions = {
+                pie: {
+                    donut: {
+                        size: '70%',
+                        labels: {
+                            show: true,
+                            total: {
+                                show: true,
+                                label: 'الإجمالي',
+                                formatter: function (w) {
+                                    return w.globals.seriesTotals.reduce((a, b) => a + b, 0).toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            options.legend = {
+                position: 'bottom',
+                fontSize: '11px',
+                labels: { colors: '#94a3b8' }
+            };
+        } else if (actualType === 'area') {
+            options.series = [{
+                name: title || 'العدد',
+                data: data
+            }];
+            options.xaxis = {
+                categories: labels,
+                labels: {
+                    style: { fontSize: '10px', fontWeight: 'bold' }
+                }
+            };
+            options.fill = {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.45,
+                    opacityTo: 0.05,
+                    stops: [0, 90, 100]
+                }
+            };
+        }
+
+        const chart = new ApexCharts(apexDiv, options);
+        chart.render();
+        _activeReportApexCharts.set(svgId, chart);
+    }
+}
+// ───────────────────────────────────────────────────────────────
+
 // ── Scroll-triggered chart animation registry ──────────────────
-const _svgDrawFns = new Map();
+const _reportSvgDrawFns = new Map();
 const _svgScrollObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            const fn = _svgDrawFns.get(entry.target.id);
+            const fn = _reportSvgDrawFns.get(entry.target.id);
             if (fn) fn();
         }
     });
 }, { threshold: 0.15 });
 
 function watchChart(svgId, drawFn) {
-    _svgDrawFns.set(svgId, drawFn);
+    _reportSvgDrawFns.set(svgId, drawFn);
+    // استدعاء الرسم فوراً لتنفيذ التغيير لحظياً
+    if (typeof drawFn === 'function') {
+        drawFn();
+    }
     const el = document.getElementById(svgId);
     if (el) _svgScrollObserver.observe(el);
 }
@@ -794,94 +1071,275 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
     const svg = document.getElementById(svgId);
     if (!svg) return;
     svg.innerHTML = '';
+
+    const style = localStorage.getItem('arrow_style_' + svgId) || 'flat';
     
     const cx = 260;
     const cy = 200;
 
-    // Draw left branch
-    const leftPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    leftPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
-    leftPath.setAttribute('fill', '#0284c7');
-    svg.appendChild(leftPath);
+    if (style === 'glow') {
+        // ─── النمط نحيف متوهج للتفرع ───
+        // رسم الجذع النحيف المتفرع
+        const leftBranch = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        leftBranch.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy-50} C ${cx} ${cy-80} ${cx-60} ${cy-90} ${cx-80} ${cy-120}`);
+        leftBranch.setAttribute('fill', 'none');
+        leftBranch.setAttribute('stroke', '#0284c7');
+        leftBranch.setAttribute('stroke-width', '4');
+        leftBranch.setAttribute('stroke-linecap', 'round');
+        leftBranch.style.filter = 'drop-shadow(0 0 3px #0284c780)';
+        svg.appendChild(leftBranch);
 
-    // Draw right branch
-    const rightPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    rightPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
-    rightPath.setAttribute('fill', '#db2777');
-    rightPath.setAttribute('transform', `translate(${cx}, 0) scale(-1, 1) translate(-${cx}, 0)`);
-    svg.appendChild(rightPath);
+        const rightBranch = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        rightBranch.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy-50} C ${cx} ${cy-80} ${cx+60} ${cy-90} ${cx+80} ${cy-120}`);
+        rightBranch.setAttribute('fill', 'none');
+        rightBranch.setAttribute('stroke', '#db2777');
+        rightBranch.setAttribute('stroke-width', '4');
+        rightBranch.setAttribute('stroke-linecap', 'round');
+        rightBranch.style.filter = 'drop-shadow(0 0 3px #db277780)';
+        svg.appendChild(rightBranch);
 
-    // Total pill at trunk base
-    const totalValStr = totalVal.toLocaleString();
-    const totalPillW = Math.max(50, totalValStr.length * 9.0 + 14);
-    const totalPillH = 24;
-    const totalPill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    totalPill.setAttribute('x', cx - totalPillW / 2);
-    totalPill.setAttribute('y', cy - 16);
-    totalPill.setAttribute('width', totalPillW);
-    totalPill.setAttribute('height', totalPillH);
-    totalPill.setAttribute('rx', '12');
-    totalPill.setAttribute('fill', '#334155');
-    svg.appendChild(totalPill);
+        // شارات دائرية مضيئة عند الأطراف
+        const createCircularBadge = (bx, by, valStr, labelText, bc) => {
+            const r = Math.max(12, valStr.length * 4.5 + 4);
+            const pill = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            pill.setAttribute('cx', bx);
+            pill.setAttribute('cy', by - 22);
+            pill.setAttribute('r', r);
+            pill.setAttribute('fill', '#1e293b');
+            pill.setAttribute('stroke', bc);
+            pill.setAttribute('stroke-width', '2');
+            pill.style.filter = `drop-shadow(0 0 2px ${bc})`;
+            svg.appendChild(pill);
 
-    const tTotal = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    tTotal.setAttribute('x', cx);
-    tTotal.setAttribute('y', cy + 1.5);
-    tTotal.setAttribute('font-family', 'Outfit');
-    tTotal.setAttribute('font-size', '14px');
-    tTotal.setAttribute('font-weight', 'black');
-    tTotal.setAttribute('fill', '#ffffff');
-    tTotal.setAttribute('text-anchor', 'middle');
-    tTotal.textContent = totalValStr;
-    svg.appendChild(tTotal);
+            const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            tVal.setAttribute('x', bx);
+            tVal.setAttribute('y', by - 18);
+            tVal.setAttribute('font-family', 'Outfit');
+            tVal.setAttribute('font-size', '10px');
+            tVal.setAttribute('font-weight', 'black');
+            tVal.setAttribute('fill', '#ffffff');
+            tVal.setAttribute('text-anchor', 'middle');
+            tVal.textContent = valStr;
+            svg.appendChild(tVal);
 
-    // Left branch badge
-    const label1Text = `${label1}: ${val1.toLocaleString()}`;
-    const badge1W = label1Text.length * 8.5 + 16;
-    const badge1H = 24;
-    const badge1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    badge1.setAttribute('x', cx - 80 - badge1W / 2);
-    badge1.setAttribute('y', cy - 148);
-    badge1.setAttribute('width', badge1W);
-    badge1.setAttribute('height', badge1H);
-    badge1.setAttribute('rx', '12');
-    badge1.setAttribute('fill', '#0284c7');
-    svg.appendChild(badge1);
+            const lbl = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            lbl.setAttribute('x', bx);
+            lbl.setAttribute('y', by - 22 - r - 4);
+            lbl.setAttribute('font-family', 'Tajawal');
+            lbl.setAttribute('font-size', '11px');
+            lbl.setAttribute('font-weight', 'bold');
+            lbl.setAttribute('fill', '#cbd5e1');
+            lbl.setAttribute('text-anchor', 'middle');
+            lbl.textContent = labelText;
+            svg.appendChild(lbl);
+        };
 
-    const tVal1 = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    tVal1.setAttribute('x', cx - 80);
-    tVal1.setAttribute('y', cy - 131);
-    tVal1.setAttribute('font-family', 'Tajawal');
-    tVal1.setAttribute('font-size', '13px');
-    tVal1.setAttribute('font-weight', 'bold');
-    tVal1.setAttribute('fill', '#ffffff');
-    tVal1.setAttribute('text-anchor', 'middle');
-    tVal1.textContent = label1Text;
-    svg.appendChild(tVal1);
+        createCircularBadge(cx - 80, cy - 120, val1.toLocaleString(), label1, '#0284c7');
+        createCircularBadge(cx + 80, cy - 120, val2.toLocaleString(), label2, '#db2777');
 
-    // Right branch badge
-    const label2Text = `${label2}: ${val2.toLocaleString()}`;
-    const badge2W = label2Text.length * 8.5 + 16;
-    const badge2H = 24;
-    const badge2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    badge2.setAttribute('x', cx + 80 - badge2W / 2);
-    badge2.setAttribute('y', cy - 148);
-    badge2.setAttribute('width', badge2W);
-    badge2.setAttribute('height', badge2H);
-    badge2.setAttribute('rx', '12');
-    badge2.setAttribute('fill', '#db2777');
-    svg.appendChild(badge2);
+        // شارة المجموع في الأسفل
+        const totalValStr = totalVal.toLocaleString();
+        const r = Math.max(15, totalValStr.length * 5 + 4);
+        const totalPill = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        totalPill.setAttribute('cx', cx);
+        totalPill.setAttribute('cy', cy - 12);
+        totalPill.setAttribute('r', r);
+        totalPill.setAttribute('fill', '#1e293b');
+        totalPill.setAttribute('stroke', '#cbd5e1');
+        totalPill.setAttribute('stroke-width', '2.5');
+        svg.appendChild(totalPill);
 
-    const tVal2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    tVal2.setAttribute('x', cx + 80);
-    tVal2.setAttribute('y', cy - 131);
-    tVal2.setAttribute('font-family', 'Tajawal');
-    tVal2.setAttribute('font-size', '13px');
-    tVal2.setAttribute('font-weight', 'bold');
-    tVal2.setAttribute('fill', '#ffffff');
-    tVal2.setAttribute('text-anchor', 'middle');
-    tVal2.textContent = label2Text;
-    svg.appendChild(tVal2);
+        const tTotal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        tTotal.setAttribute('x', cx);
+        tTotal.setAttribute('y', cy - 8);
+        tTotal.setAttribute('font-family', 'Outfit');
+        tTotal.setAttribute('font-size', '11px');
+        tTotal.setAttribute('font-weight', 'black');
+        tTotal.setAttribute('fill', '#ffffff');
+        tTotal.setAttribute('text-anchor', 'middle');
+        tTotal.textContent = totalValStr;
+        svg.appendChild(tTotal);
+
+    } else if (style === '3d') {
+        // ─── النمط ثلاثي الأبعاد للتفرع ───
+        const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        defs.innerHTML = `
+            <filter id="shadow-branch-${svgId}" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.3"/>
+            </filter>
+        `;
+        svg.appendChild(defs);
+
+        // الفرع الأيسر
+        const leftPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        leftPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        leftPath.setAttribute('fill', '#0284c7');
+        leftPath.setAttribute('filter', `url(#shadow-branch-${svgId})`);
+        svg.appendChild(leftPath);
+
+        // واجهة مجسمة للفرع الأيسر
+        const leftSide = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        leftSide.setAttribute('d', `M ${cx-5} ${cy} L ${cx-5} ${cy-50} C ${cx-5} ${cy-90} ${cx-35} ${cy-100} ${cx-47} ${cy-112} L ${cx-40} ${cy-115} C ${cx-28} ${cy-102} M ${cx} ${cy}`);
+        leftSide.setAttribute('fill', '#015f90');
+        svg.appendChild(leftSide);
+
+        // الفرع الأيمن
+        const rightPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        rightPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        rightPath.setAttribute('fill', '#db2777');
+        rightPath.setAttribute('transform', `translate(${cx}, 0) scale(-1, 1) translate(-${cx}, 0)`);
+        rightPath.setAttribute('filter', `url(#shadow-branch-${svgId})`);
+        svg.appendChild(rightPath);
+
+        // شارات وجداول
+        const label1Text = `${label1}: ${val1.toLocaleString()}`;
+        const badge1W = label1Text.length * 8.5 + 16;
+        const badge1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        badge1.setAttribute('x', cx - 80 - badge1W / 2);
+        badge1.setAttribute('y', cy - 148);
+        badge1.setAttribute('width', badge1W);
+        badge1.setAttribute('height', '24');
+        badge1.setAttribute('rx', '6');
+        badge1.setAttribute('fill', '#0284c7');
+        badge1.setAttribute('filter', `url(#shadow-branch-${svgId})`);
+        svg.appendChild(badge1);
+
+        const tVal1 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        tVal1.setAttribute('x', cx - 80);
+        tVal1.setAttribute('y', cy - 131);
+        tVal1.setAttribute('font-family', 'Tajawal');
+        tVal1.setAttribute('font-size', '13px');
+        tVal1.setAttribute('font-weight', 'bold');
+        tVal1.setAttribute('fill', '#ffffff');
+        tVal1.setAttribute('text-anchor', 'middle');
+        tVal1.textContent = label1Text;
+        svg.appendChild(tVal1);
+
+        const label2Text = `${label2}: ${val2.toLocaleString()}`;
+        const badge2W = label2Text.length * 8.5 + 16;
+        const badge2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        badge2.setAttribute('x', cx + 80 - badge2W / 2);
+        badge2.setAttribute('y', cy - 148);
+        badge2.setAttribute('width', badge2W);
+        badge2.setAttribute('height', '24');
+        badge2.setAttribute('rx', '6');
+        badge2.setAttribute('fill', '#db2777');
+        badge2.setAttribute('filter', `url(#shadow-branch-${svgId})`);
+        svg.appendChild(badge2);
+
+        const tVal2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        tVal2.setAttribute('x', cx + 80);
+        tVal2.setAttribute('y', cy - 131);
+        tVal2.setAttribute('font-family', 'Tajawal');
+        tVal2.setAttribute('font-size', '13px');
+        tVal2.setAttribute('font-weight', 'bold');
+        tVal2.setAttribute('fill', '#ffffff');
+        tVal2.setAttribute('text-anchor', 'middle');
+        tVal2.textContent = label2Text;
+        svg.appendChild(tVal2);
+
+        const totalValStr = totalVal.toLocaleString();
+        const totalPillW = Math.max(50, totalValStr.length * 9.0 + 14);
+        const totalPill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        totalPill.setAttribute('x', cx - totalPillW / 2);
+        totalPill.setAttribute('y', cy - 16);
+        totalPill.setAttribute('width', totalPillW);
+        totalPill.setAttribute('height', '24');
+        totalPill.setAttribute('rx', '6');
+        totalPill.setAttribute('fill', '#334155');
+        totalPill.setAttribute('filter', `url(#shadow-branch-${svgId})`);
+        svg.appendChild(totalPill);
+
+        const tTotal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        tTotal.setAttribute('x', cx);
+        tTotal.setAttribute('y', cy + 1.5);
+        tTotal.setAttribute('font-family', 'Outfit');
+        tTotal.setAttribute('font-size', '14px');
+        tTotal.setAttribute('font-weight', 'black');
+        tTotal.setAttribute('fill', '#ffffff');
+        tTotal.setAttribute('text-anchor', 'middle');
+        tTotal.textContent = totalValStr;
+        svg.appendChild(tTotal);
+
+    } else {
+        // ─── النمط الافتراضي (Classic Split Arrow) ───
+        const leftPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        leftPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        leftPath.setAttribute('fill', '#0284c7');
+        svg.appendChild(leftPath);
+
+        const rightPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        rightPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        rightPath.setAttribute('fill', '#db2777');
+        rightPath.setAttribute('transform', `translate(${cx}, 0) scale(-1, 1) translate(-${cx}, 0)`);
+        svg.appendChild(rightPath);
+
+        const totalValStr = totalVal.toLocaleString();
+        const totalPillW = Math.max(50, totalValStr.length * 9.0 + 14);
+        const totalPill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        totalPill.setAttribute('x', cx - totalPillW / 2);
+        totalPill.setAttribute('y', cy - 16);
+        totalPill.setAttribute('width', totalPillW);
+        totalPill.setAttribute('height', '24');
+        totalPill.setAttribute('rx', '12');
+        totalPill.setAttribute('fill', '#334155');
+        svg.appendChild(totalPill);
+
+        const tTotal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        tTotal.setAttribute('x', cx);
+        tTotal.setAttribute('y', cy + 1.5);
+        tTotal.setAttribute('font-family', 'Outfit');
+        tTotal.setAttribute('font-size', '14px');
+        tTotal.setAttribute('font-weight', 'black');
+        tTotal.setAttribute('fill', '#ffffff');
+        tTotal.setAttribute('text-anchor', 'middle');
+        tTotal.textContent = totalValStr;
+        svg.appendChild(tTotal);
+
+        const label1Text = `${label1}: ${val1.toLocaleString()}`;
+        const badge1W = label1Text.length * 8.5 + 16;
+        const badge1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        badge1.setAttribute('x', cx - 80 - badge1W / 2);
+        badge1.setAttribute('y', cy - 148);
+        badge1.setAttribute('width', badge1W);
+        badge1.setAttribute('height', '24');
+        badge1.setAttribute('rx', '12');
+        badge1.setAttribute('fill', '#0284c7');
+        svg.appendChild(badge1);
+
+        const tVal1 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        tVal1.setAttribute('x', cx - 80);
+        tVal1.setAttribute('y', cy - 131);
+        tVal1.setAttribute('font-family', 'Tajawal');
+        tVal1.setAttribute('font-size', '13px');
+        tVal1.setAttribute('font-weight', 'bold');
+        tVal1.setAttribute('fill', '#ffffff');
+        tVal1.setAttribute('text-anchor', 'middle');
+        tVal1.textContent = label1Text;
+        svg.appendChild(tVal1);
+
+        const label2Text = `${label2}: ${val2.toLocaleString()}`;
+        const badge2W = label2Text.length * 8.5 + 16;
+        const badge2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        badge2.setAttribute('x', cx + 80 - badge2W / 2);
+        badge2.setAttribute('y', cy - 148);
+        badge2.setAttribute('width', badge2W);
+        badge2.setAttribute('height', '24');
+        badge2.setAttribute('rx', '12');
+        badge2.setAttribute('fill', '#db2777');
+        svg.appendChild(badge2);
+
+        const tVal2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        tVal2.setAttribute('x', cx + 80);
+        tVal2.setAttribute('y', cy - 131);
+        tVal2.setAttribute('font-family', 'Tajawal');
+        tVal2.setAttribute('font-size', '13px');
+        tVal2.setAttribute('font-weight', 'bold');
+        tVal2.setAttribute('fill', '#ffffff');
+        tVal2.setAttribute('text-anchor', 'middle');
+        tVal2.textContent = label2Text;
+        svg.appendChild(tVal2);
+    }
 }
 
 // 2. Vertical Flat Arrow Columns (With Rotation Support for Large Data)
@@ -889,6 +1347,10 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
     const svg = document.getElementById(svgId);
     if (!svg) return;
     svg.innerHTML = '';
+    
+    // الحصول على النمط المحدد لهذا الجارت
+    const style = localStorage.getItem('arrow_style_' + svgId) || 'flat';
+    
     const maxVal = Math.max(...values, 1);
     const n = values.length;
     const viewBoxStr = svg.getAttribute('viewBox') || "0 0 900 240";
@@ -899,7 +1361,7 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
     const availableW = width - marginL - marginR;
     const spacing = n > 1 ? availableW / (n - 1) : availableW;
 
-    // Dynamic floor to allow more space for rotated labels when items count is large
+    // Dynamic floor
     const floorY = n > 6 ? height - 50 : height - 30;
 
     // Baseline
@@ -912,6 +1374,17 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
     line.setAttribute('stroke-width', '1.5');
     svg.appendChild(line);
 
+    // إضافة فلتر الظل لنمط الـ 3D
+    if (style === '3d') {
+        const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        defs.innerHTML = `
+            <filter id="shadow-3d-${svgId}" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="2" dy="3" stdDeviation="2.5" flood-opacity="0.25"/>
+            </filter>
+        `;
+        svg.appendChild(defs);
+    }
+
     const colors = presetColors || ['#3b82f6','#ec4899','#f59e0b','#10b981','#8b5cf6','#06b6d4','#f97316','#64748b','#ec4899','#84cc16','#0ea5e9','#6366f1','#d946ef','#14b8a6','#f43f5e','#a78bfa'];
 
     values.forEach((val, i) => {
@@ -923,102 +1396,233 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
         const scaleVal = maxVal > 1 ? Math.sqrt(val) / Math.sqrt(maxVal) : 1;
         const H = minH + (maxH - minH) * scaleVal;
 
-        // stagger delay per bar
         const startDelay = (i * 80) + 'ms';
         const dur = '0.65s';
 
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
 
-        // ── Arrow Body (grows from floorY upwards) ──
-        const body = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        body.setAttribute('x', x - 8);
-        body.setAttribute('y', floorY - H);
-        body.setAttribute('width', '16');
-        body.setAttribute('height', H);
-        body.setAttribute('fill', color);
-        body.setAttribute('rx', '1');
+        let body, head, dashed, pill, tVal;
 
-        // scaleY from 0→1 anchored at bottom (floorY)
-        const animBody = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
-        animBody.setAttribute('attributeName', 'transform');
-        animBody.setAttribute('type', 'scale');
-        animBody.setAttribute('additive', 'sum');
-        animBody.setAttribute('from', `1 0`);
-        animBody.setAttribute('to', `1 1`);
-        animBody.setAttribute('dur', dur);
-        animBody.setAttribute('begin', startDelay);
-        animBody.setAttribute('fill', 'freeze');
-        animBody.setAttribute('calcMode', 'spline');
-        animBody.setAttribute('keySplines', '0.25 0.46 0.45 0.94');
-        body.appendChild(animBody);
+        if (style === 'glow') {
+            // ─── النمط نحيف متوهج (Glow Arrow) ───
+            body = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            body.setAttribute('x1', x);
+            body.setAttribute('y1', floorY);
+            body.setAttribute('x2', x);
+            body.setAttribute('y2', floorY - H);
+            body.setAttribute('stroke', color);
+            body.setAttribute('stroke-width', '4');
+            body.setAttribute('stroke-linecap', 'round');
+            body.style.filter = `drop-shadow(0 0 4px ${color}80)`;
+            body.style.transformOrigin = `${x}px ${floorY}px`;
+            body.style.transform = 'scaleY(0)';
+            body.style.transition = `transform ${dur} cubic-bezier(0.16, 1, 0.3, 1) ${startDelay}`;
+            g.appendChild(body);
 
-        // anchor transform-origin at bottom of the bar
-        body.setAttribute('transform', `translate(0, ${floorY}) scale(1, 0) translate(0, ${-floorY})`);
-        const animOrigin = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
-        animOrigin.setAttribute('attributeName', 'transform');
-        animOrigin.setAttribute('type', 'translate');
-        animOrigin.setAttribute('from', `0 0`);
-        animOrigin.setAttribute('to', `0 0`);
-        animOrigin.setAttribute('dur', dur);
-        animOrigin.setAttribute('begin', startDelay);
-        animOrigin.setAttribute('fill', 'freeze');
-        body.setAttribute('transform-origin', `${x} ${floorY}`);
-        body.style.transformOrigin = `${x}px ${floorY}px`;
-        body.style.transform = 'scaleY(0)';
-        body.style.transition = `transform ${dur} cubic-bezier(0.25,0.46,0.45,0.94) ${startDelay}`;
-        g.appendChild(body);
+            // رأس السهم المضيء
+            head = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            head.setAttribute('points', `${x-6},${floorY-H} ${x+6},${floorY-H} ${x},${floorY-H-8}`);
+            head.setAttribute('fill', color);
+            head.style.opacity = '0';
+            head.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(head);
 
-        // ── Arrow Head ──
-        const head = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        head.setAttribute('points', `${x-12},${floorY-H} ${x+12},${floorY-H} ${x},${floorY-H-10}`);
-        head.setAttribute('fill', color);
-        head.style.opacity = '0';
-        head.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
-        g.appendChild(head);
+            // شارة دائرية مضيئة تحتوي على القيمة عند قمة العمود
+            const valStr = val.toLocaleString();
+            const r = Math.max(12, valStr.length * 4.5 + 4);
+            pill = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            pill.setAttribute('cx', x);
+            pill.setAttribute('cy', floorY - H - 22);
+            pill.setAttribute('r', r);
+            pill.setAttribute('fill', '#1e293b');
+            pill.setAttribute('stroke', color);
+            pill.setAttribute('stroke-width', '2');
+            pill.style.filter = `drop-shadow(0 0 2px ${color})`;
+            pill.style.opacity = '0';
+            pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(pill);
 
-        // ── Dashed Connector ──
-        const dashed = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        dashed.setAttribute('x1', x);
-        dashed.setAttribute('y1', floorY - H - 12);
-        dashed.setAttribute('x2', x);
-        dashed.setAttribute('y2', floorY - H - 26);
-        dashed.setAttribute('stroke', color);
-        dashed.setAttribute('stroke-width', '1');
-        dashed.setAttribute('stroke-dasharray', '2 2');
-        dashed.style.opacity = '0';
-        dashed.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
-        g.appendChild(dashed);
+            tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            tVal.setAttribute('x', x);
+            tVal.setAttribute('y', floorY - H - 18);
+            tVal.setAttribute('font-family', 'Outfit');
+            tVal.setAttribute('font-size', '10px');
+            tVal.setAttribute('font-weight', 'black');
+            tVal.setAttribute('fill', '#ffffff');
+            tVal.setAttribute('text-anchor', 'middle');
+            tVal.textContent = valStr;
+            tVal.style.opacity = '0';
+            tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(tVal);
 
-        // ── Value Pill ──
-        const valStr = val.toLocaleString();
-        const pillW = Math.max(32, valStr.length * 8.5 + 12);
-        const pillH = 22;
+        } else if (style === '3d') {
+            // ─── النمط ثلاثي الأبعاد (3D Arrow) ───
+            // تدرج لوني عمودي لامع
+            const gradId = `grad-3d-${svgId}-${i}`;
+            const defs = svg.querySelector('defs') || document.createElementNS("http://www.w3.org/2000/svg", "defs");
+            if (!svg.querySelector('defs')) svg.appendChild(defs);
+            
+            const grad = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
+            grad.setAttribute('id', gradId);
+            grad.setAttribute('x1', '0%');
+            grad.setAttribute('y1', '0%');
+            grad.setAttribute('x2', '100%');
+            grad.setAttribute('y2', '0%');
+            grad.innerHTML = `
+                <stop offset="0%" stop-color="${color}"/>
+                <stop offset="35%" stop-color="#ffffff" stop-opacity="0.45"/>
+                <stop offset="70%" stop-color="${color}"/>
+                <stop offset="100%" stop-color="${adjustBrightness(color, -20)}"/>
+            `;
+            defs.appendChild(grad);
 
-        const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        pill.setAttribute('x', x - pillW / 2);
-        pill.setAttribute('y', floorY - H - 48);
-        pill.setAttribute('width', pillW);
-        pill.setAttribute('height', pillH);
-        pill.setAttribute('rx', '11');
-        pill.setAttribute('fill', color);
-        pill.style.opacity = '0';
-        pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
-        g.appendChild(pill);
+            // مضلع الواجهة الأمامية الأساسية
+            body = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            body.setAttribute('x', x - 9);
+            body.setAttribute('y', floorY - H);
+            body.setAttribute('width', '18');
+            body.setAttribute('height', H);
+            body.setAttribute('fill', `url(#${gradId})`);
+            body.setAttribute('filter', `url(#shadow-3d-${svgId})`);
+            body.style.transformOrigin = `${x}px ${floorY}px`;
+            body.style.transform = 'scaleY(0)';
+            body.style.transition = `transform ${dur} cubic-bezier(0.16, 1, 0.3, 1) ${startDelay}`;
+            g.appendChild(body);
 
-        const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tVal.setAttribute('x', x);
-        tVal.setAttribute('y', floorY - H - 32.5);
-        tVal.setAttribute('font-family', 'Outfit');
-        tVal.setAttribute('font-size', '13px');
-        tVal.setAttribute('font-weight', 'bold');
-        tVal.setAttribute('fill', '#ffffff');
-        tVal.setAttribute('text-anchor', 'middle');
-        tVal.textContent = valStr;
-        tVal.style.opacity = '0';
-        tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
-        g.appendChild(tVal);
+            // واجهة جانبية لتأثير الـ 3D (3D Side Face)
+            const side = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            side.setAttribute('points', `${x+9},${floorY} ${x+13},${floorY-4} ${x+13},${floorY-H-4} ${x+9},${floorY-H}`);
+            side.setAttribute('fill', adjustBrightness(color, -35));
+            side.style.transformOrigin = `${x}px ${floorY}px`;
+            side.style.transform = 'scaleY(0)';
+            side.style.transition = `transform ${dur} cubic-bezier(0.16, 1, 0.3, 1) ${startDelay}`;
+            g.appendChild(side);
 
-        // ── Label ──
+            // رأس السهم ثلاثي الأبعاد
+            head = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            head.setAttribute('points', `${x-14},${floorY-H} ${x+14},${floorY-H} ${x},${floorY-H-12}`);
+            head.setAttribute('fill', color);
+            head.setAttribute('filter', `url(#shadow-3d-${svgId})`);
+            head.style.opacity = '0';
+            head.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(head);
+
+            // واجهة جانبية لرأس السهم ثلاثي الأبعاد
+            const sideHead = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            sideHead.setAttribute('points', `${x+14},${floorY-H} ${x},${floorY-H-12} ${x+4},${floorY-H-14} ${x+18},${floorY-H-2}`);
+            sideHead.setAttribute('fill', adjustBrightness(color, -35));
+            sideHead.style.opacity = '0';
+            sideHead.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(sideHead);
+
+            // خط التوصيل
+            dashed = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            dashed.setAttribute('x1', x);
+            dashed.setAttribute('y1', floorY - H - 14);
+            dashed.setAttribute('x2', x);
+            dashed.setAttribute('y2', floorY - H - 28);
+            dashed.setAttribute('stroke', color);
+            dashed.setAttribute('stroke-width', '1.5');
+            dashed.setAttribute('stroke-dasharray', '2 2');
+            dashed.style.opacity = '0';
+            dashed.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(dashed);
+
+            // قيمة السهم
+            const valStr = val.toLocaleString();
+            const pillW = Math.max(34, valStr.length * 8.5 + 12);
+            pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            pill.setAttribute('x', x - pillW / 2);
+            pill.setAttribute('y', floorY - H - 50);
+            pill.setAttribute('width', pillW);
+            pill.setAttribute('height', '22');
+            pill.setAttribute('rx', '6');
+            pill.setAttribute('fill', color);
+            pill.setAttribute('filter', `url(#shadow-3d-${svgId})`);
+            pill.style.opacity = '0';
+            pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(pill);
+
+            tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            tVal.setAttribute('x', x);
+            tVal.setAttribute('y', floorY - H - 34.5);
+            tVal.setAttribute('font-family', 'Outfit');
+            tVal.setAttribute('font-size', '13px');
+            tVal.setAttribute('font-weight', 'bold');
+            tVal.setAttribute('fill', '#ffffff');
+            tVal.setAttribute('text-anchor', 'middle');
+            tVal.textContent = valStr;
+            tVal.style.opacity = '0';
+            tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(tVal);
+
+            // تشغيل الأنيميشن للواجهة الجانبية أيضاً
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                side.style.transform = 'scaleY(1)';
+                sideHead.style.opacity = '1';
+            }));
+
+        } else {
+            // ─── النمط الافتراضي المسطح (Flat Arrow) ───
+            body = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            body.setAttribute('x', x - 8);
+            body.setAttribute('y', floorY - H);
+            body.setAttribute('width', '16');
+            body.setAttribute('height', H);
+            body.setAttribute('fill', color);
+            body.setAttribute('rx', '1');
+            body.style.transformOrigin = `${x}px ${floorY}px`;
+            body.style.transform = 'scaleY(0)';
+            body.style.transition = `transform ${dur} cubic-bezier(0.25,0.46,0.45,0.94) ${startDelay}`;
+            g.appendChild(body);
+
+            head = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            head.setAttribute('points', `${x-12},${floorY-H} ${x+12},${floorY-H} ${x},${floorY-H-10}`);
+            head.setAttribute('fill', color);
+            head.style.opacity = '0';
+            head.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(head);
+
+            dashed = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            dashed.setAttribute('x1', x);
+            dashed.setAttribute('y1', floorY - H - 12);
+            dashed.setAttribute('x2', x);
+            dashed.setAttribute('y2', floorY - H - 26);
+            dashed.setAttribute('stroke', color);
+            dashed.setAttribute('stroke-width', '1');
+            dashed.setAttribute('stroke-dasharray', '2 2');
+            dashed.style.opacity = '0';
+            dashed.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(dashed);
+
+            const valStr = val.toLocaleString();
+            const pillW = Math.max(32, valStr.length * 8.5 + 12);
+            pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            pill.setAttribute('x', x - pillW / 2);
+            pill.setAttribute('y', floorY - H - 48);
+            pill.setAttribute('width', pillW);
+            pill.setAttribute('height', '22');
+            pill.setAttribute('rx', '11');
+            pill.setAttribute('fill', color);
+            pill.style.opacity = '0';
+            pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(pill);
+
+            tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            tVal.setAttribute('x', x);
+            tVal.setAttribute('y', floorY - H - 32.5);
+            tVal.setAttribute('font-family', 'Outfit');
+            tVal.setAttribute('font-size', '13px');
+            tVal.setAttribute('font-weight', 'bold');
+            tVal.setAttribute('fill', '#ffffff');
+            tVal.setAttribute('text-anchor', 'middle');
+            tVal.textContent = valStr;
+            tVal.style.opacity = '0';
+            tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(tVal);
+        }
+
+        // اسم المحور (العنوان)
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
         label.setAttribute('x', x - 4);
         label.setAttribute('font-family', 'Tajawal');
@@ -1044,11 +1648,11 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
 
         svg.appendChild(g);
 
-        // trigger CSS animation on next paint
+        // تشغيل الأنيميشن
         requestAnimationFrame(() => requestAnimationFrame(() => {
             body.style.transform = 'scaleY(1)';
             head.style.opacity  = '1';
-            dashed.style.opacity = '1';
+            if (dashed) dashed.style.opacity = '1';
             pill.style.opacity  = '1';
             tVal.style.opacity  = '1';
         }));
@@ -1065,7 +1669,9 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
     const n = values.length;
     if (n === 0) return;
 
-    // Spacious vertical layout: 42px per item (label + bar + gap)
+    // الحصول على النمط المحدد
+    const style = localStorage.getItem('arrow_style_' + svgId) || 'flat';
+
     const spacing = 42;
     const marginT = 16;
     const marginB = 16;
@@ -1077,10 +1683,20 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
     const maxVal = Math.max(...values, 1);
     const colors = presetColors || ['#db2777', '#d97706', '#10b981', '#475569', '#3b82f6', '#8b5cf6'];
     
-    // Width boundaries: chevrons grow from right to left (RTL)
     const startX = 435; // Right baseline
-    const chartStartX = 10; // Left-most boundary of chart area
-    const maxL = startX - chartStartX - 45; // Max length of chevron, leaving 45px for pill on the left
+    const chartStartX = 10;
+    const maxL = startX - chartStartX - 45;
+
+    // إضافة فلتر الظل لنمط الـ 3D
+    if (style === '3d') {
+        const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+        defs.innerHTML = `
+            <filter id="shadow-3d-h-${svgId}" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="-2" dy="2" stdDeviation="2" flood-opacity="0.25"/>
+            </filter>
+        `;
+        svg.appendChild(defs);
+    }
 
     values.forEach((val, i) => {
         const labelY = marginT + i * spacing;
@@ -1096,7 +1712,7 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
 
         const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
 
-        // ── Label ──
+        // Label
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
         label.setAttribute('x', startX);
         label.setAttribute('y', labelY + 4);
@@ -1108,56 +1724,169 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         label.textContent = labels[i] || '';
         g.appendChild(label);
 
-        // ── Chevron Body — grows from startX leftwards via scaleX ──
-        const body = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        body.setAttribute('points', `${startX},${barY-6} ${endX+6},${barY-6} ${endX},${barY} ${endX+6},${barY+6} ${startX},${barY+6}`);
-        body.setAttribute('fill', color);
-        // anchor scale at right edge (startX)
-        body.style.transformOrigin = `${startX}px ${barY}px`;
-        body.style.transform = 'scaleX(0)';
-        body.style.transition = `transform ${dur} cubic-bezier(0.25,0.46,0.45,0.94) ${startDelay}`;
-        g.appendChild(body);
+        let body, pill, tVal;
 
-        // ── Pill & value ──
-        const valStr = val.toLocaleString();
-        const pillW = Math.max(30, valStr.length * 8.5 + 12);
-        const pillH = 22;
+        if (style === 'glow') {
+            // ─── النمط نحيف متوهج أفقي ───
+            body = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            body.setAttribute('x1', startX);
+            body.setAttribute('y1', barY);
+            body.setAttribute('x2', endX);
+            body.setAttribute('y2', barY);
+            body.setAttribute('stroke', color);
+            body.setAttribute('stroke-width', '4');
+            body.setAttribute('stroke-linecap', 'round');
+            body.style.filter = `drop-shadow(0 0 3px ${color}80)`;
+            body.style.transformOrigin = `${startX}px ${barY}px`;
+            body.style.transform = 'scaleX(0)';
+            body.style.transition = `transform ${dur} cubic-bezier(0.16, 1, 0.3, 1) ${startDelay}`;
+            g.appendChild(body);
 
-        const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        pill.setAttribute('x', endX - pillW - 6);
-        pill.setAttribute('y', barY - 11);
-        pill.setAttribute('width', pillW);
-        pill.setAttribute('height', pillH);
-        pill.setAttribute('rx', '11');
-        pill.setAttribute('fill', color);
-        pill.style.opacity = '0';
-        pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
-        g.appendChild(pill);
+            // رأس السهم
+            const head = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            head.setAttribute('points', `${endX},${barY} ${endX+6},${barY-4} ${endX+6},${barY+4}`);
+            head.setAttribute('fill', color);
+            g.appendChild(head);
 
-        const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tVal.setAttribute('x', endX - pillW / 2 - 6);
-        tVal.setAttribute('y', barY + 5.5);
-        tVal.setAttribute('font-family', 'Outfit');
-        tVal.setAttribute('font-size', '13px');
-        tVal.setAttribute('font-weight', 'bold');
-        tVal.setAttribute('fill', '#ffffff');
-        tVal.setAttribute('text-anchor', 'middle');
-        tVal.textContent = valStr;
-        tVal.style.opacity = '0';
-        tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
-        g.appendChild(tVal);
+            const valStr = val.toLocaleString();
+            const r = Math.max(12, valStr.length * 4.5 + 4);
+            pill = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            pill.setAttribute('cx', endX - r - 4);
+            pill.setAttribute('cy', barY);
+            pill.setAttribute('r', r);
+            pill.setAttribute('fill', '#1e293b');
+            pill.setAttribute('stroke', color);
+            pill.setAttribute('stroke-width', '2');
+            pill.style.filter = `drop-shadow(0 0 2px ${color})`;
+            pill.style.opacity = '0';
+            pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(pill);
+
+            tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            tVal.setAttribute('x', endX - r - 4);
+            tVal.setAttribute('y', barY + 3.5);
+            tVal.setAttribute('font-family', 'Outfit');
+            tVal.setAttribute('font-size', '10px');
+            tVal.setAttribute('font-weight', 'black');
+            tVal.setAttribute('fill', '#ffffff');
+            tVal.setAttribute('text-anchor', 'middle');
+            tVal.textContent = valStr;
+            tVal.style.opacity = '0';
+            tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(tVal);
+
+        } else if (style === '3d') {
+            // ─── النمط ثلاثي الأبعاد أفقي ───
+            const gradId = `grad-3d-h-${svgId}-${i}`;
+            const defs = svg.querySelector('defs') || document.createElementNS("http://www.w3.org/2000/svg", "defs");
+            if (!svg.querySelector('defs')) svg.appendChild(defs);
+
+            const grad = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
+            grad.setAttribute('id', gradId);
+            grad.setAttribute('x1', '0%');
+            grad.setAttribute('y1', '0%');
+            grad.setAttribute('x2', '0%');
+            grad.setAttribute('y2', '100%');
+            grad.innerHTML = `
+                <stop offset="0%" stop-color="${color}"/>
+                <stop offset="35%" stop-color="#ffffff" stop-opacity="0.4"/>
+                <stop offset="70%" stop-color="${color}"/>
+                <stop offset="100%" stop-color="${adjustBrightness(color, -25)}"/>
+            `;
+            defs.appendChild(grad);
+
+            body = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            body.setAttribute('points', `${startX},${barY-7} ${endX+7},${barY-7} ${endX},${barY} ${endX+7},${barY+7} ${startX},${barY+7}`);
+            body.setAttribute('fill', `url(#${gradId})`);
+            body.setAttribute('filter', `url(#shadow-3d-h-${svgId})`);
+            body.style.transformOrigin = `${startX}px ${barY}px`;
+            body.style.transform = 'scaleX(0)';
+            body.style.transition = `transform ${dur} cubic-bezier(0.16, 1, 0.3, 1) ${startDelay}`;
+            g.appendChild(body);
+
+            // واجهة جانبية سفلى للعمق (3D Bottom Face)
+            const side = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            side.setAttribute('points', `${startX},${barY+7} ${endX+7},${barY+7} ${endX},${barY} ${endX+4},${barY+3} ${endX+10},${barY+10} ${startX},${barY+10}`);
+            side.setAttribute('fill', adjustBrightness(color, -35));
+            side.style.transformOrigin = `${startX}px ${barY}px`;
+            side.style.transform = 'scaleX(0)';
+            side.style.transition = `transform ${dur} cubic-bezier(0.16, 1, 0.3, 1) ${startDelay}`;
+            g.appendChild(side);
+
+            const valStr = val.toLocaleString();
+            const pillW = Math.max(30, valStr.length * 8.5 + 12);
+            pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            pill.setAttribute('x', endX - pillW - 8);
+            pill.setAttribute('y', barY - 11);
+            pill.setAttribute('width', pillW);
+            pill.setAttribute('height', '22');
+            pill.setAttribute('rx', '6');
+            pill.setAttribute('fill', color);
+            pill.setAttribute('filter', `url(#shadow-3d-h-${svgId})`);
+            pill.style.opacity = '0';
+            pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(pill);
+
+            tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            tVal.setAttribute('x', endX - pillW / 2 - 8);
+            tVal.setAttribute('y', barY + 5.5);
+            tVal.setAttribute('font-family', 'Outfit');
+            tVal.setAttribute('font-size', '13px');
+            tVal.setAttribute('font-weight', 'bold');
+            tVal.setAttribute('fill', '#ffffff');
+            tVal.setAttribute('text-anchor', 'middle');
+            tVal.textContent = valStr;
+            tVal.style.opacity = '0';
+            tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(tVal);
+
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                side.style.transform = 'scaleX(1)';
+            }));
+
+        } else {
+            // ─── النمط الافتراضي (Classic Chevron) ───
+            body = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            body.setAttribute('points', `${startX},${barY-6} ${endX+6},${barY-6} ${endX},${barY} ${endX+6},${barY+6} ${startX},${barY+6}`);
+            body.setAttribute('fill', color);
+            body.style.transformOrigin = `${startX}px ${barY}px`;
+            body.style.transform = 'scaleX(0)';
+            body.style.transition = `transform ${dur} cubic-bezier(0.25,0.46,0.45,0.94) ${startDelay}`;
+            g.appendChild(body);
+
+            const valStr = val.toLocaleString();
+            const pillW = Math.max(30, valStr.length * 8.5 + 12);
+            pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            pill.setAttribute('x', endX - pillW - 6);
+            pill.setAttribute('y', barY - 11);
+            pill.setAttribute('width', pillW);
+            pill.setAttribute('height', '22');
+            pill.setAttribute('rx', '11');
+            pill.setAttribute('fill', color);
+            pill.style.opacity = '0';
+            pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(pill);
+
+            tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            tVal.setAttribute('x', endX - pillW / 2 - 6);
+            tVal.setAttribute('y', barY + 5.5);
+            tVal.setAttribute('font-family', 'Outfit');
+            tVal.setAttribute('font-size', '13px');
+            tVal.setAttribute('font-weight', 'bold');
+            tVal.setAttribute('fill', '#ffffff');
+            tVal.setAttribute('text-anchor', 'middle');
+            tVal.textContent = valStr;
+            tVal.style.opacity = '0';
+            tVal.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
+            g.appendChild(tVal);
+        }
 
         svg.appendChild(g);
 
-        // trigger on next paint
         requestAnimationFrame(() => requestAnimationFrame(() => {
             body.style.transform = 'scaleX(1)';
-            // show pill + value after bar animation completes
-            const totalDelay = (parseFloat(startDelay) || 0) + parseFloat(dur) * 1000;
-            setTimeout(() => {
-                pill.style.opacity = '1';
-                tVal.style.opacity = '1';
-            }, totalDelay);
+            pill.style.opacity = '1';
+            tVal.style.opacity = '1';
         }));
     });
 }
@@ -1341,16 +2070,23 @@ function renderAll2DArrowCharts() {
     const docSurgData     = @json($docSurgs->values());
     const docSurgLabels   = @json($docSurgs->keys()->map(fn($n) => str_replace('د. ', '', $n)));
 
-    // Register each chart with the scroll observer.
-    // The draw fn will be called immediately (first view) and replayed on every scroll-into-view.
-    watchChart('svg-report-1',  () => draw2DBranchingArrow('svg-report-1', {{ $cGeneral }}, {{ $cSpecial }}, '{{ str_replace("استشارية ", "", $generalLabel) }}', '{{ str_replace("استشارية ", "", $specialLabel) }}', {{ $totalVisits }}));
-    watchChart('svg-report-2',  () => draw2DFlatVerticalArrows('svg-report-2', docVisitsData, docVisitsLabels));
-    watchChart('svg-report-3',  () => drawIraqMap('svg-report-3', govData, govLabels, '#0284c7'));
-    watchChart('svg-report-4',  () => draw2DFlatHorizontalChevrons('svg-report-4', countryData, countryLabels));
-    watchChart('svg-report-8',  () => drawIraqMap('svg-report-8', surgGovData, surgGovLabels, '#f43f5e'));
-    watchChart('svg-report-9',  () => draw2DFlatHorizontalChevrons('svg-report-9', surgCountryData, surgCountryLabels, ['#f43f5e','#ec4899','#db2777','#f43f5e','#ec4899','#db2777']));
-    watchChart('svg-report-5',  () => draw2DFlatHorizontalChevrons('svg-report-5', visualData, visualLabels, ['#f97316','#ea580c','#c2410c','#ea580c','#f97316','#c2410c']));
-    watchChart('svg-report-6',  () => draw2DFlatVerticalArrows('svg-report-6', labTestData, labTestLabels, ['#8b5cf6','#a855f7','#c084fc','#d8b4fe','#f3e8ff']));
+    // تهيئة قيم المنسدلات المحفوظة في localStorage
+    document.querySelectorAll('.arrow-style-select').forEach(sel => {
+        const svgId = sel.dataset.svgId;
+        if (svgId) {
+            const savedVal = localStorage.getItem('arrow_style_' + svgId) || 'flat';
+            sel.value = savedVal;
+        }
+    });
+
+    watchChart('svg-report-1',  () => drawReportToggleChart('svg-report-1', 'donut', () => draw2DBranchingArrow('svg-report-1', {{ $cGeneral }}, {{ $cSpecial }}, '{{ str_replace("استشارية ", "", $generalLabel) }}', '{{ str_replace("استشارية ", "", $specialLabel) }}', {{ $totalVisits }}), [{{ $cGeneral }}, {{ $cSpecial }}], ['{{ str_replace("استشارية ", "", $generalLabel) }}', '{{ str_replace("استشارية ", "", $specialLabel) }}'], 'الاستشاريات'));
+    watchChart('svg-report-2',  () => drawReportToggleChart('svg-report-2', 'bar', () => draw2DFlatVerticalArrows('svg-report-2', docVisitsData, docVisitsLabels), docVisitsData, docVisitsLabels, 'المرضى'));
+    watchChart('svg-report-3',  () => drawIraqMap('svg-report-3', govData, govLabels, '#0284c7')); // الخريطة لا تحتاج تحويل
+    watchChart('svg-report-4',  () => drawReportToggleChart('svg-report-4', 'bar-h', () => draw2DFlatHorizontalChevrons('svg-report-4', countryData, countryLabels), countryData, countryLabels, 'الدول'));
+    watchChart('svg-report-8',  () => drawIraqMap('svg-report-8', surgGovData, surgGovLabels, '#f43f5e')); // الخريطة لا تحتاج تحويل
+    watchChart('svg-report-9',  () => drawReportToggleChart('svg-report-9', 'bar-h', () => draw2DFlatHorizontalChevrons('svg-report-9', surgCountryData, surgCountryLabels, ['#f43f5e','#ec4899','#db2777','#f43f5e','#ec4899','#db2777']), surgCountryData, surgCountryLabels, 'الدول'));
+    watchChart('svg-report-5',  () => drawReportToggleChart('svg-report-5', 'bar-h', () => draw2DFlatHorizontalChevrons('svg-report-5', visualData, visualLabels, ['#f97316','#ea580c','#c2410c','#ea580c','#f97316','#c2410c']), visualData, visualLabels, 'الفحوصات'));
+    watchChart('svg-report-6',  () => drawReportToggleChart('svg-report-6', 'bar', () => draw2DFlatVerticalArrows('svg-report-6', labTestData, labTestLabels, ['#8b5cf6','#a855f7','#c084fc','#d8b4fe','#f3e8ff']), labTestData, labTestLabels, 'التحاليل'));
     watchChart('svg-report-7',  () => {
         const surgClassLabels = [];
         const surgClassData = [];
@@ -1360,9 +2096,9 @@ function renderAll2DArrowCharts() {
             surgClassLabels.push(label);
             surgClassData.push(total);
         });
-        draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#10b981', '#f43f5e', '#ec4899', '#f59e0b', '#8b5cf6', '#64748b']);
+        drawReportToggleChart('svg-report-7', 'donut', () => draw2DFlatVerticalArrows('svg-report-7', surgClassData, surgClassLabels, ['#10b981', '#f43f5e', '#ec4899', '#f59e0b', '#8b5cf6', '#64748b']), surgClassData, surgClassLabels, 'العمليات');
     });
-    watchChart('svg-report-10', () => draw2DFlatVerticalArrows('svg-report-10', docSurgData, docSurgLabels));
+    watchChart('svg-report-10', () => drawReportToggleChart('svg-report-10', 'bar', () => draw2DFlatVerticalArrows('svg-report-10', docSurgData, docSurgLabels), docSurgData, docSurgLabels, 'العمليات'));
 
     // Initialize combined detailed doctor stats chart
     watchChart('svg-doc-all', () => renderSingleDocChart('all'));
@@ -1384,7 +2120,7 @@ function renderSingleDocChart(id) {
         if (svg) svg.innerHTML = '<text x="225" y="100" font-family="Tajawal" font-size="11" font-weight="bold" fill="#94a3b8" text-anchor="middle">لا توجد عمليات مسجلة لهذا الطبيب</text>';
         return;
     }
-    draw2DFlatHorizontalChevrons('svg-doc-' + id, values, labels);
+    drawReportToggleChart('svg-doc-' + id, 'bar-h', () => draw2DFlatHorizontalChevrons('svg-doc-' + id, values, labels), values, labels, 'العمليات');
 }
 
 function toggleAdvancedFilters() {

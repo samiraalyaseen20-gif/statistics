@@ -154,9 +154,6 @@
                     <h1 id="page-title" class="text-base font-bold text-text-main">الرئيسية</h1>
                 </div>
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full custom-card flex items-center justify-center font-bold text-sm text-text-main shadow-soft-out-sm">
-                        {{ strtoupper(substr(auth()->user()->username ?? 'U', 0, 2)) }}
-                    </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="w-8 h-8 rounded-lg flex items-center justify-center text-text-main opacity-60 hover:opacity-100 hover:text-theme-pink hover-press transition-colors">
