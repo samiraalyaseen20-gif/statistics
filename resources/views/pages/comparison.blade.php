@@ -889,24 +889,24 @@ function cmpDrawIraqMap(svgId, values, labels, colorTheme) {
         }
 
         const textStr = `${govArabicName}: ${val.toLocaleString()}`;
-        const chipW   = textStr.length * 5.0 + 10;
-        const chipY   = val > 0 ? -(3 + (val / maxVal) * 2.5) - 15 : -15;
+        const chipW   = textStr.length * 7.2 + 14;
+        const chipY   = val > 0 ? -(3 + (val / maxVal) * 2.5) - 22 : -22;
 
         const chip = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         chip.setAttribute('x', -chipW / 2);
-        chip.setAttribute('y', chipY - 11);
+        chip.setAttribute('y', chipY - 16);
         chip.setAttribute('width', chipW);
-        chip.setAttribute('height', '12');
-        chip.setAttribute('rx', '3');
+        chip.setAttribute('height', '20');
+        chip.setAttribute('rx', '5');
         chip.setAttribute('fill', val > 0 ? (colorTheme || '#0ea5e9') : '#64748b');
-        chip.setAttribute('opacity', val > 0 ? '0.92' : '0.6');
+        chip.setAttribute('opacity', val > 0 ? '0.95' : '0.6');
         g.appendChild(chip);
 
         const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         lbl.setAttribute('x', '0');
         lbl.setAttribute('y', chipY - 2);
         lbl.setAttribute('font-family', 'Tajawal, sans-serif');
-        lbl.setAttribute('font-size', '7.5');
+        lbl.setAttribute('font-size', '12');
         lbl.setAttribute('font-weight', 'bold');
         lbl.setAttribute('fill', '#fff');
         lbl.setAttribute('text-anchor', 'middle');
