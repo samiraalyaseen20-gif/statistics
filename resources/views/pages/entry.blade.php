@@ -678,10 +678,41 @@ async function toggleEditSurgCls() {
     }
 }
 
+// ══════════════════════════════════════════════════════════
+// نظام قفل الحفظ — يمنع الضغط المتكرر على أزرار الحفظ
+// ══════════════════════════════════════════════════════════
+let _isSaving = false;
+
+function lockSave(btnEl) {
+    if (_isSaving) return false;
+    _isSaving = true;
+    if (btnEl) {
+        btnEl.disabled = true;
+        btnEl._origHTML = btnEl.innerHTML;
+        btnEl.innerHTML = `<svg class="w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg><span>جاري الحفظ...</span>`;
+        btnEl.style.opacity = '0.7';
+        btnEl.style.cursor  = 'not-allowed';
+    }
+    return true;
+}
+
+function unlockSave(btnEl) {
+    _isSaving = false;
+    if (btnEl) {
+        btnEl.disabled = false;
+        if (btnEl._origHTML) btnEl.innerHTML = btnEl._origHTML;
+        btnEl.style.opacity = '';
+        btnEl.style.cursor  = '';
+        lucide.createIcons({ nodes: [btnEl] });
+    }
+}
+
 // ── Save ──
 async function saveSurgCls() {
+    const _btn = document.querySelector('[onclick="saveSurgCls()"]');
+    if (!lockSave(_btn)) { showToast('⏳ جاري الحفظ، انتظر من فضلك...', 'warning'); return; }
     const monthVal = document.getElementById('date-surg-cls').value;
-    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    if (!monthVal) { unlockSave(_btn); showToast('حدد الشهر والسنّة', 'error'); return; }
     const date = monthVal + '-01';
 
     // Clear old data if editing
@@ -753,6 +784,8 @@ async function saveSurgCls() {
         lastUsedDate = monthVal;
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
+    } finally {
+        unlockSave(_btn);
     }
 }
 </script>
@@ -1512,8 +1545,10 @@ async function toggleEditLabTests() {
 
 // 1. Save Doctors Visits
 async function saveVisitsDoctors() {
+    const _btn = document.querySelector('[onclick="saveVisitsDoctors()"]');
+    if (!lockSave(_btn)) { showToast('⏳ جاري الحفظ، انتظر من فضلك...', 'warning'); return; }
     const monthVal = document.getElementById('date-visit-doctors').value;
-    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    if (!monthVal) { unlockSave(_btn); showToast('حدد الشهر والسنّة', 'error'); return; }
     const date = monthVal + "-01";
 
     const isEdit = editStates['visits_doctors'].active;
@@ -1576,15 +1611,19 @@ async function saveVisitsDoctors() {
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
+    } finally {
+        unlockSave(_btn);
     }
 }
 
 // 2. Save Governorates
 async function saveGovs() {
+    const _btn = document.querySelector('[onclick="saveGovs()"]');
+    if (!lockSave(_btn)) { showToast('⏳ جاري الحفظ، انتظر من فضلك...', 'warning'); return; }
     const geoType = document.getElementById('geo-type-select').value;
     const type = geoType === 'visits' ? 'visits_govs' : 'surgeries_govs';
     const monthVal = document.getElementById('date-geo-gov').value;
-    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    if (!monthVal) { unlockSave(_btn); showToast('حدد الشهر والسنّة', 'error'); return; }
     const date = monthVal + "-01";
 
     const isEdit = editStates[type].active;
@@ -1669,15 +1708,19 @@ async function saveGovs() {
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
+    } finally {
+        unlockSave(_btn);
     }
 }
 
 // 3. Save Countries
 async function saveCountries() {
+    const _btn = document.querySelector('[onclick="saveCountries()"]');
+    if (!lockSave(_btn)) { showToast('⏳ جاري الحفظ، انتظر من فضلك...', 'warning'); return; }
     const geoType = document.getElementById('geo-type-select').value;
     const type = geoType === 'visits' ? 'visits_countries' : 'surgeries_countries';
     const monthVal = document.getElementById('date-geo-country').value;
-    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    if (!monthVal) { unlockSave(_btn); showToast('حدد الشهر والسنّة', 'error'); return; }
     const date = monthVal + "-01";
 
     const isEdit = editStates[type].active;
@@ -1762,13 +1805,17 @@ async function saveCountries() {
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
+    } finally {
+        unlockSave(_btn);
     }
 }
 
 // 4. Save Surgeries by Operation Names
 async function saveSurgeriesOps(silent = false) {
+    const _btn = document.querySelector('[onclick="saveSurgeriesOps()"]');
+    if (!silent && !lockSave(_btn)) { showToast('⏳ جاري الحفظ، انتظر من فضلك...', 'warning'); return; }
     const monthVal = document.getElementById('date-surg-op').value;
-    if (!monthVal) { if (!silent) showToast('حدد الشهر والسنّة', 'error'); return; }
+    if (!monthVal) { if (!silent) { unlockSave(_btn); showToast('حدد الشهر والسنّة', 'error'); } return; }
     const date = monthVal + "-01";
 
     const isEdit = editStates['surgeries_ops'].active;
@@ -1840,6 +1887,8 @@ async function saveSurgeriesOps(silent = false) {
         loadEntryLookups();
     } catch(e) {
         if (!silent) showToast('خطأ في الاتصال بالشبكة', 'error');
+    } finally {
+        if (!silent) unlockSave(_btn);
     }
 }
 
@@ -1976,8 +2025,10 @@ function recalcSurgDocs() {
 
 // 5. Save Surgeries by Doctors — all sectors at once
 async function saveSurgeriesDocs() {
+    const _btn = document.querySelector('[onclick="saveSurgeriesDocs()"]');
+    if (!lockSave(_btn)) { showToast('⏳ جاري الحفظ، انتظر من فضلك...', 'warning'); return; }
     const monthVal = document.getElementById('date-surg-doc').value;
-    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    if (!monthVal) { unlockSave(_btn); showToast('حدد الشهر والسنّة', 'error'); return; }
     const date = monthVal + "-01";
 
     const isEdit = editStates['surgeries_docs'].active;
@@ -2052,13 +2103,17 @@ async function saveSurgeriesDocs() {
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
+    } finally {
+        unlockSave(_btn);
     }
 }
 
 // 6. Save Eye Tests
 async function saveEyeTestsGrid() {
+    const _btn = document.querySelector('[onclick="saveEyeTestsGrid()"]');
+    if (!lockSave(_btn)) { showToast('⏳ جاري الحفظ، انتظر من فضلك...', 'warning'); return; }
     const monthVal = document.getElementById('date-tests-eye').value;
-    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    if (!monthVal) { unlockSave(_btn); showToast('حدد الشهر والسنّة', 'error'); return; }
     const date = monthVal + "-01";
 
     const isEdit = editStates['eye_tests'].active;
@@ -2115,13 +2170,17 @@ async function saveEyeTestsGrid() {
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ بالشبكة', 'error');
+    } finally {
+        unlockSave(_btn);
     }
 }
 
 // 7. Save Lab Tests
 async function saveLabTestsGrid() {
+    const _btn = document.querySelector('[onclick="saveLabTestsGrid()"]');
+    if (!lockSave(_btn)) { showToast('⏳ جاري الحفظ، انتظر من فضلك...', 'warning'); return; }
     const monthVal = document.getElementById('date-tests-lab').value;
-    if (!monthVal) { showToast('حدد الشهر والسنّة', 'error'); return; }
+    if (!monthVal) { unlockSave(_btn); showToast('حدد الشهر والسنّة', 'error'); return; }
     const date = monthVal + "-01";
 
     const isEdit = editStates['lab_tests'].active;
@@ -2178,6 +2237,8 @@ async function saveLabTestsGrid() {
         loadEntryLookups();
     } catch(e) {
         showToast('خطأ بالشبكة', 'error');
+    } finally {
+        unlockSave(_btn);
     }
 }
 
@@ -2450,8 +2511,10 @@ async function loadDocOpsForEdit() {
 }
 
 async function saveDocOps() {
+    const _btn = document.querySelector('[onclick="saveDocOps()"]');
+    if (!lockSave(_btn)) { showToast('⏳ جاري الحفظ، انتظر من فضلك...', 'warning'); return; }
     const monthVal = document.getElementById('date-doc-ops').value;
-    if (!monthVal) { showToast('يرجى تحديد الشهر والسنة أولاً', 'error'); return; }
+    if (!monthVal) { unlockSave(_btn); showToast('يرجى تحديد الشهر والسنة أولاً', 'error'); return; }
 
     const inputs = document.querySelectorAll('.doc-op-qty-input');
     if (!inputs.length) {
@@ -2508,6 +2571,8 @@ async function saveDocOps() {
         }
     } catch(e) {
         showToast('خطأ في الاتصال بالشبكة', 'error');
+    } finally {
+        unlockSave(_btn);
     }
 }
 </script>
