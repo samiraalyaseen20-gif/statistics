@@ -1194,7 +1194,7 @@ function drawIraqMap(svgId, values, labels, colorTheme) {
         }
 
         // label chip
-        const textStr = `${govArabicName} ${val.toLocaleString()}`;
+        const textStr = `${govArabicName} ${val}`;
         const chipW   = textStr.length * 7.2 + 14;
         const chipY   = val > 0 ? -(3 + (val / maxVal) * 2.5) - 22 : -22;
 
