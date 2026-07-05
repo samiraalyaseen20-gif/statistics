@@ -556,30 +556,30 @@ function cmpDrawBranching(svgId, items, totalVal, colors) {
     svg.appendChild(rightPath);
 
     const totalStr = totalVal.toLocaleString();
-    const tpW = Math.max(36, totalStr.length * 6.5 + 10);
+    const tpW = Math.max(50, totalStr.length * 9.0 + 14);
     const tp = document.createElementNS("http://www.w3.org/2000/svg","rect");
-    tp.setAttribute('x', cx - tpW/2); tp.setAttribute('y', cy-12);
-    tp.setAttribute('width', tpW); tp.setAttribute('height',16);
-    tp.setAttribute('rx','8'); tp.setAttribute('fill','#334155');
+    tp.setAttribute('x', cx - tpW/2); tp.setAttribute('y', cy-16);
+    tp.setAttribute('width', tpW); tp.setAttribute('height',24);
+    tp.setAttribute('rx','12'); tp.setAttribute('fill','#334155');
     svg.appendChild(tp);
     const tt = document.createElementNS("http://www.w3.org/2000/svg","text");
-    tt.setAttribute('x',cx); tt.setAttribute('y',cy-0.5);
-    tt.setAttribute('font-family','Outfit'); tt.setAttribute('font-size','10px');
+    tt.setAttribute('x',cx); tt.setAttribute('y',cy+1.5);
+    tt.setAttribute('font-family','Outfit'); tt.setAttribute('font-size','14px');
     tt.setAttribute('font-weight','black'); tt.setAttribute('fill','#ffffff');
     tt.setAttribute('text-anchor','middle'); tt.textContent = totalStr;
     svg.appendChild(tt);
 
     [[val1, label1, cx-80, col1],[val2, label2, cx+80, col2]].forEach(([v,l,bx,bc]) => {
         const s = `${l}: ${v.toLocaleString()}`;
-        const bw = s.length*6.5+14;
+        const bw = s.length*8.5+16;
         const b = document.createElementNS("http://www.w3.org/2000/svg","rect");
-        b.setAttribute('x', bx-bw/2); b.setAttribute('y',cy-145);
-        b.setAttribute('width',bw); b.setAttribute('height',18);
-        b.setAttribute('rx','9'); b.setAttribute('fill',bc);
+        b.setAttribute('x', bx-bw/2); b.setAttribute('y',cy-148);
+        b.setAttribute('width',bw); b.setAttribute('height',24);
+        b.setAttribute('rx','12'); b.setAttribute('fill',bc);
         svg.appendChild(b);
         const bt = document.createElementNS("http://www.w3.org/2000/svg","text");
-        bt.setAttribute('x',bx); bt.setAttribute('y',cy-133);
-        bt.setAttribute('font-family','Tajawal'); bt.setAttribute('font-size','9px');
+        bt.setAttribute('x',bx); bt.setAttribute('y',cy-131);
+        bt.setAttribute('font-family','Tajawal'); bt.setAttribute('font-size','13px');
         bt.setAttribute('font-weight','bold'); bt.setAttribute('fill','#ffffff');
         bt.setAttribute('text-anchor','middle'); bt.textContent = s;
         svg.appendChild(bt);
@@ -649,18 +649,18 @@ function cmpDrawVertical(svgId, values, labels, colors) {
         g.appendChild(dashed);
 
         const valStr = val.toLocaleString();
-        const pillW = Math.max(20, valStr.length*6+6);
+        const pillW = Math.max(32, valStr.length * 8.5 + 12);
         const pill = document.createElementNS("http://www.w3.org/2000/svg","rect");
-        pill.setAttribute('x',x-pillW/2); pill.setAttribute('y',floorY-H-36);
-        pill.setAttribute('width',pillW); pill.setAttribute('height',14);
-        pill.setAttribute('rx','7'); pill.setAttribute('fill',color);
+        pill.setAttribute('x',x-pillW/2); pill.setAttribute('y',floorY-H-48);
+        pill.setAttribute('width',pillW); pill.setAttribute('height',22);
+        pill.setAttribute('rx','11'); pill.setAttribute('fill',color);
         pill.style.opacity = '0';
         pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(pill);
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg","text");
-        tVal.setAttribute('x',x); tVal.setAttribute('y',floorY-H-25.5);
-        tVal.setAttribute('font-family','Outfit'); tVal.setAttribute('font-size','8.5px');
+        tVal.setAttribute('x',x); tVal.setAttribute('y',floorY-H-32.5);
+        tVal.setAttribute('font-family','Outfit'); tVal.setAttribute('font-size','13px');
         tVal.setAttribute('font-weight','bold'); tVal.setAttribute('fill','#ffffff');
         tVal.setAttribute('text-anchor','middle'); tVal.textContent = valStr;
         tVal.style.opacity = '0';
@@ -752,18 +752,18 @@ function cmpDrawChevrons(svgId, values, labels, colors) {
 
         // ── Pill & value (appear after bar) ──
         const valStr = val.toLocaleString();
-        const pillW = Math.max(18, valStr.length*6+6);
+        const pillW = Math.max(30, valStr.length * 8.5 + 12);
         const pill = document.createElementNS("http://www.w3.org/2000/svg","rect");
-        pill.setAttribute('x',endX-pillW-6); pill.setAttribute('y',barY-7);
-        pill.setAttribute('width',pillW); pill.setAttribute('height',14);
-        pill.setAttribute('rx','7'); pill.setAttribute('fill',color);
+        pill.setAttribute('x',endX-pillW-6); pill.setAttribute('y',barY-11);
+        pill.setAttribute('width',pillW); pill.setAttribute('height',22);
+        pill.setAttribute('rx','11'); pill.setAttribute('fill',color);
         pill.style.opacity = '0';
         pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
         g.appendChild(pill);
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg","text");
-        tVal.setAttribute('x',endX-pillW/2-6); tVal.setAttribute('y',barY+4);
-        tVal.setAttribute('font-family','Outfit'); tVal.setAttribute('font-size','8.5px');
+        tVal.setAttribute('x',endX-pillW/2-6); tVal.setAttribute('y',barY+5.5);
+        tVal.setAttribute('font-family','Outfit'); tVal.setAttribute('font-size','13px');
         tVal.setAttribute('font-weight','bold'); tVal.setAttribute('fill','#ffffff');
         tVal.setAttribute('text-anchor','middle'); tVal.textContent = valStr;
         tVal.style.opacity = '0';

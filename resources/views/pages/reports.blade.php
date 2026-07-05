@@ -730,22 +730,22 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
 
     // Total pill at trunk base
     const totalValStr = totalVal.toLocaleString();
-    const totalPillW = Math.max(36, totalValStr.length * 6.5 + 10);
-    const totalPillH = 16;
+    const totalPillW = Math.max(50, totalValStr.length * 9.0 + 14);
+    const totalPillH = 24;
     const totalPill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     totalPill.setAttribute('x', cx - totalPillW / 2);
-    totalPill.setAttribute('y', cy - 12);
+    totalPill.setAttribute('y', cy - 16);
     totalPill.setAttribute('width', totalPillW);
     totalPill.setAttribute('height', totalPillH);
-    totalPill.setAttribute('rx', '8');
+    totalPill.setAttribute('rx', '12');
     totalPill.setAttribute('fill', '#334155');
     svg.appendChild(totalPill);
 
     const tTotal = document.createElementNS("http://www.w3.org/2000/svg", "text");
     tTotal.setAttribute('x', cx);
-    tTotal.setAttribute('y', cy - 0.5);
+    tTotal.setAttribute('y', cy + 1.5);
     tTotal.setAttribute('font-family', 'Outfit');
-    tTotal.setAttribute('font-size', '10px');
+    tTotal.setAttribute('font-size', '14px');
     tTotal.setAttribute('font-weight', 'black');
     tTotal.setAttribute('fill', '#ffffff');
     tTotal.setAttribute('text-anchor', 'middle');
@@ -754,22 +754,22 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
 
     // Left branch badge
     const label1Text = `${label1}: ${val1.toLocaleString()}`;
-    const badge1W = label1Text.length * 6.5 + 14;
-    const badge1H = 18;
+    const badge1W = label1Text.length * 8.5 + 16;
+    const badge1H = 24;
     const badge1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     badge1.setAttribute('x', cx - 80 - badge1W / 2);
-    badge1.setAttribute('y', cy - 145);
+    badge1.setAttribute('y', cy - 148);
     badge1.setAttribute('width', badge1W);
     badge1.setAttribute('height', badge1H);
-    badge1.setAttribute('rx', '9');
+    badge1.setAttribute('rx', '12');
     badge1.setAttribute('fill', '#0284c7');
     svg.appendChild(badge1);
 
     const tVal1 = document.createElementNS("http://www.w3.org/2000/svg", "text");
     tVal1.setAttribute('x', cx - 80);
-    tVal1.setAttribute('y', cy - 133);
+    tVal1.setAttribute('y', cy - 131);
     tVal1.setAttribute('font-family', 'Tajawal');
-    tVal1.setAttribute('font-size', '9px');
+    tVal1.setAttribute('font-size', '13px');
     tVal1.setAttribute('font-weight', 'bold');
     tVal1.setAttribute('fill', '#ffffff');
     tVal1.setAttribute('text-anchor', 'middle');
@@ -778,22 +778,22 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
 
     // Right branch badge
     const label2Text = `${label2}: ${val2.toLocaleString()}`;
-    const badge2W = label2Text.length * 6.5 + 14;
-    const badge2H = 18;
+    const badge2W = label2Text.length * 8.5 + 16;
+    const badge2H = 24;
     const badge2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     badge2.setAttribute('x', cx + 80 - badge2W / 2);
-    badge2.setAttribute('y', cy - 145);
+    badge2.setAttribute('y', cy - 148);
     badge2.setAttribute('width', badge2W);
     badge2.setAttribute('height', badge2H);
-    badge2.setAttribute('rx', '9');
+    badge2.setAttribute('rx', '12');
     badge2.setAttribute('fill', '#db2777');
     svg.appendChild(badge2);
 
     const tVal2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
     tVal2.setAttribute('x', cx + 80);
-    tVal2.setAttribute('y', cy - 133);
+    tVal2.setAttribute('y', cy - 131);
     tVal2.setAttribute('font-family', 'Tajawal');
-    tVal2.setAttribute('font-size', '9px');
+    tVal2.setAttribute('font-size', '13px');
     tVal2.setAttribute('font-weight', 'bold');
     tVal2.setAttribute('fill', '#ffffff');
     tVal2.setAttribute('text-anchor', 'middle');
@@ -908,15 +908,15 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
 
         // ── Value Pill ──
         const valStr = val.toLocaleString();
-        const pillW = Math.max(20, valStr.length * 6 + 6);
-        const pillH = 14;
+        const pillW = Math.max(32, valStr.length * 8.5 + 12);
+        const pillH = 22;
 
         const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         pill.setAttribute('x', x - pillW / 2);
-        pill.setAttribute('y', floorY - H - 36);
+        pill.setAttribute('y', floorY - H - 48);
         pill.setAttribute('width', pillW);
         pill.setAttribute('height', pillH);
-        pill.setAttribute('rx', '7');
+        pill.setAttribute('rx', '11');
         pill.setAttribute('fill', color);
         pill.style.opacity = '0';
         pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
@@ -924,9 +924,9 @@ function draw2DFlatVerticalArrows(svgId, values, labels, presetColors = null) {
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
         tVal.setAttribute('x', x);
-        tVal.setAttribute('y', floorY - H - 25.5);
+        tVal.setAttribute('y', floorY - H - 32.5);
         tVal.setAttribute('font-family', 'Outfit');
-        tVal.setAttribute('font-size', '8.5px');
+        tVal.setAttribute('font-size', '13px');
         tVal.setAttribute('font-weight', 'bold');
         tVal.setAttribute('fill', '#ffffff');
         tVal.setAttribute('text-anchor', 'middle');
@@ -1037,15 +1037,15 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
 
         // ── Pill & value ──
         const valStr = val.toLocaleString();
-        const pillW = Math.max(18, valStr.length * 6 + 6);
-        const pillH = 14;
+        const pillW = Math.max(30, valStr.length * 8.5 + 12);
+        const pillH = 22;
 
         const pill = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         pill.setAttribute('x', endX - pillW - 6);
-        pill.setAttribute('y', barY - pillH / 2);
+        pill.setAttribute('y', barY - 11);
         pill.setAttribute('width', pillW);
         pill.setAttribute('height', pillH);
-        pill.setAttribute('rx', '7');
+        pill.setAttribute('rx', '11');
         pill.setAttribute('fill', color);
         pill.style.opacity = '0';
         pill.style.transition = `opacity 0.3s ease calc(${startDelay} + ${dur})`;
@@ -1053,9 +1053,9 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
 
         const tVal = document.createElementNS("http://www.w3.org/2000/svg", "text");
         tVal.setAttribute('x', endX - pillW / 2 - 6);
-        tVal.setAttribute('y', barY + 4);
+        tVal.setAttribute('y', barY + 5.5);
         tVal.setAttribute('font-family', 'Outfit');
-        tVal.setAttribute('font-size', '8.5px');
+        tVal.setAttribute('font-size', '13px');
         tVal.setAttribute('font-weight', 'bold');
         tVal.setAttribute('fill', '#ffffff');
         tVal.setAttribute('text-anchor', 'middle');
