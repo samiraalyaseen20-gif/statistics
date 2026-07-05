@@ -657,9 +657,97 @@ if (file_exists(base_path('iraq.svg'))) {
 <!-- Custom Styles for Print and 2D Arrow effects -->
 <style>
 @media print {
-    #sidebar, header, .custom-card:first-child, select, button { display: none !important; }
-    #page-reports { display: block !important; overflow: visible !important; }
-    .custom-card { border: none !important; box-shadow: none !important; page-break-inside: avoid !important; }
+    /* 1. تهيئة الجسم والـ HTML للطباعة متعددة الصفحات */
+    html, body {
+        height: auto !important;
+        min-height: auto !important;
+        overflow: visible !important;
+        position: static !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    /* 2. إخفاء الشريط الجانبي والهيدر وأزرار التصفية والتحكم وكل الكلمات الزائدة والفرعية */
+    #sidebar, 
+    header, 
+    #sidebar-backdrop,
+    #advanced-filters-panel,
+    .fixed, 
+    .glass-blob,
+    button, 
+    select, 
+    input,
+    .no-print,
+    .theme-switcher,
+    #page-reports > .custom-card:first-of-type { 
+        display: none !important; 
+    }
+    
+    /* 3. حاويات المحتوى الرئيسية */
+    .flex.h-screen, 
+    .flex-1.flex.flex-col, 
+    main,
+    .page-section {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        position: static !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* إخفاء كافة الأقسام الأخرى ما عدا التقارير */
+    .page-section:not(#page-reports) {
+        display: none !important;
+    }
+    
+    #page-reports {
+        display: block !important;
+        opacity: 1 !important;
+    }
+    
+    /* 4. تنسيق بطاقات التقارير لكي تتناسب مع صفحة A4 وتأخذ كل بطاقة صفحة مستقلة أو تنسيق مريح */
+    .custom-card {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding: 10px 0 !important;
+        margin-bottom: 25px !important;
+        page-break-inside: avoid !important; /* يمنع انقسام الجداول أو البطاقات في منتصف الصفحة */
+    }
+    
+    /* 5. تخصيص مقاس الصفحة A4 وضبط الهوامش */
+    @page {
+        size: A4 portrait;
+        margin: 1.5cm;
+    }
+    
+    /* 6. تحسين الخطوط وعرض الجداول في الطباعة */
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+    
+    th, td {
+        border: 1px solid #000000 !important;
+        padding: 6px 4px !important;
+        color: #000000 !important;
+        background: transparent !important;
+    }
+    
+    h3 {
+        color: #000000 !important;
+        font-size: 13px !important;
+        border-bottom: 2px solid #000000 !important;
+        padding-bottom: 5px !important;
+        margin-bottom: 15px !important;
+    }
+
+    svg {
+        max-width: 100% !important;
+        height: auto !important;
+    }
 }
 
 /* Arrow Growth Animation */
