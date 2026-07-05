@@ -397,7 +397,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <tbody>
                     @php
                     $classifications = ['صغرى', 'وسطى', 'كبرى', 'فوق الكبرى', 'خاصة'];
-                    $sectorsList = ['قطاع الصحة', 'عتبة الخاص', 'عتبة العام'];
+                    $sectorsList = ['صحة', 'عتبة خاص', 'عتبة عام'];
                     
                     // 1. تجميع البيانات لكل طبيب ديناميكياً
                     $dynamicD10 = $filterDoctors->map(function($doc, $index) use ($surgeriesByDoctorCatSector, $doctorOpStatsByDoctor, $classifications, $sectorsList) {
@@ -409,10 +409,6 @@ if (file_exists(base_path('iraq.svg'))) {
                         foreach ($classifications as $cls) {
                             foreach ($sectorsList as $sec) {
                                 $match = $docSurgeries->filter(function($item) use ($cls, $sec) {
-                                    if ($cls === 'وسطى') {
-                                        return (str_contains($item->classification, 'وسطى') || str_contains($item->classification, 'حقن') || str_contains($item->classification, 'ليزر')) 
-                                               && $item->sector === $sec;
-                                    }
                                     return $item->classification === $cls && $item->sector === $sec;
                                 })->sum('total');
                                 

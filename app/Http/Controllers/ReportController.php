@@ -245,7 +245,7 @@ class ReportController extends Controller
             ->map(fn($item) => (object)[
                 'doctor' => $item->doctor->name ?? '—',
                 'classification' => $item->classification,
-                'sector' => $item->sector->name ?? '—',
+                'sector' => $item->sector_key,
                 'total' => $item->quantity
             ]);
 
