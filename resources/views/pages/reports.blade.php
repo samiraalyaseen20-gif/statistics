@@ -734,6 +734,13 @@ if (file_exists(base_path('iraq.svg'))) {
                         </tfoot>
                     </table>
                 </div>
+                @if($showCopyright)
+                <div class="px-4 py-2 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-200/10 text-center no-print">
+                    <p class="text-[9px] text-slate-400 font-medium tracking-wide">
+                        جميع الحقوق محفوظة لدى المهندسة سميره علي ياسين
+                    </p>
+                </div>
+                @endif
             </div>
             @endif
             @endforeach

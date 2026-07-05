@@ -156,5 +156,9 @@ Route::middleware('auth')->group(function () {
         Route::post  ('users',                 [UserController::class, 'store']);
         Route::put   ('users/{user}/permissions', [UserController::class, 'updatePermissions']);
         Route::delete('users/{user}',          [UserController::class, 'destroy']);
+
+        // Settings
+        Route::post  ('settings',              [\App\Http\Controllers\SettingController::class, 'update']);
+        Route::get   ('settings',              [\App\Http\Controllers\SettingController::class, 'index']);
     });
 });

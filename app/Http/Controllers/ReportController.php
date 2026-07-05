@@ -16,6 +16,7 @@ use App\Models\OperationName;
 use App\Models\Sector;
 use App\Models\DoctorOperationStat;
 use App\Models\DoctorSurgeryStat;
+use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -324,6 +325,8 @@ class ReportController extends Controller
         $filterOperations   = OperationName::orderBy('display_order', 'asc')->orderBy('name', 'asc')->get();
         $filterClassifications = \App\Models\Classification::orderBy('display_order', 'asc')->orderBy('id', 'asc')->get();
 
+        $showCopyright = Setting::get('show_copyright', '1') === '1';
+
         return view('main_screen', compact(
             'consultations','visitsByDoctor','visitsByGov','visitsByCountry',
             'eyeTestsByType','labVisitCount','labTestsByType',
@@ -334,7 +337,8 @@ class ReportController extends Controller
             'year','month','start_date','end_date',
             'doctor_id','clinic_unit_id','sector_id','governorate_id','country_id',
             'filterDoctors','filterClinicUnits','filterSectors','filterGovernorates','filterCountries',
-            'filterTestTypes','filterLabTestTypes', 'filterOperations', 'filterClassifications'
+            'filterTestTypes','filterLabTestTypes', 'filterOperations', 'filterClassifications',
+            'showCopyright'
         ));
     }
 
