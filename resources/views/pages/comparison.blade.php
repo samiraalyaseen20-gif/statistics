@@ -185,10 +185,10 @@ if (file_exists(base_path('iraq.svg'))) {
                     </select>
                 </div>
             </h3>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 gap-6">
                 <div>
                     <div class="cmp-side-label-a mb-3"></div>
-                    <div class="flex justify-center"><svg id="cmp-svg-1-a" viewBox="0 0 350 200" class="w-full max-w-[320px] h-auto overflow-visible"></svg></div>
+                    <div class="flex justify-center"><svg id="cmp-svg-1-a" viewBox="0 0 700 220" class="w-full max-w-[650px] h-auto overflow-visible"></svg></div>
                     <div class="overflow-x-auto mt-3">
                         <table class="custom-table text-xs w-full"><thead><tr><th>الوحدة</th><th class="text-center">العدد</th></tr></thead>
                         <tbody id="cmp-tbl-1-a"><tr><td colspan="2" class="text-center text-slate-300 py-4 text-[10px]">في انتظار البيانات...</td></tr></tbody></table>
@@ -196,7 +196,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 </div>
                 <div>
                     <div class="cmp-side-label-b mb-3"></div>
-                    <div class="flex justify-center"><svg id="cmp-svg-1-b" viewBox="0 0 350 200" class="w-full max-w-[320px] h-auto overflow-visible"></svg></div>
+                    <div class="flex justify-center"><svg id="cmp-svg-1-b" viewBox="0 0 700 220" class="w-full max-w-[650px] h-auto overflow-visible"></svg></div>
                     <div class="overflow-x-auto mt-3">
                         <table class="custom-table text-xs w-full"><thead><tr><th>الوحدة</th><th class="text-center">العدد</th></tr></thead>
                         <tbody id="cmp-tbl-1-b"><tr><td colspan="2" class="text-center text-slate-300 py-4 text-[10px]">في انتظار البيانات...</td></tr></tbody></table>
@@ -225,7 +225,7 @@ if (file_exists(base_path('iraq.svg'))) {
                     </select>
                 </div>
             </h3>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 gap-6">
                 <div>
                     <div class="cmp-side-label-a mb-2"></div>
                     <div class="w-full overflow-x-auto py-2">
@@ -241,186 +241,7 @@ if (file_exists(base_path('iraq.svg'))) {
             </div>
         </div>
 
-        {{-- ═══ جداول 3 & 4: التوزيع الجغرافي ═══ --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {{-- داخل العراق --}}
-            <div class="custom-card p-6 rounded-2xl">
-                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                    <i data-lucide="flag" class="w-4 h-4 text-sky-500"></i>
-                    مقارنة التوزيع الجغرافي داخل العراق
-                    <span id="cmp-total-3" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
-                </h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div>
-                        <div class="cmp-side-label-a mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-3-a" viewBox="0 0 584 594" class="w-full max-w-[320px] h-[340px] overflow-visible mx-auto">
-                                <g id="cmp-svg-3-a-paths" fill="rgba(14, 165, 233, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
-                                    {!! $pathsHtml !!}
-                                </g>
-                                <g id="cmp-svg-3-a-nodes"></g>
-                            </svg>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cmp-side-label-b mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-3-b" viewBox="0 0 584 594" class="w-full max-w-[320px] h-[340px] overflow-visible mx-auto">
-                                <g id="cmp-svg-3-b-paths" fill="rgba(14, 165, 233, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
-                                    {!! $pathsHtml !!}
-                                </g>
-                                <g id="cmp-svg-3-b-nodes"></g>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- خارج العراق --}}
-            <div class="custom-card p-6 rounded-2xl">
-                <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                        المرضى من خارج العراق
-                        <span id="cmp-total-4" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
-                    </div>
-                    <div class="flex items-center gap-1.5 no-print">
-                        <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
-                        <select id="select-cmp-svg-4" data-svg-id="cmp-svg-4" onchange="changeComparisonChartStyle('cmp-svg-4', this.value);" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
-                            <option value="flat">أسهم مسطحة</option>
-                            <option value="glow">أسهم متوهجة</option>
-                            <option value="bar">أعمدة رأسية (جارت)</option>
-                            <option value="bar-h">أعمدة أفقية (جارت)</option>
-                            <option value="donut">شكل دائري (جارت)</option>
-                            <option value="area">مخطط مساحي (جارت)</option>
-                        </select>
-                    </div>
-                </h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div>
-                        <div class="cmp-side-label-a mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-4-a" viewBox="0 0 450 180" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cmp-side-label-b mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-4-b" viewBox="0 0 450 180" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-
-        {{-- ═══ جداول 8 & 9: التوزيع الجغرافي للعمليات الجراحية ═══ --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {{-- داخل العراق --}}
-            <div class="custom-card p-6 rounded-2xl">
-                <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
-                    <i data-lucide="flag" class="w-4 h-4 text-rose-500"></i>
-                    مقارنة التوزيع الجغرافي للعمليات الجراحية داخل العراق
-                    <span id="cmp-total-8" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
-                </h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div>
-                        <div class="cmp-side-label-a mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-8-a" viewBox="0 0 584 594" class="w-full max-w-[320px] h-[340px] overflow-visible mx-auto">
-                                <g id="cmp-svg-8-a-paths" fill="rgba(244, 63, 94, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
-                                    {!! $pathsHtml !!}
-                                </g>
-                                <g id="cmp-svg-8-a-nodes"></g>
-                            </svg>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cmp-side-label-b mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-8-b" viewBox="0 0 584 594" class="w-full max-w-[320px] h-[340px] overflow-visible mx-auto">
-                                <g id="cmp-svg-8-b-paths" fill="rgba(244, 63, 94, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
-                                    {!! $pathsHtml !!}
-                                </g>
-                                <g id="cmp-svg-8-b-nodes"></g>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- خارج العراق --}}
-            <div class="custom-card p-6 rounded-2xl">
-                <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
-                    <div class="flex items-center gap-2">
-                        <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                        مقارنة العمليات الجراحية للمرضى من خارج العراق
-                        <span id="cmp-total-9" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
-                    </div>
-                    <div class="flex items-center gap-1.5 no-print">
-                        <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
-                        <select id="select-cmp-svg-9" data-svg-id="cmp-svg-9" onchange="changeComparisonChartStyle('cmp-svg-9', this.value);" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
-                            <option value="flat">أسهم مسطحة</option>
-                            <option value="glow">أسهم متوهجة</option>
-                            <option value="bar">أعمدة رأسية (جارت)</option>
-                            <option value="bar-h">أعمدة أفقية (جارت)</option>
-                            <option value="donut">شكل دائري (جارت)</option>
-                            <option value="area">مخطط مساحي (جارت)</option>
-                        </select>
-                    </div>
-                </h3>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    <div>
-                        <div class="cmp-side-label-a mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-9-a" viewBox="0 0 450 180" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="cmp-side-label-b mb-2"></div>
-                        <div class="w-full overflow-x-auto py-1">
-                            <svg id="cmp-svg-9-b" viewBox="0 0 450 180" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        {{-- ═══ جدول 5: الفحوصات البصرية والساندة (مستقل - يعرض إجمالي الفترة بغض النظر عن باقي الفلاتر) ═══ --}}
-        <div class="custom-card p-6 rounded-2xl">
-            <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
-                    مقارنة البصرية والساندة
-                    <span class="text-[9px] text-slate-400 font-normal mr-1">(مستقل — يعرض الفحوصات حسب الفترة فقط)</span>
-                    <span id="cmp-total-5" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
-                </div>
-                <div class="flex items-center gap-1.5 no-print">
-                    <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
-                    <select id="select-cmp-svg-5" data-svg-id="cmp-svg-5" onchange="changeComparisonChartStyle('cmp-svg-5', this.value);" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
-                        <option value="flat">أسهم مسطحة</option>
-                        <option value="glow">أسهم متوهجة</option>
-                        <option value="bar">أعمدة رأسية (جارت)</option>
-                        <option value="bar-h">أعمدة أفقية (جارت)</option>
-                        <option value="donut">شكل دائري (جارت)</option>
-                        <option value="area">مخطط مساحي (جارت)</option>
-                    </select>
-                </div>
-            </h3>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div>
-                    <div class="cmp-side-label-a mb-2"></div>
-                    <div class="w-full overflow-x-auto py-1">
-                        <svg id="cmp-svg-5-a" viewBox="0 0 450 200" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
-                    </div>
-                </div>
-                <div>
-                    <div class="cmp-side-label-b mb-2"></div>
-                    <div class="w-full overflow-x-auto py-1">
-                        <svg id="cmp-svg-5-b" viewBox="0 0 450 200" class="w-full min-w-[300px] h-auto overflow-visible"></svg>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         {{-- ═══ جدول 7: تصنيف العمليات ═══ --}}
         <div class="custom-card p-6 rounded-2xl">
@@ -442,7 +263,7 @@ if (file_exists(base_path('iraq.svg'))) {
                     </select>
                 </div>
             </h3>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 gap-6">
                 <div>
                     <div class="cmp-side-label-a mb-3"></div>
                     <div class="flex justify-center">
@@ -486,7 +307,7 @@ if (file_exists(base_path('iraq.svg'))) {
                     </select>
                 </div>
             </h3>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 gap-6">
                 <div>
                     <div class="cmp-side-label-a mb-2"></div>
                     <div class="w-full overflow-x-auto py-2">
@@ -509,7 +330,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 مقارنة الإحصائية التفصيلية للعمليات الجراحية
                 <span id="cmp-total-detail" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
             </h3>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 gap-6">
                 {{-- Side A Detail --}}
                 <div>
                     <div class="cmp-side-label-a mb-3"></div>
@@ -518,7 +339,7 @@ if (file_exists(base_path('iraq.svg'))) {
                             <svg id="cmp-svg-detail-a" viewBox="0 0 450 50" class="w-full h-auto overflow-visible"></svg>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="custom-table text-xs w-full">
+                            <table class="custom-table text-sm w-full">
                                 <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
                                 <tbody id="cmp-tbl-detail-a"><tr><td colspan="4" class="text-center text-slate-300 py-6 text-[10px]">—</td></tr></tbody>
                             </table>
@@ -533,7 +354,7 @@ if (file_exists(base_path('iraq.svg'))) {
                             <svg id="cmp-svg-detail-b" viewBox="0 0 450 50" class="w-full h-auto overflow-visible"></svg>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="custom-table text-xs w-full">
+                            <table class="custom-table text-sm w-full">
                                 <thead><tr><th>ت</th><th>اسم العملية</th><th>التصنيف</th><th class="text-center">العدد</th></tr></thead>
                                 <tbody id="cmp-tbl-detail-b"><tr><td colspan="4" class="text-center text-slate-300 py-6 text-[10px]">—</td></tr></tbody>
                             </table>
@@ -817,7 +638,7 @@ function cmpDrawBranching(svgId, items, totalVal, colors) {
     const val2 = items[1]?.total || 0;
     const label1 = items[0]?.unit || '—';
     const label2 = items[1]?.unit || '—';
-    const cx = 260;
+    const cx = 350;
     const cy = 200;
     const col1 = colors[0] || '#3b82f6';
     const col2 = colors[1] || '#ec4899';
@@ -825,7 +646,7 @@ function cmpDrawBranching(svgId, items, totalVal, colors) {
     if (style === 'glow') {
         // ─── النمط نحيف متوهج ───
         const leftBranch = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        leftBranch.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy-50} C ${cx} ${cy-80} ${cx-60} ${cy-90} ${cx-80} ${cy-120}`);
+        leftBranch.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy-50} C ${cx} ${cy-80} ${cx-120} ${cy-90} ${cx-170} ${cy-120}`);
         leftBranch.setAttribute('fill', 'none');
         leftBranch.setAttribute('stroke', col1);
         leftBranch.setAttribute('stroke-width', '4');
@@ -834,7 +655,7 @@ function cmpDrawBranching(svgId, items, totalVal, colors) {
         svg.appendChild(leftBranch);
 
         const rightBranch = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        rightBranch.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy-50} C ${cx} ${cy-80} ${cx+60} ${cy-90} ${cx+80} ${cy-120}`);
+        rightBranch.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy-50} C ${cx} ${cy-80} ${cx+120} ${cy-90} ${cx+170} ${cy-120}`);
         rightBranch.setAttribute('fill', 'none');
         rightBranch.setAttribute('stroke', col2);
         rightBranch.setAttribute('stroke-width', '4');
@@ -877,8 +698,8 @@ function cmpDrawBranching(svgId, items, totalVal, colors) {
             svg.appendChild(lbl);
         };
 
-        createCircularBadge(cx - 80, cy - 120, val1.toLocaleString(), label1, col1);
-        createCircularBadge(cx + 80, cy - 120, val2.toLocaleString(), label2, col2);
+        createCircularBadge(cx - 170, cy - 120, val1.toLocaleString(), label1, col1);
+        createCircularBadge(cx + 170, cy - 120, val2.toLocaleString(), label2, col2);
 
         const totalStr = totalVal.toLocaleString();
         const r = Math.max(15, totalStr.length * 5 + 4);
@@ -913,24 +734,24 @@ function cmpDrawBranching(svgId, items, totalVal, colors) {
         svg.appendChild(defs);
 
         const leftPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        leftPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        leftPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-110} ${cy-90} ${cx-160} ${cy-105} L ${cx-170} ${cy-97} L ${cx-155} ${cy-125} L ${cx-127} ${cy-107} L ${cx-137} ${cy-112} C ${cx-80} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
         leftPath.setAttribute('fill', col1);
         leftPath.setAttribute('filter', `url(#shadow-branch-${svgId})`);
         svg.appendChild(leftPath);
 
         const leftSide = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        leftSide.setAttribute('d', `M ${cx-5} ${cy} L ${cx-5} ${cy-50} C ${cx-5} ${cy-90} ${cx-35} ${cy-100} ${cx-47} ${cy-112} L ${cx-40} ${cy-115} C ${cx-28} ${cy-102} M ${cx} ${cy}`);
+        leftSide.setAttribute('d', `M ${cx-5} ${cy} L ${cx-5} ${cy-50} C ${cx-5} ${cy-90} ${cx-70} ${cy-100} ${cx-137} ${cy-112} L ${cx-130} ${cy-115} C ${cx-68} ${cy-102} M ${cx} ${cy}`);
         leftSide.setAttribute('fill', adjustBrightness(col1, -25));
         svg.appendChild(leftSide);
 
         const rightPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        rightPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        rightPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-110} ${cy-90} ${cx-160} ${cy-105} L ${cx-170} ${cy-97} L ${cx-155} ${cy-125} L ${cx-127} ${cy-107} L ${cx-137} ${cy-112} C ${cx-80} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
         rightPath.setAttribute('fill', col2);
         rightPath.setAttribute('transform', `translate(${cx}, 0) scale(-1, 1) translate(-${cx}, 0)`);
         rightPath.setAttribute('filter', `url(#shadow-branch-${svgId})`);
         svg.appendChild(rightPath);
 
-        [[val1, label1, cx-80, col1],[val2, label2, cx+80, col2]].forEach(([v,l,bx,bc]) => {
+        [[val1, label1, cx-170, col1],[val2, label2, cx+170, col2]].forEach(([v,l,bx,bc]) => {
             const s = `${l.replace('استشارية ', '')}: ${v.toLocaleString()}`;
             const bw = s.length*8.5+16;
             const b = document.createElementNS("http://www.w3.org/2000/svg","rect");
@@ -965,12 +786,12 @@ function cmpDrawBranching(svgId, items, totalVal, colors) {
     } else {
         // ─── النمط الافتراضي المسطح ───
         const leftPath = document.createElementNS("http://www.w3.org/2000/svg","path");
-        leftPath.setAttribute('d',`M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        leftPath.setAttribute('d',`M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-110} ${cy-90} ${cx-160} ${cy-105} L ${cx-170} ${cy-97} L ${cx-155} ${cy-125} L ${cx-127} ${cy-107} L ${cx-137} ${cy-112} C ${cx-80} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
         leftPath.setAttribute('fill', col1);
         svg.appendChild(leftPath);
 
         const rightPath = document.createElementNS("http://www.w3.org/2000/svg","path");
-        rightPath.setAttribute('d',`M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        rightPath.setAttribute('d',`M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-110} ${cy-90} ${cx-160} ${cy-105} L ${cx-170} ${cy-97} L ${cx-155} ${cy-125} L ${cx-127} ${cy-107} L ${cx-137} ${cy-112} C ${cx-80} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
         rightPath.setAttribute('fill', col2);
         rightPath.setAttribute('transform',`translate(${cx},0) scale(-1,1) translate(-${cx},0)`);
         svg.appendChild(rightPath);
@@ -989,7 +810,7 @@ function cmpDrawBranching(svgId, items, totalVal, colors) {
         tt.setAttribute('text-anchor','middle'); tt.textContent = totalStr;
         svg.appendChild(tt);
 
-        [[val1, label1, cx-80, col1],[val2, label2, cx+80, col2]].forEach(([v,l,bx,bc]) => {
+        [[val1, label1, cx-170, col1],[val2, label2, cx+170, col2]].forEach(([v,l,bx,bc]) => {
             const s = `${l.replace('استشارية ', '')}: ${v.toLocaleString()}`;
             const bw = s.length*8.5+16;
             const b = document.createElementNS("http://www.w3.org/2000/svg","rect");
@@ -1746,36 +1567,6 @@ function renderAllCmpCharts(data, labelA, labelB) {
     cmpWatchChart('cmp-svg-2-a', () => drawComparisonToggleChart('cmp-svg-2-a', 'bar', () => cmpDrawVertical('cmp-svg-2-a', vdA.map(r => r.total), vdA.map(r => r.doctor.replace('د. ','')), CMP_COLORS_A), vdA.map(r => r.total), vdA.map(r => r.doctor.replace('د. ','')), 'المرضى', CMP_COLORS_A));
     cmpWatchChart('cmp-svg-2-b', () => drawComparisonToggleChart('cmp-svg-2-b', 'bar', () => cmpDrawVertical('cmp-svg-2-b', vdB.map(r => r.total), vdB.map(r => r.doctor.replace('د. ','')), CMP_COLORS_B), vdB.map(r => r.total), vdB.map(r => r.doctor.replace('د. ','')), 'المرضى', CMP_COLORS_B));
 
-    // ─ جدول 3: داخل العراق ─
-    const gvA = A.visits_by_gov || [];
-    const gvB = B.visits_by_gov || [];
-    cmpWatchChart('cmp-svg-3-a', () => cmpDrawIraqMap('cmp-svg-3-a', gvA.map(r => r.total), gvA.map(r => r.gov), '#3b82f6'));
-    cmpWatchChart('cmp-svg-3-b', () => cmpDrawIraqMap('cmp-svg-3-b', gvB.map(r => r.total), gvB.map(r => r.gov), '#f43f5e'));
-
-    // ─ جدول 4: خارج العراق ─
-    const cvA = A.visits_by_country || [];
-    const cvB = B.visits_by_country || [];
-    cmpWatchChart('cmp-svg-4-a', () => drawComparisonToggleChart('cmp-svg-4-a', 'bar-h', () => cmpDrawChevrons('cmp-svg-4-a', cvA.map(r => r.total), cvA.map(r => r.country), CMP_COLORS_A), cvA.map(r => r.total), cvA.map(r => r.country), 'الدول', CMP_COLORS_A));
-    cmpWatchChart('cmp-svg-4-b', () => drawComparisonToggleChart('cmp-svg-4-b', 'bar-h', () => cmpDrawChevrons('cmp-svg-4-b', cvB.map(r => r.total), cvB.map(r => r.country), CMP_COLORS_B), cvB.map(r => r.total), cvB.map(r => r.country), 'الدول', CMP_COLORS_B));
-
-    // ─ جدول 8: داخل العراق (عمليات) ─
-    const sgA = A.surgeries_by_gov || [];
-    const sgB = B.surgeries_by_gov || [];
-    cmpWatchChart('cmp-svg-8-a', () => cmpDrawIraqMap('cmp-svg-8-a', sgA.map(r => r.total), sgA.map(r => r.gov), '#3b82f6'));
-    cmpWatchChart('cmp-svg-8-b', () => cmpDrawIraqMap('cmp-svg-8-b', sgB.map(r => r.total), sgB.map(r => r.gov), '#f43f5e'));
-
-    // ─ جدول 9: خارج العراق (عمليات) ─
-    const scgA = A.surgeries_by_country || [];
-    const scgB = B.surgeries_by_country || [];
-    cmpWatchChart('cmp-svg-9-a', () => drawComparisonToggleChart('cmp-svg-9-a', 'bar-h', () => cmpDrawChevrons('cmp-svg-9-a', scgA.map(r => r.total), scgA.map(r => r.country), CMP_COLORS_A), scgA.map(r => r.total), scgA.map(r => r.country), 'الدول', CMP_COLORS_A));
-    cmpWatchChart('cmp-svg-9-b', () => drawComparisonToggleChart('cmp-svg-9-b', 'bar-h', () => cmpDrawChevrons('cmp-svg-9-b', scgB.map(r => r.total), scgB.map(r => r.country), CMP_COLORS_B), scgB.map(r => r.total), scgB.map(r => r.country), 'الدول', CMP_COLORS_B));
-
-    // ─ جدول 5: الفحوصات البصرية والساندة (مستقل — حسب الفترة فقط) ─
-    const etA = A.eye_tests_by_type || [];
-    const etB = B.eye_tests_by_type || [];
-    cmpWatchChart('cmp-svg-5-a', () => drawComparisonToggleChart('cmp-svg-5-a', 'bar-h', () => cmpDrawChevrons('cmp-svg-5-a', etA.map(r => r.total), etA.map(r => r.type), ['#f97316','#ea580c','#c2410c','#9a3412','#7c2d12']), etA.map(r => r.total), etA.map(r => r.type), 'الفحوصات', ['#f97316','#ea580c','#c2410c','#9a3412','#7c2d12']));
-    cmpWatchChart('cmp-svg-5-b', () => drawComparisonToggleChart('cmp-svg-5-b', 'bar-h', () => cmpDrawChevrons('cmp-svg-5-b', etB.map(r => r.total), etB.map(r => r.type), ['#e11d48','#be123c','#9f1239','#881337','#4c0519']), etB.map(r => r.total), etB.map(r => r.type), 'الفحوصات', ['#e11d48','#be123c','#9f1239','#881337','#4c0519']));
-
     // ─ جدول 7: تصنيف العمليات ─
     const scA = A.surgeries_by_cat || [];
     const scB = B.surgeries_by_cat || [];
@@ -1822,13 +1613,7 @@ function renderAllCmpCharts(data, labelA, labelB) {
     };
     cmpSetTotal('cmp-total-1',  A.total_visits,    B.total_visits);
     cmpSetTotal('cmp-total-2',  A.total_visits,    B.total_visits);
-    cmpSetTotal('cmp-total-3',  (A.visits_by_gov    || []).reduce((s,r)=>s+r.total,0), (B.visits_by_gov    || []).reduce((s,r)=>s+r.total,0));
-    cmpSetTotal('cmp-total-4',  (A.visits_by_country|| []).reduce((s,r)=>s+r.total,0), (B.visits_by_country|| []).reduce((s,r)=>s+r.total,0));
-    cmpSetTotal('cmp-total-5',  A.total_eye_tests,  B.total_eye_tests);
-
     cmpSetTotal('cmp-total-7',  A.total_surgeries,  B.total_surgeries);
-    cmpSetTotal('cmp-total-8',  (A.surgeries_by_gov    || []).reduce((s,r)=>s+r.total,0), (B.surgeries_by_gov    || []).reduce((s,r)=>s+r.total,0));
-    cmpSetTotal('cmp-total-9',  (A.surgeries_by_country|| []).reduce((s,r)=>s+r.total,0), (B.surgeries_by_country|| []).reduce((s,r)=>s+r.total,0));
     cmpSetTotal('cmp-total-10', A.total_surgeries,  B.total_surgeries);
     cmpSetTotal('cmp-total-detail', A.total_surgeries, B.total_surgeries);
 

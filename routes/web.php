@@ -31,16 +31,19 @@ Route::middleware('auth')->group(function () {
         // Countries
         Route::get   ('countries',             [LookupController::class, 'countriesIndex']);
         Route::post  ('countries',             [LookupController::class, 'countriesStore']);
+        Route::put   ('countries/{country}',   [LookupController::class, 'countriesUpdate']);
         Route::delete('countries/{country}',   [LookupController::class, 'countriesDestroy']);
 
         // Governorates
         Route::get   ('governorates',              [LookupController::class, 'governoratesIndex']);
         Route::post  ('governorates',              [LookupController::class, 'governoratesStore']);
+        Route::put   ('governorates/{governorate}',[LookupController::class, 'governoratesUpdate']);
         Route::delete('governorates/{governorate}',[LookupController::class, 'governoratesDestroy']);
 
         // Test Types
         Route::get   ('test-types',              [LookupController::class, 'testTypesIndex']);
         Route::post  ('test-types',              [LookupController::class, 'testTypesStore']);
+        Route::put   ('test-types/{testType}',   [LookupController::class, 'testTypesUpdate']);
         Route::delete('test-types/{testType}',   [LookupController::class, 'testTypesDestroy']);
 
         // Operation Names
@@ -58,16 +61,19 @@ Route::middleware('auth')->group(function () {
         // Sectors
         Route::get   ('sectors',           [LookupController::class, 'sectorsIndex']);
         Route::post  ('sectors',           [LookupController::class, 'sectorsStore']);
+        Route::put   ('sectors/{sector}',  [LookupController::class, 'sectorsUpdate']);
         Route::delete('sectors/{sector}',  [LookupController::class, 'sectorsDestroy']);
 
         // Clinic Units
         Route::get   ('clinic-units',                [LookupController::class, 'clinicUnitsIndex']);
         Route::post  ('clinic-units',                [LookupController::class, 'clinicUnitsStore']);
+        Route::put   ('clinic-units/{clinicUnit}',   [LookupController::class, 'clinicUnitsUpdate']);
         Route::delete('clinic-units/{clinicUnit}',   [LookupController::class, 'clinicUnitsDestroy']);
 
         // Lab Test Types
         Route::get   ('lab-test-types',               [LookupController::class, 'labTestTypesIndex']);
         Route::post  ('lab-test-types',               [LookupController::class, 'labTestTypesStore']);
+        Route::put   ('lab-test-types/{labTestType}',[LookupController::class, 'labTestTypesUpdate']);
         Route::delete('lab-test-types/{labTestType}', [LookupController::class, 'labTestTypesDestroy']);
 
         // Entry API

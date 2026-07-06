@@ -12,7 +12,7 @@
 
     <div class="custom-card p-6 rounded-2xl">
         <div class="overflow-x-auto"><table class="custom-table text-xs" id="tbl-operations">
-            <thead><tr><th class="w-8">ت</th><th>اسم العملية</th><th class="text-center w-24">تسلسل العرض</th><th class="text-center w-20">حذف</th></tr></thead>
+            <thead><tr><th class="w-8">ت</th><th>اسم العملية</th><th class="text-center w-24">تسلسل العرض</th><th class="text-center w-20">تعديل</th><th class="text-center w-20">حذف</th></tr></thead>
             <tbody id="tbody-operations"></tbody>
         </table></div>
     </div>
@@ -23,14 +23,21 @@ async function loadOps() {
     const data = await apiFetch('/api/operation-names');
     const tb = document.getElementById('tbody-operations');
     if(!tb) return;
-    if(!data?.length) { tb.innerHTML = `<tr><td colspan="4" class="text-center py-6 text-text-main opacity-40 text-xs">لا توجد بيانات بعد</td></tr>`; return; }
+    if(!data?.length) { tb.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-text-main opacity-40 text-xs">لا توجد بيانات بعد</td></tr>`; return; }
     tb.innerHTML = data.map((d,i)=>`<tr class="table-row">
         <td class="text-center">${i+1}</td>
-        <td class="font-bold">${d.name}</td>
+        <td class="font-bold">
+            <input type="text" id="op-name-${d.id}" value="${d.name}" disabled
+                class="w-full bg-transparent border-b border-transparent focus:border-violet-500 focus:outline-none px-2 py-1 text-text-main font-bold disabled:opacity-90 disabled:cursor-not-allowed">
+        </td>
         <td class="text-center">
-            <input type="number" value="${d.display_order || 0}" 
-                class="w-16 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main op-order-input" 
-                onchange="updateOp(${d.id}, '${d.name}', this.value)">
+            <input type="number" id="op-order-${d.id}" value="${d.display_order || 0}" disabled
+                class="w-16 text-center custom-inset border-none focus:outline-none rounded-lg py-1 px-1.5 font-bold text-text-main op-order-input disabled:opacity-90 disabled:cursor-not-allowed" >
+        </td>
+        <td class="text-center">
+            <button onclick="toggleEditOp(${d.id})" id="btn-edit-op-${d.id}" class="w-7 h-7 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center mx-auto hover-press">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+            </button>
         </td>
         <td class="text-center">
             <button onclick="deleteOp(${d.id})" class="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center mx-auto hover-press">
@@ -40,6 +47,35 @@ async function loadOps() {
     </tr>`).join('');
 }
 
+function toggleEditOp(id) {
+    const inputName = document.getElementById(`op-name-${id}`);
+    const inputOrder = document.getElementById(`op-order-${id}`);
+    const btn = document.getElementById(`btn-edit-op-${id}`);
+    if (!inputName || !btn) return;
+
+    if (inputName.hasAttribute('disabled')) {
+        inputName.removeAttribute('disabled');
+        if (inputOrder) inputOrder.removeAttribute('disabled');
+        inputName.focus();
+        btn.classList.remove('bg-amber-100', 'text-amber-600');
+        btn.classList.add('bg-emerald-100', 'text-emerald-600');
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`;
+    } else {
+        const name = inputName.value.trim();
+        const order = inputOrder ? parseInt(inputOrder.value) || 0 : 0;
+        if (!name) {
+            showToast('الرجاء كتابة اسم العملية', 'error');
+            return;
+        }
+        updateOp(id, name, order);
+        inputName.setAttribute('disabled', 'true');
+        if (inputOrder) inputOrder.setAttribute('disabled', 'true');
+        btn.classList.remove('bg-emerald-100', 'text-emerald-600');
+        btn.classList.add('bg-amber-100', 'text-amber-600');
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>`;
+    }
+}
+
 async function updateOp(id, name, order) {
     try {
         await apiFetch(`/api/operation-names/${id}`, 'PUT', {
@@ -47,7 +83,6 @@ async function updateOp(id, name, order) {
             display_order: parseInt(order) || 0
         });
         showToast('تم تحديث العملية بنجاح');
-        loadOps();
     } catch (e) {
         showToast('فشل تحديث العملية', 'error');
     }

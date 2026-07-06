@@ -58,6 +58,12 @@ class LookupController extends Controller
         $this->checkPermission();
         $country->delete(); return response()->json(['ok'=>true]);
     }
+    public function countriesUpdate(Request $r, Country $country) {
+        $this->checkPermission();
+        $r->validate(['name'=>'required|string|max:255|unique:countries,name,' . $country->id]);
+        $country->update(['name'=>$r->name]);
+        return response()->json($country);
+    }
 
     // ========== GOVERNORATES ==========
     public function governoratesIndex()  { return response()->json(Governorate::all()); }
@@ -70,6 +76,12 @@ class LookupController extends Controller
         $this->checkPermission();
         $governorate->delete(); return response()->json(['ok'=>true]);
     }
+    public function governoratesUpdate(Request $r, Governorate $governorate) {
+        $this->checkPermission();
+        $r->validate(['name'=>'required|string|max:255|unique:governorates,name,' . $governorate->id]);
+        $governorate->update(['name'=>$r->name]);
+        return response()->json($governorate);
+    }
 
     // ========== TEST TYPES ==========
     public function testTypesIndex()  { return response()->json(TestType::all()); }
@@ -81,6 +93,12 @@ class LookupController extends Controller
     public function testTypesDestroy(TestType $testType) {
         $this->checkPermission();
         $testType->delete(); return response()->json(['ok'=>true]);
+    }
+    public function testTypesUpdate(Request $r, TestType $testType) {
+        $this->checkPermission();
+        $r->validate(['name'=>'required|string|max:255|unique:test_types,name,' . $testType->id]);
+        $testType->update(['name'=>$r->name]);
+        return response()->json($testType);
     }
 
     // ========== OPERATION NAMES ==========
@@ -128,6 +146,12 @@ class LookupController extends Controller
         $this->checkPermission();
         $sector->delete(); return response()->json(['ok'=>true]);
     }
+    public function sectorsUpdate(Request $r, Sector $sector) {
+        $this->checkPermission();
+        $r->validate(['name'=>'required|string|max:255|unique:sectors,name,' . $sector->id]);
+        $sector->update(['name'=>$r->name]);
+        return response()->json($sector);
+    }
 
     // ========== CLINIC UNITS ==========
     public function clinicUnitsIndex()  { return response()->json(ClinicUnit::all()); }
@@ -140,6 +164,12 @@ class LookupController extends Controller
         $this->checkPermission();
         $clinicUnit->delete(); return response()->json(['ok'=>true]);
     }
+    public function clinicUnitsUpdate(Request $r, ClinicUnit $clinicUnit) {
+        $this->checkPermission();
+        $r->validate(['name'=>'required|string|max:255|unique:clinic_units,name,' . $clinicUnit->id]);
+        $clinicUnit->update(['name'=>$r->name]);
+        return response()->json($clinicUnit);
+    }
 
     // ========== LAB TEST TYPES ==========
     public function labTestTypesIndex()  { return response()->json(LabTestType::all()); }
@@ -151,6 +181,12 @@ class LookupController extends Controller
     public function labTestTypesDestroy(LabTestType $labTestType) {
         $this->checkPermission();
         $labTestType->delete(); return response()->json(['ok'=>true]);
+    }
+    public function labTestTypesUpdate(Request $r, LabTestType $labTestType) {
+        $this->checkPermission();
+        $r->validate(['name'=>'required|string|max:255|unique:lab_test_types,name,' . $labTestType->id]);
+        $labTestType->update(['name'=>$r->name]);
+        return response()->json($labTestType);
     }
 
     // ========== CLASSIFICATIONS ==========

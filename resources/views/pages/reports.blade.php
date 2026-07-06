@@ -148,10 +148,10 @@ if (file_exists(base_path('iraq.svg'))) {
                 </select>
             </div>
         </h3>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div class="grid grid-cols-1 gap-8">
             <!-- Branching/Split Arrow Infographic -->
             <div class="flex justify-center">
-                <svg id="svg-report-1" viewBox="0 0 520 220" class="w-full max-w-[480px] h-[220px] overflow-visible"></svg>
+                <svg id="svg-report-1" viewBox="0 0 700 220" class="w-full max-w-[650px] h-[220px] overflow-visible"></svg>
             </div>
             <!-- Data Table -->
             <div>
@@ -201,7 +201,7 @@ if (file_exists(base_path('iraq.svg'))) {
     </div>
 
     <!-- 3. التوزيع الديمغرافي لمراجعي الاستشاريات (جدول 3 و 4) -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 gap-6">
         <!-- Inside Iraq (Vertical Columns) -->
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
@@ -245,7 +245,7 @@ if (file_exists(base_path('iraq.svg'))) {
     </div>
 
     <!-- 4. الفحوصات البصرية والتحاليل المختبرية (جدول 5 و 6) -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 gap-6">
         <!-- Visual Tests (Horizontal Chevrons) -->
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
@@ -317,13 +317,13 @@ if (file_exists(base_path('iraq.svg'))) {
                 </select>
             </div>
         </h3>
-        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 items-center">
+        <div class="grid grid-cols-1 gap-8">
             <!-- 2D Arrow Columns -->
-            <div class="xl:col-span-1 flex justify-center">
+            <div class="w-full flex justify-center">
                 <svg id="svg-report-7" viewBox="0 0 520 220" class="w-full max-w-[420px] h-[220px] overflow-visible"></svg>
             </div>
             <!-- Dynamic Table from database metadata, filled via AJAX -->
-            <div class="xl:col-span-2">
+            <div class="w-full">
                 <div id="table7-loading" class="text-center text-xs text-slate-400 py-6">
                     <i data-lucide="loader" class="w-4 h-4 inline animate-spin mr-1"></i> جاري تحميل بيانات التصنيف...
                 </div>
@@ -390,17 +390,17 @@ if (file_exists(base_path('iraq.svg'))) {
                                 @foreach($orderedSectors7 as $s)
                                     <td class="font-bold table7-cell opacity-30" data-cls="{{ $c->name }}" data-sec="{{ $s->name }}">0</td>
                                 @endforeach
-                                <td class="font-extrabold text-pink-600 text-xs table7-row-total">0</td>
+                                <td class="font-extrabold text-pink-600 text-sm table7-row-total">0</td>
                             </tr>
                         @endforeach
                         
                         <!-- Totals Row -->
-                        <tr class="table-row font-extrabold text-rose-600 text-xs" id="table7-totals-row">
+                        <tr class="table-row font-extrabold text-rose-600 text-sm" id="table7-totals-row">
                             <td class="text-right pr-3 text-sm">المجموع</td>
                             @foreach($orderedSectors7 as $s)
                                 <td class="bg-slate-100/5 table7-col-total" data-sec="{{ $s->name }}">0</td>
                             @endforeach
-                            <td class="text-sm font-black text-pink-600" id="table7-grand-total">0</td>
+                            <td class="text-base font-black text-pink-600" id="table7-grand-total">0</td>
                         </tr>
                     </tbody>
                 </table>
@@ -412,7 +412,7 @@ if (file_exists(base_path('iraq.svg'))) {
 
     <!-- التوزيع الجغرافي للعمليات الجراحية (جدول 8 و 9) -->
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 gap-6">
         <!-- Inside Iraq (Vertical Columns) -->
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
@@ -479,7 +479,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <svg id="svg-report-10" viewBox="0 0 900 240" class="w-full min-w-[850px] h-[240px] overflow-visible"></svg>
         </div>
         <div class="overflow-x-auto">
-            <table class="custom-table text-center" style="font-size:10px; min-width:850px">
+            <table class="custom-table text-center text-xs" style="min-width:850px">
                 <thead>
                     <tr>
                         <th rowspan="2" class="w-6">ت</th>
@@ -581,9 +581,9 @@ if (file_exists(base_path('iraq.svg'))) {
                             @endif
                         </td>
                         @foreach($doc['vals'] as $v)
-                        <td class="{{ $v == 0 ? 'opacity-20' : '' }}">{{ $v }}</td>
+                        <td class="{{ $v == 0 ? 'opacity-20' : 'font-bold' }}">{{ $v }}</td>
                         @endforeach
-                        <td class="font-extrabold text-theme-pink text-xs">{{ $doc['total'] }}</td>
+                        <td class="font-black text-theme-pink text-sm">{{ $doc['total'] }}</td>
                     </tr>
                     @empty
                     <tr>
@@ -592,12 +592,12 @@ if (file_exists(base_path('iraq.svg'))) {
                     @endforelse
 
                     @if($dynamicD10->count() > 0)
-                    <tr class="table-row font-extrabold text-rose-600 text-xs">
+                    <tr class="table-row font-extrabold text-rose-600 text-sm">
                         <td colspan="2" class="text-right pr-2">المجموع</td>
                         @foreach($columnTotals as $total)
-                        <td>{{ $total }}</td>
+                        <td class="font-bold">{{ $total }}</td>
                         @endforeach
-                        <td class="text-sm font-black">{{ number_format($grandTotal) }}</td>
+                        <td class="text-base font-black">{{ number_format($grandTotal) }}</td>
                     </tr>
                     @endif
                 </tbody>
@@ -632,12 +632,12 @@ if (file_exists(base_path('iraq.svg'))) {
                 <h4 class="text-xs font-bold text-slate-800">إجمالي أعداد العمليات المنفذة حسب النوع</h4>
                 <span class="text-xs font-bold text-white bg-violet-500 px-4 py-1 rounded-full">{{ $grandDetailTotal }} عملية</span>
             </div>
-            <div class="flex flex-col lg:flex-row gap-6 items-start">
-                <div class="w-full lg:w-2/5 flex-shrink-0">
-                    <svg id="svg-doc-all" viewBox="0 0 450 200" class="w-full h-auto overflow-visible"></svg>
+            <div class="flex flex-col gap-8 items-center">
+                <div class="w-full flex justify-center">
+                    <svg id="svg-doc-all" viewBox="0 0 450 200" class="w-full max-w-[480px] h-auto overflow-visible"></svg>
                 </div>
-                <div class="w-full lg:w-3/5">
-                    <table class="custom-table text-xs">
+                <div class="w-full">
+                    <table class="custom-table text-sm">
                         <thead><tr><th>ت</th><th class="text-right pr-3">اسم العملية</th><th>التصنيف</th><th class="text-center font-bold">العدد</th></tr></thead>
                         <tbody>
                             @forelse($combinedDetailedOps as $i => $op)
@@ -682,7 +682,7 @@ if (file_exists(base_path('iraq.svg'))) {
     <div class="custom-card p-6 rounded-2xl">
         <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
             <i data-lucide="table-2" class="w-4 h-4 text-violet-500"></i>
-            جدول (10): العمليات التفصيلية لكل طبيب حسب النوع
+            العمليات التفصيلية لكل طبيب حسب النوع
         </h3>
 
         @if($detailSource && $detailSource->count() > 0)
@@ -704,7 +704,7 @@ if (file_exists(base_path('iraq.svg'))) {
                     <span class="inline-block px-3 py-0.5 bg-violet-500 text-white rounded-full font-black text-[10px]">{{ number_format($docTotal) }} عملية</span>
                 </div>
                 <div class="overflow-x-auto">
-                    <table class="custom-table text-xs w-full">
+                    <table class="custom-table text-sm w-full">
                         <thead>
                             <tr>
                                 <th class="w-8">ت</th>
@@ -1303,14 +1303,14 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
 
     const style = localStorage.getItem('arrow_style_' + svgId) || 'flat';
     
-    const cx = 260;
+    const cx = 350;
     const cy = 200;
 
     if (style === 'glow') {
         // ─── النمط نحيف متوهج للتفرع ───
         // رسم الجذع النحيف المتفرع
         const leftBranch = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        leftBranch.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy-50} C ${cx} ${cy-80} ${cx-60} ${cy-90} ${cx-80} ${cy-120}`);
+        leftBranch.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy-50} C ${cx} ${cy-80} ${cx-120} ${cy-90} ${cx-170} ${cy-120}`);
         leftBranch.setAttribute('fill', 'none');
         leftBranch.setAttribute('stroke', '#0284c7');
         leftBranch.setAttribute('stroke-width', '4');
@@ -1319,7 +1319,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
         svg.appendChild(leftBranch);
 
         const rightBranch = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        rightBranch.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy-50} C ${cx} ${cy-80} ${cx+60} ${cy-90} ${cx+80} ${cy-120}`);
+        rightBranch.setAttribute('d', `M ${cx} ${cy} L ${cx} ${cy-50} C ${cx} ${cy-80} ${cx+120} ${cy-90} ${cx+170} ${cy-120}`);
         rightBranch.setAttribute('fill', 'none');
         rightBranch.setAttribute('stroke', '#db2777');
         rightBranch.setAttribute('stroke-width', '4');
@@ -1363,8 +1363,8 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
             svg.appendChild(lbl);
         };
 
-        createCircularBadge(cx - 80, cy - 120, val1.toLocaleString(), label1, '#0284c7');
-        createCircularBadge(cx + 80, cy - 120, val2.toLocaleString(), label2, '#db2777');
+        createCircularBadge(cx - 170, cy - 120, val1.toLocaleString(), label1, '#0284c7');
+        createCircularBadge(cx + 170, cy - 120, val2.toLocaleString(), label2, '#db2777');
 
         // شارة المجموع في الأسفل
         const totalValStr = totalVal.toLocaleString();
@@ -1401,20 +1401,20 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
 
         // الفرع الأيسر
         const leftPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        leftPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        leftPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-110} ${cy-90} ${cx-160} ${cy-105} L ${cx-170} ${cy-97} L ${cx-155} ${cy-125} L ${cx-127} ${cy-107} L ${cx-137} ${cy-112} C ${cx-80} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
         leftPath.setAttribute('fill', '#0284c7');
         leftPath.setAttribute('filter', `url(#shadow-branch-${svgId})`);
         svg.appendChild(leftPath);
 
         // واجهة مجسمة للفرع الأيسر
         const leftSide = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        leftSide.setAttribute('d', `M ${cx-5} ${cy} L ${cx-5} ${cy-50} C ${cx-5} ${cy-90} ${cx-35} ${cy-100} ${cx-47} ${cy-112} L ${cx-40} ${cy-115} C ${cx-28} ${cy-102} M ${cx} ${cy}`);
+        leftSide.setAttribute('d', `M ${cx-5} ${cy} L ${cx-5} ${cy-50} C ${cx-5} ${cy-90} ${cx-70} ${cy-100} ${cx-137} ${cy-112} L ${cx-130} ${cy-115} C ${cx-68} ${cy-102} M ${cx} ${cy}`);
         leftSide.setAttribute('fill', '#015f90');
         svg.appendChild(leftSide);
 
         // الفرع الأيمن
         const rightPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        rightPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        rightPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-110} ${cy-90} ${cx-160} ${cy-105} L ${cx-170} ${cy-97} L ${cx-155} ${cy-125} L ${cx-127} ${cy-107} L ${cx-137} ${cy-112} C ${cx-80} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
         rightPath.setAttribute('fill', '#db2777');
         rightPath.setAttribute('transform', `translate(${cx}, 0) scale(-1, 1) translate(-${cx}, 0)`);
         rightPath.setAttribute('filter', `url(#shadow-branch-${svgId})`);
@@ -1424,7 +1424,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
         const label1Text = `${label1}: ${val1.toLocaleString()}`;
         const badge1W = label1Text.length * 8.5 + 16;
         const badge1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        badge1.setAttribute('x', cx - 80 - badge1W / 2);
+        badge1.setAttribute('x', cx - 170 - badge1W / 2);
         badge1.setAttribute('y', cy - 148);
         badge1.setAttribute('width', badge1W);
         badge1.setAttribute('height', '24');
@@ -1434,7 +1434,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
         svg.appendChild(badge1);
 
         const tVal1 = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tVal1.setAttribute('x', cx - 80);
+        tVal1.setAttribute('x', cx - 170);
         tVal1.setAttribute('y', cy - 131);
         tVal1.setAttribute('font-family', 'Tajawal');
         tVal1.setAttribute('font-size', '13px');
@@ -1447,7 +1447,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
         const label2Text = `${label2}: ${val2.toLocaleString()}`;
         const badge2W = label2Text.length * 8.5 + 16;
         const badge2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        badge2.setAttribute('x', cx + 80 - badge2W / 2);
+        badge2.setAttribute('x', cx + 170 - badge2W / 2);
         badge2.setAttribute('y', cy - 148);
         badge2.setAttribute('width', badge2W);
         badge2.setAttribute('height', '24');
@@ -1457,7 +1457,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
         svg.appendChild(badge2);
 
         const tVal2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tVal2.setAttribute('x', cx + 80);
+        tVal2.setAttribute('x', cx + 170);
         tVal2.setAttribute('y', cy - 131);
         tVal2.setAttribute('font-family', 'Tajawal');
         tVal2.setAttribute('font-size', '13px');
@@ -1493,12 +1493,12 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
     } else {
         // ─── النمط الافتراضي (Classic Split Arrow) ───
         const leftPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        leftPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        leftPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-110} ${cy-90} ${cx-160} ${cy-105} L ${cx-170} ${cy-97} L ${cx-155} ${cy-125} L ${cx-127} ${cy-107} L ${cx-137} ${cy-112} C ${cx-80} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
         leftPath.setAttribute('fill', '#0284c7');
         svg.appendChild(leftPath);
 
         const rightPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        rightPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-50} ${cy-90} ${cx-70} ${cy-105} L ${cx-80} ${cy-97} L ${cx-65} ${cy-125} L ${cx-37} ${cy-107} L ${cx-47} ${cy-112} C ${cx-35} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
+        rightPath.setAttribute('d', `M ${cx-15} ${cy} L ${cx-15} ${cy-50} C ${cx-15} ${cy-80} ${cx-110} ${cy-90} ${cx-160} ${cy-105} L ${cx-170} ${cy-97} L ${cx-155} ${cy-125} L ${cx-127} ${cy-107} L ${cx-137} ${cy-112} C ${cx-80} ${cy-100} ${cx-5} ${cy-90} ${cx-5} ${cy-50} L ${cx-5} ${cy} Z`);
         rightPath.setAttribute('fill', '#db2777');
         rightPath.setAttribute('transform', `translate(${cx}, 0) scale(-1, 1) translate(-${cx}, 0)`);
         svg.appendChild(rightPath);
@@ -1528,7 +1528,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
         const label1Text = `${label1}: ${val1.toLocaleString()}`;
         const badge1W = label1Text.length * 8.5 + 16;
         const badge1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        badge1.setAttribute('x', cx - 80 - badge1W / 2);
+        badge1.setAttribute('x', cx - 170 - badge1W / 2);
         badge1.setAttribute('y', cy - 148);
         badge1.setAttribute('width', badge1W);
         badge1.setAttribute('height', '24');
@@ -1537,7 +1537,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
         svg.appendChild(badge1);
 
         const tVal1 = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tVal1.setAttribute('x', cx - 80);
+        tVal1.setAttribute('x', cx - 170);
         tVal1.setAttribute('y', cy - 131);
         tVal1.setAttribute('font-family', 'Tajawal');
         tVal1.setAttribute('font-size', '13px');
@@ -1550,7 +1550,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
         const label2Text = `${label2}: ${val2.toLocaleString()}`;
         const badge2W = label2Text.length * 8.5 + 16;
         const badge2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        badge2.setAttribute('x', cx + 80 - badge2W / 2);
+        badge2.setAttribute('x', cx + 170 - badge2W / 2);
         badge2.setAttribute('y', cy - 148);
         badge2.setAttribute('width', badge2W);
         badge2.setAttribute('height', '24');
@@ -1559,7 +1559,7 @@ function draw2DBranchingArrow(svgId, val1, val2, label1, label2, totalVal) {
         svg.appendChild(badge2);
 
         const tVal2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tVal2.setAttribute('x', cx + 80);
+        tVal2.setAttribute('x', cx + 170);
         tVal2.setAttribute('y', cy - 131);
         tVal2.setAttribute('font-family', 'Tajawal');
         tVal2.setAttribute('font-size', '13px');
