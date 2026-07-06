@@ -136,23 +136,8 @@ if (file_exists(base_path('iraq.svg'))) {
                 أعداد المرضى في الاستشاريات
                 <span id="cmp-total-1" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalVisits) }}</span>
             </div>
-            <div class="flex items-center gap-1.5 no-print">
-                <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
-                <select id="select-svg-report-1" data-svg-id="svg-report-1" onchange="changeReportChartStyle('svg-report-1', this.value)" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
-                    <option value="flat">أسهم مسطحة</option>
-                    <option value="glow">أسهم متوهجة</option>
-                    <option value="bar">أعمدة رأسية (جارت)</option>
-                    <option value="bar-h">أعمدة أفقية (جارت)</option>
-                    <option value="donut">شكل دائري (جارت)</option>
-                    <option value="area">مخطط مساحي (جارت)</option>
-                </select>
-            </div>
         </h3>
         <div class="grid grid-cols-1 gap-8">
-            <!-- Branching/Split Arrow Infographic -->
-            <div class="flex justify-center">
-                <svg id="svg-report-1" viewBox="0 0 700 220" class="w-full max-w-[650px] h-[220px] overflow-visible"></svg>
-            </div>
             <!-- Data Table -->
             <div>
                 <table class="custom-table text-xs">
@@ -2313,7 +2298,6 @@ function renderAll2DArrowCharts() {
         }
     });
 
-    watchChart('svg-report-1',  () => drawReportToggleChart('svg-report-1', 'donut', () => draw2DBranchingArrow('svg-report-1', {{ $cGeneral }}, {{ $cSpecial }}, '{{ str_replace("استشارية ", "", $generalLabel) }}', '{{ str_replace("استشارية ", "", $specialLabel) }}', {{ $totalVisits }}), [{{ $cGeneral }}, {{ $cSpecial }}], ['{{ str_replace("استشارية ", "", $generalLabel) }}', '{{ str_replace("استشارية ", "", $specialLabel) }}'], 'الاستشاريات'));
     watchChart('svg-report-2',  () => drawReportToggleChart('svg-report-2', 'bar', () => draw2DFlatVerticalArrows('svg-report-2', docVisitsData, docVisitsLabels), docVisitsData, docVisitsLabels, 'المرضى'));
     watchChart('svg-report-3',  () => drawIraqMap('svg-report-3', govData, govLabels, '#0284c7')); // الخريطة لا تحتاج تحويل
     watchChart('svg-report-4',  () => drawReportToggleChart('svg-report-4', 'bar-h', () => draw2DFlatHorizontalChevrons('svg-report-4', countryData, countryLabels), countryData, countryLabels, 'الدول'));

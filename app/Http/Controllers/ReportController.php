@@ -490,14 +490,39 @@ class ReportController extends Controller
                 ->map(fn($g, $key) => ['country' => $key, 'total' => $g->sum('total')])
                 ->values();
 
-            // جدول 7: تصنيف العمليات
-            $surgeriesByCat = (clone $docSurgeriesQuery)
-                ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
-                ->select('operation_names.classification', DB::raw('count(*) as total'))
-                ->groupBy('operation_names.classification')
-                ->get()->map(fn($v) => ['classification' => $v->classification, 'total' => $v->total]);
+            // جدول 7: تصنيف العمليات — نفس منطق التقارير: CLS مباشر أولاً ثم fallback
+            $clsDirectQuerySide = Surgery::whereBetween('op_date', [$startDate, $endDate])
+                ->whereNull('governorate_id')
+                ->whereNull('country_id')
+                ->where('patient_name', 'قيد إحصائي تصنيف')
+                ->whereNotNull('sector_id')
+                ->whereNotNull('classification');
+            if ($docId) $clsDirectQuerySide->where('doctor_id', $docId);
 
-            // جدول 10: عمليات كل طبيب (الإجمالي) من الجدول المستقل
+            $clsDirectCountSide = (clone $clsDirectQuerySide)->count();
+
+            if ($clsDirectCountSide > 0) {
+                $surgeriesByCat = $clsDirectQuerySide
+                    ->select('classification', DB::raw('count(*) as total'))
+                    ->groupBy('classification')
+                    ->get()->map(fn($v) => ['classification' => $v->classification, 'total' => $v->total]);
+            } else {
+                // fallback من سجلات العمليات الفعلية
+                $surgeriesByCat = (clone $docSurgeriesQuery)
+                    ->whereNotNull('classification')
+                    ->select('classification', DB::raw('count(*) as total'))
+                    ->groupBy('classification')
+                    ->get()->map(fn($v) => ['classification' => $v->classification, 'total' => $v->total]);
+            }
+
+            // جدول 10 و combined_ops: نفس منطق التقارير — من DoctorOperationStat و DoctorSurgeryStat
+            $sideOpStatsRaw = DoctorOperationStat::with(['doctor', 'operationName'])
+                ->whereBetween('stat_month', [$sideStatStart, $sideStatEnd])
+                ->where('quantity', '>', 0);
+            if ($docId) $sideOpStatsRaw = $sideOpStatsRaw->where('doctor_id', $docId);
+            $sideOpStatsRaw = $sideOpStatsRaw->get();
+
+            // جدول 10: عمليات كل طبيب (الإجمالي) من DoctorSurgeryStat
             $surgsByDoctor = DoctorSurgeryStat::with('doctor')
                 ->whereBetween('stat_month', [$sideStatStart, $sideStatEnd])
                 ->when($docId, fn($q) => $q->where('doctor_id', $docId))
@@ -508,33 +533,27 @@ class ReportController extends Controller
                     'total'  => $group->sum('quantity')
                 ])->values();
 
-            // تفصيلي: اسم العملية لكل طبيب
-            $surgDetailByDoctor = (clone $docSurgeriesQuery)
-                ->join('doctors','surgeries.doctor_id','=','doctors.id')
-                ->join('operation_names','surgeries.operation_name_id','=','operation_names.id')
-                ->select('doctors.name as doctor','doctors.display_order as doc_order','operation_names.name as op','operation_names.display_order as op_order','operation_names.classification', DB::raw('count(*) as total'))
-                ->groupBy('doctors.name','doctors.display_order','operation_names.name','operation_names.display_order','operation_names.classification')
-                ->get()->groupBy('doctor')
-                ->map(fn($group) => $group->sortBy('op_order')->values());
-
-            // إجمالي التفصيلي (كل الأطباء مجمعة)
-            $combinedOps = $surgDetailByDoctor->flatten(1)
-                ->groupBy('op')
-                ->map(fn($g) => (object)[
-                    'op'             => $g->first()['op'],
-                    'classification' => $g->first()['classification'],
-                    'total'          => $g->sum('total'),
-                ])->sortByDesc('total')->values();
-
-            // عمليات مفصلة من الجدول المستقل (doctor_operation_stats)
-            $sideStatStart = substr($startDate, 0, 7) . '-01';
-            $sideStatEnd   = substr($endDate,   0, 7) . '-01';
-            $sideOpStatsRaw = DoctorOperationStat::with(['doctor', 'operationName'])
-                ->whereBetween('stat_month', [$sideStatStart, $sideStatEnd]);
-            if ($docId) $sideOpStatsRaw = $sideOpStatsRaw->where('doctor_id', $docId);
-            $sideOpStatsRaw = $sideOpStatsRaw->get();
-
             if ($sideOpStatsRaw->count() > 0) {
+                // combined_ops من DoctorOperationStat (أكثر دقة)
+                $combinedOps = $sideOpStatsRaw
+                    ->groupBy('operation_name_id')
+                    ->map(fn($g) => (object)[
+                        'op'             => $g->first()->operationName->name ?? '—',
+                        'classification' => $g->first()->classification ?? ($g->first()->operationName->classification ?? '—'),
+                        'total'          => $g->sum('quantity'),
+                        'op_order'       => $g->first()->operationName->display_order ?? 0,
+                    ])->sortBy('op_order')->values();
+
+                // تصنيف العمليات من DoctorOperationStat إذا لم يوجد CLS مباشر
+                if ($clsDirectCountSide === 0 && $sideOpStatsRaw->count() > 0) {
+                    $surgeriesByCat = $sideOpStatsRaw
+                        ->groupBy(fn($s) => $s->classification ?? ($s->operationName->classification ?? '—'))
+                        ->map(fn($g, $cls) => [
+                            'classification' => $cls,
+                            'total'          => $g->sum('quantity'),
+                        ])->values();
+                }
+
                 $doctorOpStats = $sideOpStatsRaw
                     ->groupBy(fn($s) => $s->doctor->name ?? '—')
                     ->map(fn($group) => $group->groupBy('operation_name_id')
@@ -546,6 +565,8 @@ class ReportController extends Controller
                         ])->sortBy('op_order')->values()
                     );
             } else {
+                // fallback: لا توجد سجلات في DoctorOperationStat
+                $combinedOps = collect();
                 $doctorOpStats = null;
             }
 
@@ -560,7 +581,7 @@ class ReportController extends Controller
                 'eye_tests_by_type'    => $eyeTestsByType,
                 'surgeries_by_cat'     => $surgeriesByCat,
                 'surgs_by_doctor'      => $surgsByDoctor,
-                'surg_detail'          => $surgDetailByDoctor,
+                'surg_detail'          => $doctorOpStats ?? collect(),
                 'combined_ops'         => $combinedOps,
                 'surgeries_by_gov'     => $surgeriesByGov,
                 'surgeries_by_country' => $surgeriesByCountry,
@@ -572,14 +593,14 @@ class ReportController extends Controller
             $r->get('doctor_id_a'),
             $r->get('start_date_a'),
             $r->get('end_date_a'),
-            $r->get('op_class_a')
+            $r->get('op_name_id_a')  // اسم التصنيف القادم من الـ frontend
         );
 
         $sideB = $getSideStats(
             $r->get('doctor_id_b'),
             $r->get('start_date_b'),
             $r->get('end_date_b'),
-            $r->get('op_class_b')
+            $r->get('op_name_id_b')  // اسم التصنيف القادم من الـ frontend
         );
 
         return response()->json([

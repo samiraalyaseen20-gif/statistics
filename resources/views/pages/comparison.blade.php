@@ -173,22 +173,10 @@ if (file_exists(base_path('iraq.svg'))) {
                     مقارنة أعداد المرضى في الاستشاريات
                     <span id="cmp-total-1" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </div>
-                <div class="flex items-center gap-1.5 no-print">
-                    <span class="text-[9px] font-bold text-slate-400 font-['Tajawal']">شكل السهم:</span>
-                    <select id="select-cmp-svg-1" data-svg-id="cmp-svg-1" onchange="changeComparisonChartStyle('cmp-svg-1', this.value);" class="arrow-style-select bg-slate-200/20 text-slate-500 dark:text-slate-400 border border-slate-200/10 rounded-lg px-2 py-0.5 text-[9px] font-bold focus:outline-none cursor-pointer font-['Tajawal']">
-                        <option value="flat">أسهم مسطحة</option>
-                        <option value="glow">أسهم متوهجة</option>
-                        <option value="bar">أعمدة رأسية (جارت)</option>
-                        <option value="bar-h">أعمدة أفقية (جارت)</option>
-                        <option value="donut">شكل دائري (جارت)</option>
-                        <option value="area">مخطط مساحي (جارت)</option>
-                    </select>
-                </div>
             </h3>
             <div class="grid grid-cols-1 gap-6">
                 <div>
                     <div class="cmp-side-label-a mb-3"></div>
-                    <div class="flex justify-center"><svg id="cmp-svg-1-a" viewBox="0 0 700 220" class="w-full max-w-[650px] h-auto overflow-visible"></svg></div>
                     <div class="overflow-x-auto mt-3">
                         <table class="custom-table text-xs w-full"><thead><tr><th>الوحدة</th><th class="text-center">العدد</th></tr></thead>
                         <tbody id="cmp-tbl-1-a"><tr><td colspan="2" class="text-center text-slate-300 py-4 text-[10px]">في انتظار البيانات...</td></tr></tbody></table>
@@ -196,7 +184,6 @@ if (file_exists(base_path('iraq.svg'))) {
                 </div>
                 <div>
                     <div class="cmp-side-label-b mb-3"></div>
-                    <div class="flex justify-center"><svg id="cmp-svg-1-b" viewBox="0 0 700 220" class="w-full max-w-[650px] h-auto overflow-visible"></svg></div>
                     <div class="overflow-x-auto mt-3">
                         <table class="custom-table text-xs w-full"><thead><tr><th>الوحدة</th><th class="text-center">العدد</th></tr></thead>
                         <tbody id="cmp-tbl-1-b"><tr><td colspan="2" class="text-center text-slate-300 py-4 text-[10px]">في انتظار البيانات...</td></tr></tbody></table>
@@ -1556,8 +1543,6 @@ function renderAllCmpCharts(data, labelA, labelB) {
     // ─ جدول 1: الاستشاريات ─
     const consA = A.consultations || [];
     const consB = B.consultations || [];
-    cmpWatchChart('cmp-svg-1-a', () => drawComparisonToggleChart('cmp-svg-1-a', 'donut', () => cmpDrawBranching('cmp-svg-1-a', consA, A.total_visits, CMP_COLORS_A), consA.map(r => r.total), consA.map(r => r.unit), 'الاستشاريات', CMP_COLORS_A));
-    cmpWatchChart('cmp-svg-1-b', () => drawComparisonToggleChart('cmp-svg-1-b', 'donut', () => cmpDrawBranching('cmp-svg-1-b', consB, B.total_visits, CMP_COLORS_B), consB.map(r => r.total), consB.map(r => r.unit), 'الاستشاريات', CMP_COLORS_B));
     cmpRenderTable('cmp-tbl-1-a', consA.map((r,i) => `<tr class="table-row"><td>${r.unit}</td><td class="text-center font-bold">${r.total.toLocaleString()}</td></tr>`).join('') + (consA.length ? `<tr class="table-row font-extrabold text-theme-pink"><td class="text-center">الإجمالي</td><td class="text-center">${A.total_visits.toLocaleString()}</td></tr>` : ''), 2, 'لا بيانات');
     cmpRenderTable('cmp-tbl-1-b', consB.map((r,i) => `<tr class="table-row"><td>${r.unit}</td><td class="text-center font-bold">${r.total.toLocaleString()}</td></tr>`).join('') + (consB.length ? `<tr class="table-row font-extrabold text-theme-pink"><td class="text-center">الإجمالي</td><td class="text-center">${B.total_visits.toLocaleString()}</td></tr>` : ''), 2, 'لا بيانات');
 
