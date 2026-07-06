@@ -133,7 +133,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
             <div class="flex items-center gap-2">
                 <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
-                جدول (1): أعداد المرضى في الاستشاريات
+                أعداد المرضى في الاستشاريات
                 <span id="cmp-total-1" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalVisits) }}</span>
             </div>
             <div class="flex items-center gap-1.5 no-print">
@@ -180,7 +180,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
             <div class="flex items-center gap-2">
                 <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
-                جدول (2): أعداد مرضى كل طبيب اختصاص
+                أعداد مرضى كل طبيب اختصاص
                 <span id="cmp-total-2" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalVisits) }}</span>
             </div>
             <div class="flex items-center gap-1.5 no-print">
@@ -206,7 +206,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="flag" class="w-4 h-4 text-sky-500"></i>
-                جدول (3): التوزيع الجغرافي داخل العراق
+                التوزيع الجغرافي داخل العراق
                 <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($visitsByGov->sum('total')) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
@@ -223,7 +223,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                 <div class="flex items-center gap-2">
                     <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                    جدول (4): المرضى من خارج العراق
+                    المرضى من خارج العراق
                     <span id="cmp-total-4" class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($visitsByCountry->sum('total')) }}</span>
                 </div>
                 <div class="flex items-center gap-1.5 no-print">
@@ -251,7 +251,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                 <div class="flex items-center gap-2">
                     <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
-                    جدول (5): البصرية والساندة
+                    البصرية والساندة
                     <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalEyeTests) }}</span>
                 </div>
                 <div class="flex items-center gap-1.5 no-print">
@@ -275,7 +275,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                 <div class="flex items-center gap-2">
                     <i data-lucide="test-tube" class="w-4 h-4 text-purple-500"></i>
-                    جدول (6): التحاليل المختبرية المنجزة
+                    التحاليل المختبرية المنجزة
                     <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($labTestsByType->sum('total')) }}</span>
                 </div>
                 <div class="flex items-center gap-1.5 no-print">
@@ -302,7 +302,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
             <div class="flex items-center gap-2">
                 <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
-                جدول (7): أعداد وتصنيف العمليات الجراحية للعيون حسب القطاعات
+                أعداد وتصنيف العمليات الجراحية للعيون حسب القطاعات
                 <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع الكلي للعمليات: {{ number_format($totalSurgeries) }}</span>
             </div>
             <div class="flex items-center gap-1.5 no-print">
@@ -417,7 +417,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <div class="custom-card p-6 rounded-2xl">
             <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                 <i data-lucide="flag" class="w-4 h-4 text-rose-500"></i>
-                جدول (8): التوزيع الجغرافي للعمليات الجراحية داخل العراق
+                التوزيع الجغرافي للعمليات الجراحية داخل العراق
                 <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($surgeriesByGov->sum('total')) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
@@ -434,7 +434,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                 <div class="flex items-center gap-2">
                     <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                    جدول (9): العمليات الجراحية للمرضى من خارج العراق
+                    العمليات الجراحية للمرضى من خارج العراق
                     <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($surgeriesByCountry->sum('total')) }}</span>
                 </div>
                 <div class="flex items-center gap-1.5 no-print">
@@ -460,7 +460,7 @@ if (file_exists(base_path('iraq.svg'))) {
         <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
             <div class="flex items-center gap-2">
                 <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
-                جدول (10): إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص (بيانات حقيقية)
+                إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص (بيانات حقيقية)
                 <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($totalSurgeries) }}</span>
             </div>
             <div class="flex items-center gap-1.5 no-print">
@@ -1901,10 +1901,10 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
     // الحصول على النمط المحدد
     const style = localStorage.getItem('arrow_style_' + svgId) || 'flat';
 
-    const spacing = 42;
+    const spacing = 58;
     const marginT = 16;
-    const marginB = 16;
-    const dynamicHeight = marginT + marginB + (n - 1) * spacing + 22;
+    const marginB = 20;
+    const dynamicHeight = marginT + marginB + (n - 1) * spacing + 32;
     
     svg.setAttribute('viewBox', `0 0 450 ${dynamicHeight}`);
     svg.style.height = `${dynamicHeight}px`;
@@ -1929,7 +1929,7 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
 
     values.forEach((val, i) => {
         const labelY = marginT + i * spacing;
-        const barY = labelY + 16;
+        const barY = labelY + 24;
         const color = colors[i % colors.length];
 
         const scaleVal = maxVal > 0 ? val / maxVal : 0;
@@ -1944,13 +1944,18 @@ function draw2DFlatHorizontalChevrons(svgId, values, labels, presetColors = null
         // Label
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
         label.setAttribute('x', startX);
-        label.setAttribute('y', labelY + 4);
+        label.setAttribute('y', labelY + 6);
         label.setAttribute('font-family', 'Tajawal');
-        label.setAttribute('font-size', '10.5px');
+        label.setAttribute('font-size', '12px');
         label.setAttribute('font-weight', 'bold');
         label.setAttribute('fill', '#475569');
-        label.setAttribute('text-anchor', 'end');
-        label.textContent = labels[i] || '';
+        label.setAttribute('text-anchor', 'start');
+        label.setAttribute('direction', 'rtl');
+        label.setAttribute('unicode-bidi', 'embed');
+        
+        let labelText = labels[i] || '';
+        if (labelText.length > 45) labelText = labelText.substring(0, 42) + '..';
+        label.textContent = labelText;
         g.appendChild(label);
 
         let body, pill, tVal;

@@ -272,7 +272,7 @@
         <div class="columns-layout">
             <!-- جدول 1 -->
             <div class="col-half">
-                <div class="section-title">جدول (1): الاستشاريات الطبية</div>
+                <div class="section-title">الاستشاريات الطبية</div>
                 <table>
                     <thead>
                         <tr>
@@ -299,7 +299,7 @@
 
             <!-- جدول 2 -->
             <div class="col-half">
-                <div class="section-title">جدول (2): الاستشارية لكل طبيب</div>
+                <div class="section-title">الاستشارية لكل طبيب</div>
                 <table>
                     <thead>
                         <tr>
@@ -331,7 +331,7 @@
         <div class="columns-layout">
             <!-- جدول 3 -->
             <div class="col-half">
-                <div class="section-title">جدول (3): الديمغرافي (داخل العراق)</div>
+                <div class="section-title">الديمغرافي (داخل العراق)</div>
                 <table>
                     <thead>
                         <tr>
@@ -360,7 +360,7 @@
 
             <!-- جدول 4 -->
             <div class="col-half">
-                <div class="section-title">جدول (4): الديمغرافي (خارج العراق)</div>
+                <div class="section-title">الديمغرافي (خارج العراق)</div>
                 <table>
                     <thead>
                         <tr>
@@ -396,7 +396,7 @@
         <div class="columns-layout">
             <!-- جدول 5 -->
             <div class="col-half">
-                <div class="section-title">جدول (5): فحوصات البصر بالنوع</div>
+                <div class="section-title">فحوصات البصر بالنوع</div>
                 <table>
                     <thead>
                         <tr>
@@ -423,7 +423,7 @@
 
             <!-- جدول 6 -->
             <div class="col-half">
-                <div class="section-title">جدول (6): تحاليل المختبر بالنوع</div>
+                <div class="section-title">تحاليل المختبر بالنوع</div>
                 <table>
                     <thead>
                         <tr>
@@ -452,7 +452,7 @@
 
     <!-- ─── جدول 7 ─── -->
     <div class="report-section">
-        <div class="section-title">جدول (7): تصنيف العمليات حسب القطاع (حكومي / خاص / عام)</div>
+        <div class="section-title">تصنيف العمليات حسب القطاع (حكومي / خاص / عام)</div>
         <table>
             <thead>
                 <tr>
@@ -507,7 +507,7 @@
         <div class="columns-layout">
             <!-- جدول 8 -->
             <div class="col-half">
-                <div class="section-title">جدول (8): ديمغرافي العمليات (داخل العراق)</div>
+                <div class="section-title">ديمغرافي العمليات (داخل العراق)</div>
                 <table>
                     <thead>
                         <tr>
@@ -536,7 +536,7 @@
 
             <!-- جدول 9 -->
             <div class="col-half">
-                <div class="section-title">جدول (9): ديمغرافي العمليات (خارج العراق)</div>
+                <div class="section-title">ديمغرافي العمليات (خارج العراق)</div>
                 <table>
                     <thead>
                         <tr>
@@ -582,7 +582,7 @@
     @endphp
 
     <div class="report-section">
-        <div class="section-title">جدول (10): العمليات التفصيلية لكل طبيب اختصاص حسب النوع</div>
+        <div class="section-title">العمليات التفصيلية لكل طبيب اختصاص حسب النوع</div>
         
         @forelse($filterDoctors as $doc)
             @php

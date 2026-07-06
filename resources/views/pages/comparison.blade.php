@@ -170,7 +170,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                 <div class="flex items-center gap-2">
                     <i data-lucide="stethoscope" class="w-4 h-4 text-pink-500"></i>
-                    جدول (1): مقارنة أعداد المرضى في الاستشاريات
+                    مقارنة أعداد المرضى في الاستشاريات
                     <span id="cmp-total-1" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </div>
                 <div class="flex items-center gap-1.5 no-print">
@@ -210,7 +210,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                 <div class="flex items-center gap-2">
                     <i data-lucide="users" class="w-4 h-4 text-emerald-500"></i>
-                    جدول (2): مقارنة مرضى كل طبيب اختصاص
+                    مقارنة مرضى كل طبيب اختصاص
                     <span id="cmp-total-2" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </div>
                 <div class="flex items-center gap-1.5 no-print">
@@ -247,7 +247,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <div class="custom-card p-6 rounded-2xl">
                 <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                     <i data-lucide="flag" class="w-4 h-4 text-sky-500"></i>
-                    جدول (3): مقارنة التوزيع الجغرافي داخل العراق
+                    مقارنة التوزيع الجغرافي داخل العراق
                     <span id="cmp-total-3" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -280,7 +280,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                     <div class="flex items-center gap-2">
                         <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                        جدول (4): المرضى من خارج العراق
+                        المرضى من خارج العراق
                         <span id="cmp-total-4" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                     </div>
                     <div class="flex items-center gap-1.5 no-print">
@@ -319,7 +319,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <div class="custom-card p-6 rounded-2xl">
                 <h3 class="text-xs font-bold text-text-main flex items-center gap-2 pb-3 mb-4 border-b border-slate-200/20">
                     <i data-lucide="flag" class="w-4 h-4 text-rose-500"></i>
-                    جدول (8): مقارنة التوزيع الجغرافي للعمليات الجراحية داخل العراق
+                    مقارنة التوزيع الجغرافي للعمليات الجراحية داخل العراق
                     <span id="cmp-total-8" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -352,7 +352,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                     <div class="flex items-center gap-2">
                         <i data-lucide="globe" class="w-4 h-4 text-pink-500"></i>
-                        جدول (9): مقارنة العمليات الجراحية للمرضى من خارج العراق
+                        مقارنة العمليات الجراحية للمرضى من خارج العراق
                         <span id="cmp-total-9" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                     </div>
                     <div class="flex items-center gap-1.5 no-print">
@@ -390,7 +390,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                 <div class="flex items-center gap-2">
                     <i data-lucide="eye" class="w-4 h-4 text-orange-500"></i>
-                    جدول (5): مقارنة البصرية والساندة
+                    مقارنة البصرية والساندة
                     <span class="text-[9px] text-slate-400 font-normal mr-1">(مستقل — يعرض الفحوصات حسب الفترة فقط)</span>
                     <span id="cmp-total-5" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </div>
@@ -427,7 +427,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                 <div class="flex items-center gap-2">
                     <i data-lucide="scissors" class="w-4 h-4 text-rose-500"></i>
-                    جدول (7): مقارنة أعداد وتصنيف العمليات الجراحية للعيون
+                    مقارنة أعداد وتصنيف العمليات الجراحية للعيون
                     <span id="cmp-total-7" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </div>
                 <div class="flex items-center gap-1.5 no-print">
@@ -471,7 +471,7 @@ if (file_exists(base_path('iraq.svg'))) {
             <h3 class="text-xs font-bold text-text-main flex items-center justify-between pb-3 mb-4 border-b border-slate-200/20">
                 <div class="flex items-center gap-2">
                     <i data-lucide="award" class="w-4 h-4 text-violet-500"></i>
-                    جدول (10): مقارنة إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص
+                    مقارنة إجمالي العمليات الجراحية المنجزة لكل طبيب اختصاص
                     <span id="cmp-total-10" class="inline-flex items-center bg-pink-500/10 text-pink-600 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2 hidden"></span>
                 </div>
                 <div class="flex items-center gap-1.5 no-print">
@@ -1300,8 +1300,8 @@ function cmpDrawChevrons(svgId, values, labels, colors) {
     const style = localStorage.getItem('arrow_style_' + prefix) || 'flat';
 
     const n = values.length;
-    const spacing = 42, marginT = 16, marginB = 16;
-    const dynamicHeight = marginT + marginB + (n-1)*spacing + 22;
+    const spacing = 58, marginT = 16, marginB = 20;
+    const dynamicHeight = marginT + marginB + (n-1)*spacing + 32;
     svg.setAttribute('viewBox', `0 0 450 ${dynamicHeight}`);
     svg.style.height = `${dynamicHeight}px`;
 
@@ -1321,7 +1321,7 @@ function cmpDrawChevrons(svgId, values, labels, colors) {
 
     values.forEach((val, i) => {
         const labelY = marginT + i*spacing;
-        const barY = labelY + 16;
+        const barY = labelY + 24;
         const color = colors[i % colors.length];
         const L = 15 + maxL * (val / maxVal);
         const endX = startX - L;
@@ -1332,11 +1332,16 @@ function cmpDrawChevrons(svgId, values, labels, colors) {
 
         // Label
         const label = document.createElementNS("http://www.w3.org/2000/svg","text");
-        label.setAttribute('x',startX); label.setAttribute('y',labelY+4);
-        label.setAttribute('font-family','Tajawal'); label.setAttribute('font-size','10.5px');
+        label.setAttribute('x',startX); label.setAttribute('y',labelY+6);
+        label.setAttribute('font-family','Tajawal'); label.setAttribute('font-size','12px');
         label.setAttribute('font-weight','bold'); label.setAttribute('fill','#475569');
-        label.setAttribute('text-anchor','end');
-        label.textContent = labels[i] || '';
+        label.setAttribute('text-anchor','start');
+        label.setAttribute('direction', 'rtl');
+        label.setAttribute('unicode-bidi', 'embed');
+        
+        let labelText = labels[i] || '';
+        if (labelText.length > 45) labelText = labelText.substring(0, 42) + '..';
+        label.textContent = labelText;
         g.appendChild(label);
 
         let body, pill, tVal;
