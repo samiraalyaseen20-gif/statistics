@@ -32,6 +32,63 @@
         body[data-theme="brutal"] ::-webkit-scrollbar-thumb { background: #000000; border: 2px solid #000000; }
         /* Fix sidebar border-radius in app shell mode */
         #sidebar { border-radius: 0 !important; }
+
+        /* تكبير الخطوط والأرقام لصفحة التقارير والمقارنات بنسبة كبيرة */
+        #page-reports, #page-comparison {
+            font-size: 14.5px !important;
+        }
+        #page-reports .custom-table, 
+        #page-comparison .custom-table {
+            font-size: 14.5px !important;
+        }
+        #page-reports .custom-table th, 
+        #page-comparison .custom-table th {
+            font-size: 14.5px !important;
+            padding: 12px 10px !important;
+        }
+        #page-reports .custom-table td, 
+        #page-comparison .custom-table td {
+            font-size: 14.5px !important;
+            padding: 12px 10px !important;
+        }
+        /* تكبير خانة المجموع الكلي وأي صف إجمالي */
+        #page-reports .custom-table tr.font-extrabold td,
+        #page-comparison .custom-table tr.font-extrabold td,
+        #page-reports .text-sm.font-extrabold,
+        #page-comparison .text-sm.font-extrabold {
+            font-size: 16px !important;
+        }
+        /* تكبير شارات وأرقام الـ KPI والبطاقات الرئيسية */
+        #page-reports .text-2xl, #page-comparison .text-2xl,
+        #page-reports .text-3xl, #page-comparison .text-3xl,
+        #kpi-v-a, #kpi-v-b, #kpi-s-a, #kpi-s-b {
+            font-size: 2.25rem !important; /* يعادل text-4xl */
+            line-height: 2.5rem !important;
+            font-weight: 900 !important;
+        }
+        #page-reports .text-xl, #page-comparison .text-xl {
+            font-size: 1.75rem !important;
+        }
+        #page-reports .text-lg, #page-comparison .text-lg {
+            font-size: 1.5rem !important;
+        }
+        /* تكبير العناوين الفرعية */
+        #page-reports h3, #page-comparison h3 {
+            font-size: 15.5px !important;
+        }
+        /* تكبير المدخلات والفلاتر لتسهيل الاختيار والقراءة */
+        #page-reports select, #page-reports input,
+        #page-comparison select, #page-comparison input {
+            font-size: 13.5px !important;
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
+        }
+        /* شارات المجموع الفرعية */
+        #page-reports span[id*="total-"], #page-comparison span[id*="total-"],
+        #page-reports span[class*="text-[10px]"], #page-comparison span[class*="text-[10px]"] {
+            font-size: 12px !important;
+            padding: 4px 8px !important;
+        }
     </style>
 </head>
 <body class="h-screen overflow-hidden" data-theme="soft">
