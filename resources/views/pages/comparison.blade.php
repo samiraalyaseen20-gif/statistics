@@ -1419,14 +1419,14 @@ function cmpDrawIraqMap(svgId, values, labels, colorTheme) {
         }
 
         const textStr = `${govArabicName} ${val}`;
-        const chipW   = textStr.length * 9.5 + 16;
+        const chipW   = textStr.length * 10 + 18;
         const chipY   = val > 0 ? -(3 + (val / maxVal) * 2.5) - 22 : -22;
 
         const chip = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         chip.setAttribute('x', -chipW / 2);
-        chip.setAttribute('y', chipY - 21);
+        chip.setAttribute('y', chipY - 22.5);
         chip.setAttribute('width', chipW);
-        chip.setAttribute('height', '28');
+        chip.setAttribute('height', '30');
         chip.setAttribute('rx', '6');
         chip.setAttribute('fill', val > 0 ? (colorTheme || '#0ea5e9') : '#64748b');
         chip.setAttribute('opacity', val > 0 ? '0.95' : '0.6');
@@ -1434,9 +1434,9 @@ function cmpDrawIraqMap(svgId, values, labels, colorTheme) {
 
         const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         lbl.setAttribute('x', '0');
-        lbl.setAttribute('y', chipY - 7);
+        lbl.setAttribute('y', chipY - 7.5);
         lbl.setAttribute('font-family', 'Tajawal, sans-serif');
-        lbl.setAttribute('font-size', '17');
+        lbl.setAttribute('font-size', '18');
         lbl.setAttribute('font-weight', 'bold');
         lbl.setAttribute('fill', '#fff');
         lbl.setAttribute('text-anchor', 'middle');
