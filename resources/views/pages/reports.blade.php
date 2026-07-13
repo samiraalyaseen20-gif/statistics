@@ -195,7 +195,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($visitsByGov->sum('total')) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-3" viewBox="0 0 584 594" class="w-full min-w-[520px] md:min-w-0 max-w-[600px] h-[530px] md:h-[610px] overflow-visible mx-auto">
+                <svg id="svg-report-3" viewBox="0 0 584 594" class="w-full max-w-[480px] h-[480px] overflow-visible mx-auto">
                     <g id="svg-report-3-paths" fill="rgba(14, 165, 233, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
                         {!! $pathsHtml !!}
                     </g>
@@ -406,7 +406,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($surgeriesByGov->sum('total')) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-8" viewBox="0 0 584 594" class="w-full min-w-[520px] md:min-w-0 max-w-[600px] h-[530px] md:h-[610px] overflow-visible mx-auto">
+                <svg id="svg-report-8" viewBox="0 0 584 594" class="w-full max-w-[480px] h-[480px] overflow-visible mx-auto">
                     <g id="svg-report-8-paths" fill="rgba(244, 63, 94, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
                         {!! $pathsHtml !!}
                     </g>
@@ -2226,28 +2226,27 @@ function drawIraqMap(svgId, values, labels, colorTheme) {
 
         // label chip
         const textStr = `${govArabicName} ${val}`;
-        const chipW   = textStr.length * 9.5 + 16;
+        const chipW   = textStr.length * 7.2 + 14;
         const chipY   = val > 0 ? -(3 + (val / maxVal) * 2.5) - 22 : -22;
 
         const chip = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         chip.setAttribute('x', -chipW / 2);
-        chip.setAttribute('y', chipY - 21);
+        chip.setAttribute('y', chipY - 16);
         chip.setAttribute('width', chipW);
-        chip.setAttribute('height', '28');
-        chip.setAttribute('rx', '6');
+        chip.setAttribute('height', '20');
+        chip.setAttribute('rx', '5');
         chip.setAttribute('fill', val > 0 ? (colorTheme || '#0ea5e9') : '#64748b');
         chip.setAttribute('opacity', val > 0 ? '0.95' : '0.6');
         g.appendChild(chip);
 
         const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         lbl.setAttribute('x', '0');
-        lbl.setAttribute('y', chipY - 7);
+        lbl.setAttribute('y', chipY - 2);
         lbl.setAttribute('font-family', 'Tajawal, sans-serif');
-        lbl.setAttribute('font-size', '17');
+        lbl.setAttribute('font-size', '12');
         lbl.setAttribute('font-weight', 'bold');
         lbl.setAttribute('fill', '#fff');
         lbl.setAttribute('text-anchor', 'middle');
-        lbl.setAttribute('dominant-baseline', 'central');
         lbl.textContent = textStr;
         g.appendChild(lbl);
 
