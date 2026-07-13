@@ -195,7 +195,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($visitsByGov->sum('total')) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-3" viewBox="0 0 584 594" class="w-full max-w-[480px] h-[480px] overflow-visible mx-auto">
+                <svg id="svg-report-3" viewBox="0 0 584 594" class="w-full max-w-[720px] h-[720px] overflow-visible mx-auto">
                     <g id="svg-report-3-paths" fill="rgba(14, 165, 233, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
                         {!! $pathsHtml !!}
                     </g>
@@ -406,7 +406,7 @@ if (file_exists(base_path('iraq.svg'))) {
                 <span class="inline-flex items-center bg-pink-500/10 text-pink-600 dark:text-pink-400 font-bold px-2 py-0.5 rounded-lg text-[10px] mr-2">المجموع: {{ number_format($surgeriesByGov->sum('total')) }}</span>
             </h3>
             <div class="w-full overflow-x-auto py-2">
-                <svg id="svg-report-8" viewBox="0 0 584 594" class="w-full max-w-[480px] h-[480px] overflow-visible mx-auto">
+                <svg id="svg-report-8" viewBox="0 0 584 594" class="w-full max-w-[720px] h-[720px] overflow-visible mx-auto">
                     <g id="svg-report-8-paths" fill="rgba(244, 63, 94, 0.03)" stroke="#cbd5e1" stroke-width="1.2">
                         {!! $pathsHtml !!}
                     </g>
